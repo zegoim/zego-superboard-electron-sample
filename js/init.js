@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-04 19:02:40
+ * @LastEditTime: 2021-08-04 19:38:23
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -21,10 +21,12 @@ var zegoConfig = {
   fileListData: {}, // 文件列表
   env: getEnv(), // 1 国内 2 海外
   appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
-  overseaAppID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
+  overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
   whiteboardEnv: "test", // 白板 SDK 环境
-  server: "wss://webliveroom-test.zego.im/ws", // 正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
-  overseaServer: "wss://webliveroom-hk-test.zegocloud.com/ws", // 正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
+  server: "wss://webliveroom-test.zego.im/ws", // 国内测试环境
+  serverProd: "wss://webliveroom3606078772-api.zego.im/ws", // 国内正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
+  overseaServer: "wss://webliveroom-hk-test.zegocloud.com/ws", // 海外测试环境
+  overseaServerProd: "wss://webliveroom1068511430-api.zegocloud.com/ws", // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
   docsEnv: "test", // 文件 SDK 环境
   roomID: getRoomID(), // 房间 ID
   userID: getUserID(), // 用户 ID

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-04 17:17:55
+ * @LastEditTime: 2021-08-04 19:36:27
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -14,13 +14,30 @@
  */
 function initSDK(token) {
   // 初始化互动白板 SDK
-  zegoWhiteboard = new ZegoExpressEngine(zegoConfig.appID, zegoConfig.server);
+  if (zegoConfig.env === "1") {
+    // 国内环境
+    zegoWhiteboard = new ZegoExpressEngine(
+      zegoConfig.appID,
+      zegoConfig.whiteboardEnv === "test"
+        ? zegoConfig.server
+        : zegoConfig.serverProd
+    );
+  } else {
+    // 海外环境
+    zegoWhiteboard = new ZegoExpressEngine(
+      zegoConfig.overseaAppID,
+      zegoConfig.whiteboardEnv === "test"
+        ? zegoConfig.overseaServer
+        : zegoConfig.overseaServerProd
+    );
+  }
+
   // 初始化文件转码 SDK
   zegoDocs = new ZegoExpressDocs({
     appID: zegoConfig.appID,
     userID: zegoConfig.userID,
     token,
-    isTestEnv: !!zegoConfig.docsEnv,
+    isTestEnv: !!zegoConfig.docsEnv === "test",
   });
 
   initWhiteboardSDKConfig();
@@ -54,6 +71,16 @@ function initDocsSDKConfig() {
   zegoDocs.setConfig("pptStepMode", zegoConfig.pptStepMode);
   // 设置缩略图清晰度模式
   zegoDocs.setConfig("thumbnailMode", zegoConfig.thumbnailMode);
+
+  // 设置 PPT 转码清晰度
+  zegoDocs.setConfig("dynamicPPT_HD", $("#dynamicPPT_HD").val());
+  // 设置 PPT 自动翻页
+  zegoDocs.setConfig(
+    "dynamicPPT_AutomaticPage",
+    $("#dynamicPPT_AutomaticPage").val()
+  );
+  // 设置 PPT 视频下载
+  zegoDocs.setConfig("unloadVideoSrc", $("#unloadVideoSrc").val());
 }
 
 /**
@@ -160,6 +187,7 @@ $("#login-btn").click(function () {
 
   // 登录信息
   var loginInfo = {
+    env: $(".inlineRadio:checked").val(),
     roomID,
     userName,
     userID: zegoConfig.userID,
@@ -169,7 +197,6 @@ $("#login-btn").click(function () {
     fontFamily: $("#fontFamily").val(),
     thumbnailMode: $("#thumbnailMode").val(),
     pptStepMode: $("#pptStepMode").val(),
-    env: $(".inlineRadio:checked").val(),
   };
 
   // 更新 zegoConfig

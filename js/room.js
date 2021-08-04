@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-04 19:36:27
+ * @LastEditTime: 2021-08-05 01:33:56
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -13,74 +13,65 @@
  * @return {*}
  */
 function initSDK(token) {
-  // 初始化互动白板 SDK
-  if (zegoConfig.env === "1") {
-    // 国内环境
-    zegoWhiteboard = new ZegoExpressEngine(
-      zegoConfig.appID,
-      zegoConfig.whiteboardEnv === "test"
-        ? zegoConfig.server
-        : zegoConfig.serverProd
-    );
-  } else {
-    // 海外环境
-    zegoWhiteboard = new ZegoExpressEngine(
-      zegoConfig.overseaAppID,
-      zegoConfig.whiteboardEnv === "test"
-        ? zegoConfig.overseaServer
-        : zegoConfig.overseaServerProd
-    );
-  }
+    // 初始化 Express SDK
+    var appID = zegoConfig.appID;
+    var server = zegoConfig.server;
+    var isTestEnv = zegoConfig.superBoardEnv === 'test';
 
-  // 初始化文件转码 SDK
-  zegoDocs = new ZegoExpressDocs({
-    appID: zegoConfig.appID,
-    userID: zegoConfig.userID,
-    token,
-    isTestEnv: !!zegoConfig.docsEnv === "test",
-  });
+    if (zegoConfig.env === '2') {
+        // 海外环境
+        appID = zegoConfig.overseaAppID;
+        server = zegoConfig.overseaServer;
+    }
+    zegoEngine = new ZegoExpressEngine(appID, server);
 
-  initWhiteboardSDKConfig();
-  initDocsSDKConfig();
+    // 初始化合并层 SDK
+    zegoSuperBoard = ZegoSuperBoardManager.getInstance();
+    zegoSuperBoard.init(zegoEngine, {
+        parentDomID,
+        appID,
+        token,
+        isTestEnv
+    });
+
+    initExpressSDKConfig();
+    initSuperBoardSDKConfig();
 }
 
 /**
- * @description: 根据配置初始化白板 SDK
+ * @description: 根据配置初始化 Express SDK
  * @param {*}
  * @return {*}
  */
-function initWhiteboardSDKConfig() {
-  // 设置日志级别
-  zegoWhiteboard.setLogConfig({ logLevel: "info" });
-  // 关闭 debug
-  zegoWhiteboard.setDebugVerbose(false);
+function initExpressSDKConfig() {
+    // 设置日志级别
+    zegoEngine.setLogConfig({ logLevel: 'disable' });
+    // 关闭 debug
+    zegoEngine.setDebugVerbose(false);
 }
 
 /**
- * @description: 根据配置初始化文件 SDK
+ * @description: 根据配置初始化 SuperBoard SDK
  * @param {*}
  * @return {*}
  */
-function initDocsSDKConfig() {
-  // 设置字体
-  if (zegoConfig.fontFamily) {
-    // 设置白板、文件挂载容器内的字体
-    document.getElementById(parentID).style.fontFamily = zegoConfig.fontFamily;
-  }
-  // 设置动态 PPT 步数切页模式
-  zegoDocs.setConfig("pptStepMode", zegoConfig.pptStepMode);
-  // 设置缩略图清晰度模式
-  zegoDocs.setConfig("thumbnailMode", zegoConfig.thumbnailMode);
+function initSuperBoardSDKConfig() {
+    // 设置字体
+    if (zegoConfig.fontFamily === 'ZgFont') {
+        // 设置白板、文件挂载容器内的字体
+        document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;
+    }
+    // 设置动态 PPT 步数切页模式
+    zegoSuperBoard.setCustomizedConfig('pptStepMode', zegoConfig.pptStepMode);
+    // 设置缩略图清晰度模式
+    zegoSuperBoard.setCustomizedConfig('thumbnailMode', zegoConfig.thumbnailMode);
 
-  // 设置 PPT 转码清晰度
-  zegoDocs.setConfig("dynamicPPT_HD", $("#dynamicPPT_HD").val());
-  // 设置 PPT 自动翻页
-  zegoDocs.setConfig(
-    "dynamicPPT_AutomaticPage",
-    $("#dynamicPPT_AutomaticPage").val()
-  );
-  // 设置 PPT 视频下载
-  zegoDocs.setConfig("unloadVideoSrc", $("#unloadVideoSrc").val());
+    // 设置 PPT 转码清晰度
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', $('#dynamicPPT_HD').val());
+    // 设置 PPT 自动翻页
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', $('#dynamicPPT_AutomaticPage').val());
+    // 设置 PPT 视频下载
+    zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', $('#unloadVideoSrc').val());
 }
 
 /**
@@ -89,26 +80,26 @@ function initDocsSDKConfig() {
  * @return {*}
  */
 function onRoomUserUpdate() {
-  zegoWhiteboard.on("roomUserUpdate", function (roomID, type, list) {
-    if (type == "ADD") {
-      list.forEach(function (v) {
-        userList.push({
-          userID: v.userID,
-          userName: v.userName,
-        });
-      });
-    } else if (type == "DELETE") {
-      list.forEach(function (v) {
-        var index = userList.findIndex(function (item) {
-          return v.userID == item.userID;
-        });
-        if (index != -1) {
-          userList.splice(index, 1);
+    zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
+        if (type == 'ADD') {
+            list.forEach(function(v) {
+                userList.push({
+                    userID: v.userID,
+                    userName: v.userName
+                });
+            });
+        } else if (type == 'DELETE') {
+            list.forEach(function(v) {
+                var index = userList.findIndex(function(item) {
+                    return v.userID == item.userID;
+                });
+                if (index != -1) {
+                    userList.splice(index, 1);
+                }
+            });
         }
-      });
-    }
-    updateUserListDomHandle();
-  });
+        updateUserListDomHandle();
+    });
 }
 
 /**
@@ -117,45 +108,44 @@ function onRoomUserUpdate() {
  * @return {*}
  */
 function loginRoom() {
-  return new Promise(function (resolve) {
-    // 获取 token
-    getToken(zegoConfig.appID, zegoConfig.userID, zegoConfig.tokenUrl).then(
-      function (token) {
-        // 初始化 SDK
-        initSDK(token);
+    return new Promise(function(resolve) {
+        // 获取 token
+        var appID = zegoConfig.env === '1' ? zegoConfig.appID : zegoConfig.overseaAppID;
+        getToken(appID, zegoConfig.userID, zegoConfig.tokenUrl).then(function(token) {
+            // 初始化 SDK
+            initSDK(token);
 
-        // 注册房间成员变更回调
-        onRoomUserUpdate();
+            // 注册房间成员变更回调
+            onRoomUserUpdate();
 
-        // 登录房间
-        zegoWhiteboard
-          .loginRoom(
-            zegoConfig.roomID,
-            token,
-            {
-              userID: zegoConfig.userID,
-              userName: zegoConfig.username,
-            },
-            {
-              maxMemberCount: 10,
-              userUpdate: true,
-            }
-          )
-          .then(function () {
-            // 添加自己到成员列表
-            userList.unshift({
-              userID: zegoConfig.userID,
-              userName: zegoConfig.userName,
-            });
+            // 登录房间
+            zegoEngine
+                .loginRoom(
+                    zegoConfig.roomID,
+                    token,
+                    {
+                        userID: zegoConfig.userID,
+                        userName: zegoConfig.username
+                    },
+                    {
+                        maxMemberCount: 10,
+                        userUpdate: true
+                    }
+                )
+                .then(function() {
+                    // 添加自己到成员列表
+                    userList.unshift({
+                        userID: zegoConfig.userID,
+                        userName: zegoConfig.userName
+                    });
 
-            // 更新视图
-            updateUserListDomHandle();
+                    // 更新视图
+                    updateUserListDomHandle();
 
-            resolve();
-          });
-      }
-    );
-  });
+                    resolve();
+                });
+        });
+    });
 }
 
 /**
@@ -164,57 +154,58 @@ function loginRoom() {
  * @return {*}
  */
 function logoutRoom() {
-  // 退出房间
-  zegoWhiteboard.logoutRoom(zegoConfig.roomID);
-  // 清除 sessionStorage
-  sessionStorage.removeItem("loginInfo");
+    // 退出房间
+    zegoEngine.logoutRoom(zegoConfig.roomID);
+    // 清除 sessionStorage
+    sessionStorage.removeItem('loginInfo');
 
-  // 清空成员列表
-  userList = [];
+    // 清空成员列表
+    userList = [];
 
-  togglePageHandle(2);
+    togglePageHandle(2);
 }
 
 // 绑定登录房间事件
-$("#login-btn").click(function () {
-  // 校验 roomID、userName
-  var roomID = $("#roomID").val();
-  var userName = $("#userName").val();
-  if (!userName || !roomID) {
-    alert("请输入用户名和房间 ID");
-    return;
-  }
+$('#login-btn').click(function() {
+    // 校验 roomID、userName
+    var roomID = $('#roomID').val();
+    var userName = $('#userName').val();
+    if (!userName || !roomID) {
+        alert('请输入用户名和房间 ID');
+        return;
+    }
 
-  // 登录信息
-  var loginInfo = {
-    env: $(".inlineRadio:checked").val(),
-    roomID,
-    userName,
-    userID: zegoConfig.userID,
-    server: zegoConfig.server,
-    whiteboardEnv: $("#whiteboardEnv").val(),
-    docsEnv: $("#docsEnv").val(),
-    fontFamily: $("#fontFamily").val(),
-    thumbnailMode: $("#thumbnailMode").val(),
-    pptStepMode: $("#pptStepMode").val(),
-  };
+    // 登录信息
+    var loginInfo = {
+        env: $('.inlineRadio:checked').val(),
+        roomID,
+        userName,
+        userID: zegoConfig.userID,
+        superBoardEnv: $('#superBoardEnv select').val(),
+        fontFamily: $('#fontFamily select').val(),
+        thumbnailMode: $('#thumbnailMode select').val(),
+        pptStepMode: $('#pptStepMode select').val(),
+        dynamicPPT_HD: $('#dynamicPPT_HD select').val(),
+        dynamicPPT_AutomaticPage: $('#dynamicPPT_AutomaticPage select').val(),
+        unloadVideoSrc: $('#unloadVideoSrc select').val()
+    };
 
-  // 更新 zegoConfig
-  Object.assign(zegoConfig, loginInfo);
+    // 更新 zegoConfig
+    Object.assign(zegoConfig, loginInfo);
 
-  loginRoom().then(function () {
-    sessionStorage.setItem("loginInfo", JSON.stringify(loginInfo));
+    loginRoom().then(function() {
+        sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
 
-    // 显示房间页
-    $("#room-page").css("display", "flex");
-    $("#login-page").css("display", "none");
+        // 显示房间页
+        $('#room-page').css('display', 'flex');
+        $('#login-page').css('display', 'none');
 
-    // 更新房间号
-    $("#showRoomID").html(zegoConfig.roomID);
-  });
+        // 更新房间号
+        $('#showRoomID').html(zegoConfig.roomID);
+    });
 });
 
 // 绑定退出房间事件
-$("#logout-btn").click(function () {
-  logoutRoom();
+$('#logout-btn').click(function() {
+    logoutRoom();
 });

@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-04 19:15:10
+ * @LastEditTime: 2021-08-05 01:57:34
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -56,21 +56,12 @@
           </div>
           <div class="modal-body">
             <form class="layui-form" action="" name="form">
-              <div class="layui-form-item" id="whiteboardEnv">
-                <label class="layui-form-label">白板 SDK 环境</label>
+              <div class="layui-form-item" id="superBoardEnv">
+                <label class="layui-form-label">SuperBoard SDK 环境</label>
                 <div class="layui-input-block">
                   <select name="align">
                     <option value="test">测试</option>
-                    <option>正式</option>
-                  </select>
-                </div>
-              </div>
-              <div class="layui-form-item" id="docsEnv">
-                <label class="layui-form-label">文件 SDK 环境</label>
-                <div class="layui-input-block">
-                  <select name="align">
-                    <option value="test">测试</option>
-                    <option>正式</option>
+                    <option value="prod">正式</option>
                   </select>
                 </div>
               </div>
@@ -78,7 +69,7 @@
                 <label class="layui-form-label">字体类型</label>
                 <div class="layui-input-block">
                   <select name="align">
-                    <option>系统字体</option>
+                    <option value="system">系统字体</option>
                     <option value="ZgFont">思源雅黑</option>
                   </select>
                 </div>
@@ -369,7 +360,7 @@
           <div id="main-whiteboard-placeholder">
             <div class="share-content">请选择要共享的内容</div>
             <div class="share-button">
-              <button type="button">
+              <button type="button" class="shareWhiteboard">
                 <span>互动白板</span>
               </button>
               <button
@@ -2011,7 +2002,7 @@
         </div>
         <div id="left-footer">
           <!-- 白板 -->
-          <div class="share-item">
+          <div class="share-item shareWhiteboard">
             <div class="si-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                 <path
@@ -2748,10 +2739,10 @@
       </div>
     </div>
   </body>
-  <!-- 白板 SDK -->
-  <script src="./sdk/ZegoExpressWhiteboardWeb.js"></script>
-  <!-- 文件 SDK -->
-  <script src="./sdk/ZegoExpressDocsWeb.js"></script>
+  <!-- Express SDK -->
+  <script src="./sdk/ZegoExpressWebRTC-2.8.1.js"></script>
+  <!-- 合并层 SDK -->
+  <script src="/ZegoSuperBoardWeb.js"></script>
   <!-- utils 工具函数 -->
   <script src="./js/utils.js"></script>
   <!-- dom 相关 -->

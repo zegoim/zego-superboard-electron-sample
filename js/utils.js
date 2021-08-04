@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-04 18:50:54
+ * @LastEditTime: 2021-08-05 01:30:52
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -13,32 +13,32 @@
  * @return {*} Promise
  */
 function loadScript(url) {
-  // 不支持 Promise 的浏览器开发者需要自行做好兼容
-  return new Promise(function (resolve) {
-    var head = document.getElementsByTagName("head")[0];
-    var script = document.createElement("script");
+    // 不支持 Promise 的浏览器开发者需要自行做好兼容
+    return new Promise(function(resolve) {
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
 
-    script.type = "text/javascript";
-    script.src = url;
-    if (script.readyState) {
-      // IE Browser
-      script.onreadystatechange = function () {
-        if (script.readyState == "loaded" || script.readyState == "complete") {
-          script.onreadystatechange = null;
+        script.type = 'text/javascript';
+        script.src = url;
+        if (script.readyState) {
+            // IE Browser
+            script.onreadystatechange = function() {
+                if (script.readyState == 'loaded' || script.readyState == 'complete') {
+                    script.onreadystatechange = null;
+                }
+            };
+        } else {
+            // Others Browser
+            script.onload = function() {
+                console.log(url + ' 加载成功');
+                resolve();
+            };
+            script.onerror = function() {
+                console.error(url + ' 加载异常');
+            };
         }
-      };
-    } else {
-      // Others Browser
-      script.onload = function () {
-        console.log(url + " 加载成功");
-        resolve();
-      };
-      script.onerror = function () {
-        console.error(url + " 加载异常");
-      };
-    }
-    head.appendChild(script);
-  });
+        head.appendChild(script);
+    });
 }
 
 /**
@@ -47,10 +47,10 @@ function loadScript(url) {
  * @return {*}
  */
 function loadAllScript(pathList) {
-  var tasks = pathList.map(function (path) {
-    return loadScript(path);
-  });
-  return Promise.all(tasks);
+    var tasks = pathList.map(function(path) {
+        return loadScript(path);
+    });
+    return Promise.all(tasks);
 }
 
 /**
@@ -59,15 +59,15 @@ function loadAllScript(pathList) {
  * @return {*}
  */
 function getQueryVariable(variable) {
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i = 0; i < vars.length; i++) {
-    var pair = vars[i].split("=");
-    if (pair[0] == variable) {
-      return pair[1];
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (pair[0] == variable) {
+            return pair[1];
+        }
     }
-  }
-  return false;
+    return false;
 }
 
 /**
@@ -78,21 +78,21 @@ function getQueryVariable(variable) {
  * @return {*}
  */
 function getToken(appID, userID, tokenUrl) {
-  return new Promise(function (resolve) {
-    $.get(
-      tokenUrl,
-      {
-        app_id: appID,
-        id_name: userID,
-      },
-      function (token) {
-        if (token) {
-          resolve(token);
-        }
-      },
-      "text"
-    );
-  });
+    return new Promise(function(resolve) {
+        $.get(
+            tokenUrl,
+            {
+                app_id: appID,
+                id_name: userID
+            },
+            function(token) {
+                if (token) {
+                    resolve(token);
+                }
+            },
+            'text'
+        );
+    });
 }
 
 /**
@@ -101,18 +101,18 @@ function getToken(appID, userID, tokenUrl) {
  * @return {*}
  */
 function getFilelist(filelistUrl) {
-  return new Promise(function (resolve) {
-    $.get(
-      filelistUrl,
-      null,
-      function (fileList) {
-        if (fileList) {
-          resolve(fileList);
-        }
-      },
-      "json"
-    );
-  });
+    return new Promise(function(resolve) {
+        $.get(
+            filelistUrl,
+            null,
+            function(fileList) {
+                if (fileList) {
+                    resolve(fileList);
+                }
+            },
+            'json'
+        );
+    });
 }
 
 /**
@@ -121,16 +121,16 @@ function getFilelist(filelistUrl) {
  * @return {*}
  */
 function getUserID() {
-  // 获取已登录的 userID
-  var loginInfo = sessionStorage.getItem("loginInfo");
-  var userID;
-  if (loginInfo) {
-    userID = JSON.parse(loginInfo).userID;
-  } else {
-    userID = "web" + new Date().getTime();
-    sessionStorage.setItem("loginInfo", JSON.stringify({ userID }));
-  }
-  return userID;
+    // 获取已登录的 userID
+    var loginInfo = sessionStorage.getItem('loginInfo');
+    var userID;
+    if (loginInfo) {
+        userID = JSON.parse(loginInfo).userID;
+    } else {
+        userID = 'web' + new Date().getTime();
+        sessionStorage.setItem('loginInfo', JSON.stringify({ userID }));
+    }
+    return userID;
 }
 
 /**
@@ -139,9 +139,16 @@ function getUserID() {
  * @return {*}
  */
 function getRoomID() {
-  // 获取 url 中 roomID，邀请链接中会携带 roomID
-  var roomID = getQueryVariable("roomID") || $("#roomID").val();
-  return roomID;
+    // 获取 url 中 roomID，邀请链接中会携带 roomID
+    var roomID = getQueryVariable('roomID') || $('#roomID').val();
+
+    // 获取已登录的 roomID
+    var loginInfo = sessionStorage.getItem('loginInfo');
+    if (loginInfo) {
+        roomID = JSON.parse(loginInfo).roomID;
+    }
+
+    return roomID;
 }
 
 /**
@@ -150,9 +157,16 @@ function getRoomID() {
  * @return {*}
  */
 function getEnv() {
-  // 获取 url 中 env，邀请链接中会携带 env
-  var env = getQueryVariable("env") || $(".inlineRadio:checked").val() || "1";
-  return env;
+    // 获取 url 中 env，邀请链接中会携带 env
+    var env = getQueryVariable('env') || $('.inlineRadio:checked').val() || '1';
+
+    // 获取已登录的 env
+    var loginInfo = sessionStorage.getItem('loginInfo');
+    if (loginInfo) {
+        env = JSON.parse(loginInfo).env;
+    }
+
+    return env;
 }
 
 /**
@@ -161,7 +175,7 @@ function getEnv() {
  * @return {*}
  */
 function copyInviteLink() {
-  $("#showInviteLink").select(); // 选中文本
-  document.execCommand("copy"); // 执行浏览器复制命令
-  alert("复制成功");
+    $('#showInviteLink').select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    alert('复制成功');
 }

@@ -1,0 +1,75 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+button,
+button:focus,
+button:hover,
+button:active,
+button:visited {
+  outline: none !important;
+}
+
+ol,
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 重写 bootstrap css */
+.btn-primary {
+  background-color: #04f;
+  border-color: #04f;
+}
+
+.modal-dialog {
+  margin-top: 30vh;
+}
+
+.modal-header {
+  text-align: center;
+  border: none;
+  padding: 12px 15px;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+/* 重写 layui css */
+.layui-form div {
+  box-sizing: content-box;
+}
+
+.layui-form-switch {
+  margin-top: 0;
+}
+
+.layui-form-item {
+  padding-right: 10px;
+}
+
+.layui-form-label {
+  width: 100px;
+  margin-bottom: 0 !important;
+  padding: 9px 8px;
+}
+
+.layui-input-inline {
+  margin-left: 10px;
+}
+
+.layui-input-block {
+  line-height: 36px;
+}
+
+.layui-input,
+.layui-select,
+.layui-textarea {
+  height: 36px;
+}

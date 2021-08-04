@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-03 19:01:56
+ * @LastEditTime: 2021-08-04 17:48:16
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -61,6 +61,7 @@ function togglePageHandle(type) {
  */
 function updateRoomIDDomHandle() {
   $("#showRoomID").html(zegoConfig.roomID);
+  $("#roomID").val(zegoConfig.roomID);
 }
 
 /**
@@ -79,6 +80,63 @@ function updateUserListDomHandle() {
     $str += '<li class="user-item">' + element.userName + "</li>";
   });
   $("#user-list").html($str);
+}
+
+/**
+ * @description: 缩放 cut
+ * @param {*}
+ * @return {*}
+ */
+function zoomCutDomHandle() {
+  var currZoomLevel = $("#zoomLevel").val();
+  if (currZoomLevel === "1") return;
+  $(".zoom-bar-center input").val((Number(currZoomLevel) - 0.25) * 100 + "%");
+}
+
+/**
+ * @description: 缩放 add
+ * @param {*}
+ * @return {*}
+ */
+function zoomAddDomHandle() {
+  var currZoomLevel = $("#zoomLevel").val();
+  if (currZoomLevel === "3") return;
+  $(".zoom-bar-center input").val((Number(currZoomLevel) + 0.25) * 100 + "%");
+}
+
+/**
+ * @description: 更新 pageCount
+ * @param {*} pageCount
+ * @return {*}
+ */
+function updatePageCountDomHandle(pageCount) {
+  $("#pageCount").html(pageCount);
+}
+
+/**
+ * @description: 更新 currPage
+ * @param {*} currPage
+ * @return {*}
+ */
+function updateCurrPageDomHandle(currPage) {
+  $("#currPage").html(currPage);
+}
+
+/**
+ * @description: 更新接入环境
+ * @param {*}
+ * @return {*}
+ */
+function updateEnvDomHandle() {
+  $(".radio-inline:nth-of-type(" + zegoConfig.env + ") .inlineRadio").attr(
+    "checked",
+    true
+  );
+  $(
+    ".radio-inline:nth-of-type(" +
+      (zegoConfig.env == 1 ? 2 : 1) +
+      ") .inlineRadio"
+  ).attr("checked", false);
 }
 
 // 绑定预览事件
@@ -101,6 +159,6 @@ $("#right-header").click(function (event) {
 $(".inivate-btn").click(function (event) {
   var inivateLink =
     location.origin + "?roomId=" + zegoConfig.roomID + "&env=" + zegoConfig.env;
-  $("#showInviteLink").html(inivateLink);
-  $("#showRoomEnv").html(zegoConfig.env === 1 ? "中国内地" : "海外");
+  $("#showInviteLink").val(inivateLink);
+  $("#showRoomEnv").html(zegoConfig.env == 1 ? "中国内地" : "海外");
 });

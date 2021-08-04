@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-03 17:43:03
+ * @LastEditTime: 2021-08-04 17:17:55
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -169,6 +169,7 @@ $("#login-btn").click(function () {
     fontFamily: $("#fontFamily").val(),
     thumbnailMode: $("#thumbnailMode").val(),
     pptStepMode: $("#pptStepMode").val(),
+    env: $(".inlineRadio:checked").val(),
   };
 
   // 更新 zegoConfig

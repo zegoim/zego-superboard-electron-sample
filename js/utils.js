@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-02 11:32:11
+ * @LastEditTime: 2021-08-04 18:50:54
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -54,6 +54,23 @@ function loadAllScript(pathList) {
 }
 
 /**
+ * @description: 获取 url 中指定参数值
+ * @param {*} variable
+ * @return {*}
+ */
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] == variable) {
+      return pair[1];
+    }
+  }
+  return false;
+}
+
+/**
  * @description: 这里仅演示获取 token 的示例代码
  * @param {*} appID
  * @param {*} userID
@@ -103,7 +120,7 @@ function getFilelist(filelistUrl) {
  * @param {*}
  * @return {*}
  */
-function createUserID() {
+function getUserID() {
   // 获取已登录的 userID
   var loginInfo = sessionStorage.getItem("loginInfo");
   var userID;
@@ -114,4 +131,37 @@ function createUserID() {
     sessionStorage.setItem("loginInfo", JSON.stringify({ userID }));
   }
   return userID;
+}
+
+/**
+ * @description: 获取 roomID
+ * @param {*}
+ * @return {*}
+ */
+function getRoomID() {
+  // 获取 url 中 roomID，邀请链接中会携带 roomID
+  var roomID = getQueryVariable("roomID") || $("#roomID").val();
+  return roomID;
+}
+
+/**
+ * @description: 获取接入环境
+ * @param {*}
+ * @return {*}
+ */
+function getEnv() {
+  // 获取 url 中 env，邀请链接中会携带 env
+  var env = getQueryVariable("env") || $(".inlineRadio:checked").val() || "1";
+  return env;
+}
+
+/**
+ * @description: 复制邀请链接
+ * @param {*}
+ * @return {*}
+ */
+function copyInviteLink() {
+  $("#showInviteLink").select(); // 选中文本
+  document.execCommand("copy"); // 执行浏览器复制命令
+  alert("复制成功");
 }

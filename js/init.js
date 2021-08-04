@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-03 20:15:33
+ * @LastEditTime: 2021-08-04 19:02:40
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -19,19 +19,19 @@ var zegoConfig = {
   tokenUrl: "https://doc.zego.im/data/getSdkToken",
   fileListUrl: "../fileList.json", // 引入已上传的文件列表路径，可以是本地路径或者服务器路径（https://storage.zego.im/goclass/config.json）
   fileListData: {}, // 文件列表
-  env: 1, // 1 国内 2 海外
+  env: getEnv(), // 1 国内 2 海外
   appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
   overseaAppID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
   whiteboardEnv: "test", // 白板 SDK 环境
   server: "wss://webliveroom-test.zego.im/ws", // 正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
   overseaServer: "wss://webliveroom-hk-test.zegocloud.com/ws", // 正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
   docsEnv: "test", // 文件 SDK 环境
-  roomID: $("#roomID").val(), // 房间 ID
-  userName: $("#userName").val(), // 用户名称
-  userID: createUserID(), // 用户 ID
-  fontFamily: $("#fontFamily").val(), // 白板 SDK 字体
-  thumbnailMode: $("#thumbnailMode").val(), // 缩略图清晰度
-  pptStepMode: $("#pptStepMode").val(), // PPT 切页模式
+  roomID: getRoomID(), // 房间 ID
+  userID: getUserID(), // 用户 ID
+  userName: "", // 用户名称
+  fontFamily: "", // 白板 SDK 字体
+  thumbnailMode: "1", // 缩略图清晰度 1: 普通 2: 标清 3: 高清
+  pptStepMode: "1", // PPT 切页模式 1: 正常 2: 不跳转
 };
 
 var zegoWhiteboard; // 白板 SDK 实例
@@ -78,18 +78,25 @@ function init() {
   if (loginInfo && loginInfo.roomID) {
     // 已登录过，显示房间页
 
+    // 更新 loginInfo
+    loginInfo.env = zegoConfig.env;
+    loginInfo.roomID = zegoConfig.roomID;
     // 使用 loginInfo 自动登录房间
     Object.assign(zegoConfig, loginInfo);
+    sessionStorage.setItem("loginInfo", JSON.stringify(loginInfo));
     loginRoom().then(function () {
       togglePageHandle(1);
     });
-
-    // 更新房间号
-    updateRoomIDDomHandle();
   } else {
     // 未登录过，显示登录页
     togglePageHandle(2);
   }
+
+  // 更新房间号
+  updateRoomIDDomHandle();
+
+  // 更新接入环境
+  updateEnvDomHandle();
 }
 
 // 默认根据配置初始化并登录房间

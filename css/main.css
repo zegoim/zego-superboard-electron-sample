@@ -440,11 +440,11 @@
   cursor: pointer;
 }
 
-.zoom-add {
+.zoom-cut {
   margin-left: 10px;
 }
 
-.zoom-cut {
+.zoom-add {
   margin-right: 10px;
 }
 
@@ -788,6 +788,18 @@
 
 #user-list .user-item:hover {
   background-color: #f4f5f8;
+}
+
+#settingModal .layui-form-label {
+  width: 130px;
+}
+
+#settingModal .layui-input-block {
+  margin-left: 140px;
+}
+
+#settingModal .modal-body {
+  padding: 10px 20px 10px 0;
 }
 
 /* 媒体查询 */

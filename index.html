@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-04 11:07:01
+ * @LastEditTime: 2021-08-04 19:15:10
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -41,7 +41,7 @@
       role="dialog"
       aria-labelledby="myModalLabel1"
     >
-      <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button
@@ -55,76 +55,76 @@
             <h4 class="modal-title" id="myModalLabel1">SDK 设置</h4>
           </div>
           <div class="modal-body">
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-5 control-label">白板 SDK 环境</label>
-                <div class="col-sm-7">
-                  <select class="form-control" id="whiteboardEnv">
+            <form class="layui-form" action="" name="form">
+              <div class="layui-form-item" id="whiteboardEnv">
+                <label class="layui-form-label">白板 SDK 环境</label>
+                <div class="layui-input-block">
+                  <select name="align">
                     <option value="test">测试</option>
                     <option>正式</option>
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-sm-5 control-label">文件 SDK 环境</label>
-                <div class="col-sm-7">
-                  <select class="form-control" id="docsEnv">
+              <div class="layui-form-item" id="docsEnv">
+                <label class="layui-form-label">文件 SDK 环境</label>
+                <div class="layui-input-block">
+                  <select name="align">
                     <option value="test">测试</option>
                     <option>正式</option>
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-sm-5 control-label">字体类型</label>
-                <div class="col-sm-7">
-                  <select class="form-control" id="fontFamily">
-                    <option value="system">系统字体</option>
+              <div class="layui-form-item" id="fontFamily">
+                <label class="layui-form-label">字体类型</label>
+                <div class="layui-input-block">
+                  <select name="align">
+                    <option>系统字体</option>
                     <option value="ZgFont">思源雅黑</option>
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-sm-5 control-label">缩略图清晰度</label>
-                <div class="col-sm-7">
-                  <select class="form-control" id="thumbnailMode">
+              <div class="layui-form-item" id="thumbnailMode">
+                <label class="layui-form-label">缩略图清晰度</label>
+                <div class="layui-input-block">
+                  <select name="align">
                     <option value="1">普通</option>
                     <option value="2">标清</option>
                     <option value="3">高清</option>
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-sm-5 control-label">PPT 模式</label>
-                <div class="col-sm-7">
-                  <select class="form-control" id="pptStepMode">
+              <div class="layui-form-item" id="pptStepMode">
+                <label class="layui-form-label">PPT 模式</label>
+                <div class="layui-input-block">
+                  <select name="align">
                     <option value="1">正常</option>
                     <option value="2">不跳转</option>
                   </select>
                 </div>
               </div>
               <!-- 以下选项不对外暴露 -->
-              <div class="form-group">
-                <label class="col-sm-5 control-label">PPT 清晰度</label>
-                <div class="col-sm-7">
-                  <select class="form-control" id="dynamicPPT_HD">
+              <div class="layui-form-item" id="dynamicPPT_HD">
+                <label class="layui-form-label">PPT 清晰度</label>
+                <div class="layui-input-block">
+                  <select name="align">
                     <option value="false">正常</option>
                     <option value="true">高清</option>
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-sm-5 control-label">PPT 自动翻页</label>
-                <div class="col-sm-7">
-                  <select class="form-control" id="dynamicPPT_AutomaticPage">
+              <div class="layui-form-item" id="dynamicPPT_AutomaticPage">
+                <label class="layui-form-label">PPT 自动翻页</label>
+                <div class="layui-input-block">
+                  <select name="align">
                     <option value="false">正常</option>
                     <option value="true">禁止</option>
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="col-sm-5 control-label">PPT 视频下载</label>
-                <div class="col-sm-7">
-                  <select class="form-control" id="unloadVideoSrc">
+              <div class="layui-form-item" id="unloadVideoSrc">
+                <label class="layui-form-label">PPT 视频下载</label>
+                <div class="layui-input-block">
+                  <select name="align">
                     <option value="false">正常</option>
                     <option value="true">禁止</option>
                   </select>
@@ -172,8 +172,8 @@
             <input
               type="radio"
               name="inlineRadioOptions"
-              id="inlineRadio1"
-              value="home"
+              class="inlineRadio"
+              value="1"
               checked
             />
             中国内地
@@ -182,8 +182,8 @@
             <input
               type="radio"
               name="inlineRadioOptions"
-              id="inlineRadio2"
-              value="oversea"
+              class="inlineRadio"
+              value="2"
             />
             海外
           </label>
@@ -197,7 +197,7 @@
         <div id="left-header">
           <!-- 房间 ID -->
           <span class="room-id">房间 ID: <span id="showRoomID"></span></span>
-          <form id="customForm" class="layui-form" name="form" action="">
+          <form id="customForm" class="layui-form" name="form3" action="">
             <!-- 白板列表 -->
             <select class="form-control" id="whiteboardList"></select>
             <!-- Excel 多白板 -->
@@ -256,7 +256,7 @@
             </div>
             <!-- 缩放 -->
             <div class="zoom-bar">
-              <div class="zoom-bar-operation zoom-add">
+              <div class="zoom-bar-operation zoom-cut">
                 <svg
                   version="1.1"
                   id="图层_1"
@@ -295,7 +295,7 @@
                   <option value="3">300%</option>
                 </select>
               </div>
-              <div class="zoom-bar-operation zoom-cut">
+              <div class="zoom-bar-operation zoom-add">
                 <svg
                   version="1.1"
                   id="图层_1"
@@ -2718,13 +2718,30 @@
               <form class="layui-form" action="">
                 <div class="layui-form-item">
                   <label class="layui-form-label">邀请链接</label>
-                  <div class="layui-input-block" id="showInviteLink"></div>
+                  <div class="layui-input-block">
+                    <input
+                      style="border: none"
+                      id="showInviteLink"
+                      type="text"
+                      lay-verify="required"
+                      class="layui-input"
+                    />
+                  </div>
                 </div>
                 <div class="layui-form-item">
                   <label class="layui-form-label">接入环境</label>
                   <div class="layui-input-block" id="showRoomEnv"></div>
                 </div>
               </form>
+              <div style="margin-bottom: 30px; text-align: center">
+                <button
+                  type="button"
+                  class="layui-btn layui-btn-sm"
+                  onclick="copyInviteLink()"
+                >
+                  复制邀请链接
+                </button>
+              </div>
             </div>
           </div>
         </div>

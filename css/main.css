@@ -498,10 +498,14 @@
   left: 0;
   background: #f4f5f8;
   z-index: 10;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+#main-whiteboard-placeholder.active {
+  display: flex;
 }
 
 .share-content {

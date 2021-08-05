@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-05 01:20:24
+ * @LastEditTime: 2021-08-05 17:45:22
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -40,6 +40,8 @@ var zegoConfig = {
 
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
+var zegoSuperBoardSubViewModel; // 当前 model
+var zegoSuperBoardSubViewModelList; // 房间内 model 列表
 var parentDomID = 'main-whiteboard'; // 白板、文件挂载的父容器
 var WBNameIndex = 1; // 白板索引，创建多个普通白板时，白板名称编号进行叠加
 
@@ -50,15 +52,14 @@ var userList = []; // 房间内成员列表
  * @param {*}
  * @return {*}
  */
-function init() {
+async function init() {
     // 获取文件列表
-    getFilelist(zegoConfig.fileListUrl).then(function(fileListData) {
-        // 更新文件列表
-        zegoConfig.fileListData = fileListData;
+    var fileListData = await getFilelist(zegoConfig.fileListUrl);
+    // 更新文件列表
+    zegoConfig.fileListData = fileListData;
 
-        // 更新视图
-        updateFileListDomHandle();
-    });
+    // 更新视图
+    updateFileListDomHandle();
 
     // 校验 appID、tokenUrl
     if (!zegoConfig.appID || !zegoConfig.tokenUrl) {
@@ -67,11 +68,11 @@ function init() {
     }
 
     // 触摸设备增加 vconsole
-    isTouch &&
-        loadScript('./lib/vconsole.js').then(function() {
-            // 初始化 vconsole
-            new VConsole();
-        });
+    if (isTouch) {
+        await loadScript('./lib/vconsole.js');
+        // 初始化 vconsole
+        new VConsole();
+    }
 
     // 获取 sessionStorage 已登录信息
     var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
@@ -85,9 +86,8 @@ function init() {
         // 使用 loginInfo 自动登录房间
         Object.assign(zegoConfig, loginInfo);
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
-        loginRoom().then(function() {
-            togglePageHandle(1);
-        });
+        await loginRoom();
+        togglePageHandle(1);
     } else {
         // 未登录过，显示登录页
         togglePageHandle(2);

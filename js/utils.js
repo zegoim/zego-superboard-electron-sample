@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-05 01:30:52
+ * @LastEditTime: 2021-08-05 14:38:44
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -163,7 +163,7 @@ function getEnv() {
     // 获取已登录的 env
     var loginInfo = sessionStorage.getItem('loginInfo');
     if (loginInfo) {
-        env = JSON.parse(loginInfo).env;
+        env = JSON.parse(loginInfo).env || '1';
     }
 
     return env;

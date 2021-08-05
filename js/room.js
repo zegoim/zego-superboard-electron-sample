@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-05 01:33:56
+ * @LastEditTime: 2021-08-05 17:50:53
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -48,6 +48,9 @@ function initExpressSDKConfig() {
     zegoEngine.setLogConfig({ logLevel: 'disable' });
     // 关闭 debug
     zegoEngine.setDebugVerbose(false);
+
+    // 注册房间成员变更回调
+    onRoomUserUpdate();
 }
 
 /**
@@ -108,43 +111,40 @@ function onRoomUserUpdate() {
  * @return {*}
  */
 function loginRoom() {
-    return new Promise(function(resolve) {
+    return new Promise(async function(resolve) {
         // 获取 token
         var appID = zegoConfig.env === '1' ? zegoConfig.appID : zegoConfig.overseaAppID;
-        getToken(appID, zegoConfig.userID, zegoConfig.tokenUrl).then(function(token) {
-            // 初始化 SDK
-            initSDK(token);
+        var token = await getToken(appID, zegoConfig.userID, zegoConfig.tokenUrl);
 
-            // 注册房间成员变更回调
-            onRoomUserUpdate();
+        // 初始化 SDK
+        initSDK(token);
 
-            // 登录房间
-            zegoEngine
-                .loginRoom(
-                    zegoConfig.roomID,
-                    token,
-                    {
-                        userID: zegoConfig.userID,
-                        userName: zegoConfig.username
-                    },
-                    {
-                        maxMemberCount: 10,
-                        userUpdate: true
-                    }
-                )
-                .then(function() {
-                    // 添加自己到成员列表
-                    userList.unshift({
-                        userID: zegoConfig.userID,
-                        userName: zegoConfig.userName
-                    });
+        // 登录房间
+        await zegoEngine.loginRoom(
+            zegoConfig.roomID,
+            token,
+            {
+                userID: zegoConfig.userID,
+                userName: zegoConfig.username
+            },
+            {
+                maxMemberCount: 10,
+                userUpdate: true
+            }
+        );
 
-                    // 更新视图
-                    updateUserListDomHandle();
-
-                    resolve();
-                });
+        // 添加自己到成员列表
+        userList.unshift({
+            userID: zegoConfig.userID,
+            userName: zegoConfig.userName
         });
+        // 更新成员列表
+        updateUserListDomHandle();
+
+        // 查询白板列表
+        querySuperBoardSubViewList();
+
+        resolve();
     });
 }
 
@@ -166,7 +166,7 @@ function logoutRoom() {
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(function() {
+$('#login-btn').click(async function() {
     // 校验 roomID、userName
     var roomID = $('#roomID').val();
     var userName = $('#userName').val();
@@ -193,16 +193,15 @@ $('#login-btn').click(function() {
     // 更新 zegoConfig
     Object.assign(zegoConfig, loginInfo);
 
-    loginRoom().then(function() {
-        sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
+    await loginRoom();
+    sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
 
-        // 显示房间页
-        $('#room-page').css('display', 'flex');
-        $('#login-page').css('display', 'none');
+    // 显示房间页
+    $('#room-page').css('display', 'flex');
+    $('#login-page').css('display', 'none');
 
-        // 更新房间号
-        $('#showRoomID').html(zegoConfig.roomID);
-    });
+    // 更新房间号
+    $('#showRoomID').html(zegoConfig.roomID);
 });
 
 // 绑定退出房间事件

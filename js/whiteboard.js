@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-05 02:16:54
+ * @LastEditTime: 2021-08-05 19:06:12
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -14,12 +14,16 @@
  */
 async function createWhiteboardView() {
     try {
-        var zegoSuperBoardSubViewModel = await zegoSuperBoard.createWhiteboardView({
+        zegoSuperBoardSubViewModel = await zegoSuperBoard.createWhiteboardView({
             name: zegoConfig.userName + '创建的白板' + ++WBNameIndex,
             perPageWidth: 500,
             perPageHeight: 500,
             pageCount: 5 // 默认水平分页
         });
+        console.warn('zegoSuperBoardSubViewModel', zegoSuperBoardSubViewModel);
+
+        // 隐藏白板占位
+        togglePlaceholderDomHandle(2);
     } catch (error) {}
 }
 
@@ -30,7 +34,31 @@ async function createWhiteboardView() {
  */
 async function createFileView(fileID) {
     try {
-        var zegoSuperBoardSubViewModel = await zegoSuperBoard.createFileView(fileID);
+        zegoSuperBoardSubViewModel = await zegoSuperBoard.createFileView(fileID);
+        console.warn('zegoSuperBoardSubViewModel', zegoSuperBoardSubViewModel);
+    } catch (error) {}
+}
+
+/**
+ * @description: 查询白板列表
+ * @param {*}
+ * @return {*}
+ */
+async function querySuperBoardSubViewList() {
+    try {
+        zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
+        console.warn('zegoSuperBoardSubViewModelList', zegoSuperBoardSubViewModelList);
+
+        if (!zegoSuperBoardSubViewModelList.length) {
+            // 显示白板占位
+            togglePlaceholderDomHandle(1);
+        } else {
+            // 隐藏白板占位
+            togglePlaceholderDomHandle(2);
+        }
+
+        // 更新白板列表
+        updateWhiteboardListDomHandle();
     } catch (error) {}
 }
 

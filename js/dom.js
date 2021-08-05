@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-05 01:10:07
+ * @LastEditTime: 2021-08-05 19:23:05
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -127,6 +127,35 @@ function updateCurrPageDomHandle(currPage) {
 function updateEnvDomHandle() {
     $('.radio-inline:nth-of-type(' + zegoConfig.env + ') .inlineRadio').attr('checked', true);
     $('.radio-inline:nth-of-type(' + (zegoConfig.env == 1 ? 2 : 1) + ') .inlineRadio').attr('checked', false);
+}
+
+/**
+ * @description: 显示、隐藏白板区域占位
+ * @param {*} type 1 显示 2 隐藏
+ * @return {*}
+ */
+function togglePlaceholderDomHandle(type) {
+    if (type === 1) {
+        $('#main-whiteboard-placeholder').addClass('active');
+    } else {
+        $('#main-whiteboard-placeholder').removeClass('active');
+    }
+}
+
+/**
+ * @description: 更新白板列表下拉框
+ * @param {*}
+ * @return {*}
+ */
+function updateWhiteboardListDomHandle() {
+    var $str = '';
+    $('#whiteboardList').html('');
+    zegoSuperBoardSubViewModelList.forEach(function(element) {
+        $str += '<option value="' + element.uniqueID + '">' + element.name + '</option>';
+    });
+    $('#whiteboardList').html($str);
+    // 更新下拉框
+    layui.form.render('select');
 }
 
 // 绑定预览事件

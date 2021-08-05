@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-05 19:12:35
+ * @LastEditTime: 2021-08-06 03:12:50
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -151,11 +151,15 @@
         <div id="left-header">
           <!-- 房间 ID -->
           <span class="room-id">房间 ID: <span id="showRoomID"></span></span>
-          <form id="customForm" class="layui-form" name="form3" action="">
+          <form id="customForm" class="layui-form" name="form3" action="" lay-filter="customForm">
             <!-- 白板列表 -->
-            <select id="whiteboardList"></select>
+              <select name="whiteboard" id="whiteboardList" lay-filter="whiteboardList">
+                <option value>请选择</option>
+              </select>
             <!-- Excel 多白板 -->
-            <select id="sheetList"></select>
+              <select name="sheet" id="sheetList" lay-filter="sheetList">
+                <option value>请选择</option>
+              </select>
             <!-- 分页 -->
             <div class="page-bar">
               <div id="arrow-prev" class="page-bar-arrow arrow-prev">

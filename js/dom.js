@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-05 19:23:05
+ * @LastEditTime: 2021-08-06 03:14:20
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -148,14 +148,25 @@ function togglePlaceholderDomHandle(type) {
  * @return {*}
  */
 function updateWhiteboardListDomHandle() {
-    var $str = '';
+    var $str = '<option value>请选择</option>';
     $('#whiteboardList').html('');
     zegoSuperBoardSubViewModelList.forEach(function(element) {
         $str += '<option value="' + element.uniqueID + '">' + element.name + '</option>';
     });
     $('#whiteboardList').html($str);
-    // 更新下拉框
-    layui.form.render('select');
+    // 更新下拉框 form.render(type, filter);
+    layui.form.render('select', 'customForm');
+}
+
+/**
+ * @description: 更新白板列表下拉框选中
+ * @param {*}
+ * @return {*}
+ */
+function updateCurrWhiteboardDomHandle(uniqueID) {
+    layui.form.val('customForm', {
+        whiteboard: uniqueID
+    });
 }
 
 // 绑定预览事件

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-06 20:14:52
+ * @LastEditTime: 2021-08-07 02:39:34
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -80,25 +80,37 @@ function updateUserListDomHandle() {
 }
 
 /**
- * @description: 缩放 cut
- * @param {*}
+ * @description: 更新缩略图列表
+ * @param {*} thumbnailUrlList 缩略图 url
  * @return {*}
  */
-function zoomCutDomHandle() {
-    var currZoomLevel = $('#zoomLevel').val();
-    if (currZoomLevel === '1') return;
-    $('.zoom-bar-center input').val((Number(currZoomLevel) - 0.25) * 100 + '%');
+function updateThumbListDomHandle(thumbnailUrlList, currPage) {
+    $('.thumb-main').html('');
+    var $str = '';
+    thumbnailUrlList.forEach(function(element, index) {
+        $str +=
+            '<li onclick="flipToPage(' +
+            (index + 1) +
+            ')" class="thumb-item' +
+            (index === currPage - 1 ? ' active' : '') +
+            '"><span>' +
+            (index + 1) +
+            '</span><div class="thumb-image"><img src="' +
+            element +
+            '"/></div></li>';
+    });
+    $('.thumb-main').html($str);
 }
 
 /**
- * @description: 缩放 add
+ * @description: 缩放
  * @param {*}
  * @return {*}
  */
-function zoomAddDomHandle() {
-    var currZoomLevel = $('#zoomLevel').val();
-    if (currZoomLevel === '3') return;
-    $('.zoom-bar-center input').val((Number(currZoomLevel) + 0.25) * 100 + '%');
+function zoomDomHandle(zoom) {
+    layui.form.val('customForm', {
+        sheet: zoom + ''
+    });
 }
 
 /**
@@ -151,7 +163,14 @@ function updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList) {
     var $str = '';
     $('#whiteboardList').html('');
     zegoSuperBoardSubViewModelList.forEach(function(element) {
-        $str += '<option value="' + element.uniqueID + '">' + element.name + '</option>';
+        $str +=
+            '<option value="' +
+            element.uniqueID +
+            '" data-file-type="' +
+            element.fileType +
+            '">' +
+            element.name +
+            '</option>';
     });
     $('#whiteboardList').html($str);
     // 更新下拉框 form.render(type, filter);
@@ -186,11 +205,38 @@ function toggleSheetSelectDomHandle(type) {
                 .next()
                 .show();
         } else {
+            updateExcelSheetListDomHandle('', []);
             $('#sheetList')
                 .next()
                 .hide();
         }
     }, 16);
+}
+
+/**
+ * @description: 显示、隐藏步数切换
+ * @param {*} type 1: 显示 2: 隐藏
+ * @return {*}
+ */
+function toggleStepDomHandle(type) {
+    if (type === 1) {
+        $('.ppt-dynamic').addClass('active');
+    } else {
+        $('.ppt-dynamic').removeClass('active');
+    }
+}
+
+/**
+ * @description: 显示、隐藏缩略图按钮
+ * @param {*} type 1: 显示 2: 隐藏
+ * @return {*}
+ */
+function toggleThumbBtnDomHandle(type) {
+    if (type === 1) {
+        $('#thumb-button').addClass('active');
+    } else {
+        $('#thumb-button').removeClass('active');
+    }
 }
 
 /**

@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-06 16:45:58
+ * @LastEditTime: 2021-08-07 01:41:10
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -158,7 +158,7 @@
             <select name="sheet" id="sheetList" lay-filter="sheetList"> </select>
             <!-- 分页 -->
             <div class="page-bar">
-              <div id="arrow-prev" class="page-bar-arrow arrow-prev">
+              <div id="previousPage" class="page-bar-arrow arrow-prev">
                 <svg
                   version="1.1"
                   id="图层_1"
@@ -182,7 +182,7 @@
                 </svg>
               </div>
               <div class="page-bar-center"><span id="currPage">1</span> / <span id="pageCount">1</span></div>
-              <div class="page-bar-arrow arrow-next">
+              <div id="nextPage" class="page-bar-arrow arrow-next">
                 <svg
                   version="1.1"
                   id="图层_1"
@@ -224,7 +224,7 @@
                 </svg>
               </div>
               <div class="zoom-bar-center">
-                <select id="zoomLevel" style="appearance: none; border: none; outline: none">
+                <select name="sheet" id="zoomLevel" style="appearance: none; border: none; outline: none">
                   <option value="1">100%</option>
                   <option value="1.25">125%</option>
                   <option value="1.5">150%</option>
@@ -1677,6 +1677,22 @@
               </li>
             </ul>
           </div>
+          <!-- PPT 跳步 -->
+          <div class="ppt-dynamic">
+            <button id="previousStep" class="step-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <rect class="cls-1" fill="none" width="20" height="20"></rect>
+                <polyline class="hover-stroke" fill="none" stroke="#b1b4bb" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" points="13 4 7 10 13 16"></polyline>
+              </svg>
+            </button>
+            <div class="line"></div>
+            <button id="nextStep" class="step-item">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <rect class="cls-1" fill="none" width="20" height="20"></rect>
+                <polyline class="hover-stroke" fill="none" stroke="#b1b4bb" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" points="7 4 13 10 7 16"></polyline>
+              </svg>
+            </button>
+          </div>
         </div>
         <div id="left-footer">
           <!-- 白板 -->
@@ -2242,10 +2258,11 @@
   <script src="./js/utils.js"></script>
   <!-- dom 相关 -->
   <script src="./js/dom.js"></script>
+  <!-- 白板业务相关 -->
+  <script src="./js/whiteboard.js"></script>
   <!-- 房间业务相关 -->
   <script src="./js/room.js"></script>
   <!-- init 初始化 -->
   <script src="./js/init.js"></script>
-  <!-- 白板业务相关 -->
-  <script src="./js/whiteboard.js"></script>
+  
 </html>

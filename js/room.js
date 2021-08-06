@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-06 20:26:32
+ * @LastEditTime: 2021-08-06 23:53:36
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -75,6 +75,9 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', $('#dynamicPPT_AutomaticPage').val());
     // 设置 PPT 视频下载
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', $('#unloadVideoSrc').val());
+
+    // 注册白板回调
+    onSuperBoardEventHandle();
 }
 
 /**
@@ -134,6 +137,8 @@ function loginRoom() {
                 }
             );
 
+            console.warn('SuperBoard Demo 登录成功');
+
             // 添加自己到成员列表
             userList.unshift({
                 userID: zegoConfig.userID,
@@ -142,10 +147,6 @@ function loginRoom() {
             // 更新成员列表
             updateUserListDomHandle();
 
-            // 查询白板列表
-            setTimeout(function() {
-                querySuperBoardSubViewList();
-            }, 100);
             resolve();
         } catch (error) {
             reject();

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-06 15:06:32
+ * @LastEditTime: 2021-08-07 00:11:44
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -40,10 +40,6 @@ var zegoConfig = {
 
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
-var zegoSuperBoardSubView; // 当前大 view
-var zegoSuperBoardSubViewModel; // 当前 model
-var zegoSuperBoardSubViewModelList; // 房间内 model 列表
-var zegoExcelSheetNameList; // 当前 excel 列表
 var parentDomID = 'main-whiteboard'; // 白板、文件挂载的父容器
 var WBNameIndex = 1; // 白板索引，创建多个普通白板时，白板名称编号进行叠加
 

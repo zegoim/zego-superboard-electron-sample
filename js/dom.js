@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-06 03:14:20
+ * @LastEditTime: 2021-08-06 15:14:51
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -159,6 +159,22 @@ function updateWhiteboardListDomHandle() {
 }
 
 /**
+ * @description: 更新 sheetList 下拉框
+ * @param {*}
+ * @return {*}
+ */
+function updateExcelSheetListDomHandle() {
+    var $str = '<option value>请选择</option>';
+    $('#sheetList').html('');
+    zegoExcelSheetNameList.forEach(function(element, index) {
+        $str += '<option value="' + index + '">' + element + '</option>';
+    });
+    $('#sheetList').html($str);
+    // 更新下拉框 form.render(type, filter);
+    layui.form.render('select', 'customForm');
+}
+
+/**
  * @description: 更新白板列表下拉框选中
  * @param {*}
  * @return {*}
@@ -166,6 +182,17 @@ function updateWhiteboardListDomHandle() {
 function updateCurrWhiteboardDomHandle(uniqueID) {
     layui.form.val('customForm', {
         whiteboard: uniqueID
+    });
+}
+
+/**
+ * @description: 更新 sheet 列表下拉框选中
+ * @param {*}
+ * @return {*}
+ */
+function updateCurrSheetDomHandle(sheetIndex) {
+    layui.form.val('customForm', {
+        sheet: sheetIndex
     });
 }
 

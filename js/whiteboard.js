@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-06 03:28:55
+ * @LastEditTime: 2021-08-06 15:42:43
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -22,6 +22,10 @@ async function createWhiteboardView() {
         });
         console.warn('zegoSuperBoardSubViewModel', zegoSuperBoardSubViewModel);
 
+        zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+
+        updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
+
         // 隐藏白板占位
         togglePlaceholderDomHandle(2);
 
@@ -38,6 +42,10 @@ async function createFileView(fileID) {
     try {
         zegoSuperBoardSubViewModel = await zegoSuperBoard.createFileView({ fileID });
         console.warn('zegoSuperBoardSubViewModel', zegoSuperBoardSubViewModel);
+
+        zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+
+        updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
 
         togglePlaceholderDomHandle(2);
 
@@ -65,14 +73,11 @@ async function querySuperBoardSubViewList() {
 
         // 更新白板列表
         updateWhiteboardListDomHandle();
-
-        // 更新当前选中白板
-        zegoSuperBoardSubViewModel && updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
     } catch (error) {}
 }
 
 // 切换白板
-layui.form.on('select(whiteboardList)', function(data) {
+layui.form.on('select(whiteboardList)', async function(data) {
     var uniqueID = data.value;
     if (uniqueID) {
         zegoSuperBoardSubViewModelList.forEach(function(element) {
@@ -80,7 +85,25 @@ layui.form.on('select(whiteboardList)', function(data) {
                 zegoSuperBoardSubViewModel = element;
             }
         });
-        zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID);
+        await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID);
+        zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+
+        if (zegoSuperBoardSubViewModel.fileType === 4) {
+            // excel 文件
+            var sheetName = zegoSuperBoardSubView.getCurrentSheetName();
+            var sheetIndex = 0;
+
+            // 获取 sheetList
+            zegoExcelSheetNameList = zegoSuperBoardSubView.getExcelSheetNameList();
+
+            updateExcelSheetListDomHandle();
+
+            // 获取当前 sheetIndex
+            zegoExcelSheetNameList.forEach(function(element, index) {
+                element === sheetName && (sheetIndex = index);
+            });
+            updateCurrSheetDomHandle(sheetIndex);
+        }
     }
 });
 
@@ -94,9 +117,12 @@ $('.shareWhiteboard').click(function() {
 $('#file-list').click(function(event) {
     // 限频
     var target = event.target;
-    var fileID = $(target)
-        .parent('#file-list')
-        .find('li')
-        .attr('data-file-id');
+    var fileID;
+    if (target.tagName === 'LI') {
+        fileID = $(target).attr('data-file-id');
+    } else if (target.tagName === 'DIV') {
+        fileID = $(target.parentNode).attr('data-file-id');
+    }
+
     createFileView(fileID);
 });

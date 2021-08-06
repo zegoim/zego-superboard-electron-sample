@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-06 15:14:51
+ * @LastEditTime: 2021-08-06 20:14:52
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -36,7 +36,7 @@ function updateFileListDomHandle() {
 
 /**
  * @description: 显示、隐藏登录页、房间页
- * @param {*} type
+ * @param {*} type 1: 显示 2: 隐藏
  * @return {*}
  */
 function togglePageHandle(type) {
@@ -147,8 +147,8 @@ function togglePlaceholderDomHandle(type) {
  * @param {*}
  * @return {*}
  */
-function updateWhiteboardListDomHandle() {
-    var $str = '<option value>请选择</option>';
+function updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList) {
+    var $str = '';
     $('#whiteboardList').html('');
     zegoSuperBoardSubViewModelList.forEach(function(element) {
         $str += '<option value="' + element.uniqueID + '">' + element.name + '</option>';
@@ -163,15 +163,34 @@ function updateWhiteboardListDomHandle() {
  * @param {*}
  * @return {*}
  */
-function updateExcelSheetListDomHandle() {
-    var $str = '<option value>请选择</option>';
+function updateExcelSheetListDomHandle(uniqueID, zegoExcelSheetNameList) {
+    var $str = '';
     $('#sheetList').html('');
     zegoExcelSheetNameList.forEach(function(element, index) {
-        $str += '<option value="' + index + '">' + element + '</option>';
+        $str += '<option value="' + uniqueID + ',' + index + '">' + element + '</option>';
     });
     $('#sheetList').html($str);
     // 更新下拉框 form.render(type, filter);
     layui.form.render('select', 'customForm');
+}
+
+/**
+ * @description: 显示、隐藏 sheet 下拉框
+ * @param {*} type 1: 显示 2: 隐藏
+ * @return {*}
+ */
+function toggleSheetSelectDomHandle(type) {
+    setTimeout(() => {
+        if (type === 1) {
+            $('#sheetList')
+                .next()
+                .show();
+        } else {
+            $('#sheetList')
+                .next()
+                .hide();
+        }
+    }, 16);
 }
 
 /**
@@ -190,9 +209,9 @@ function updateCurrWhiteboardDomHandle(uniqueID) {
  * @param {*}
  * @return {*}
  */
-function updateCurrSheetDomHandle(sheetIndex) {
+function updateCurrSheetDomHandle(uniqueID, sheetIndex) {
     layui.form.val('customForm', {
-        sheet: sheetIndex
+        sheet: uniqueID + ',' + sheetIndex
     });
 }
 

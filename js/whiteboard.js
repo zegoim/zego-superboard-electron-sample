@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-06 15:42:43
+ * @LastEditTime: 2021-08-06 20:07:19
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -24,12 +24,11 @@ async function createWhiteboardView() {
 
         zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
 
-        updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
-
         // 隐藏白板占位
         togglePlaceholderDomHandle(2);
 
         querySuperBoardSubViewList();
+        updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
     } catch (error) {}
 }
 
@@ -45,12 +44,33 @@ async function createFileView(fileID) {
 
         zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
 
-        updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
-
+        // 隐藏白板占位
         togglePlaceholderDomHandle(2);
 
         querySuperBoardSubViewList();
+        updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
     } catch (error) {}
+}
+
+/**
+ * @description: 查询 sheet 列表
+ * @param {*}
+ * @return {*}
+ */
+function getExcelSheetNameList() {
+    // excel 文件
+    var sheetName = zegoSuperBoardSubView.getCurrentSheetName();
+    var sheetIndex = 0;
+
+    // 获取 sheetList
+    zegoExcelSheetNameList = zegoSuperBoardSubView.getExcelSheetNameList();
+    updateExcelSheetListDomHandle(zegoSuperBoardSubViewModel.uniqueID, zegoExcelSheetNameList);
+
+    // 获取当前 sheetIndex
+    zegoExcelSheetNameList.forEach(function(element, index) {
+        element === sheetName && (sheetIndex = index);
+    });
+    updateCurrSheetDomHandle(zegoSuperBoardSubViewModel.uniqueID, sheetIndex);
 }
 
 /**
@@ -63,48 +83,89 @@ async function querySuperBoardSubViewList() {
         zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
         console.warn('zegoSuperBoardSubViewModelList', zegoSuperBoardSubViewModelList);
 
-        if (!zegoSuperBoardSubViewModelList.length) {
-            // 显示白板占位
-            togglePlaceholderDomHandle(1);
-        } else {
+        // 更新白板列表
+        updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList);
+
+        //  获取当前挂载的白板
+        zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+        if (zegoSuperBoardSubView) {
             // 隐藏白板占位
             togglePlaceholderDomHandle(2);
-        }
 
-        // 更新白板列表
-        updateWhiteboardListDomHandle();
+            zegoSuperBoardSubViewModel = zegoSuperBoardSubView.getModel();
+            // 更新当前白板
+            updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
+            // 更新总页数、当前页
+            updatePageCountDomHandle(zegoSuperBoardSubView.getPageCount());
+            updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
+
+            if (zegoSuperBoardSubViewModel.fileType === 4) {
+                // excel 文件白板
+                toggleSheetSelectDomHandle(1);
+                // 查询 sheet 列表
+                getExcelSheetNameList();
+            } else {
+                toggleSheetSelectDomHandle(2);
+
+                zegoExcelSheetNameList = [];
+                updateExcelSheetListDomHandle('', zegoExcelSheetNameList);
+            }
+        } else {
+            // 显示白板占位
+            togglePlaceholderDomHandle(1);
+        }
     } catch (error) {}
 }
 
 // 切换白板
 layui.form.on('select(whiteboardList)', async function(data) {
     var uniqueID = data.value;
-    if (uniqueID) {
-        zegoSuperBoardSubViewModelList.forEach(function(element) {
-            if (uniqueID === element.uniqueID) {
-                zegoSuperBoardSubViewModel = element;
-            }
-        });
-        await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID);
-        zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-
-        if (zegoSuperBoardSubViewModel.fileType === 4) {
-            // excel 文件
-            var sheetName = zegoSuperBoardSubView.getCurrentSheetName();
-            var sheetIndex = 0;
-
-            // 获取 sheetList
-            zegoExcelSheetNameList = zegoSuperBoardSubView.getExcelSheetNameList();
-
-            updateExcelSheetListDomHandle();
-
-            // 获取当前 sheetIndex
-            zegoExcelSheetNameList.forEach(function(element, index) {
-                element === sheetName && (sheetIndex = index);
-            });
-            updateCurrSheetDomHandle(sheetIndex);
+    zegoSuperBoardSubViewModelList.forEach(function(element) {
+        if (uniqueID === element.uniqueID) {
+            zegoSuperBoardSubViewModel = element;
         }
+    });
+
+    if (zegoSuperBoardSubViewModel.fileType === 4) {
+        await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, 0);
+    } else {
+        await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID);
     }
+
+    zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+
+    if (zegoSuperBoardSubViewModel.fileType === 4) {
+        // excel 文件
+        var sheetName = zegoSuperBoardSubView.getCurrentSheetName();
+        var sheetIndex = 0;
+
+        // 获取 sheetList
+        zegoExcelSheetNameList = zegoSuperBoardSubView.getExcelSheetNameList();
+        updateExcelSheetListDomHandle(zegoSuperBoardSubViewModel.uniqueID, zegoExcelSheetNameList);
+
+        // 获取当前 sheetIndex
+        zegoExcelSheetNameList.forEach(function(element, index) {
+            element === sheetName && (sheetIndex = index);
+        });
+
+        toggleSheetSelectDomHandle(1);
+        updateCurrSheetDomHandle(zegoSuperBoardSubViewModel.uniqueID, sheetIndex);
+    } else {
+        zegoExcelSheetNameList = [];
+        updateExcelSheetListDomHandle('', zegoExcelSheetNameList);
+        toggleSheetSelectDomHandle(2);
+    }
+    // 更新总页数、当前页
+    updatePageCountDomHandle(zegoSuperBoardSubView.getPageCount());
+    updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
+});
+
+// 切换 sheet
+layui.form.on('select(sheetList)', async function(data) {
+    var temp = data.value.split(',');
+    var uniqueID = temp[0];
+    var sheetIndex = temp[1];
+    await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
 });
 
 // 绑定创建普通白板事件

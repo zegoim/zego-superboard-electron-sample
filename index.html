@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-06 03:12:50
+ * @LastEditTime: 2021-08-06 16:45:58
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -153,13 +153,9 @@
           <span class="room-id">房间 ID: <span id="showRoomID"></span></span>
           <form id="customForm" class="layui-form" name="form3" action="" lay-filter="customForm">
             <!-- 白板列表 -->
-              <select name="whiteboard" id="whiteboardList" lay-filter="whiteboardList">
-                <option value>请选择</option>
-              </select>
+            <select name="whiteboard" id="whiteboardList" lay-filter="whiteboardList"> </select>
             <!-- Excel 多白板 -->
-              <select name="sheet" id="sheetList" lay-filter="sheetList">
-                <option value>请选择</option>
-              </select>
+            <select name="sheet" id="sheetList" lay-filter="sheetList"> </select>
             <!-- 分页 -->
             <div class="page-bar">
               <div id="arrow-prev" class="page-bar-arrow arrow-prev">
@@ -185,7 +181,7 @@
                   ></polyline>
                 </svg>
               </div>
-              <div class="page-bar-center"><span id="currPage">1</span> / <span id="pageCount">5</span></div>
+              <div class="page-bar-center"><span id="currPage">1</span> / <span id="pageCount">1</span></div>
               <div class="page-bar-arrow arrow-next">
                 <svg
                   version="1.1"

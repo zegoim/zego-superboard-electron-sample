@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-06 01:29:24
+ * @LastEditTime: 2021-08-06 20:26:32
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -111,7 +111,7 @@ function onRoomUserUpdate() {
  * @return {*}
  */
 function loginRoom() {
-    return new Promise(async function(resolve) {
+    return new Promise(async function(resolve, reject) {
         // 获取 token
         var appID = zegoConfig.env === '1' ? zegoConfig.appID : zegoConfig.overseaAppID;
         var token = await getToken(appID, zegoConfig.userID, zegoConfig.tokenUrl);
@@ -120,31 +120,36 @@ function loginRoom() {
         initSDK(token);
 
         // 登录房间
-        await zegoEngine.loginRoom(
-            zegoConfig.roomID,
-            token,
-            {
+        try {
+            await zegoSuperBoard.loginRoom(
+                zegoConfig.roomID,
+                token,
+                {
+                    userID: zegoConfig.userID,
+                    userName: zegoConfig.username
+                },
+                {
+                    maxMemberCount: 10,
+                    userUpdate: true
+                }
+            );
+
+            // 添加自己到成员列表
+            userList.unshift({
                 userID: zegoConfig.userID,
-                userName: zegoConfig.username
-            },
-            {
-                maxMemberCount: 10,
-                userUpdate: true
-            }
-        );
+                userName: zegoConfig.userName
+            });
+            // 更新成员列表
+            updateUserListDomHandle();
 
-        // 添加自己到成员列表
-        userList.unshift({
-            userID: zegoConfig.userID,
-            userName: zegoConfig.userName
-        });
-        // 更新成员列表
-        updateUserListDomHandle();
-
-        // 查询白板列表
-        querySuperBoardSubViewList();
-
-        resolve();
+            // 查询白板列表
+            setTimeout(function() {
+                querySuperBoardSubViewList();
+            }, 100);
+            resolve();
+        } catch (error) {
+            reject();
+        }
     });
 }
 

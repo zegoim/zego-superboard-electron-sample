@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-07 16:29:23
+ * @LastEditTime: 2021-08-07 18:22:43
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -151,7 +151,7 @@
         <div id="left-header">
           <!-- 房间 ID -->
           <span class="room-id">房间 ID: <span id="showRoomID"></span></span>
-          <form id="customForm" class="layui-form" name="form3" action="" lay-filter="customForm">
+          <form id="customForm" class="layui-form" name="customForm" action="" lay-filter="customForm">
             <!-- 白板列表 -->
             <select name="whiteboard" id="whiteboardList" lay-filter="whiteboardList"> </select>
             <!-- Excel 多白板 -->
@@ -2217,22 +2217,28 @@
         <div id="right-main">
           <!-- 绘制 -->
           <div class="main-feature active" data-index="1">
-            <form class="layui-form" action="" name="form1">
+            <form id="form1" class="layui-form" action="" name="form1" lay-filter="form1">
               <!-- 笔锋效果 -->
               <div class="layui-form-item">
                 <label class="layui-form-label">笔锋</label>
                 <div class="layui-input-block">
-                  <input id="handwriting" type="checkbox" name="switch" lay-skin="switch" />
+                  <input
+                    type="checkbox"
+                    name="handwriting"
+                    lay-skin="switch"
+                    lay-filter="handwriting"
+                    lay-text="开|关"
+                  />
                 </div>
               </div>
               <!-- 清除工具 -->
               <div class="layui-form-item">
                 <label class="layui-form-label">清除工具</label>
                 <div class="layui-input-block">
-                  <button type="button" class="layui-btn layui-btn-sm">
+                  <button onclick="clearCurrentPage()" type="button" class="layui-btn layui-btn-sm">
                     清空当前页
                   </button>
-                  <button type="button" class="layui-btn layui-btn-sm">
+                  <button onclick="clearSelected()" type="button" class="layui-btn layui-btn-sm">
                     选中删除
                   </button>
                 </div>
@@ -2241,9 +2247,9 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">自定义图形</label>
                 <div class="layui-input-inline">
-                  <input type="text" required lay-verify="required" placeholder="请输入图形 URL" class="layui-input" />
+                  <input name="customGraphUrl" type="text" required placeholder="请输入图形 URL" class="layui-input" />
                 </div>
-                <button type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                <button onclick="addImage(1)" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   确定
                 </button>
               </div>
@@ -2256,8 +2262,8 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">渲染类型</label>
                 <div class="layui-input-block">
-                  <select name="align">
-                    <option value=""></option>
+                  <select name="imageFitMode" lay-filter="imageFitMode">
+                    <option value>请选择</option>
                     <option value="0">左对齐</option>
                     <option value="1">右对齐</option>
                     <option value="2">下对齐</option>
@@ -2270,21 +2276,26 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">网络图片</label>
                 <div class="layui-input-block">
-                  <select name="align">
-                    <option value=""></option>
-                    <option value="0">图片1</option>
-                    <option value="1">图片2</option>
-                    <option value="2">图片3</option>
-                    <option value="3">图片4</option>
+                  <select name="bgImgUrl" lay-filter="bgImgUrl">
+                    <option value>请选择</option>
+                    <option value="https://storage.zego.im/goclass/wbbg/1.jpg">图片1</option>
+                    <option value="https://storage.zego.im/goclass/wbbg/2.jpg">图片2</option>
+                    <option value="https://storage.zego.im/goclass/wbbg/3.png">图片3</option>
+                    <option value="https://storage.zego.im/goclass/wbbg/4.jpeg">图片4</option>
                   </select>
                 </div>
               </div>
               <div class="layui-form-item">
                 <label class="layui-form-label"></label>
                 <div class="layui-input-inline">
-                  <input type="text" required lay-verify="required" placeholder="请输入图片 URL" class="layui-input" />
+                  <input name="customBgUrl" type="text" required placeholder="请输入图片 URL" class="layui-input" />
                 </div>
-                <button type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                <button
+                  onclick="setBackgroundImage()"
+                  type="button"
+                  class="layui-btn layui-btn-sm"
+                  style="margin-top: 3px"
+                >
                   确定
                 </button>
               </div>
@@ -2306,7 +2317,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">网络图片</label>
                 <div class="layui-input-inline">
-                  <input type="text" required lay-verify="required" placeholder="请输入图片 URL" class="layui-input" />
+                  <input name="" type="text" placeholder="请输入图片 URL" class="layui-input" />
                 </div>
                 <button type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   确定
@@ -2325,7 +2336,7 @@
           </div>
           <!-- 白板 -->
           <div class="main-feature" data-index="2">
-            <form class="layui-form" action="" name="form2">
+            <form class="layui-form" action="" name="form2" id="form2" lay-filter="form2">
               <!-- 白板权限 -->
               <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
                 白板权限
@@ -2390,10 +2401,10 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">设置容器宽高</label>
                 <div class="layui-input-inline" style="width: 100px">
-                  <input type="text" required lay-verify="required" placeholder="容器宽" class="layui-input" />
+                  <input type="text" placeholder="容器宽" class="layui-input" />
                 </div>
                 <div class="layui-input-inline" style="width: 100px; margin-left: 0">
-                  <input type="text" required lay-verify="required" placeholder="容器高" class="layui-input" />
+                  <input type="text" placeholder="容器高" class="layui-input" />
                 </div>
                 <button type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   确定
@@ -2403,7 +2414,7 @@
           </div>
           <!-- 文件 -->
           <div class="main-feature" data-index="3">
-            <form class="layui-form" action="" name="form3">
+            <form class="layui-form" action="" name="form3" id="form3" lay-filter="form3">
               <!-- 静态文件 -->
               <div class="layui-form-item">
                 <label class="layui-form-label">静态文件</label>
@@ -2435,7 +2446,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">文件 ID</label>
                 <div class="layui-input-inline">
-                  <input type="text" required lay-verify="required" placeholder="请输入 fileID" class="layui-input" />
+                  <input type="text" placeholder="请输入 fileID" class="layui-input" />
                 </div>
                 <button type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   预加载
@@ -2510,13 +2521,7 @@
                 <div class="layui-form-item">
                   <label class="layui-form-label">邀请链接</label>
                   <div class="layui-input-block">
-                    <input
-                      style="border: none"
-                      id="showInviteLink"
-                      type="text"
-                      lay-verify="required"
-                      class="layui-input"
-                    />
+                    <input style="border: none" id="showInviteLink" type="text" class="layui-input" />
                   </div>
                 </div>
                 <div class="layui-form-item">

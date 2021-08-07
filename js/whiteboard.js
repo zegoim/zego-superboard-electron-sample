@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-07 16:32:03
+ * @LastEditTime: 2021-08-07 18:16:51
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -294,33 +294,8 @@ function snapshot() {
 }
 
 /**
- * @description: 触发模拟点击
- * @param {*}
- * @return {*}
- */
-function dispatchClickEvent(dom) {
-    if (isTouch) {
-        var e1 = document.createEvent('Events');
-        e1.initEvent('touchstart', true, true);
-        var e2 = document.createEvent('Events');
-        e2.initEvent('touchend', true, true);
-        dom.dispatchEvent(e1);
-        e2 = dom.dispatchEvent(e2);
-        // ipad 14.2 非标准兼容处理
-        if (e2) {
-            e1 = document.createEvent('Events');
-            e1.initEvent('click', true, true);
-            e1 = dom.dispatchEvent(e1);
-            dom.click && dom.click();
-        }
-    } else {
-        dom.click();
-    }
-}
-
-/**
  * @description: 重置白板工具，在动态 PPT 白板切换到其他白板是时使用
- * @param {*} zegoSuperBoardSubViewModel
+ * @param {*} zegoSuperBoardSubViewModel zegoSuperBoardSubViewModel
  * @return {*}
  */
 function resetToolType(zegoSuperBoardSubViewModel) {
@@ -334,6 +309,57 @@ function resetToolType(zegoSuperBoardSubViewModel) {
         resetToolTypeDomHandle();
     }
 }
+
+/**
+ * @description: 清空当前页图元，在橡皮擦工具时生效
+ * @param {*}
+ * @return {*}
+ */
+function clearCurrentPage() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.clearCurrentPage();
+}
+
+/**
+ * @description: 删除选中图元
+ * @param {*}
+ * @return {*}
+ */
+function clearSelected() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.clearSelected();
+}
+
+/**
+ * @desc: 上传自定义图形、图片
+ * @param type 0: 插入图片 1: 自定义图形
+ */
+async function addImage(type) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    if (!zegoSuperBoardSubView) return;
+    var positionX = 0,
+        positionY = 0,
+        address;
+    if (type === 1) {
+    } else {
+    }
+
+    try {
+        await zegoSuperBoardSubView.addImage(type, positionX, positionY, address);
+        if (type === 1) {
+        } else {
+        }
+    } catch (error) {
+        debugger;
+    }
+}
+
+/**
+ * @description: 设置背景图
+ * @param {*}
+ * @return {*}
+ */
+function setBackgroundImage() {}
 
 // 切换白板
 layui.form.on('select(whiteboardList)', async function(data) {
@@ -384,6 +410,11 @@ layui.form.on('select(sheetList)', async function(data) {
     var uniqueID = temp[0];
     var sheetIndex = temp[1];
     await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
+});
+
+// 开启笔锋
+layui.form.on('switch(handwriting)', async function(data) {
+    zegoSuperBoard.enableHandwriting(this.checked);
 });
 
 // 绑定创建文件白板事件

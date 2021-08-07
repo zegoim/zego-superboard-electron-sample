@@ -161,6 +161,10 @@
   cursor: pointer;
 }
 
+.tool-item.disabled {
+  cursor: not-allowed;
+}
+
 .tool-item.active .hover-fill {
   fill: #04f !important;
 }
@@ -191,10 +195,14 @@
   transform: translateY(-50%);
   width: 232px;
   background-color: #fff;
-  display: flex;
+  display: none;
   flex-direction: column;
   border-radius: 6px;
   box-shadow: 0 10px 30px 0 rgb(0 0 0 / 5%);
+}
+
+.pencil-text-setting.active {
+  display: flex;
 }
 
 .common-box .setting-title {
@@ -312,18 +320,26 @@
   fill: #04f;
 }
 
+.pencil-text-setting .graph-style-item.active .graph-stroke {
+  stroke: #04f;
+}
+
 .custom-graph-setting {
   position: absolute;
   right: 50px;
   top: 50%;
   transform: translateY(-50%);
   background-color: #fff;
-  display: flex;
+  display: none;
   flex-direction: column;
   border-radius: 6px;
   box-shadow: 0 10px 30px 0 rgb(0 0 0 / 5%);
   padding: 6px 16px;
 }
+.custom-graph-setting.active {
+  display: flex;
+}
+
 .custom-graph-setting .custom-graph-item {
   width: 26px;
   height: 26px;

@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-07 01:41:10
+ * @LastEditTime: 2021-08-07 16:29:23
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -290,7 +290,7 @@
           <div id="main-whiteboard-placeholder" class="active">
             <div class="share-content">请选择要共享的内容</div>
             <div class="share-button">
-              <button type="button" class="shareWhiteboard">
+              <button type="button" class="shareWhiteboard" onclick="createWhiteboardView()">
                 <span>互动白板</span>
               </button>
               <button type="button" data-toggle="modal" data-target="#filelistModal">
@@ -303,7 +303,13 @@
           <!-- 白板工具栏 -->
           <div id="main-whiteboard-tool">
             <ul class="tools-list">
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="点击">
+              <li
+                class="tool-item disabled"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="点击"
+                onclick="setToolType(256,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <defs>
@@ -365,7 +371,13 @@
                 </div>
                 <!-- <div class="tooltip">点击</div> -->
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="选择">
+              <li
+                class="tool-item"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="选择"
+                onclick="setToolType(32,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path
@@ -377,7 +389,13 @@
                 </div>
                 <!-- <div class="tooltip">选择</div> -->
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="拖拽">
+              <li
+                class="tool-item"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="拖拽"
+                onclick="setToolType(null,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path
@@ -390,7 +408,13 @@
                 </div>
                 <!-- <div class="tooltip">拖拽</div> -->
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="激光笔">
+              <li
+                class="tool-item"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="激光笔"
+                onclick="setToolType(128,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <g id="图层_2" data-name="图层 2">
@@ -470,7 +494,13 @@
                 </div>
                 <!-- <div class="tooltip">激光笔</div> -->
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="画笔">
+              <li
+                class="tool-item active"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="画笔"
+                onclick="setToolType(1,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path
@@ -488,20 +518,51 @@
                   </svg>
                 </div>
                 <!-- <div class="tooltip">画笔</div> -->
-                <div class="pencil-text-setting" style="display: none">
+                <div class="pencil-text-setting pen">
                   <div class="common-box pencil-box">
                     <div class="setting-title pencil-thickness">笔触粗细</div>
                     <ul class="bs-list">
-                      <li class="bs-item" style="width: 4px; height: 4px; margin-top: 3px"></li>
-                      <li class="bs-item" style="width: 6px; height: 6px; margin-top: 2px"></li>
-                      <li class="bs-item" style="width: 8px; height: 8px; margin-top: 1px"></li>
-                      <li class="bs-item active" style="width: 10px; height: 10px; margin-top: 0px"></li>
+                      <li
+                        class="bs-item"
+                        data-bs="4"
+                        data-index="1"
+                        style="width: 4px; height: 4px; margin-top: 3px"
+                        onclick="setBrushSize(4, event)"
+                      ></li>
+                      <li
+                        class="bs-item active"
+                        data-bs="6"
+                        data-index="2"
+                        style="width: 6px; height: 6px; margin-top: 2px"
+                        onclick="setBrushSize(6, event)"
+                      ></li>
+                      <li
+                        class="bs-item"
+                        data-bs="8"
+                        data-index="3"
+                        style="width: 8px; height: 8px; margin-top: 1px"
+                        onclick="setBrushSize(8, event)"
+                      ></li>
+                      <li
+                        class="bs-item"
+                        data-bs="10"
+                        data-index="4"
+                        data-bs="10"
+                        data-index="4"
+                        style="width: 10px; height: 10px; margin-top: 0px"
+                        onclick="setBrushSize(10, event)"
+                      ></li>
                     </ul>
                   </div>
                   <div class="common-box">
                     <div class="setting-title">笔触颜色</div>
                     <ul class="color-list">
-                      <li class="color-item" style="background: rgb(255, 255, 255)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(255, 255, 255)"
+                        data-index="1"
+                        onclick="setBrushColor('rgb(255, 255, 255)', event)"
+                      >
                         <div class="checkmark white">
                           <svg
                             version="1.1"
@@ -526,7 +587,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(164, 164, 164)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(164, 164, 164)"
+                        data-index="2"
+                        onclick="setBrushColor('rgb(164, 164, 164)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -551,7 +617,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(38, 38, 38)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(38, 38, 38)"
+                        data-index="3"
+                        onclick="setBrushColor('rgb(38, 38, 38)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -576,7 +647,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(0, 0, 0)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(0, 0, 0)"
+                        data-index="4"
+                        onclick="setBrushColor('rgb(0, 0, 0)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -601,7 +677,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item active" style="background: rgb(246, 67, 38)">
+                      <li
+                        class="color-item active"
+                        style="background: rgb(246, 67, 38)"
+                        data-index="5"
+                        onclick="setBrushColor('rgb(246, 67, 38)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -626,7 +707,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(253, 120, 3)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(253, 120, 3)"
+                        data-index="6"
+                        onclick="setBrushColor('rgb(253, 120, 3)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -651,7 +737,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(249, 228, 10)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(249, 228, 10)"
+                        data-index="7"
+                        onclick="setBrushColor('rgb(249, 228, 10)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -676,7 +767,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(55, 177, 66)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(55, 177, 66)"
+                        data-index="8"
+                        onclick="setBrushColor('rgb(55, 177, 66)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -701,7 +797,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(31, 232, 224)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(31, 232, 224)"
+                        data-index="9"
+                        onclick="setBrushColor('rgb(31, 232, 224)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -726,7 +827,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(14, 107, 254)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(14, 107, 254)"
+                        data-index="10"
+                        onclick="setBrushColor('rgb(14, 107, 254)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -751,7 +857,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(110, 69, 197)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(110, 69, 197)"
+                        data-index="11"
+                        onclick="setBrushColor('rgb(110, 69, 197)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -776,7 +887,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(247, 102, 107)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(247, 102, 107)"
+                        data-index="12"
+                        onclick="setBrushColor('rgb(247, 102, 107)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -805,7 +921,13 @@
                   </div>
                 </div>
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="文本">
+              <li
+                class="tool-item"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="文本"
+                onclick="setToolType(2,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <polygon
@@ -823,11 +945,11 @@
                   </svg>
                 </div>
                 <!-- <div class="tooltip">文本</div> -->
-                <div class="pencil-text-setting" style="display: none">
+                <div class="pencil-text-setting text">
                   <div class="common-box text-box">
                     <div class="setting-title">字体</div>
                     <ul class="pencil-style">
-                      <li class="pencil-style-item active">
+                      <li class="pencil-style-item" onclick="setFontBold(event)">
                         <div class="style-item">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
                             <path
@@ -838,7 +960,7 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="pencil-style-item">
+                      <li class="pencil-style-item" onclick="setFontItalic(event)">
                         <div class="style-item">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12">
                             <path
@@ -852,16 +974,21 @@
                     </ul>
                     <div class="setting-title">字号大小</div>
                     <ul class="pencil-size">
-                      <li class="pencil-size-item">18</li>
-                      <li class="pencil-size-item active">24</li>
-                      <li class="pencil-size-item">36</li>
-                      <li class="pencil-size-item">48</li>
+                      <li class="pencil-size-item" data-index="1" onclick="setFontSize(18,event)">18</li>
+                      <li class="pencil-size-item active" data-index="2" onclick="setFontSize(24,event)">24</li>
+                      <li class="pencil-size-item" data-index="3" onclick="setFontSize(36, event)">36</li>
+                      <li class="pencil-size-item" data-index="4" onclick="setFontSize(48, event)">48</li>
                     </ul>
                   </div>
                   <div class="common-box">
                     <div class="setting-title">文本颜色</div>
                     <ul class="color-list">
-                      <li class="color-item" style="background: rgb(255, 255, 255)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(255, 255, 255)"
+                        data-index="1"
+                        onclick="setBrushColor('rgb(255, 255, 255)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -886,7 +1013,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(164, 164, 164)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(164, 164, 164)"
+                        data-index="2"
+                        onclick="setBrushColor('rgb(164, 164, 164)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -911,7 +1043,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(38, 38, 38)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(38, 38, 38)"
+                        data-index="3"
+                        onclick="setBrushColor('rgb(38, 38, 38)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -936,7 +1073,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(0, 0, 0)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(0, 0, 0)"
+                        data-index="4"
+                        onclick="setBrushColor('rgb(0, 0, 0)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -961,7 +1103,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item active" style="background: rgb(246, 67, 38)">
+                      <li
+                        class="color-item active"
+                        style="background: rgb(246, 67, 38)"
+                        data-index="5"
+                        onclick="setBrushColor('rgb(246, 67, 38)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -986,7 +1133,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(253, 120, 3)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(253, 120, 3)"
+                        data-index="6"
+                        onclick="setBrushColor('rgb(253, 120, 3)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1011,7 +1163,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(249, 228, 10)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(249, 228, 10)"
+                        data-index="7"
+                        onclick="setBrushColor('rgb(249, 228, 10)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1036,7 +1193,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(55, 177, 66)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(55, 177, 66)"
+                        data-index="8"
+                        onclick="setBrushColor('rgb(55, 177, 66)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1061,7 +1223,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(31, 232, 224)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(31, 232, 224)"
+                        data-index="9"
+                        onclick="setBrushColor('rgb(31, 232, 224)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1086,7 +1253,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(14, 107, 254)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(14, 107, 254)"
+                        data-index="10"
+                        onclick="setBrushColor('rgb(14, 107, 254)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1111,7 +1283,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(110, 69, 197)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(110, 69, 197)"
+                        data-index="11"
+                        onclick="setBrushColor('rgb(110, 69, 197)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1136,7 +1313,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(247, 102, 107)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(247, 102, 107)"
+                        data-index="12"
+                        onclick="setBrushColor('rgb(247, 102, 107)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1165,7 +1347,13 @@
                   </div>
                 </div>
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="图形">
+              <li
+                class="tool-item"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="图形"
+                onclick="setToolType(undefined,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <defs>
@@ -1187,11 +1375,11 @@
                   </svg>
                 </div>
                 <!-- <div class="tooltip">图形</div> -->
-                <div class="pencil-text-setting" style="display: none">
+                <div class="pencil-text-setting graph">
                   <div class="common-box pencil-box">
                     <div class="setting-title pencil-thickness">形状选择</div>
                     <ul class="pencil-style">
-                      <li class="graph-style-item active">
+                      <li class="graph-style-item active" onclick="setToolType(8, event)">
                         <div class="style-item">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path
@@ -1202,7 +1390,7 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="graph-style-item">
+                      <li class="graph-style-item" onclick="setToolType(16,event)">
                         <div class="style-item">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path
@@ -1213,7 +1401,7 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="graph-style-item">
+                      <li class="graph-style-item" onclick="setToolType(4,event)">
                         <div class="style-item">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <line
@@ -1235,16 +1423,45 @@
                   <div class="common-box pencil-box">
                     <div class="setting-title pencil-thickness">笔触粗细</div>
                     <ul class="bs-list">
-                      <li class="bs-item" style="width: 4px; height: 4px; margin-top: 3px"></li>
-                      <li class="bs-item active" style="width: 6px; height: 6px; margin-top: 2px"></li>
-                      <li class="bs-item" style="width: 8px; height: 8px; margin-top: 1px"></li>
-                      <li class="bs-item" style="width: 10px; height: 10px; margin-top: 0px"></li>
+                      <li
+                        class="bs-item"
+                        data-bs="4"
+                        data-index="1"
+                        style="width: 4px; height: 4px; margin-top: 3px"
+                        onclick="setBrushSize(4, event)"
+                      ></li>
+                      <li
+                        class="bs-item active"
+                        data-bs="6"
+                        data-index="2"
+                        style="width: 6px; height: 6px; margin-top: 2px"
+                        onclick="setBrushSize(6, event)"
+                      ></li>
+                      <li
+                        class="bs-item"
+                        data-bs="8"
+                        data-index="3"
+                        style="width: 8px; height: 8px; margin-top: 1px"
+                        onclick="setBrushSize(8, event)"
+                      ></li>
+                      <li
+                        class="bs-item"
+                        data-bs="10"
+                        data-index="4"
+                        style="width: 10px; height: 10px; margin-top: 0px"
+                        onclick="setBrushSize(10, event)"
+                      ></li>
                     </ul>
                   </div>
                   <div class="common-box">
                     <div class="setting-title">笔触颜色</div>
                     <ul class="color-list">
-                      <li class="color-item" style="background: rgb(255, 255, 255)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(255, 255, 255)"
+                        data-index="1"
+                        onclick="setBrushColor('rgb(255, 255, 255)', event)"
+                      >
                         <div class="checkmark white">
                           <svg
                             version="1.1"
@@ -1269,7 +1486,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(164, 164, 164)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(164, 164, 164)"
+                        data-index="2"
+                        onclick="setBrushColor('rgb(164, 164, 164)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1294,7 +1516,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(38, 38, 38)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(38, 38, 38)"
+                        data-index="3"
+                        onclick="setBrushColor('rgb(38, 38, 38)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1319,7 +1546,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(0, 0, 0)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(0, 0, 0)"
+                        data-index="4"
+                        onclick="setBrushColor('rgb(0, 0, 0)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1344,7 +1576,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item active" style="background: rgb(246, 67, 38)">
+                      <li
+                        class="color-item active"
+                        style="background: rgb(246, 67, 38)"
+                        data-index="5"
+                        onclick="setBrushColor('rgb(246, 67, 38)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1369,7 +1606,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(253, 120, 3)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(253, 120, 3)"
+                        data-index="6"
+                        onclick="setBrushColor('rgb(253, 120, 3)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1394,7 +1636,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(249, 228, 10)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(249, 228, 10)"
+                        data-index="7"
+                        onclick="setBrushColor('rgb(249, 228, 10)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1419,7 +1666,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(55, 177, 66)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(55, 177, 66)"
+                        data-index="8"
+                        onclick="setBrushColor('rgb(55, 177, 66)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1444,7 +1696,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(31, 232, 224)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(31, 232, 224)"
+                        data-index="9"
+                        onclick="setBrushColor('rgb(31, 232, 224)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1469,7 +1726,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(14, 107, 254)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(14, 107, 254)"
+                        data-index="10"
+                        onclick="setBrushColor('rgb(14, 107, 254)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1494,7 +1756,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(110, 69, 197)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(110, 69, 197)"
+                        data-index="11"
+                        onclick="setBrushColor('rgb(110, 69, 197)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1519,7 +1786,12 @@
                           </svg>
                         </div>
                       </li>
-                      <li class="color-item" style="background: rgb(247, 102, 107)">
+                      <li
+                        class="color-item"
+                        style="background: rgb(247, 102, 107)"
+                        data-index="12"
+                        onclick="setBrushColor('rgb(247, 102, 107)', event)"
+                      >
                         <div class="checkmark">
                           <svg
                             version="1.1"
@@ -1548,7 +1820,7 @@
                   </div>
                 </div>
               </li>
-              <li class="tool-item active" data-toggle="tooltip" data-placement="right" title="自定义图形">
+              <!-- <li class="tool-item" data-toggle="tooltip" data-placement="right" title="自定义图形">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <defs>
@@ -1578,8 +1850,14 @@
                     <li class="custom-graph-item"></li>
                   </ul>
                 </div>
-              </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="橡皮擦">
+              </li> -->
+              <li
+                class="tool-item"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="橡皮擦"
+                onclick="setToolType(64,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path
@@ -1592,7 +1870,7 @@
                 </div>
                 <!-- <div class="tooltip">橡皮擦</div> -->
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="清空">
+              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="清空" onclick="clearAllPage()">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path
@@ -1605,7 +1883,7 @@
                 </div>
                 <!-- <div class="tooltip">清空</div> -->
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="撤销">
+              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="撤销" onclick="undo()">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="8 3 8 11 2 7 8 3"></polygon>
@@ -1622,7 +1900,7 @@
                 </div>
                 <!-- <div class="tooltip">撤销</div> -->
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="重做">
+              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="重做" onclick="redo()">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <polygon
@@ -1644,7 +1922,7 @@
                 </div>
                 <!-- <div class="tooltip">重做</div> -->
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="保存">
+              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="保存" onclick="snapshot()">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <defs>
@@ -1682,21 +1960,37 @@
             <button id="previousStep" class="step-item">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <rect class="cls-1" fill="none" width="20" height="20"></rect>
-                <polyline class="hover-stroke" fill="none" stroke="#b1b4bb" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" points="13 4 7 10 13 16"></polyline>
+                <polyline
+                  class="hover-stroke"
+                  fill="none"
+                  stroke="#b1b4bb"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="13 4 7 10 13 16"
+                ></polyline>
               </svg>
             </button>
             <div class="line"></div>
             <button id="nextStep" class="step-item">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <rect class="cls-1" fill="none" width="20" height="20"></rect>
-                <polyline class="hover-stroke" fill="none" stroke="#b1b4bb" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" points="7 4 13 10 7 16"></polyline>
+                <polyline
+                  class="hover-stroke"
+                  fill="none"
+                  stroke="#b1b4bb"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  points="7 4 13 10 7 16"
+                ></polyline>
               </svg>
             </button>
           </div>
         </div>
         <div id="left-footer">
           <!-- 白板 -->
-          <div class="share-item shareWhiteboard">
+          <div class="share-item shareWhiteboard" onclick="createWhiteboardView()">
             <div class="si-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
                 <path
@@ -2154,16 +2448,7 @@
       <!-- 缩略图弹框 -->
       <div id="thumbModal">
         <div class="thumb-header">预览</div>
-        <ul class="thumb-main">
-          <li class="thumb-item active">
-            <span>1</span>
-            <div class="thumb-image">
-              <img
-                src="https://docservice-storage.zego.im/3d681504b44f17e2381bc44e08c12fb2%2Fc317160140c2e6b1383c116436ea9642%2Fthumbnails%2F1.png?lcwr616zhen6kewj"
-              />
-            </div>
-          </li>
-        </ul>
+        <ul class="thumb-main"></ul>
       </div>
       <!-- 选择文件弹框 -->
       <div class="modal fade" id="filelistModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
@@ -2264,5 +2549,4 @@
   <script src="./js/room.js"></script>
   <!-- init 初始化 -->
   <script src="./js/init.js"></script>
-  
 </html>

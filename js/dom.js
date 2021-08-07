@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-07 10:46:22
+ * @LastEditTime: 2021-08-07 16:31:16
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -263,6 +263,118 @@ function updateCurrSheetDomHandle(uniqueID, sheetIndex) {
     });
 }
 
+/**
+ * @description: 更新当前选中工具
+ * @param {*} type 工具类型
+ * @param {*} event event
+ * @return {*}
+ */
+function updateActiveToolDomHandle(type, event) {
+    event.stopPropagation();
+    switch (type) {
+        case 256:
+        case 32:
+        case null:
+        case 128:
+        case 64:
+            $('.tool-item').removeClass('active');
+            $('.pencil-text-setting').removeClass('active');
+            $(event.currentTarget).addClass('active');
+            break;
+        case 1:
+        case 2:
+        case undefined: // 图形
+            $('.tool-item').removeClass('active');
+            $('.pencil-text-setting').removeClass('active');
+            $(event.currentTarget)
+                .addClass('active')
+                .find('.pencil-text-setting')
+                .addClass('active');
+            if (type === undefined) {
+                $('.graph-style-item').removeClass('active');
+                $('.graph-style-item:nth-of-type(1)').addClass('active');
+            }
+            break;
+        case 8: // 矩形
+        case 16: // 椭圆
+        case 4: // 直线
+            $('.graph-style-item').removeClass('active');
+            $('.graph-style-item:nth-of-type(' + (type === 8 ? 1 : type === 16 ? 2 : 3) + ')').addClass('active');
+            break;
+        default:
+            break;
+    }
+}
+
+/**
+ * @description: 重置白板工具
+ * @param {*}
+ * @return {*}
+ */
+function resetToolTypeDomHandle() {
+    $('.tool-item').removeClass('active');
+    $('.pencil-text-setting').removeClass('active');
+    $('.tool-item:nth-of-type(5)').addClass('active');
+}
+
+/**
+ * @description: 更新当前笔触粗细
+ * @param {*} brushSize 粗细
+ * @param {*} event event
+ * @return {*}
+ */
+function updateActiveBrushSizeDomHandle(event) {
+    event.stopPropagation();
+    var index = $(event.currentTarget).attr('data-index');
+    $('.bs-item').removeClass('active');
+    $('.bs-item:nth-of-type(' + index + ')').addClass('active');
+}
+
+/**
+ * @description: 更新当前笔触颜色
+ * @param {*} color 颜色
+ * @param {*} event event
+ * @return {*}
+ */
+function updateActiveBrushColorDomHandle(event) {
+    event.stopPropagation();
+    var index = $(event.currentTarget).attr('data-index');
+    $('.color-item').removeClass('active');
+    $('.color-item:nth-of-type(' + index + ')').addClass('active');
+}
+
+/**
+ * @description: 更新当前文本大小
+ * @param {*} event event
+ * @return {*}
+ */
+function updateActiveFontSizeDomHandle(event) {
+    event.stopPropagation();
+    var index = $(event.currentTarget).attr('data-index');
+    $('.pencil-size-item').removeClass('active');
+    $('.pencil-size-item:nth-of-type(' + index + ')').addClass('active');
+}
+
+/**
+ * @description: 文本粗体
+ * @param {*} event event
+ * @return {*}
+ */
+function updateActiveFontBoldHandle(event) {
+    event.stopPropagation();
+    $(event.currentTarget).toggleClass('active');
+}
+
+/**
+ * @description: 文本斜体
+ * @param {*} event event
+ * @return {*}
+ */
+function updateActiveFontItalicHandle(event) {
+    event.stopPropagation();
+    $(event.currentTarget).toggleClass('active');
+}
+
 // 绑定预览事件
 $('#thumb-button').click(function(event) {
     $('#thumbModal').toggleClass('active');
@@ -284,4 +396,9 @@ $('.inivate-btn').click(function(event) {
     var inivateLink = location.origin + '?roomId=' + zegoConfig.roomID + '&env=' + zegoConfig.env;
     $('#showInviteLink').val(inivateLink);
     $('#showRoomEnv').html(zegoConfig.env == 1 ? '中国内地' : '海外');
+});
+
+// 组织事件
+$('.pencil-text-setting').click(function(event) {
+    event.stopPropagation();
 });

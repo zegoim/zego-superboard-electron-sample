@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-07 00:11:44
+ * @LastEditTime: 2021-08-07 12:50:06
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -40,8 +40,32 @@ var zegoConfig = {
 
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
+var zegoSuperBoardToolType = [
+    { type: 256, name: '点击' },
+    { type: 32, name: '选择' },
+    { type: null, name: '拖拽' },
+    { type: 128, name: '激光笔' },
+    { type: 1, name: '画笔' },
+    { type: 2, name: '文本' },
+    {
+        name: '图形',
+        child: [
+            { type: 8, name: '矩形' },
+            { type: 16, name: '椭圆' },
+            { type: 4, name: '直线' }
+        ]
+    },
+    { type: 512, name: '自定义图形', child: [] },
+    { type: 64, name: '橡皮擦' }
+]; // 工具类型
+
 var parentDomID = 'main-whiteboard'; // 白板、文件挂载的父容器
-var WBNameIndex = 1; // 白板索引，创建多个普通白板时，白板名称编号进行叠加
+var seqMap = {
+    viewSeq: 1, // 白板索引，创建多个普通白板时，白板名称编号进行叠加
+    upload: 0, // 上传索引
+    cache: 0,
+    saveImg: 1 // 白板快照索引
+};
 
 var userList = []; // 房间内成员列表
 

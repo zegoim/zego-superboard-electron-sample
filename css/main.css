@@ -137,6 +137,10 @@
 
 #left-main {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
 }
 
 #main-whiteboard-tool {
@@ -351,6 +355,10 @@
   display: flex;
 }
 
+#customForm .layui-form-item {
+  margin-bottom: 0;
+}
+
 #customForm .layui-form-select .layui-input {
   height: 32px;
   border-radius: 14px;
@@ -504,10 +512,6 @@
   width: 20px;
   height: 20px;
   margin-right: 6px;
-}
-
-#left-main {
-  flex: 1;
 }
 
 #main-whiteboard-placeholder {

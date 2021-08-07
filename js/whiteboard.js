@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-07 18:16:51
+ * @LastEditTime: 2021-08-08 01:00:54
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -38,6 +38,79 @@ function onSuperBoardEventHandle() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
         querySuperBoardSubViewList();
     });
+}
+
+/**
+ * @description: 监听其他回调
+ * @param {*}
+ * @return {*}
+ */
+function onDocumentEventHandle() {
+    window.addEventListener('keydown', function(event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (!e) return;
+        switch (e.keyCode) {
+            case 8: // 监听 backspace 按键，批量删除选中图元
+            case 46: // 监听 Delete 按键，批量删除选中图元
+                clearSelected();
+                break;
+            default:
+                break;
+        }
+    });
+
+    onResizeHandle();
+
+    // 白板大小自适应，移动端软键盘收缩会引起变化
+    window.addEventListener('resize', onResizeHandle);
+}
+
+/**
+ * @description: resize 回调
+ * @param {*} e
+ * @return {*}
+ */
+function onResizeHandle(e) {
+    if (!resizeTicking) {
+        resizeTicking = true;
+        setTimeout(function() {
+            reloadView(1);
+            resizeTicking = false;
+        }, 1000);
+    }
+}
+
+/**
+ * @description:
+ * @param {*} type 1: 自适应 2: 自定义
+ * @return {*}
+ */
+function reloadView(type) {
+    var dom = document.getElementById(parentDomID);
+    var width = dom.clientWidth + 2; // +边框
+    var height = dom.clientHeight + 2; // +边框
+
+    if (type === 2) {
+        // 自定义尺寸
+        var width_set = +layui.form.val('form2').parentWidth;
+        var height_set = +layui.form.val('form2').parentHeight;
+        if (!width || !height || width < 1 || height < 1) return alert('请输入有效的宽高值');
+        if (width_set > width || height_set > height) {
+            return alert('请输入小于当前容器尺寸的宽高值');
+        }
+        width = width_set;
+        height = height_set;
+        dom.style.cssText += `width:${width}px;height:${height}px;`;
+    }
+    $('#parentWidthHeight').html(width + ' * ' + height);
+
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    if (zegoSuperBoardSubView) {
+        // 动画100ms
+        setTimeout(function() {
+            zegoSuperBoardSubView.reloadView();
+        }, 120);
+    }
 }
 
 /**
@@ -412,9 +485,50 @@ layui.form.on('select(sheetList)', async function(data) {
     await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
 });
 
+// 切换 zoom
+layui.form.on('select(zoomList)', function(data) {
+    var zoom = +data.value;
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.setScaleFactor(zoom);
+});
+
 // 开启笔锋
-layui.form.on('switch(handwriting)', async function(data) {
+layui.form.on('switch(handwriting)', function(data) {
     zegoSuperBoard.enableHandwriting(this.checked);
+});
+
+// 不可操作模式
+layui.form.on('switch(unOperatedMode)', function(data) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.setOperationMode(val);
+});
+
+// 滚动模式
+layui.form.on('switch(scrollMode)', function(data) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.setOperationMode(val);
+});
+
+// 绘制模式
+layui.form.on('switch(drawMode)', function(data) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.setOperationMode(val);
+});
+
+// 放缩模式
+layui.form.on('switch(zoomMode)', function(data) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.setOperationMode(val);
+});
+
+// 同步缩放
+layui.form.on('switch(syncScale)', function(data) {
+    zegoSuperBoard.enableSyncScale(this.checked);
+});
+
+// 响应缩放
+layui.form.on('switch(responseScale)', function(data) {
+    zegoSuperBoard.enableResponseScale(this.checked);
 });
 
 // 绑定创建文件白板事件
@@ -460,25 +574,27 @@ $('#nextStep').click(function() {
 
 // 设置缩放
 $('.zoom-cut').click(function() {
-    var currZoomLevel = $('#zoomLevel').val();
+    var currZoomLevel = layui.form.val('customForm').zoom;
     if (currZoomLevel === '1') return;
     var zoom = Number(currZoomLevel) - 0.25;
 
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.setScaleFactor(zoom);
-
-    zoomDomHandle(zoom);
+    if (zegoSuperBoardSubView) {
+        zegoSuperBoardSubView.setScaleFactor(zoom);
+        zoomDomHandle(zoom);
+    }
 });
 
 $('.zoom-add').click(function() {
-    var currZoomLevel = $('#zoomLevel').val();
+    var currZoomLevel = layui.form.val('customForm').zoom;
     if (currZoomLevel === '3') return;
     var zoom = Number(currZoomLevel) + 0.25;
 
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.setScaleFactor(zoom);
-
-    zoomDomHandle(zoom);
+    if (zegoSuperBoardSubView) {
+        zegoSuperBoardSubView.setScaleFactor(zoom);
+        zoomDomHandle(zoom);
+    }
 });
 
 // 获取缩略图

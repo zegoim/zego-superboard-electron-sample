@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-07 18:26:09
+ * @LastEditTime: 2021-08-08 01:02:45
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -153,9 +153,17 @@
           <span class="room-id">房间 ID: <span id="showRoomID"></span></span>
           <form id="customForm" class="layui-form" name="customForm" action="" lay-filter="customForm">
             <!-- 白板列表 -->
-            <select name="whiteboard" id="whiteboardList" lay-filter="whiteboardList"> </select>
+            <div class="layui-form-item">
+              <div class="layui-input-inline">
+                <select name="whiteboard" id="whiteboardList" lay-filter="whiteboardList"> </select>
+              </div>
+            </div>
             <!-- Excel 多白板 -->
-            <select name="sheet" id="sheetList" lay-filter="sheetList"> </select>
+            <div class="layui-form-item" id="sheetListItem">
+              <div class="layui-input-inline">
+                <select name="sheet" id="sheetList" lay-filter="sheetList"> </select>
+              </div>
+            </div>
             <!-- 分页 -->
             <div class="page-bar">
               <div id="previousPage" class="page-bar-arrow arrow-prev">
@@ -224,7 +232,7 @@
                 </svg>
               </div>
               <div class="zoom-bar-center">
-                <select name="sheet" id="zoomLevel" style="appearance: none; border: none; outline: none">
+                <select name="zoom" id="zoomList" lay-filter="zoomList" style="appearance: none; border: none; outline: none">
                   <option value="1">100%</option>
                   <option value="1.25">125%</option>
                   <option value="1.5">150%</option>
@@ -2247,7 +2255,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">自定义图形</label>
                 <div class="layui-input-inline">
-                  <input name="customGraphUrl" type="text" required placeholder="请输入图形 URL" class="layui-input" />
+                  <input name="customGraphUrl" type="text"  placeholder="请输入图形 URL" class="layui-input" />
                 </div>
                 <button onclick="addImage(1)" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   确定
@@ -2288,7 +2296,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label"></label>
                 <div class="layui-input-inline">
-                  <input name="customBgUrl" type="text" required placeholder="请输入图片 URL" class="layui-input" />
+                  <input name="customBgUrl" type="text"  placeholder="请输入图片 URL" class="layui-input" />
                 </div>
                 <button
                   onclick="setBackgroundImage()"
@@ -2345,28 +2353,28 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">不可操作模式</label>
                 <div class="layui-input-block">
-                  <input id="unOperated" type="checkbox" name="switch" lay-skin="switch" />
+                  <input type="checkbox" name="unOperatedMode" lay-filter="unOperatedMode" lay-skin="switch" />
                 </div>
               </div>
               <!-- 滚动模式 -->
               <div class="layui-form-item">
                 <label class="layui-form-label">滚动模式</label>
                 <div class="layui-input-block">
-                  <input id="scroll" type="checkbox" name="switch" lay-skin="switch" />
+                  <input type="checkbox" checked="" name="scrollMode" lay-filter="scrollMode" lay-skin="switch" />
                 </div>
               </div>
               <!-- 绘制模式 -->
               <div class="layui-form-item">
                 <label class="layui-form-label">绘制模式</label>
                 <div class="layui-input-block">
-                  <input id="draw" type="checkbox" name="switch" lay-skin="switch" />
+                  <input type="checkbox" checked="" name="drawMode" lay-filter="drawMode" lay-skin="switch" />
                 </div>
               </div>
               <!-- 放缩模式 -->
               <div class="layui-form-item">
                 <label class="layui-form-label">放缩模式</label>
                 <div class="layui-input-block">
-                  <input id="zoom" type="checkbox" name="switch" lay-skin="switch" />
+                  <input type="checkbox" checked="" name="zoomMode" lay-filter="zoomMode" lay-skin="switch" />
                 </div>
               </div>
               <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
@@ -2378,14 +2386,14 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">同步缩放</label>
                 <div class="layui-input-block">
-                  <input id="syncScale" type="checkbox" name="switch" lay-skin="switch" />
+                  <input type="checkbox" name="syncScale" lay-filter="syncScale" lay-skin="switch" />
                 </div>
               </div>
               <!-- 响应缩放 -->
               <div class="layui-form-item">
                 <label class="layui-form-label">响应缩放</label>
                 <div class="layui-input-block">
-                  <input id="responseScale" type="checkbox" name="switch" lay-skin="switch" />
+                  <input type="checkbox" name="responseScale" lay-filter="responseScale" lay-skin="switch" />
                 </div>
               </div>
               <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
@@ -2395,18 +2403,18 @@
               </div>
               <div class="layui-form-item">
                 <label class="layui-form-label">当前容器尺寸</label>
-                <div class="layui-input-block">500 * 500</div>
+                <div class="layui-input-block" id="parentWidthHeight"></div>
               </div>
               <!-- 设置宽高 -->
               <div class="layui-form-item">
                 <label class="layui-form-label">设置容器宽高</label>
                 <div class="layui-input-inline" style="width: 100px">
-                  <input type="text" placeholder="容器宽" class="layui-input" />
+                  <input name="parentWidth" type="text" placeholder="容器宽" class="layui-input" />
                 </div>
                 <div class="layui-input-inline" style="width: 100px; margin-left: 0">
-                  <input type="text" placeholder="容器高" class="layui-input" />
+                  <input name="parentHeight" type="text" placeholder="容器高" class="layui-input" />
                 </div>
-                <button type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                <button onclick="reloadView(2)" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   确定
                 </button>
               </div>
@@ -2446,7 +2454,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">文件 ID</label>
                 <div class="layui-input-inline">
-                  <input type="text" placeholder="请输入 fileID" class="layui-input" />
+                  <input name="fileID" type="text" placeholder="请输入 fileID" class="layui-input" />
                 </div>
                 <button type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   预加载

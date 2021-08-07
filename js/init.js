@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-07 18:12:19
+ * @LastEditTime: 2021-08-07 23:57:02
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -66,6 +66,7 @@ var seqMap = {
     cache: 0,
     saveImg: 1 // 白板快照索引
 };
+var resizeTicking = false; // 自适应执行开关
 
 var userList = []; // 房间内成员列表
 

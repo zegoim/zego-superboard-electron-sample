@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-07 16:31:16
+ * @LastEditTime: 2021-08-07 23:13:48
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -109,7 +109,7 @@ function updateThumbListDomHandle(thumbnailUrlList, currPage) {
  */
 function zoomDomHandle(zoom) {
     layui.form.val('customForm', {
-        sheet: zoom + ''
+        zoom: zoom + ''
     });
 }
 
@@ -201,18 +201,12 @@ function updateExcelSheetListDomHandle(uniqueID, zegoExcelSheetNameList) {
  * @return {*}
  */
 function toggleSheetSelectDomHandle(type) {
-    setTimeout(() => {
-        if (type === 1) {
-            $('#sheetList')
-                .next()
-                .show();
-        } else {
-            updateExcelSheetListDomHandle('', []);
-            $('#sheetList')
-                .next()
-                .hide();
-        }
-    }, 16);
+    if (type === 1) {
+        $('#sheetListItem').show();
+    } else {
+        updateExcelSheetListDomHandle('', []);
+        $('#sheetListItem').hide();
+    }
 }
 
 /**

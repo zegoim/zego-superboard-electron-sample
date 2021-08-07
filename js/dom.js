@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-07 02:39:34
+ * @LastEditTime: 2021-08-07 10:46:22
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -129,6 +129,8 @@ function updatePageCountDomHandle(pageCount) {
  */
 function updateCurrPageDomHandle(currPage) {
     $('#currPage').html(currPage);
+    $('.thumb-item').removeClass('active');
+    $('.thumb-item:nth-of-type(' + currPage + ')').addClass('active');
 }
 
 /**

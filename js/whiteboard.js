@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-08 18:50:39
+ * @LastEditTime: 2021-08-09 00:09:08
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -137,7 +137,6 @@ async function createWhiteboardView() {
 
         querySuperBoardSubViewList();
         updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
-        toggleStepDomHandle(2);
         toggleThumbBtnDomHandle(2);
     } catch (error) {}
 }
@@ -160,9 +159,6 @@ async function createFileView(fileID) {
 
         querySuperBoardSubViewList();
         updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
-        toggleStepDomHandle(
-            zegoSuperBoardSubViewModel.fileType === 512 || zegoSuperBoardSubViewModel.fileType === 4096 ? 1 : 2
-        );
         toggleThumbBtnDomHandle(
             zegoSuperBoardSubViewModel.fileType === 1 ||
                 zegoSuperBoardSubViewModel.fileType === 8 ||
@@ -259,23 +255,27 @@ function flipToPage(page) {
 }
 
 /**
- * @description: 设置根据类型
- * @param {*} toolType 根据类型
+ * @description: 设置工具类型
+ * @param {*} toolType 工具类型
  * @param {*} event event
  * @return {*}
  */
 function setToolType(toolType, event) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    if (!zegoSuperBoardSubView) return;
+
     if (toolType === 256) {
-        var zegoSuperBoardSubViewModel = zegoSuperBoard
-            .getSuperBoardView()
-            .getCurrentSuperBoardSubView()
-            .getModel();
+        var zegoSuperBoardSubViewModel = zegoSuperBoardSubView.getModel();
         // 非动态 PPT、自定义 H5 不允许使用点击工具
         if (zegoSuperBoardSubViewModel.fileType !== 512 && zegoSuperBoardSubViewModel.fileType !== 4096) return;
     }
 
     if (toolType !== undefined) {
         zegoSuperBoard.setToolType(toolType);
+        if (toolType === 512) {
+            // 默认第一个自定义图形
+            setCustomGraph(0, event);
+        }
     } else {
         // 默认矩形
         zegoSuperBoard.setToolType(8);
@@ -283,28 +283,61 @@ function setToolType(toolType, event) {
     updateActiveToolDomHandle(toolType, event);
 }
 
-// 画笔粗细
+/**
+ * @description: 自定义图形工具下设置当前自定义图形
+ * @param {*} index 自定义图形下标
+ * @param {*} event event
+ * @return {*}
+ */
+function setCustomGraph(index, event) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    if (!zegoSuperBoardSubView) return;
+    zegoSuperBoardSubView.addImage(1, 0, 0, customGraphList[index]);
+
+    updateActiveGraphDomHandle(index, event);
+}
+
+/**
+ * @description: 设置画笔粗细
+ * @param {*} brushSize 画笔粗细
+ * @param {*} event event
+ * @return {*}
+ */
 function setBrushSize(brushSize, event) {
     zegoSuperBoard.setBrushSize(brushSize);
 
     updateActiveBrushSizeDomHandle(event);
 }
 
-// 画笔颜色
+/**
+ * @description: 设置画笔颜色
+ * @param {*} color 颜色
+ * @param {*} event event
+ * @return {*}
+ */
 function setBrushColor(color, event) {
     zegoSuperBoard.setBrushColor(color);
 
     updateActiveBrushColorDomHandle(event);
 }
 
-// 文本大小
+/**
+ * @description: 设置文本大小
+ * @param {*} fontSize 文本大小
+ * @param {*} event event
+ * @return {*}
+ */
 function setFontSize(fontSize, event) {
     zegoSuperBoard.setFontSize(fontSize);
 
     updateActiveFontSizeDomHandle(event);
 }
 
-// 文本粗体
+/**
+ * @description: 设置文本粗体
+ * @param {*} event event
+ * @return {*}
+ */
 function setFontBold(event) {
     var bold = zegoSuperBoard.isFontBold();
     zegoSuperBoard.setFontBold(!bold);
@@ -312,7 +345,11 @@ function setFontBold(event) {
     updateActiveFontBoldHandle(event);
 }
 
-// 文本斜体
+/**
+ * @description: 设置文本斜体
+ * @param {*} event event
+ * @return {*}
+ */
 function setFontItalic(event) {
     var italic = zegoSuperBoard.isFontItalic();
     zegoSuperBoard.setFontItalic(!italic);
@@ -414,16 +451,23 @@ async function addImage(type) {
         positionY = 0,
         address;
     if (type === 1) {
+        address = layui.form.val('form1').customGraphUrl;
+        if (customGraphList.includes(address)) {
+            // 已存在
+            // 设置工具为自定义图形
+            return;
+        }
     } else {
     }
 
     try {
-        await zegoSuperBoardSubView.addImage(type, positionX, positionY, address);
+        await zegoSuperBoardSubView.addImage(type, positionX, positionY, address, toast);
         if (type === 1) {
+            // 添加自定义图形到列表、设置工具为自定义图形
         } else {
         }
-    } catch (error) {
-        debugger;
+    } catch (errorData) {
+        toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
     }
 }
 
@@ -501,11 +545,9 @@ layui.form.on('select(whiteboardList)', async function(data) {
         toggleSheetSelectDomHandle(2);
     }
 
-    zegoSuperBoardSubViewModel.fileType === 512 ||
-        (zegoSuperBoardSubViewModel.fileType === 4096 &&
-            toggleStepDomHandle(
-                zegoSuperBoardSubViewModel.fileType === 512 || zegoSuperBoardSubViewModel.fileType === 4096 ? 1 : 2
-            ));
+    toggleStepDomHandle(
+        zegoSuperBoardSubViewModel.fileType === 512 || zegoSuperBoardSubViewModel.fileType === 4096 ? 1 : 2
+    );
     toggleThumbBtnDomHandle(
         zegoSuperBoardSubViewModel.fileType === 1 ||
             zegoSuperBoardSubViewModel.fileType === 8 ||

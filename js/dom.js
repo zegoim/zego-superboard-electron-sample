@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-08 18:06:27
+ * @LastEditTime: 2021-08-09 00:14:15
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -279,6 +279,7 @@ function updateActiveToolDomHandle(type, event) {
         case 64:
             $('.tool-item').removeClass('active');
             $('.pencil-text-setting').removeClass('active');
+            $('.custom-graph-setting').removeClass('active');
             $(event.currentTarget).addClass('active');
             break;
         case 1:
@@ -286,6 +287,7 @@ function updateActiveToolDomHandle(type, event) {
         case undefined: // 图形
             $('.tool-item').removeClass('active');
             $('.pencil-text-setting').removeClass('active');
+            $('.custom-graph-setting').removeClass('active');
             $(event.currentTarget)
                 .addClass('active')
                 .find('.pencil-text-setting')
@@ -301,6 +303,14 @@ function updateActiveToolDomHandle(type, event) {
             $('.graph-style-item').removeClass('active');
             $('.graph-style-item:nth-of-type(' + (type === 8 ? 1 : type === 16 ? 2 : 3) + ')').addClass('active');
             break;
+        case 512: // 自定义图形
+            $('.tool-item').removeClass('active');
+            $('.pencil-text-setting').removeClass('active');
+            $(event.currentTarget)
+                .addClass('active')
+                .find('.custom-graph-setting')
+                .addClass('active');
+            break;
         default:
             break;
     }
@@ -315,6 +325,18 @@ function resetToolTypeDomHandle() {
     $('.tool-item').removeClass('active');
     $('.pencil-text-setting').removeClass('active');
     $('.tool-item:nth-of-type(5)').addClass('active');
+}
+
+/**
+ * @description: 更新当前自定义图形
+ * @param {*} index 下标
+ * @param {*} event event
+ * @return {*}
+ */
+function updateActiveGraphDomHandle(index, event) {
+    event.stopPropagation();
+    $('.custom-graph-item').removeClass('active');
+    $('.custom-graph-item:nth-of-type(' + (index + 1) + ')').addClass('active');
 }
 
 /**
@@ -468,7 +490,18 @@ $('.inivate-btn').click(function(event) {
     $('#showRoomEnv').html(zegoConfig.env == 1 ? '中国内地' : '海外');
 });
 
-// 组织事件
+// 阻止事件
 $('.pencil-text-setting').click(function(event) {
     event.stopPropagation();
+});
+$('.custom-graph-setting').click(function(event) {
+    event.stopPropagation();
+});
+
+// 点击空白处关闭白板工具弹出框
+$(document).click(function() {
+    if (!$(this).parents('.tool-item').length > 0) {
+        $('.pencil-text-setting').removeClass('active');
+        $('.custom-graph-setting').removeClass('active');
+    }
 });

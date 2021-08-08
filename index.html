@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-08 18:46:05
+ * @LastEditTime: 2021-08-09 00:06:43
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -1833,7 +1833,7 @@
                   </div>
                 </div>
               </li>
-              <!-- <li class="tool-item" data-toggle="tooltip" data-placement="right" title="自定义图形">
+              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="自定义图形" onclick="setToolType(512,event)">
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <defs>
@@ -1854,16 +1854,21 @@
                     <circle class="hover-fill" fill="#b1b4bb" cx="13.5" cy="12.5" r="4.5"></circle>
                   </svg>
                 </div>
-                <div class="custom-graph-setting">
-                  <ul>
-                    <li class="custom-graph-item"></li>
-                    <li class="custom-graph-item"></li>
-                    <li class="custom-graph-item"></li>
-                    <li class="custom-graph-item"></li>
-                    <li class="custom-graph-item"></li>
+                  <ul class="custom-graph-setting">
+                    <li data-index="0" class="custom-graph-item active" onclick="setCustomGraph(0,event)">
+                      <img src="https://storage.zego.im/goclass/wbpic/diamond.svg" alt="">
+                    </li>
+                    <li data-index="1" class="custom-graph-item" onclick="setCustomGraph(1,event)">
+                      <img src="https://storage.zego.im/goclass/wbpic/star.svg" alt="">
+                    </li>
+                    <li data-index="2" class="custom-graph-item" onclick="setCustomGraph(2,event)">
+                      <img src="https://storage.zego.im/goclass/wbpic/axis.svg" alt="">
+                    </li>
+                    <li data-index="3" class="custom-graph-item" onclick="setCustomGraph(3,event)">
+                      <img src="https://storage.zego.im/goclass/wbpic/chemical_instrument.svg" alt="">
+                    </li>
                   </ul>
-                </div>
-              </li> -->
+              </li>
               <li
                 class="tool-item"
                 data-toggle="tooltip"

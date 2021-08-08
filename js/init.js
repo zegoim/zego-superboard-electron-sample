@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-08 18:39:57
+ * @LastEditTime: 2021-08-08 23:00:30
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -62,6 +62,14 @@ var seqMap = {
     cache: 0,
     saveImg: 1 // 白板快照索引
 };
+
+var customGraphList = [
+    'https://storage.zego.im/goclass/wbpic/diamond.svg',
+    'https://storage.zego.im/goclass/wbpic/star.svg',
+    'https://storage.zego.im/goclass/wbpic/axis.svg',
+    'https://storage.zego.im/goclass/wbpic/chemical_instrument.svg'
+]; // 自定义图形列表
+
 var uploadFileTipsMap = {
     1: '上传中',
     2: '已上传',
@@ -71,6 +79,15 @@ var uploadFileTipsMap = {
     32: '转换失败',
     64: '取消上传'
 }; // 上传状态
+
+var imageErrorTipsMap = {
+    3000002: '参数错误',
+    3000005: '下载失败',
+    3030008: '图片大小超过限制，请重新选择',
+    3030009: '图片格式暂不支持',
+    3030010: 'url地址错误或无效'
+}; // 自定义图形、图片上传错误
+
 var resizeTicking = false; // 自适应执行开关
 var selectedH5File = null; // 当前选择的 H5 压缩包文件
 

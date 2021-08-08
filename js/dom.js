@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-09 00:14:15
+ * @LastEditTime: 2021-08-09 01:15:25
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -459,6 +459,25 @@ function loading(content) {
  */
 function closeLoading() {
     layui.layer.closeAll();
+}
+
+/**
+ * @description: 追加自定义图形
+ * @param {*} address 自定义图形地址
+ * @return {*}
+ */
+function appendGraphDomHandle(address) {
+    var $str =
+        '<li data-index="' +
+        (customGraphList.length - 1) +
+        '" class="custom-graph-item" onclick="setCustomGraph(' +
+        (customGraphList.length - 1) +
+        ',event)"><img src="' +
+        address +
+        '" alt=""></li>';
+    $('.custom-graph-setting').append($str);
+    // 更新尺寸
+    $('.custom-graph-setting').css('width', 12 + 46 * Math.ceil(customGraphList.length / 4) + 'px');
 }
 
 // 绑定打开上传文件选项

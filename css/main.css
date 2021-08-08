@@ -336,10 +336,13 @@
   background-color: #fff;
   display: none;
   flex-direction: column;
+  flex-wrap: wrap;
   border-radius: 6px;
   box-shadow: 0 10px 30px 0 rgb(0 0 0 / 5%);
   padding: 6px;
+  height: 196px;
 }
+
 .custom-graph-setting.active {
   display: flex;
 }

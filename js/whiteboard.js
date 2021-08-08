@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 00:09:08
+ * @LastEditTime: 2021-08-09 02:18:28
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -442,41 +442,88 @@ function clearSelected() {
 
 /**
  * @desc: 上传自定义图形、图片
- * @param type 0: 插入图片 1: 自定义图形
+ * @param type 1: 自定义图形 2: 插入图片 URL 3: 本地选择插入图片
  */
 async function addImage(type) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
-    var positionX = 0,
-        positionY = 0,
-        address;
+
+    var address;
     if (type === 1) {
         address = layui.form.val('form1').customGraphUrl;
-        if (customGraphList.includes(address)) {
-            // 已存在
-            // 设置工具为自定义图形
-            return;
+        if (!address) return toast('请输入 URL');
+        var index = customGraphList.findIndex(function(element) {
+            return element === address;
+        });
+        try {
+            await zegoSuperBoardSubView.addImage(1, 0, 0, address, toast);
+            toast('上传成功');
+            if (index === -1) {
+                // 不存在 -> 添加
+                customGraphList.push(address);
+                appendGraphDomHandle(address);
+            }
+        } catch (errorData) {
+            toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
+        }
+    } else if (type === 2) {
+        address = layui.form.val('form1').customImageUrl;
+        if (!address) return toast('请输入 URL');
+        try {
+            await zegoSuperBoardSubView.addImage(0, 0, 0, address, toast);
+            toast('上传成功');
+        } catch (errorData) {
+            toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
         }
     } else {
-    }
-
-    try {
-        await zegoSuperBoardSubView.addImage(type, positionX, positionY, address, toast);
-        if (type === 1) {
-            // 添加自定义图形到列表、设置工具为自定义图形
-        } else {
+        if (!selectedInsetImgFile) return toast('请先选择文件');
+        address = selectedInsetImgFile;
+        try {
+            await zegoSuperBoardSubView.addImage(0, 0, 0, address, toast);
+            toast('上传成功');
+        } catch (errorData) {
+            toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
         }
+    }
+}
+
+/**
+ * @description: 设置背景图
+ * @param {*} type 1: 内置网络图片 2: 输入网络图片 URL 3: 本地选择的背景图文件 selectedBgImgFile
+ * @return {*}
+ */
+async function setBackgroundImage(type) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    if (!zegoSuperBoardSubView) return;
+
+    var file;
+    var data = layui.form.val('form1');
+    var imageFitMode = +data.imageFitMode;
+    if (type === 1) {
+        file = data.bgUrl;
+    } else if (type === 2) {
+        file = data.customBgUrl;
+        if (!file) return toast('请输入 URL');
+    } else {
+        if (!selectedBgImgFile) return toast('请先选择文件');
+        file = selectedBgImgFile;
+    }
+    try {
+        await zegoSuperBoardSubView.setBackgroundImage(file, imageFitMode, toast);
     } catch (errorData) {
         toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
     }
 }
 
 /**
- * @description: 设置背景图
+ * @description: 清除背景图
  * @param {*}
  * @return {*}
  */
-function setBackgroundImage() {}
+function clearBackgroundImage() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.clearBackgroundImage();
+}
 
 /**
  * @description: 上传 H5 文件
@@ -520,6 +567,35 @@ function cacheFile() {
     var fileID = data.fileID;
     if (!fileID) return toast('请输入文件 ID');
     zegoSuperBoard.cacheFile(fileID);
+}
+
+/**
+ * @description: 选择静态、动态文件
+ * @param {*} file
+ * @param {*} renderType
+ * @return {*}
+ */
+function uploadFile(event, renderType) {
+    var file = event.target.files[0];
+    if (!file) {
+        toast('请先选择文件');
+        return;
+    }
+    // 初始化文件选择
+    $('#staticFile').val('');
+    $('#dynamicFile').val('');
+
+    zegoSuperBoard
+        .uploadFile(file, renderType, function(res) {
+            seqMap.upload = res.fileHash || res.seq;
+            toast(uploadFileTipsMap[res.status] + (res.uploadPercent || ''));
+        })
+        .then(function(fileID) {
+            createFileView(fileID);
+            // 关闭弹框
+            $('#filelistModal').modal('hide');
+        })
+        .catch(toast);
 }
 
 // 切换白板
@@ -581,6 +657,11 @@ layui.form.on('select(zoomList)', function(data) {
 // 开启笔锋
 layui.form.on('switch(handwriting)', function(data) {
     zegoSuperBoard.enableHandwriting(this.checked);
+});
+
+// 设置、切换背景图
+layui.form.on('select(bgUrl)', function(data) {
+    setBackgroundImage(1);
 });
 
 // 不可操作模式
@@ -678,35 +759,6 @@ layui.form.on('switch(responseScale)', function(data) {
     zegoSuperBoard.enableResponseScale(this.checked);
 });
 
-/**
- * @description: 选择静态、动态文件
- * @param {*} file
- * @param {*} renderType
- * @return {*}
- */
-function uploadFile(event, renderType) {
-    var file = event.target.files[0];
-    if (!file) {
-        toast('请先选择文件');
-        return;
-    }
-    // 初始化文件选择
-    $('#staticFile').val('');
-    $('#dynamicFile').val('');
-
-    zegoSuperBoard
-        .uploadFile(file, renderType, function(res) {
-            seqMap.upload = res.fileHash || res.seq;
-            toast(uploadFileTipsMap[res.status] + (res.uploadPercent || ''));
-        })
-        .then(function(fileID) {
-            createFileView(fileID);
-            // 关闭弹框
-            $('#filelistModal').modal('hide');
-        })
-        .catch(toast);
-}
-
 // 选择 H5 文件
 layui.upload.render({
     elem: '#selectH5', //绑定元素
@@ -718,6 +770,36 @@ layui.upload.render({
         obj.preview(function(index, file, result) {
             // file 为当前选中文件
             selectedH5File = file;
+            toast('选择文件成功');
+        });
+    }
+});
+
+// 选择背景图片
+layui.upload.render({
+    elem: '#selectBgImage', //绑定元素
+    accept: 'images',
+    auto: false,
+    choose: function(obj) {
+        // 选择完文件
+        obj.preview(function(index, file, result) {
+            // file 为当前选中文件
+            selectedBgImgFile = file;
+            toast('选择文件成功');
+        });
+    }
+});
+
+// 选择插入图片
+layui.upload.render({
+    elem: '#selectImage', //绑定元素
+    accept: 'images',
+    auto: false,
+    choose: function(obj) {
+        // 选择完文件
+        obj.preview(function(index, file, result) {
+            // file 为当前选中文件
+            selectedInsetImgFile = file;
             toast('选择文件成功');
         });
     }

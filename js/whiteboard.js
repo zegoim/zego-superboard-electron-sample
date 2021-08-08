@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 02:18:28
+ * @LastEditTime: 2021-08-09 02:25:35
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -13,6 +13,7 @@
  * @return {*}
  */
 function onSuperBoardEventHandle() {
+    zegoSuperBoard.on('error', toast);
     zegoSuperBoard.on('superBoardSubViewScrolled', function(uniqueID, page, step) {
         console.warn('SuperBoard Demo superBoardSubViewScrolled', ...arguments);
         var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -37,6 +38,12 @@ function onSuperBoardEventHandle() {
     zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
         querySuperBoardSubViewList();
+    });
+    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function(data) {
+        console.warn('SuperBoard Demo remoteSuperBoardAuthChanged', ...arguments);
+    });
+    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function(data) {
+        console.warn('SuperBoard Demo remoteSuperBoardGraphicAuthChanged', ...arguments);
     });
 }
 

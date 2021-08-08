@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-09 01:15:25
+ * @LastEditTime: 2021-08-09 02:42:19
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -517,8 +517,8 @@ $('.custom-graph-setting').click(function(event) {
     event.stopPropagation();
 });
 
-// 点击空白处关闭白板工具弹出框
-$(document).click(function() {
+// 点击空白处关闭白板工具弹出框、关闭缩略图弹框
+$(document).click(function(event) {
     if (!$(this).parents('.tool-item').length > 0) {
         $('.pencil-text-setting').removeClass('active');
         $('.custom-graph-setting').removeClass('active');

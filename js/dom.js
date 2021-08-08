@@ -1,11 +1,17 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-08 12:42:11
+ * @LastEditTime: 2021-08-08 18:06:27
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
  */
+
+// bootstrap tooltip、popover 初始化
+$(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+    $('#openPopover').popover();
+});
 
 /**
  * @description: 更新文件列表
@@ -400,6 +406,44 @@ function updateUnOperatedModeDomHandle(type) {
         unOperatedMode: type === 1 ? 'on' : ''
     });
 }
+
+/**
+ * @description: 提示框
+ * @param {*}
+ * @return {*}
+ */
+function toast(content) {
+    content = typeof content === 'string' ? content : JSON.stringify(content);
+    layui.layer.msg(content);
+}
+
+/**
+ * @description: 打开 loading
+ * @param {*} content
+ * @return {*}
+ */
+function loading(content) {
+    content = typeof content === 'string' ? content : JSON.stringify(content);
+    layui.layer.open({
+        type: 3,
+        content
+    });
+}
+
+/**
+ * @description: 关闭 loading
+ * @param {*}
+ * @return {*}
+ */
+function closeLoading() {
+    layui.layer.closeAll();
+}
+
+// 绑定打开上传文件选项
+layui.dropdown.render({
+    elem: '#openPopover',
+    content: $('#uploadPopoverContent').html()
+});
 
 // 绑定预览事件
 $('#thumb-button').click(function(event) {

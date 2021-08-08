@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-08 12:45:21
+ * @LastEditTime: 2021-08-08 18:50:39
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -94,9 +94,9 @@ function reloadView(type) {
         // 自定义尺寸
         var width_set = +layui.form.val('form2').parentWidth;
         var height_set = +layui.form.val('form2').parentHeight;
-        if (!width || !height || width < 1 || height < 1) return alert('请输入有效的宽高值');
+        if (!width || !height || width < 1 || height < 1) return toast('请输入有效的宽高值');
         if (width_set > width || height_set > height) {
-            return alert('请输入小于当前容器尺寸的宽高值');
+            return toast('请输入小于当前容器尺寸的宽高值');
         }
         width = width_set;
         height = height_set;
@@ -434,6 +434,50 @@ async function addImage(type) {
  */
 function setBackgroundImage() {}
 
+/**
+ * @description: 上传 H5 文件
+ * @param {*}
+ * @return {*}
+ */
+async function uploadH5File() {
+    // 判断file、width、height、pageCount、h5ThumbnailList
+    if (!selectedH5File) {
+        return toast('未选择文件');
+    }
+    var data = layui.form.val('form3');
+    var h5Width = data.h5Width;
+    var h5Height = data.h5Height;
+    var h5PageCount = data.h5PageCount;
+    var h5ThumbnailList = data.h5ThumbnailListStr ? data.h5ThumbnailListStr.split(',') : null;
+    if (!h5Width || !h5Height || !h5PageCount || !h5ThumbnailList) {
+        return toast('文件参数有误');
+    }
+
+    var config = {
+        width: h5Width,
+        height: h5Height,
+        pageCount: h5PageCount,
+        thumbnailList: h5ThumbnailList
+    };
+    try {
+        var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, toast);
+        // 创建文件白板
+        createFileView(fileID);
+    } catch (error) {}
+}
+
+/**
+ * @description: 文件预加载
+ * @param {*}
+ * @return {*}
+ */
+function cacheFile() {
+    var data = layui.form.val('form3');
+    var fileID = data.fileID;
+    if (!fileID) return toast('请输入文件 ID');
+    zegoSuperBoard.cacheFile(fileID);
+}
+
 // 切换白板
 layui.form.on('select(whiteboardList)', async function(data) {
     var uniqueID = data.value;
@@ -592,6 +636,51 @@ layui.form.on('switch(responseScale)', function(data) {
     zegoSuperBoard.enableResponseScale(this.checked);
 });
 
+/**
+ * @description: 选择静态、动态文件
+ * @param {*} file
+ * @param {*} renderType
+ * @return {*}
+ */
+function uploadFile(event, renderType) {
+    var file = event.target.files[0];
+    if (!file) {
+        toast('请先选择文件');
+        return;
+    }
+    // 初始化文件选择
+    $('#staticFile').val('');
+    $('#dynamicFile').val('');
+
+    zegoSuperBoard
+        .uploadFile(file, renderType, function(res) {
+            seqMap.upload = res.fileHash || res.seq;
+            toast(uploadFileTipsMap[res.status] + (res.uploadPercent || ''));
+        })
+        .then(function(fileID) {
+            createFileView(fileID);
+            // 关闭弹框
+            $('#filelistModal').modal('hide');
+        })
+        .catch(toast);
+}
+
+// 选择 H5 文件
+layui.upload.render({
+    elem: '#selectH5', //绑定元素
+    accept: 'file',
+    exts: 'zip',
+    auto: false,
+    choose: function(obj) {
+        // 选择完文件
+        obj.preview(function(index, file, result) {
+            // file 为当前选中文件
+            selectedH5File = file;
+            toast('选择文件成功');
+        });
+    }
+});
+
 // 绑定创建文件白板事件
 $('#file-list').click(function(event) {
     // 限频
@@ -668,6 +757,6 @@ $('#thumb-button').click(function() {
         var thumbnailUrlList = zegoSuperBoardSubView.getThumbnailUrlList();
         updateThumbListDomHandle(thumbnailUrlList, zegoSuperBoardSubView.getCurrentPage());
     } else {
-        alert('获取缩略图仅支持“PDF，PPT，动态PPT，H5”文件格式');
+        toast('获取缩略图仅支持“PDF，PPT，动态PPT，H5”文件格式');
     }
 });

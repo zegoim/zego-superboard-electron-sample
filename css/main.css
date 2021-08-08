@@ -870,6 +870,65 @@
   background-color: #edeff3;
 }
 
+/* 上传文件设置 */
+.upload-setting {
+  width: 232px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  box-shadow: 0 10px 30px 0 rgb(0 0 0 / 5%);
+}
+
+.upload-setting .upload-box {
+  padding: 8px 8px;
+  text-align: left;
+  font-size: 12px;
+  color: #999;
+  overflow: hidden;
+  word-break: break-all;
+}
+
+.upload-setting .upload-box p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  margin-bottom: 6px;
+  color: #18191a;
+}
+
+.upload-setting .static,
+.upload-setting .dymic {
+  position: relative;
+  padding: 8px 8px;
+}
+
+.upload-setting .static:hover,
+.upload-setting .dymic:hover {
+  background-color: #f3f6ff;
+  border-radius: 4px;
+}
+
+.upload-setting .static-upload-input,
+.upload-setting .dymic-upload-input {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.upload-setting .divider {
+  width: 200px;
+  margin: 8px 0 8px 8px;
+  background-color: #edeff3;
+  display: block;
+  height: 1px;
+  position: relative;
+}
+
 /* 媒体查询 */
 /* 超小屏幕（手机，小于 768px） */
 @media (max-width: 768px) {

@@ -1,15 +1,11 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-07 23:57:02
+ * @LastEditTime: 2021-08-08 18:39:57
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
  */
-
-$('body').tooltip({
-    selector: '[data-toggle="tooltip"]'
-});
 
 var isTouch = 'ontouchstart' in window; // 当前是否是触摸设备
 
@@ -66,7 +62,17 @@ var seqMap = {
     cache: 0,
     saveImg: 1 // 白板快照索引
 };
+var uploadFileTipsMap = {
+    1: '上传中',
+    2: '已上传',
+    4: '排队中',
+    8: '转换中',
+    16: '转换成功',
+    32: '转换失败',
+    64: '取消上传'
+}; // 上传状态
 var resizeTicking = false; // 自适应执行开关
+var selectedH5File = null; // 当前选择的 H5 压缩包文件
 
 var userList = []; // 房间内成员列表
 

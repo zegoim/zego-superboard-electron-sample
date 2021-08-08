@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-07 23:13:48
+ * @LastEditTime: 2021-08-08 12:42:11
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -367,6 +367,38 @@ function updateActiveFontBoldHandle(event) {
 function updateActiveFontItalicHandle(event) {
     event.stopPropagation();
     $(event.currentTarget).toggleClass('active');
+}
+
+/**
+ * @description: 开启、关闭滚动、绘制、放缩操作模式
+ * @param {*} type 1: 开启 2: 关闭
+ * @return {*}
+ */
+function updateOperatedModeDomHandle(type) {
+    if (type === 1) {
+        layui.form.val('form2', {
+            drawMode: 'on',
+            scrollMode: 'on',
+            zoomMode: 'on'
+        });
+    } else {
+        layui.form.val('form2', {
+            drawMode: '',
+            scrollMode: '',
+            zoomMode: ''
+        });
+    }
+}
+
+/**
+ * @description: 开启、关闭不可操作模式
+ * @param {*} type 1: 开启 2: 关闭
+ * @return {*}
+ */
+function updateUnOperatedModeDomHandle(type) {
+    layui.form.val('form2', {
+        unOperatedMode: type === 1 ? 'on' : ''
+    });
 }
 
 // 绑定预览事件

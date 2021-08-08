@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-08 01:00:54
+ * @LastEditTime: 2021-08-08 12:45:21
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -500,25 +500,86 @@ layui.form.on('switch(handwriting)', function(data) {
 // 不可操作模式
 layui.form.on('switch(unOperatedMode)', function(data) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.setOperationMode(val);
+    if (!zegoSuperBoardSubView) return;
+
+    var operationMode;
+    if (this.checked) {
+        operationMode = 1;
+        updateOperatedModeDomHandle(2);
+    } else {
+        // 可操作模式下，默认开启滚动、绘制、缩放
+        operationMode = 14;
+        updateOperatedModeDomHandle(1);
+    }
+
+    console.warn('SuperBoard Demo operationMode', operationMode);
+    zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
 // 滚动模式
 layui.form.on('switch(scrollMode)', function(data) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.setOperationMode(val);
+    if (!zegoSuperBoardSubView) return;
+
+    var data = layui.form.val('form2');
+    var drawMode = data.drawMode === 'on' ? 4 : 0;
+    var scrollMode = data.scrollMode === 'on' ? 2 : 0;
+    var zoomMode = data.zoomMode === 'on' ? 8 : 0;
+    var operationMode = drawMode | scrollMode | zoomMode;
+    if (!operationMode) {
+        // 滚动、绘制、放缩均不开启即不可操作模式
+        operationMode = 1;
+        updateUnOperatedModeDomHandle(1);
+    } else {
+        updateUnOperatedModeDomHandle(2);
+    }
+
+    console.warn('SuperBoard Demo operationMode', operationMode);
+    zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
 // 绘制模式
 layui.form.on('switch(drawMode)', function(data) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.setOperationMode(val);
+    if (!zegoSuperBoardSubView) return;
+
+    var data = layui.form.val('form2');
+    var drawMode = data.drawMode === 'on' ? 4 : 0;
+    var scrollMode = data.scrollMode === 'on' ? 2 : 0;
+    var zoomMode = data.zoomMode === 'on' ? 8 : 0;
+    var operationMode = drawMode | scrollMode | zoomMode;
+    if (!operationMode) {
+        // 滚动、绘制、放缩均不开启即不可操作模式
+        operationMode = 1;
+        updateUnOperatedModeDomHandle(1);
+    } else {
+        updateUnOperatedModeDomHandle(2);
+    }
+
+    console.warn('SuperBoard Demo operationMode', operationMode);
+    zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
 // 放缩模式
 layui.form.on('switch(zoomMode)', function(data) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.setOperationMode(val);
+    if (!zegoSuperBoardSubView) return;
+
+    var data = layui.form.val('form2');
+    var drawMode = data.drawMode === 'on' ? 4 : 0;
+    var scrollMode = data.scrollMode === 'on' ? 2 : 0;
+    var zoomMode = data.zoomMode === 'on' ? 8 : 0;
+    var operationMode = drawMode | scrollMode | zoomMode;
+    if (!operationMode) {
+        // 滚动、绘制、放缩均不开启即不可操作模式
+        operationMode = 1;
+        updateUnOperatedModeDomHandle(1);
+    } else {
+        updateUnOperatedModeDomHandle(2);
+    }
+
+    console.warn('SuperBoard Demo operationMode', operationMode);
+    zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
 // 同步缩放

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-07 23:53:26
+ * @LastEditTime: 2021-08-09 15:53:01
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -171,7 +171,7 @@ function logoutRoom() {
     // 清空成员列表
     userList = [];
 
-    togglePageHandle(2);
+    togglePageDomHandle(2);
 }
 
 // 绑定登录房间事件

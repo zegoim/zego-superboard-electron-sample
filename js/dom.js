@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-09 02:42:19
+ * @LastEditTime: 2021-08-09 15:55:55
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -45,7 +45,7 @@ function updateFileListDomHandle() {
  * @param {*} type 1: 显示 2: 隐藏
  * @return {*}
  */
-function togglePageHandle(type) {
+function togglePageDomHandle(type) {
     if (type === 1) {
         // 显示房间页
         $('#room-page').css('display', 'flex');
@@ -430,6 +430,34 @@ function updateUnOperatedModeDomHandle(type) {
 }
 
 /**
+ * @description: 追加自定义图形
+ * @param {*} address 自定义图形地址
+ * @return {*}
+ */
+function appendGraphDomHandle(address) {
+    var $str =
+        '<li data-index="' +
+        (customGraphList.length - 1) +
+        '" class="custom-graph-item" onclick="setCustomGraph(' +
+        (customGraphList.length - 1) +
+        ',event)"><img src="' +
+        address +
+        '" alt=""></li>';
+    $('.custom-graph-setting').append($str);
+    // 更新尺寸
+    $('.custom-graph-setting').css('width', 12 + 46 * Math.ceil(customGraphList.length / 4) + 'px');
+}
+
+/**
+ * @description: 获取表单当前数据
+ * @param {*} form form name
+ * @return {*}
+ */
+function getFormData(form) {
+    return layui.form.val(form);
+}
+
+/**
  * @description: 提示框
  * @param {*}
  * @return {*}
@@ -459,25 +487,6 @@ function loading(content) {
  */
 function closeLoading() {
     layui.layer.closeAll();
-}
-
-/**
- * @description: 追加自定义图形
- * @param {*} address 自定义图形地址
- * @return {*}
- */
-function appendGraphDomHandle(address) {
-    var $str =
-        '<li data-index="' +
-        (customGraphList.length - 1) +
-        '" class="custom-graph-item" onclick="setCustomGraph(' +
-        (customGraphList.length - 1) +
-        ',event)"><img src="' +
-        address +
-        '" alt=""></li>';
-    $('.custom-graph-setting').append($str);
-    // 更新尺寸
-    $('.custom-graph-setting').css('width', 12 + 46 * Math.ceil(customGraphList.length / 4) + 'px');
 }
 
 // 绑定打开上传文件选项
@@ -513,12 +522,13 @@ $('.inivate-btn').click(function(event) {
 $('.pencil-text-setting').click(function(event) {
     event.stopPropagation();
 });
+
 $('.custom-graph-setting').click(function(event) {
     event.stopPropagation();
 });
 
 // 点击空白处关闭白板工具弹出框、关闭缩略图弹框
-$(document).click(function(event) {
+$(body).click(function(event) {
     if (!$(this).parents('.tool-item').length > 0) {
         $('.pencil-text-setting').removeClass('active');
         $('.custom-graph-setting').removeClass('active');

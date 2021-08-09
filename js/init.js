@@ -135,10 +135,10 @@ async function init() {
         Object.assign(zegoConfig, loginInfo);
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
         await loginRoom();
-        togglePageHandle(1);
+        togglePageDomHandle(1);
     } else {
         // 未登录过，显示登录页
-        togglePageHandle(2);
+        togglePageDomHandle(2);
     }
 
     // 更新房间号

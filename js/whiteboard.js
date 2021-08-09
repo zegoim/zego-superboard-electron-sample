@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 15:43:48
+ * @LastEditTime: 2021-08-09 16:01:06
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -99,8 +99,8 @@ function reloadView(type) {
 
     if (type === 2) {
         // 自定义尺寸
-        var width_set = +layui.form.val('form2').parentWidth;
-        var height_set = +layui.form.val('form2').parentHeight;
+        var width_set = +getFormData('form2').parentWidth;
+        var height_set = +getFormData('form2').parentHeight;
         if (!width || !height || width < 1 || height < 1) return toast('请输入有效的宽高值');
         if (width_set > width || height_set > height) {
             return toast('请输入小于当前容器尺寸的宽高值');
@@ -226,7 +226,7 @@ async function destroySuperBoardSubView(type) {
  * @return {*}
  */
 function setDeferredRenderingTime() {
-    var deferredRenderingTime = layui.form.val('form2').deferredRenderingTime;
+    var deferredRenderingTime = getFormData('form2').deferredRenderingTime;
     if (!deferredRenderingTime) return toast('请输入延时时长');
 
     zegoSuperBoard.setDeferredRenderingTime(+deferredRenderingTime);
@@ -514,7 +514,7 @@ async function addImage(type) {
 
     var address;
     if (type === 1) {
-        address = layui.form.val('form1').customGraphUrl;
+        address = getFormData('form1').customGraphUrl;
         if (!address) return toast('请输入 URL');
         var index = customGraphList.findIndex(function(element) {
             return element === address;
@@ -531,7 +531,7 @@ async function addImage(type) {
             toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
         }
     } else if (type === 2) {
-        address = layui.form.val('form1').customImageUrl;
+        address = getFormData('form1').customImageUrl;
         if (!address) return toast('请输入 URL');
         try {
             await zegoSuperBoardSubView.addImage(0, 0, 0, address, toast);
@@ -561,7 +561,7 @@ async function setBackgroundImage(type) {
     if (!zegoSuperBoardSubView) return;
 
     var file;
-    var data = layui.form.val('form1');
+    var data = getFormData('form1');
     var imageFitMode = +data.imageFitMode;
     if (type === 1) {
         file = data.bgUrl;
@@ -599,7 +599,7 @@ async function uploadH5File() {
     if (!selectedH5File) {
         return toast('未选择文件');
     }
-    var data = layui.form.val('form3');
+    var data = getFormData('form3');
     var h5Width = data.h5Width;
     var h5Height = data.h5Height;
     var h5PageCount = data.h5PageCount;
@@ -629,7 +629,7 @@ async function uploadH5File() {
  * @return {*}
  */
 function cacheFile() {
-    var data = layui.form.val('form3');
+    var data = getFormData('form3');
     var fileID = data.fileID;
     if (!fileID) return toast('请输入文件 ID');
     zegoSuperBoard.cacheFile(fileID);
@@ -754,7 +754,7 @@ layui.form.on('switch(scrollMode)', function(data) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    var data = layui.form.val('form2');
+    var data = getFormData('form2');
     var drawMode = data.drawMode === 'on' ? 4 : 0;
     var scrollMode = data.scrollMode === 'on' ? 2 : 0;
     var zoomMode = data.zoomMode === 'on' ? 8 : 0;
@@ -776,7 +776,7 @@ layui.form.on('switch(drawMode)', function(data) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    var data = layui.form.val('form2');
+    var data = getFormData('form2');
     var drawMode = data.drawMode === 'on' ? 4 : 0;
     var scrollMode = data.scrollMode === 'on' ? 2 : 0;
     var zoomMode = data.zoomMode === 'on' ? 8 : 0;
@@ -798,7 +798,7 @@ layui.form.on('switch(zoomMode)', function(data) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    var data = layui.form.val('form2');
+    var data = getFormData('form2');
     var drawMode = data.drawMode === 'on' ? 4 : 0;
     var scrollMode = data.scrollMode === 'on' ? 2 : 0;
     var zoomMode = data.zoomMode === 'on' ? 8 : 0;
@@ -914,7 +914,7 @@ $('#nextStep').click(function() {
 
 // 设置缩放
 $('.zoom-cut').click(function() {
-    var currZoomLevel = layui.form.val('customForm').zoom;
+    var currZoomLevel = getFormData('customForm').zoom;
     if (currZoomLevel === '1') return;
     var zoom = Number(currZoomLevel) - 0.25;
 
@@ -926,7 +926,7 @@ $('.zoom-cut').click(function() {
 });
 
 $('.zoom-add').click(function() {
-    var currZoomLevel = layui.form.val('customForm').zoom;
+    var currZoomLevel = getFormData('customForm').zoom;
     if (currZoomLevel === '3') return;
     var zoom = Number(currZoomLevel) + 0.25;
 

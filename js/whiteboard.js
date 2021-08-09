@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 15:06:48
+ * @LastEditTime: 2021-08-09 15:22:24
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -191,21 +191,26 @@ async function destroySuperBoardSubView(type) {
         var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
         if (!zegoSuperBoardSubView) return;
         try {
+            loading('销毁中');
             await zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubView.getModel().uniqueID);
             toast('销毁成功');
 
             querySuperBoardSubViewList();
         } catch (errorData) {
+            closeLoading();
             toast(errorData);
         }
     } else {
-        loading('销毁中');
-        var tasks = [];
-        zegoSuperBoard.querySuperBoardSubViewList().then(function(zegoSuperBoardSubViewModel) {
-            tasks.push(zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubViewModel.uniqueID));
-        });
         try {
+            loading('销毁中');
+
+            var tasks = [];
+            var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
+            zegoSuperBoardSubViewModelList.forEach(function(zegoSuperBoardSubViewModel) {
+                tasks.push(zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubViewModel.uniqueID));
+            });
             await Promise.all(tasks);
+            querySuperBoardSubViewList();
             closeLoading();
             toast('销毁成功');
         } catch (errorData) {

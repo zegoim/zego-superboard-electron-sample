@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-09 02:11:46
+ * @LastEditTime: 2021-08-09 14:55:18
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -1833,7 +1833,13 @@
                   </div>
                 </div>
               </li>
-              <li class="tool-item" data-toggle="tooltip" data-placement="right" title="自定义图形" onclick="setToolType(512,event)">
+              <li
+                class="tool-item"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="自定义图形"
+                onclick="setToolType(512,event)"
+              >
                 <div>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <defs>
@@ -1854,20 +1860,20 @@
                     <circle class="hover-fill" fill="#b1b4bb" cx="13.5" cy="12.5" r="4.5"></circle>
                   </svg>
                 </div>
-                  <ul class="custom-graph-setting">
-                    <li data-index="0" class="custom-graph-item active" onclick="setCustomGraph(0,event)">
-                      <img src="https://storage.zego.im/goclass/wbpic/diamond.svg" alt="">
-                    </li>
-                    <li data-index="1" class="custom-graph-item" onclick="setCustomGraph(1,event)">
-                      <img src="https://storage.zego.im/goclass/wbpic/star.svg" alt="">
-                    </li>
-                    <li data-index="2" class="custom-graph-item" onclick="setCustomGraph(2,event)">
-                      <img src="https://storage.zego.im/goclass/wbpic/axis.svg" alt="">
-                    </li>
-                    <li data-index="3" class="custom-graph-item" onclick="setCustomGraph(3,event)">
-                      <img src="https://storage.zego.im/goclass/wbpic/chemical_instrument.svg" alt="">
-                    </li>
-                  </ul>
+                <ul class="custom-graph-setting">
+                  <li data-index="0" class="custom-graph-item active" onclick="setCustomGraph(0,event)">
+                    <img src="https://storage.zego.im/goclass/wbpic/diamond.svg" alt="" />
+                  </li>
+                  <li data-index="1" class="custom-graph-item" onclick="setCustomGraph(1,event)">
+                    <img src="https://storage.zego.im/goclass/wbpic/star.svg" alt="" />
+                  </li>
+                  <li data-index="2" class="custom-graph-item" onclick="setCustomGraph(2,event)">
+                    <img src="https://storage.zego.im/goclass/wbpic/axis.svg" alt="" />
+                  </li>
+                  <li data-index="3" class="custom-graph-item" onclick="setCustomGraph(3,event)">
+                    <img src="https://storage.zego.im/goclass/wbpic/chemical_instrument.svg" alt="" />
+                  </li>
+                </ul>
               </li>
               <li
                 class="tool-item"
@@ -2323,7 +2329,12 @@
                   <button name="selectBgImage" type="button" class="layui-btn layui-btn-sm" id="selectBgImage">
                     选择图片
                   </button>
-                  <button onclick="setBackgroundImage(3)" type="button" class="layui-btn layui-btn-sm" id="uploadBgImage">
+                  <button
+                    onclick="setBackgroundImage(3)"
+                    type="button"
+                    class="layui-btn layui-btn-sm"
+                    id="uploadBgImage"
+                  >
                     上传图片
                   </button>
                 </div>
@@ -2369,6 +2380,32 @@
           <!-- 白板 -->
           <div class="main-feature" data-index="2">
             <form class="layui-form" action="" name="form2" id="form2" lay-filter="form2">
+              <!-- 白板功能 -->
+              <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
+                白板功能
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">销毁</label>
+                <div class="layui-input-block">
+                  <button
+                    onclick="destroySuperBoardSubView(1)"
+                    type="button"
+                    class="layui-btn layui-btn-sm"
+                    style="margin-top: 3px"
+                  >
+                    销毁当前白板
+                  </button>
+                  <button
+                    onclick="destroySuperBoardSubView(2)"
+                    type="button"
+                    class="layui-btn layui-btn-sm"
+                    style="margin-top: 3px"
+                  >
+                    销毁所有白板
+                  </button>
+                </div>
+              </div>
+              <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
               <!-- 白板权限 -->
               <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
                 白板权限

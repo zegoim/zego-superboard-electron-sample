@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 02:25:35
+ * @LastEditTime: 2021-08-09 15:06:48
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -145,7 +145,9 @@ async function createWhiteboardView() {
         querySuperBoardSubViewList();
         updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
         toggleThumbBtnDomHandle(2);
-    } catch (error) {}
+    } catch (errorData) {
+        toast(errorData);
+    }
 }
 
 /**
@@ -174,7 +176,43 @@ async function createFileView(fileID) {
                 ? 1
                 : 2
         );
-    } catch (error) {}
+    } catch (errorData) {
+        toast(errorData);
+    }
+}
+
+/**
+ * @description: 销毁白板
+ * @param {*} type 1: 销毁当前白板 2: 销毁所有白板
+ * @return {*}
+ */
+async function destroySuperBoardSubView(type) {
+    if (type === 1) {
+        var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+        if (!zegoSuperBoardSubView) return;
+        try {
+            await zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubView.getModel().uniqueID);
+            toast('销毁成功');
+
+            querySuperBoardSubViewList();
+        } catch (errorData) {
+            toast(errorData);
+        }
+    } else {
+        loading('销毁中');
+        var tasks = [];
+        zegoSuperBoard.querySuperBoardSubViewList().then(function(zegoSuperBoardSubViewModel) {
+            tasks.push(zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubViewModel.uniqueID));
+        });
+        try {
+            await Promise.all(tasks);
+            closeLoading();
+            toast('销毁成功');
+        } catch (errorData) {
+            closeLoading();
+            toast(errorData);
+        }
+    }
 }
 
 /**
@@ -246,7 +284,9 @@ async function querySuperBoardSubViewList() {
             // 显示白板占位
             togglePlaceholderDomHandle(1);
         }
-    } catch (error) {}
+    } catch (errorData) {
+        toast(errorData);
+    }
 }
 
 /**
@@ -561,7 +601,9 @@ async function uploadH5File() {
         var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, toast);
         // 创建文件白板
         createFileView(fileID);
-    } catch (error) {}
+    } catch (errorData) {
+        toast(errorData);
+    }
 }
 
 /**

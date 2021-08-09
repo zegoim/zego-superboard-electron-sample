@@ -1,15 +1,7 @@
 /*
- * @Author: your name
- * @Date: 2021-08-09 22:12:00
- * @LastEditTime: 2021-08-09 22:12:01
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/operatedMode.js
- */
-/*
  * @Author: ZegoDev
  * @Date: 2021-08-09 21:28:34
- * @LastEditTime: 2021-08-09 22:08:46
+ * @LastEditTime: 2021-08-09 22:13:42
  * @LastEditors: Please set LastEditors
  * @Description: 白板操作模式
  * @FilePath: /superboard/js/operationMode.js

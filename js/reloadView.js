@@ -1,14 +1,13 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 20:04:01
- * @LastEditTime: 2021-08-09 21:20:06
+ * @LastEditTime: 2021-08-09 22:06:21
  * @LastEditors: Please set LastEditors
  * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
  * @FilePath: /superboard/js/reloadView.js
  */
 
 // zegoSuperBoard 为全局 SuperBoard Instance
-// getFormData 获取页面表单输入框元素值，开发者根据实际情况获取
 // toast 为全局提示框，开发者根据实际情况使用相应的提示框
 // parentDomID 容器 ID
 
@@ -67,9 +66,9 @@ function customReloadViewHandle() {
     var width = dom.clientWidth + 2; // +边框
     var height = dom.clientHeight + 2; // +边框
 
-    // 获取自定义尺寸
-    var width_set = +getFormData('form2').parentWidth;
-    var height_set = +getFormData('form2').parentHeight;
+    // 获取自定义尺寸，这里只展示获取方法，开发者根据实际情况获取
+    var width_set = +layui.form.val('form2').parentWidth;
+    var height_set = +layui.form.val('form2').parentHeight;
 
     // 判断当前自定义的尺寸，这里容器有 2px 边框，所以不允许小于 2，可视实际情况而定
     if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return toast('请输入有效的宽高值');

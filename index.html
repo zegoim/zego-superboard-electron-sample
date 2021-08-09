@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-09 21:22:30
+ * @LastEditTime: 2021-08-09 21:32:17
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -2401,28 +2401,18 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">销毁</label>
                 <div class="layui-input-block">
-                  <button
-                    onclick="destroySuperBoardSubView(1)"
-                    type="button"
-                    class="layui-btn layui-btn-sm"
-                    style="margin-top: 3px"
-                  >
+                  <button onclick="destroySuperBoardSubView(1)" type="button" class="layui-btn layui-btn-sm">
                     销毁当前白板
                   </button>
-                  <button
-                    onclick="destroySuperBoardSubView(2)"
-                    type="button"
-                    class="layui-btn layui-btn-sm"
-                    style="margin-top: 3px"
-                  >
+                  <button onclick="destroySuperBoardSubView(2)" type="button" class="layui-btn layui-btn-sm">
                     销毁所有白板
                   </button>
                 </div>
               </div>
               <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
-              <!-- 白板权限 -->
+              <!-- 白板操作模式 -->
               <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
-                白板权限
+                白板操作模式
               </div>
               <!-- 不可操作模式 -->
               <div class="layui-form-item">
@@ -2783,6 +2773,8 @@
   <script src="./js/whiteboard.js"></script>
   <!-- reloadView -->
   <script src="./js/reloadView.js"></script>
+  <!-- operationMode -->
+  <script src="./js/operationMode.js"></script>
   <!-- 房间业务相关 -->
   <script src="./js/room.js"></script>
   <!-- init 初始化 -->

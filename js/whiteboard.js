@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 15:22:24
+ * @LastEditTime: 2021-08-09 15:43:48
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -218,6 +218,18 @@ async function destroySuperBoardSubView(type) {
             toast(errorData);
         }
     }
+}
+
+/**
+ * @description: 设置渲染延时
+ * @param {*}
+ * @return {*}
+ */
+function setDeferredRenderingTime() {
+    var deferredRenderingTime = layui.form.val('form2').deferredRenderingTime;
+    if (!deferredRenderingTime) return toast('请输入延时时长');
+
+    zegoSuperBoard.setDeferredRenderingTime(+deferredRenderingTime);
 }
 
 /**

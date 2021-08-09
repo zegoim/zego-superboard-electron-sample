@@ -42,6 +42,19 @@ li {
 }
 
 /* 重写 layui css */
+.layui-btn {
+  background-color: #04f;
+}
+
+.layui-form-onswitch {
+  border-color: #04f;
+  background-color: #04f;
+}
+
+.layui-form-select dl dd.layui-this {
+  background-color: #04f;
+}
+
 .layui-form div {
   box-sizing: content-box;
 }

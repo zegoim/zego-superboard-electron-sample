@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 16:01:06
+ * @LastEditTime: 2021-08-09 16:08:58
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -193,6 +193,7 @@ async function destroySuperBoardSubView(type) {
         try {
             loading('销毁中');
             await zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubView.getModel().uniqueID);
+            closeLoading();
             toast('销毁成功');
 
             querySuperBoardSubViewList();
@@ -230,6 +231,7 @@ function setDeferredRenderingTime() {
     if (!deferredRenderingTime) return toast('请输入延时时长');
 
     zegoSuperBoard.setDeferredRenderingTime(+deferredRenderingTime);
+    toast('设置成功');
 }
 
 /**

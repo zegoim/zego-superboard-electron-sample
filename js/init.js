@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-09 01:55:33
+ * @LastEditTime: 2021-08-09 20:12:43
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -88,7 +88,6 @@ var imageErrorTipsMap = {
     3030010: 'url地址错误或无效'
 }; // 自定义图形、图片上传错误
 
-var resizeTicking = false; // 自适应执行开关
 var selectedH5File = null; // 当前选择的 H5 压缩包文件
 var selectedBgImgFile = null; // 当前选择的背景图文件
 var selectedInsetImgFile = null; // 当前选择的插入图片文件

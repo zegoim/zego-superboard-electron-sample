@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 16:08:58
+ * @LastEditTime: 2021-08-09 20:10:16
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -65,59 +65,6 @@ function onDocumentEventHandle() {
                 break;
         }
     });
-
-    onResizeHandle();
-
-    // 白板大小自适应，移动端软键盘收缩会引起变化
-    window.addEventListener('resize', onResizeHandle);
-}
-
-/**
- * @description: resize 回调
- * @param {*} e
- * @return {*}
- */
-function onResizeHandle(e) {
-    if (!resizeTicking) {
-        resizeTicking = true;
-        setTimeout(function() {
-            reloadView(1);
-            resizeTicking = false;
-        }, 1000);
-    }
-}
-
-/**
- * @description:
- * @param {*} type 1: 自适应 2: 自定义
- * @return {*}
- */
-function reloadView(type) {
-    var dom = document.getElementById(parentDomID);
-    var width = dom.clientWidth + 2; // +边框
-    var height = dom.clientHeight + 2; // +边框
-
-    if (type === 2) {
-        // 自定义尺寸
-        var width_set = +getFormData('form2').parentWidth;
-        var height_set = +getFormData('form2').parentHeight;
-        if (!width || !height || width < 1 || height < 1) return toast('请输入有效的宽高值');
-        if (width_set > width || height_set > height) {
-            return toast('请输入小于当前容器尺寸的宽高值');
-        }
-        width = width_set;
-        height = height_set;
-        dom.style.cssText += `width:${width}px;height:${height}px;`;
-    }
-    $('#parentWidthHeight').html(width + ' * ' + height);
-
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if (zegoSuperBoardSubView) {
-        // 动画100ms
-        setTimeout(function() {
-            zegoSuperBoardSubView.reloadView();
-        }, 120);
-    }
 }
 
 /**

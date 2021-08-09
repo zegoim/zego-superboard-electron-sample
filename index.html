@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-09 15:45:13
+ * @LastEditTime: 2021-08-09 21:22:30
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -2511,7 +2511,9 @@
               </div>
               <div class="layui-form-item">
                 <label class="layui-form-label">当前容器尺寸</label>
-                <div class="layui-input-block" id="parentWidthHeight"></div>
+                <div class="layui-input-block">
+                  <span id="parentWidthHeight"></span>
+                </div>
               </div>
               <!-- 设置宽高 -->
               <div class="layui-form-item">
@@ -2522,9 +2524,21 @@
                 <div class="layui-input-inline" style="width: 100px; margin-left: 0">
                   <input name="parentHeight" type="text" placeholder="容器高" class="layui-input" />
                 </div>
-                <button onclick="reloadView(2)" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                <button
+                  onclick="customReloadViewHandle(2)"
+                  type="button"
+                  class="layui-btn layui-btn-sm"
+                  style="margin-top: 3px"
+                >
                   确定
                 </button>
+              </div>
+              <!-- 全屏 -->
+              <div class="layui-form-item">
+                <label class="layui-form-label">全屏</label>
+                <div class="layui-input-block">
+                  <button onclick="fullScreenHandle()" type="button" class="layui-btn layui-btn-sm">全屏</button>
+                </div>
               </div>
             </form>
           </div>
@@ -2767,6 +2781,8 @@
   <script src="./js/dom.js"></script>
   <!-- 白板业务相关 -->
   <script src="./js/whiteboard.js"></script>
+  <!-- reloadView -->
+  <script src="./js/reloadView.js"></script>
   <!-- 房间业务相关 -->
   <script src="./js/room.js"></script>
   <!-- init 初始化 -->

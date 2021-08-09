@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 21:31:35
+ * @LastEditTime: 2021-08-09 22:17:19
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -748,32 +748,6 @@ $('#file-list').click(function(event) {
     $('#filelistModal').modal('hide');
 
     createFileView(fileID);
-});
-
-// 绑定翻页、跳步事件
-// 上一页
-$('#previousPage').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.flipToPrevPage();
-
-    updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
-});
-// 下一页
-$('#nextPage').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.flipToNextPage();
-
-    updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
-});
-// 上一步
-$('#previousStep').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.previousStep();
-});
-// 下一步
-$('#nextStep').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.nextStep();
 });
 
 // 设置缩放

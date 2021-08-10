@@ -135,6 +135,7 @@ async function init() {
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
         await loginRoom();
         togglePageDomHandle(1);
+        zegoSuperBoard.attchSuperView()
     } else {
         // 未登录过，显示登录页
         togglePageDomHandle(2);

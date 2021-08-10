@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-09 21:32:17
+ * @LastEditTime: 2021-08-10 16:00:39
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -2282,9 +2282,9 @@
               <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
                 背景图
               </div>
-              <!-- 渲染类型设置 -->
+              <!-- 填充模式设置 -->
               <div class="layui-form-item">
-                <label class="layui-form-label">渲染类型</label>
+                <label class="layui-form-label">填充模式</label>
                 <div class="layui-input-block">
                   <select name="imageFitMode" lay-filter="imageFitMode">
                     <option value="0">左对齐</option>
@@ -2314,7 +2314,7 @@
                   <input name="customBgUrl" type="text" placeholder="请输入图片 URL" class="layui-input" />
                 </div>
                 <button
-                  onclick="setBackgroundImage(2)"
+                  id="setBackgroundImageByURLBtn"
                   type="button"
                   class="layui-btn layui-btn-sm"
                   style="margin-top: 3px"
@@ -2330,7 +2330,7 @@
                     选择图片
                   </button>
                   <button
-                    onclick="setBackgroundImage(3)"
+                    id="setBackgroundImageByFileBtn"
                     type="button"
                     class="layui-btn layui-btn-sm"
                     id="uploadBgImage"
@@ -2343,7 +2343,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">清除</label>
                 <div class="layui-input-block">
-                  <button type="button" class="layui-btn layui-btn-sm" onclick="clearBackgroundImage()">
+                  <button id="clearBackgroundImageBtn" type="button" class="layui-btn layui-btn-sm">
                     清除背景图
                   </button>
                 </div>
@@ -2514,12 +2514,7 @@
                 <div class="layui-input-inline" style="width: 100px; margin-left: 0">
                   <input name="parentHeight" type="text" placeholder="容器高" class="layui-input" />
                 </div>
-                <button
-                  onclick="customReloadViewHandle(2)"
-                  type="button"
-                  class="layui-btn layui-btn-sm"
-                  style="margin-top: 3px"
-                >
+                <button id="setParentSizeBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   确定
                 </button>
               </div>
@@ -2527,7 +2522,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">全屏</label>
                 <div class="layui-input-block">
-                  <button onclick="fullScreenHandle()" type="button" class="layui-btn layui-btn-sm">全屏</button>
+                  <button id="fullScreenBtn" type="button" class="layui-btn layui-btn-sm">全屏</button>
                 </div>
               </div>
             </form>
@@ -2773,8 +2768,14 @@
   <script src="./js/whiteboard.js"></script>
   <!-- reloadView -->
   <script src="./js/reloadView.js"></script>
-  <!-- operationMode -->
-  <script src="./js/operationMode.js"></script>
+  <!-- setOperationMode -->
+  <script src="./js/setOperationMode.js"></script>
+  <!-- flipToPage -->
+  <script src="./js/flipToPage.js"></script>
+  <!-- setScaleFactor -->
+  <script src="./js/setScaleFactor.js"></script>
+  <!-- setBackgroundImage -->
+  <script src="./js/setBackgroundImage.js"></script>
   <!-- 房间业务相关 -->
   <script src="./js/room.js"></script>
   <!-- init 初始化 -->

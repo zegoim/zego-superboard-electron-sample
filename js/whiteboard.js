@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-09 22:17:19
+ * @LastEditTime: 2021-08-10 15:59:56
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -256,18 +256,6 @@ async function querySuperBoardSubViewList() {
 }
 
 /**
- * @description: 跳转到指定页
- * @param {*} page 目标页面
- * @return {*}
- */
-function flipToPage(page) {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.flipToPage(page);
-
-    updateCurrPageDomHandle(page);
-}
-
-/**
  * @description: 设置工具类型
  * @param {*} toolType 工具类型
  * @param {*} event event
@@ -501,44 +489,6 @@ async function addImage(type) {
 }
 
 /**
- * @description: 设置背景图
- * @param {*} type 1: 内置网络图片 2: 输入网络图片 URL 3: 本地选择的背景图文件 selectedBgImgFile
- * @return {*}
- */
-async function setBackgroundImage(type) {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if (!zegoSuperBoardSubView) return;
-
-    var file;
-    var data = getFormData('form1');
-    var imageFitMode = +data.imageFitMode;
-    if (type === 1) {
-        file = data.bgUrl;
-    } else if (type === 2) {
-        file = data.customBgUrl;
-        if (!file) return toast('请输入 URL');
-    } else {
-        if (!selectedBgImgFile) return toast('请先选择文件');
-        file = selectedBgImgFile;
-    }
-    try {
-        await zegoSuperBoardSubView.setBackgroundImage(file, imageFitMode, toast);
-    } catch (errorData) {
-        toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
-    }
-}
-
-/**
- * @description: 清除背景图
- * @param {*}
- * @return {*}
- */
-function clearBackgroundImage() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.clearBackgroundImage();
-}
-
-/**
  * @description: 上传 H5 文件
  * @param {*}
  * @return {*}
@@ -674,11 +624,6 @@ layui.form.on('switch(handwriting)', function(data) {
     zegoSuperBoard.enableHandwriting(this.checked);
 });
 
-// 设置、切换背景图
-layui.form.on('select(bgUrl)', function(data) {
-    setBackgroundImage(1);
-});
-
 // 同步缩放
 layui.form.on('switch(syncScale)', function(data) {
     zegoSuperBoard.enableSyncScale(this.checked);
@@ -700,21 +645,6 @@ layui.upload.render({
         obj.preview(function(index, file, result) {
             // file 为当前选中文件
             selectedH5File = file;
-            toast('选择文件成功');
-        });
-    }
-});
-
-// 选择背景图片
-layui.upload.render({
-    elem: '#selectBgImage', //绑定元素
-    accept: 'images',
-    auto: false,
-    choose: function(obj) {
-        // 选择完文件
-        obj.preview(function(index, file, result) {
-            // file 为当前选中文件
-            selectedBgImgFile = file;
             toast('选择文件成功');
         });
     }
@@ -772,19 +702,5 @@ $('.zoom-add').click(function() {
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.setScaleFactor(zoom);
         zoomDomHandle(zoom);
-    }
-});
-
-// 获取缩略图
-$('#thumb-button').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    var type = zegoSuperBoardSubView.getModel().fileType;
-    // 仅支持 PDF，PPT，动态 PPT 文件格式
-    var supportType = [1, 8, 512, 4096];
-    if (supportType.includes(type)) {
-        var thumbnailUrlList = zegoSuperBoardSubView.getThumbnailUrlList();
-        updateThumbListDomHandle(thumbnailUrlList, zegoSuperBoardSubView.getCurrentPage());
-    } else {
-        toast('获取缩略图仅支持“PDF，PPT，动态PPT，H5”文件格式');
     }
 });

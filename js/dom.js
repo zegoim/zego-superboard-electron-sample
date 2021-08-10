@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-09 21:36:33
+ * @LastEditTime: 2021-08-10 15:00:32
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -83,29 +83,6 @@ function updateUserListDomHandle() {
         $str += '<li class="user-item">' + element.userName + '</li>';
     });
     $('#user-list').html($str);
-}
-
-/**
- * @description: 更新缩略图列表
- * @param {*} thumbnailUrlList 缩略图 url
- * @return {*}
- */
-function updateThumbListDomHandle(thumbnailUrlList, currPage) {
-    $('.thumb-main').html('');
-    var $str = '';
-    thumbnailUrlList.forEach(function(element, index) {
-        $str +=
-            '<li onclick="flipToPage(' +
-            (index + 1) +
-            ')" class="thumb-item' +
-            (index === currPage - 1 ? ' active' : '') +
-            '"><span>' +
-            (index + 1) +
-            '</span><div class="thumb-image"><img src="' +
-            element +
-            '"/></div></li>';
-    });
-    $('.thumb-main').html($str);
 }
 
 /**

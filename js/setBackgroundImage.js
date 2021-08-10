@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-10 16:01:21
+ * @LastEditTime: 2021-08-10 16:02:50
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -35,14 +35,14 @@ layui.upload.render({
  * @description: 这里只展示选择框监听，开发者根据实际情况处理
  * @return {*}
  */
-layui.form.on('select(bgUrl)', function(data) {
+layui.form.on('select(bgUrl)', async function(data) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
-    
+
     var formData = layui.form.val('form1');
-    var bgUrl = formData.bgUrl;  // 当前选择的背景图 URL
+    var bgUrl = formData.bgUrl; // 当前选择的背景图 URL
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
-    
+
     try {
         await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, toast);
     } catch (errorData) {
@@ -54,16 +54,16 @@ layui.form.on('select(bgUrl)', function(data) {
  * @description: 输入可用背景图 URL
  * @description: 绑定设置背景图事件
  */
-$('#setBackgroundImageByURLBtn').click(function() {
+$('#setBackgroundImageByURLBtn').click(async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
-    
+
     var formData = layui.form.val('form1');
-    var customBgUrl = formData.customBgUrl;  // 当前选择的背景图 URL
+    var customBgUrl = formData.customBgUrl; // 当前选择的背景图 URL
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
     if (!customBgUrl) return toast('请输入 URL');
-    
+
     try {
         await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, toast);
     } catch (errorData) {
@@ -75,15 +75,15 @@ $('#setBackgroundImageByURLBtn').click(function() {
  * @description: 选择本地文件
  * @description: 绑定设置背景图事件
  */
-$('#setBackgroundImageByFileBtn').click(function() {
+$('#setBackgroundImageByFileBtn').click(async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
-    
+
     var formData = layui.form.val('form1');
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
     if (!selectedBgImgFile) return toast('请先选择文件');
-    
+
     try {
         await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, toast);
     } catch (errorData) {
@@ -94,7 +94,7 @@ $('#setBackgroundImageByFileBtn').click(function() {
 /**
  * @description: 清除背景图
  */
- $('#clearBackgroundImageBtn').click(function() {
+$('#clearBackgroundImageBtn').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearBackgroundImage();
- })
+});

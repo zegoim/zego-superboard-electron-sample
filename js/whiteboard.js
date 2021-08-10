@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-10 15:59:56
+ * @LastEditTime: 2021-08-10 16:32:44
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -39,10 +39,10 @@ function onSuperBoardEventHandle() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
         querySuperBoardSubViewList();
     });
-    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function(data) {
+    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardAuthChanged', ...arguments);
     });
-    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function(data) {
+    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardGraphicAuthChanged', ...arguments);
     });
 }
@@ -612,26 +612,9 @@ layui.form.on('select(sheetList)', async function(data) {
     await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
 });
 
-// 切换 zoom
-layui.form.on('select(zoomList)', function(data) {
-    var zoom = +data.value;
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.setScaleFactor(zoom);
-});
-
 // 开启笔锋
 layui.form.on('switch(handwriting)', function(data) {
     zegoSuperBoard.enableHandwriting(this.checked);
-});
-
-// 同步缩放
-layui.form.on('switch(syncScale)', function(data) {
-    zegoSuperBoard.enableSyncScale(this.checked);
-});
-
-// 响应缩放
-layui.form.on('switch(responseScale)', function(data) {
-    zegoSuperBoard.enableResponseScale(this.checked);
 });
 
 // 选择 H5 文件
@@ -678,29 +661,4 @@ $('#file-list').click(function(event) {
     $('#filelistModal').modal('hide');
 
     createFileView(fileID);
-});
-
-// 设置缩放
-$('.zoom-cut').click(function() {
-    var currZoomLevel = getFormData('customForm').zoom;
-    if (currZoomLevel === '1') return;
-    var zoom = Number(currZoomLevel) - 0.25;
-
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if (zegoSuperBoardSubView) {
-        zegoSuperBoardSubView.setScaleFactor(zoom);
-        zoomDomHandle(zoom);
-    }
-});
-
-$('.zoom-add').click(function() {
-    var currZoomLevel = getFormData('customForm').zoom;
-    if (currZoomLevel === '3') return;
-    var zoom = Number(currZoomLevel) + 0.25;
-
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if (zegoSuperBoardSubView) {
-        zegoSuperBoardSubView.setScaleFactor(zoom);
-        zoomDomHandle(zoom);
-    }
 });

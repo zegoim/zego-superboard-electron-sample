@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-10 16:00:39
+ * @LastEditTime: 2021-08-10 16:17:32
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -215,8 +215,8 @@
               </div>
             </div>
             <!-- 缩放 -->
-            <div class="zoom-bar">
-              <div class="zoom-bar-operation zoom-cut">
+            <div class="scale-bar">
+              <div id="setScaleFactorCut" class="scale-bar-operation scale-cut">
                 <svg
                   version="1.1"
                   id="图层_1"
@@ -231,11 +231,11 @@
                   <line class="hover-stroke" fill="none" stroke="#585C60" x1="6" y1="10" x2="14" y2="10"></line>
                 </svg>
               </div>
-              <div class="zoom-bar-center">
+              <div class="scale-bar-center">
                 <select
-                  name="zoom"
-                  id="zoomList"
-                  lay-filter="zoomList"
+                  name="scale"
+                  id="scaleList"
+                  lay-filter="scaleList"
                   style="appearance: none; border: none; outline: none"
                 >
                   <option value="1">100%</option>
@@ -249,7 +249,7 @@
                   <option value="3">300%</option>
                 </select>
               </div>
-              <div class="zoom-bar-operation zoom-add">
+              <div id="setScaleFactorAdd" class="scale-bar-operation scale-add">
                 <svg
                   version="1.1"
                   id="图层_1"
@@ -2462,8 +2462,8 @@
                   <input
                     type="checkbox"
                     checked=""
-                    name="zoomMode"
-                    lay-filter="zoomMode"
+                    name="scaleMode"
+                    lay-filter="scaleMode"
                     lay-skin="switch"
                     lay-text="开|关"
                   />

@@ -389,16 +389,16 @@
 #customForm .layui-form-select {
   margin-left: 30px;
 }
-#customForm .zoom-bar-center .layui-form-select {
+#customForm .scale-bar-center .layui-form-select {
   height: 100%;
   margin-left: 0;
 }
 
-#customForm .zoom-bar-center .layui-select-title {
+#customForm .scale-bar-center .layui-select-title {
   height: 100%;
 }
 
-#customForm .zoom-bar-center .layui-input {
+#customForm .scale-bar-center .layui-input {
   outline: none;
   border: none;
   padding: 0;
@@ -457,7 +457,7 @@
   text-align: center;
 }
 
-.zoom-bar {
+.scale-bar {
   width: 122px;
   height: 30px;
   font-size: 12px;
@@ -474,22 +474,22 @@
   background-color: #fff;
 }
 
-.zoom-bar-operation {
+.scale-bar-operation {
   width: 20px;
   height: 20px;
   line-height: 1;
   cursor: pointer;
 }
 
-.zoom-cut {
+.scale-cut {
   margin-left: 10px;
 }
 
-.zoom-add {
+.scale-add {
   margin-right: 10px;
 }
 
-.zoom-bar-center {
+.scale-bar-center {
   flex: 1;
   height: 28px;
   line-height: 28px;

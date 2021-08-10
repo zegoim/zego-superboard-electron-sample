@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 21:28:34
- * @LastEditTime: 2021-08-09 22:13:42
+ * @LastEditTime: 2021-08-10 16:37:09
  * @LastEditors: Please set LastEditors
  * @Description: 白板操作模式
  * @FilePath: /superboard/js/operationMode.js
@@ -21,13 +21,13 @@ function updateOperatedModeDomHandle(type) {
         layui.form.val('form2', {
             drawMode: 'on',
             scrollMode: 'on',
-            zoomMode: 'on'
+            scaleMode: 'on'
         });
     } else {
         layui.form.val('form2', {
             drawMode: '',
             scrollMode: '',
-            zoomMode: ''
+            scaleMode: ''
         });
     }
 }
@@ -35,7 +35,7 @@ function updateOperatedModeDomHandle(type) {
 /**
  * @description: 获取指定 switch 开关状态
  * @description: 这里只展示获取方法，开发者根据实际情况获取
- * @param {*} str 'unOperatedMode': 不可操作模式 'scrollMode' 滚动模式 'drawMode' 绘制模式 'zoomMode': 放缩模式
+ * @param {*} str 'unOperatedMode': 不可操作模式 'scrollMode' 滚动模式 'drawMode' 绘制模式 'scaleMode': 放缩模式
  * @return {*} true: 开 false 关
  */
 function getTargetOperatedMode(str) {
@@ -51,8 +51,8 @@ function getTargetOperatedMode(str) {
 function setOperatedMode() {
     var drawMode = getTargetOperatedMode('drawMode') ? 4 : 0;
     var scrollMode = getTargetOperatedMode('scrollMode') ? 2 : 0;
-    var zoomMode = getTargetOperatedMode('zoomMode') ? 8 : 0;
-    var operationMode = drawMode | scrollMode | zoomMode;
+    var scaleMode = getTargetOperatedMode('scaleMode') ? 8 : 0;
+    var operationMode = drawMode | scrollMode | scaleMode;
 
     // 滚动、绘制、放缩均不开启即不可操作模式
     !operationMode && (operationMode = 1);
@@ -60,8 +60,12 @@ function setOperatedMode() {
     return operationMode;
 }
 
-// 不可操作模式
-layui.form.on('switch(unOperatedMode)', function(data) {
+/**
+ * @description: 不可操作模式
+ * @description: 监听指定 switch 开关状态
+ * @description: 这里只展示监听方法，开发者根据实际情况监听
+ */
+layui.form.on('switch(unOperatedMode)', function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -74,8 +78,12 @@ layui.form.on('switch(unOperatedMode)', function(data) {
     zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
-// 滚动模式
-layui.form.on('switch(scrollMode)', function(data) {
+/**
+ * @description: 滚动模式
+ * @description: 监听指定 switch 开关状态
+ * @description: 这里只展示监听方法，开发者根据实际情况监听
+ */
+layui.form.on('switch(scrollMode)', function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -87,8 +95,12 @@ layui.form.on('switch(scrollMode)', function(data) {
     zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
-// 绘制模式
-layui.form.on('switch(drawMode)', function(data) {
+/**
+ * @description: 绘制模式
+ * @description: 监听指定 switch 开关状态
+ * @description: 这里只展示监听方法，开发者根据实际情况监听
+ */
+layui.form.on('switch(drawMode)', function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -100,8 +112,12 @@ layui.form.on('switch(drawMode)', function(data) {
     zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
-// 放缩模式
-layui.form.on('switch(zoomMode)', function(data) {
+/**
+ * @description: 放缩模式
+ * @description: 监听指定 switch 开关状态
+ * @description: 这里只展示监听方法，开发者根据实际情况监听
+ */
+layui.form.on('switch(scaleMode)', function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 

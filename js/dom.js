@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-10 15:00:32
+ * @LastEditTime: 2021-08-10 16:15:59
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -83,17 +83,6 @@ function updateUserListDomHandle() {
         $str += '<li class="user-item">' + element.userName + '</li>';
     });
     $('#user-list').html($str);
-}
-
-/**
- * @description: 缩放
- * @param {*}
- * @return {*}
- */
-function zoomDomHandle(zoom) {
-    layui.form.val('customForm', {
-        zoom: zoom + ''
-    });
 }
 
 /**

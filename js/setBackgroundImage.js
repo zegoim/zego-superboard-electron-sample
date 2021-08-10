@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-10 16:02:50
+ * @LastEditTime: 2021-08-10 16:32:17
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -33,9 +33,8 @@ layui.upload.render({
 /**
  * @description: 监听选择框，切换背景图
  * @description: 这里只展示选择框监听，开发者根据实际情况处理
- * @return {*}
  */
-layui.form.on('select(bgUrl)', async function(data) {
+layui.form.on('select(bgUrl)', async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 

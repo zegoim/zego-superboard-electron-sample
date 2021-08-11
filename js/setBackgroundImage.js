@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-11 13:19:05
+ * @LastEditTime: 2021-08-11 15:53:27
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -11,9 +11,15 @@
 // toast 为全局提示框，开发者根据实际情况使用相应的提示框
 
 var selectedBgImgFile = null; // 当前选择的背景图文件
+var customBgList = [
+    'https://storage.zego.im/goclass/wbbg/1.jpg',
+    'https://storage.zego.im/goclass/wbbg/2.jpg',
+    'https://storage.zego.im/goclass/wbbg/3.jpg',
+    'https://storage.zego.im/goclass/wbbg/4.jpg'
+]; // 背景图片列表
 
-// 页面加载完成更新背景图片列表到页面
-window.addEventListener('load', initBgListDomHandle);
+// 页面 DOM 加载完成更新背景图片列表到页面
+$(document).ready(initBgListDomHandle);
 
 /**
  * @description: 更新背景图片列表到页面
@@ -21,7 +27,7 @@ window.addEventListener('load', initBgListDomHandle);
  */
 function initBgListDomHandle() {
     var $str = '<option value>请选择</option>';
-    customGraphList.forEach(function(element, index) {
+    customBgList.forEach(function(element, index) {
         $str += '<option value="' + element + '">图片' + (index + 1) + '</option>';
     });
     $('#bgList').html($str);

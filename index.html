@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-11 13:17:34
+ * @LastEditTime: 2021-08-11 16:13:29
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -2535,7 +2535,7 @@
                   <button type="button" class="layui-btn layui-btn-sm" id="selectH5">
                     选择文件
                   </button>
-                  <button onclick="uploadH5File()" type="button" class="layui-btn layui-btn-sm" id="uploadH5">
+                  <button id="uploadH5FileBtn" type="button" class="layui-btn layui-btn-sm">
                     上传文件
                   </button>
                 </div>
@@ -2546,7 +2546,7 @@
                 <div class="layui-input-inline" style="margin-left: 10px">
                   <input name="fileID" type="text" placeholder="请输入 fileID" class="layui-input" />
                 </div>
-                <button onclick="cacheFile()" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                <button id="cacheFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   预加载
                 </button>
               </div>
@@ -2623,7 +2623,7 @@
                 <div class="layui-form-item">
                   <label class="layui-form-label">邀请链接</label>
                   <div class="layui-input-block">
-                    <input style="border: none" id="showInviteLink" type="text" class="layui-input" />
+                    <input style="border: none; padding-left: 0;" id="showInviteLink" type="text" class="layui-input" />
                   </div>
                 </div>
                 <div class="layui-form-item">
@@ -2646,10 +2646,11 @@
           <div class="upload-box">
             <div class="static">
               <input
+                id="uploadStaticFile"
+                onchange="uploadFile(3, event.target.files[0])"
                 type="file"
                 accept=".ppt,.pptx,.doc,.docx,.xls,.xlsx,.pdf,.txt,.jpg,.jpeg,.png, .bmp, .heic"
                 class="static-upload-input"
-                onchange="uploadFile(event, 3)"
               />
               <p>
                 <span>上传静态文件</span>
@@ -2694,7 +2695,7 @@
             </div>
             <div class="divider"></div>
             <div class="dymic">
-              <input type="file" accept=".pptx, .ppt" class="dymic-upload-input" onchange="uploadFile(6,event)" />
+                <input onchange="uploadFile(6, event.target.files[0])" id="uploadDymicFile" type="file" accept=".pptx, .ppt" class="dymic-upload-input" />
               <p>
                 <span>上传动态文件</span>
                 <span style="width: 16px; height: 16px;">
@@ -2759,6 +2760,12 @@
   <script src="./js/setBackgroundImage.js"></script>
   <!-- addImage -->
   <script src="./js/addImage.js"></script>
+  <!-- uploadFile -->
+  <script src="./js/uploadFile.js"></script>
+  <!-- uploadH5File -->
+  <script src="./js/uploadH5File.js"></script>
+  <!-- cacheFile -->
+  <script src="./js/cacheFile.js"></script>
   <!-- 房间业务相关 -->
   <script src="./js/room.js"></script>
   <!-- init 初始化 -->

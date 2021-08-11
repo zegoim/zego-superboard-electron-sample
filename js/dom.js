@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-10 21:34:01
+ * @LastEditTime: 2021-08-11 16:05:21
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -402,12 +402,6 @@ function loading(content) {
 function closeLoading() {
     layui.layer.closeAll();
 }
-
-// 绑定打开上传文件选项
-layui.dropdown.render({
-    elem: '#openPopover',
-    content: $('#uploadPopoverContent').html()
-});
 
 // 绑定预览事件
 $('#thumb-button').click(function(event) {

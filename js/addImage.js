@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-10 16:50:36
- * @LastEditTime: 2021-08-11 13:11:55
+ * @LastEditTime: 2021-08-11 15:53:13
  * @LastEditors: Please set LastEditors
  * @Description: 添加自定义图形、插入图片
  * @FilePath: /superboard/js/addImage.js
@@ -15,8 +15,8 @@ var customGraphList = [
 ]; // 自定义图形列表
 var selectedInsetImgFile = null; // 当前选择的插入图片文件
 
-// 页面加载完成更新自定义图形列表到页面
-window.addEventListener('load', initGraphListDomHandle);
+// 页面 DOM 加载完成更新自定义图形列表到页面
+$(document).ready(initGraphListDomHandle);
 
 /**
  * @description: 选择本地插入图片
@@ -38,17 +38,17 @@ layui.upload.render({
 
 /**
  * @description: 自定义图形工具下设置当前自定义图形
- * @param {*} index 自定义图形下标
+ * @param {*} graphIndex 自定义图形下标
  * @param {*} event event
  * @return {*}
  */
-async function setCustomGraph(index, event) {
+async function setCustomGraph(graphIndex, event) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    await zegoSuperBoardSubView.addImage(1, 0, 0, customGraphList[index]);
+    await zegoSuperBoardSubView.addImage(1, 0, 0, customGraphList[graphIndex]);
 
-    updateActiveGraphDomHandle(index, event);
+    updateActiveGraphDomHandle(graphIndex, event);
 }
 
 /**
@@ -93,14 +93,14 @@ function initGraphListDomHandle() {
 /**
  * @description: 更新当前自定义图形
  * @description: 这里只展示更新页面功能，开发者根据实际情况处理
- * @param {*} index 下标
+ * @param {*} graphIndex 下标
  * @param {*} event event
  * @return {*}
  */
-function updateActiveGraphDomHandle(index, event) {
+function updateActiveGraphDomHandle(graphIndex, event) {
     event.stopPropagation();
     $('.custom-graph-item').removeClass('active');
-    $('.custom-graph-item:nth-of-type(' + (index + 1) + ')').addClass('active');
+    $('.custom-graph-item:nth-of-type(' + (graphIndex + 1) + ')').addClass('active');
 }
 
 /**

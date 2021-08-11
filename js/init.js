@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-10 21:30:05
+ * @LastEditTime: 2021-08-11 15:33:15
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -63,16 +63,6 @@ var seqMap = {
     saveImg: 1 // 白板快照索引
 };
 
-var uploadFileTipsMap = {
-    1: '上传中',
-    2: '已上传',
-    4: '排队中',
-    8: '转换中',
-    16: '转换成功',
-    32: '转换失败',
-    64: '取消上传'
-}; // 上传状态
-
 var imageErrorTipsMap = {
     3000002: '参数错误',
     3000005: '下载失败',
@@ -80,8 +70,6 @@ var imageErrorTipsMap = {
     3030009: '图片格式暂不支持',
     3030010: 'url地址错误或无效'
 }; // 自定义图形、图片上传错误
-
-var selectedH5File = null; // 当前选择的 H5 压缩包文件
 
 var userList = []; // 房间内成员列表
 

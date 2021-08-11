@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-10 21:34:41
+ * @LastEditTime: 2021-08-11 15:33:26
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -430,81 +430,6 @@ function clearSelected() {
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearSelected();
 }
 
-/**
- * @description: 上传 H5 文件
- * @param {*}
- * @return {*}
- */
-async function uploadH5File() {
-    // 判断file、width、height、pageCount、h5ThumbnailList
-    if (!selectedH5File) {
-        return toast('未选择文件');
-    }
-    var data = getFormData('form3');
-    var h5Width = data.h5Width;
-    var h5Height = data.h5Height;
-    var h5PageCount = data.h5PageCount;
-    var h5ThumbnailList = data.h5ThumbnailListStr ? data.h5ThumbnailListStr.split(',') : null;
-    if (!h5Width || !h5Height || !h5PageCount || !h5ThumbnailList) {
-        return toast('文件参数有误');
-    }
-
-    var config = {
-        width: h5Width,
-        height: h5Height,
-        pageCount: h5PageCount,
-        thumbnailList: h5ThumbnailList
-    };
-    try {
-        var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, toast);
-        // 创建文件白板
-        createFileView(fileID);
-    } catch (errorData) {
-        toast(errorData);
-    }
-}
-
-/**
- * @description: 文件预加载
- * @param {*}
- * @return {*}
- */
-function cacheFile() {
-    var data = getFormData('form3');
-    var fileID = data.fileID;
-    if (!fileID) return toast('请输入文件 ID');
-    zegoSuperBoard.cacheFile(fileID);
-}
-
-/**
- * @description: 选择静态、动态文件
- * @param {*} file
- * @param {*} renderType
- * @return {*}
- */
-function uploadFile(event, renderType) {
-    var file = event.target.files[0];
-    if (!file) {
-        toast('请先选择文件');
-        return;
-    }
-    // 初始化文件选择
-    $('#staticFile').val('');
-    $('#dynamicFile').val('');
-
-    zegoSuperBoard
-        .uploadFile(file, renderType, function(res) {
-            seqMap.upload = res.fileHash || res.seq;
-            toast(uploadFileTipsMap[res.status] + (res.uploadPercent || ''));
-        })
-        .then(function(fileID) {
-            createFileView(fileID);
-            // 关闭弹框
-            $('#filelistModal').modal('hide');
-        })
-        .catch(toast);
-}
-
 // 切换白板
 layui.form.on('select(whiteboardList)', async function(data) {
     var uniqueID = data.value;
@@ -557,22 +482,6 @@ layui.form.on('select(sheetList)', async function(data) {
 // 开启笔锋
 layui.form.on('switch(handwriting)', function(data) {
     zegoSuperBoard.enableHandwriting(this.checked);
-});
-
-// 选择 H5 文件
-layui.upload.render({
-    elem: '#selectH5', //绑定元素
-    accept: 'file',
-    exts: 'zip',
-    auto: false,
-    choose: function(obj) {
-        // 选择完文件
-        obj.preview(function(index, file, result) {
-            // file 为当前选中文件
-            selectedH5File = file;
-            toast('选择文件成功');
-        });
-    }
 });
 
 // 绑定创建文件白板事件

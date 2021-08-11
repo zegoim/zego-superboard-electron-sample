@@ -45,6 +45,9 @@ function onSuperBoardEventHandle() {
     zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardGraphicAuthChanged', ...arguments);
     });
+    zegoSuperBoard.on('remoteScaleChanged', function() {
+        console.warn('SuperBoard Demo remoteScaleChanged', ...arguments);
+    });
 }
 
 /**

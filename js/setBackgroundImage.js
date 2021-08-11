@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-10 16:32:17
+ * @LastEditTime: 2021-08-11 13:19:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -12,12 +12,30 @@
 
 var selectedBgImgFile = null; // 当前选择的背景图文件
 
+// 页面加载完成更新背景图片列表到页面
+window.addEventListener('load', initBgListDomHandle);
+
+/**
+ * @description: 更新背景图片列表到页面
+ * @description: 这里只展示更新页面功能，开发者根据实际情况处理
+ */
+function initBgListDomHandle() {
+    var $str = '<option value>请选择</option>';
+    customGraphList.forEach(function(element, index) {
+        $str += '<option value="' + element + '">图片' + (index + 1) + '</option>';
+    });
+    $('#bgList').html($str);
+
+    // 更新下拉框 layui.form.render(type, filter);
+    layui.form.render('select', 'form1');
+}
+
 /**
  * @description: 选择本地背景图片
  * @description: 这里只展示选择本地文件，开发者根据实际情况处理
  */
 layui.upload.render({
-    elem: '#selectBgImage', //绑定元素
+    elem: '#selectBgImage', // 绑定元素
     accept: 'images', // 只接受 image 文件
     auto: false, // 不自动上传
     choose: function(obj) {
@@ -72,7 +90,6 @@ $('#setBackgroundImageByURLBtn').click(async function() {
 
 /**
  * @description: 选择本地文件
- * @description: 绑定设置背景图事件
  */
 $('#setBackgroundImageByFileBtn').click(async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();

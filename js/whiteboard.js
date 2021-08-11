@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-10 16:32:44
+ * @LastEditTime: 2021-08-10 21:34:41
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -285,20 +285,6 @@ function setToolType(toolType, event) {
 }
 
 /**
- * @description: 自定义图形工具下设置当前自定义图形
- * @param {*} index 自定义图形下标
- * @param {*} event event
- * @return {*}
- */
-function setCustomGraph(index, event) {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if (!zegoSuperBoardSubView) return;
-    zegoSuperBoardSubView.addImage(1, 0, 0, customGraphList[index]);
-
-    updateActiveGraphDomHandle(index, event);
-}
-
-/**
  * @description: 设置画笔粗细
  * @param {*} brushSize 画笔粗细
  * @param {*} event event
@@ -442,53 +428,6 @@ function clearSelected() {
 }
 
 /**
- * @desc: 上传自定义图形、图片
- * @param type 1: 自定义图形 2: 插入图片 URL 3: 本地选择插入图片
- */
-async function addImage(type) {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if (!zegoSuperBoardSubView) return;
-
-    var address;
-    if (type === 1) {
-        address = getFormData('form1').customGraphUrl;
-        if (!address) return toast('请输入 URL');
-        var index = customGraphList.findIndex(function(element) {
-            return element === address;
-        });
-        try {
-            await zegoSuperBoardSubView.addImage(1, 0, 0, address, toast);
-            toast('上传成功');
-            if (index === -1) {
-                // 不存在 -> 添加
-                customGraphList.push(address);
-                appendGraphDomHandle(address);
-            }
-        } catch (errorData) {
-            toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
-        }
-    } else if (type === 2) {
-        address = getFormData('form1').customImageUrl;
-        if (!address) return toast('请输入 URL');
-        try {
-            await zegoSuperBoardSubView.addImage(0, 0, 0, address, toast);
-            toast('上传成功');
-        } catch (errorData) {
-            toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
-        }
-    } else {
-        if (!selectedInsetImgFile) return toast('请先选择文件');
-        address = selectedInsetImgFile;
-        try {
-            await zegoSuperBoardSubView.addImage(0, 0, 0, address, toast);
-            toast('上传成功');
-        } catch (errorData) {
-            toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
-        }
-    }
-}
-
-/**
  * @description: 上传 H5 文件
  * @param {*}
  * @return {*}
@@ -628,21 +567,6 @@ layui.upload.render({
         obj.preview(function(index, file, result) {
             // file 为当前选中文件
             selectedH5File = file;
-            toast('选择文件成功');
-        });
-    }
-});
-
-// 选择插入图片
-layui.upload.render({
-    elem: '#selectImage', //绑定元素
-    accept: 'images',
-    auto: false,
-    choose: function(obj) {
-        // 选择完文件
-        obj.preview(function(index, file, result) {
-            // file 为当前选中文件
-            selectedInsetImgFile = file;
             toast('选择文件成功');
         });
     }

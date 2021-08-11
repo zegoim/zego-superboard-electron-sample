@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-10 16:17:32
+ * @LastEditTime: 2021-08-11 13:17:34
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -1860,20 +1860,7 @@
                     <circle class="hover-fill" fill="#b1b4bb" cx="13.5" cy="12.5" r="4.5"></circle>
                   </svg>
                 </div>
-                <ul class="custom-graph-setting">
-                  <li data-index="0" class="custom-graph-item active" onclick="setCustomGraph(0,event)">
-                    <img src="https://storage.zego.im/goclass/wbpic/diamond.svg" alt="" />
-                  </li>
-                  <li data-index="1" class="custom-graph-item" onclick="setCustomGraph(1,event)">
-                    <img src="https://storage.zego.im/goclass/wbpic/star.svg" alt="" />
-                  </li>
-                  <li data-index="2" class="custom-graph-item" onclick="setCustomGraph(2,event)">
-                    <img src="https://storage.zego.im/goclass/wbpic/axis.svg" alt="" />
-                  </li>
-                  <li data-index="3" class="custom-graph-item" onclick="setCustomGraph(3,event)">
-                    <img src="https://storage.zego.im/goclass/wbpic/chemical_instrument.svg" alt="" />
-                  </li>
-                </ul>
+                <ul class="custom-graph-setting"></ul>
               </li>
               <li
                 class="tool-item"
@@ -2273,7 +2260,7 @@
                 <div class="layui-input-inline" style="margin-left: 10px;">
                   <input name="customGraphUrl" type="text" placeholder="请输入图形 URL" class="layui-input" />
                 </div>
-                <button onclick="addImage(1)" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                <button id="addImageByURLBtn1" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   确定
                 </button>
               </div>
@@ -2299,13 +2286,7 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">网络图片</label>
                 <div class="layui-input-block">
-                  <select name="bgUrl" lay-filter="bgUrl">
-                    <option value>请选择</option>
-                    <option value="https://storage.zego.im/goclass/wbbg/1.jpg">图片1</option>
-                    <option value="https://storage.zego.im/goclass/wbbg/2.jpg">图片2</option>
-                    <option value="https://storage.zego.im/goclass/wbbg/3.png">图片3</option>
-                    <option value="https://storage.zego.im/goclass/wbbg/4.jpeg">图片4</option>
-                  </select>
+                  <select id="bgList" name="bgUrl" lay-filter="bgUrl"></select>
                 </div>
               </div>
               <div class="layui-form-item">
@@ -2359,7 +2340,7 @@
                 <div class="layui-input-inline" style="margin-left: 10px;">
                   <input name="customImageUrl" type="text" placeholder="请输入图片 URL" class="layui-input" />
                 </div>
-                <button onclick="addImage(2)" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                <button id="addImageByURLBtn2" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   确定
                 </button>
               </div>
@@ -2370,7 +2351,7 @@
                   <button type="button" class="layui-btn layui-btn-sm" id="selectImage">
                     选择图片
                   </button>
-                  <button onclick="addImage(3)" type="button" class="layui-btn layui-btn-sm">
+                  <button id="addImageByFileBtn" type="button" class="layui-btn layui-btn-sm">
                     上传图片
                   </button>
                 </div>
@@ -2776,6 +2757,8 @@
   <script src="./js/setScaleFactor.js"></script>
   <!-- setBackgroundImage -->
   <script src="./js/setBackgroundImage.js"></script>
+  <!-- addImage -->
+  <script src="./js/addImage.js"></script>
   <!-- 房间业务相关 -->
   <script src="./js/room.js"></script>
   <!-- init 初始化 -->

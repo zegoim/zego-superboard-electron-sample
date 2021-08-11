@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-10 15:49:44
+ * @LastEditTime: 2021-08-10 21:30:05
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -63,13 +63,6 @@ var seqMap = {
     saveImg: 1 // 白板快照索引
 };
 
-var customGraphList = [
-    'https://storage.zego.im/goclass/wbpic/diamond.svg',
-    'https://storage.zego.im/goclass/wbpic/star.svg',
-    'https://storage.zego.im/goclass/wbpic/axis.svg',
-    'https://storage.zego.im/goclass/wbpic/chemical_instrument.svg'
-]; // 自定义图形列表
-
 var uploadFileTipsMap = {
     1: '上传中',
     2: '已上传',
@@ -89,7 +82,6 @@ var imageErrorTipsMap = {
 }; // 自定义图形、图片上传错误
 
 var selectedH5File = null; // 当前选择的 H5 压缩包文件
-var selectedInsetImgFile = null; // 当前选择的插入图片文件
 
 var userList = []; // 房间内成员列表
 
@@ -134,7 +126,7 @@ async function init() {
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
         await loginRoom();
         togglePageDomHandle(1);
-        zegoSuperBoard.attchSuperView()
+        zegoSuperBoard.attchSuperView();
     } else {
         // 未登录过，显示登录页
         togglePageDomHandle(2);

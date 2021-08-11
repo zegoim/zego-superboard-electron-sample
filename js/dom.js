@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-10 16:15:59
+ * @LastEditTime: 2021-08-10 21:34:01
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -294,18 +294,6 @@ function resetToolTypeDomHandle() {
 }
 
 /**
- * @description: 更新当前自定义图形
- * @param {*} index 下标
- * @param {*} event event
- * @return {*}
- */
-function updateActiveGraphDomHandle(index, event) {
-    event.stopPropagation();
-    $('.custom-graph-item').removeClass('active');
-    $('.custom-graph-item:nth-of-type(' + (index + 1) + ')').addClass('active');
-}
-
-/**
  * @description: 更新当前笔触粗细
  * @param {*} brushSize 粗细
  * @param {*} event event
@@ -372,25 +360,6 @@ function updateUnOperatedModeDomHandle(type) {
     layui.form.val('form2', {
         unOperatedMode: type === 1 ? 'on' : ''
     });
-}
-
-/**
- * @description: 追加自定义图形
- * @param {*} address 自定义图形地址
- * @return {*}
- */
-function appendGraphDomHandle(address) {
-    var $str =
-        '<li data-index="' +
-        (customGraphList.length - 1) +
-        '" class="custom-graph-item" onclick="setCustomGraph(' +
-        (customGraphList.length - 1) +
-        ',event)"><img src="' +
-        address +
-        '" alt=""></li>';
-    $('.custom-graph-setting').append($str);
-    // 更新尺寸
-    $('.custom-graph-setting').css('width', 12 + 46 * Math.ceil(customGraphList.length / 4) + 'px');
 }
 
 /**

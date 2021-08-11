@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-11 16:05:21
+ * @LastEditTime: 2021-08-11 16:29:59
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -291,64 +291,6 @@ function resetToolTypeDomHandle() {
     $('.tool-item').removeClass('active');
     $('.pencil-text-setting').removeClass('active');
     $('.tool-item:nth-of-type(5)').addClass('active');
-}
-
-/**
- * @description: 更新当前笔触粗细
- * @param {*} brushSize 粗细
- * @param {*} event event
- * @return {*}
- */
-function updateActiveBrushSizeDomHandle(event) {
-    event.stopPropagation();
-    var index = $(event.currentTarget).attr('data-index');
-    $('.bs-item').removeClass('active');
-    $('.bs-item:nth-of-type(' + index + ')').addClass('active');
-}
-
-/**
- * @description: 更新当前笔触颜色
- * @param {*} color 颜色
- * @param {*} event event
- * @return {*}
- */
-function updateActiveBrushColorDomHandle(event) {
-    event.stopPropagation();
-    var index = $(event.currentTarget).attr('data-index');
-    $('.color-item').removeClass('active');
-    $('.color-item:nth-of-type(' + index + ')').addClass('active');
-}
-
-/**
- * @description: 更新当前文本大小
- * @param {*} event event
- * @return {*}
- */
-function updateActiveFontSizeDomHandle(event) {
-    event.stopPropagation();
-    var index = $(event.currentTarget).attr('data-index');
-    $('.pencil-size-item').removeClass('active');
-    $('.pencil-size-item:nth-of-type(' + index + ')').addClass('active');
-}
-
-/**
- * @description: 文本粗体
- * @param {*} event event
- * @return {*}
- */
-function updateActiveFontBoldHandle(event) {
-    event.stopPropagation();
-    $(event.currentTarget).toggleClass('active');
-}
-
-/**
- * @description: 文本斜体
- * @param {*} event event
- * @return {*}
- */
-function updateActiveFontItalicHandle(event) {
-    event.stopPropagation();
-    $(event.currentTarget).toggleClass('active');
 }
 
 /**

@@ -1,9 +1,9 @@
 /*
- * @Author: your name
+ * @Author: ZegoDev
  * @Date: 2021-08-10 11:47:35
- * @LastEditTime: 2021-08-10 16:38:47
+ * @LastEditTime: 2021-08-11 16:23:34
  * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
+ * @Description: 白板缩放
  * @FilePath: /superboard/js/setScaleFactor.js
  */
 

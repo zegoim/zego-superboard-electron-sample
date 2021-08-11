@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-11 16:13:29
+ * @LastEditTime: 2021-08-11 16:35:52
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -2695,7 +2695,13 @@
             </div>
             <div class="divider"></div>
             <div class="dymic">
-                <input onchange="uploadFile(6, event.target.files[0])" id="uploadDymicFile" type="file" accept=".pptx, .ppt" class="dymic-upload-input" />
+              <input
+                onchange="uploadFile(6, event.target.files[0])"
+                id="uploadDymicFile"
+                type="file"
+                accept=".pptx, .ppt"
+                class="dymic-upload-input"
+              />
               <p>
                 <span>上传动态文件</span>
                 <span style="width: 16px; height: 16px;">
@@ -2748,6 +2754,8 @@
   <script src="./js/dom.js"></script>
   <!-- 白板业务相关 -->
   <script src="./js/whiteboard.js"></script>
+  <!-- setToolType -->
+  <script src="./js/setToolType.js"></script>
   <!-- reloadView -->
   <script src="./js/reloadView.js"></script>
   <!-- setOperationMode -->

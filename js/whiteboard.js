@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-11 15:33:26
+ * @LastEditTime: 2021-08-11 16:29:19
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -288,66 +288,6 @@ function setToolType(toolType, event) {
 }
 
 /**
- * @description: 设置画笔粗细
- * @param {*} brushSize 画笔粗细
- * @param {*} event event
- * @return {*}
- */
-function setBrushSize(brushSize, event) {
-    zegoSuperBoard.setBrushSize(brushSize);
-
-    updateActiveBrushSizeDomHandle(event);
-}
-
-/**
- * @description: 设置画笔颜色
- * @param {*} color 颜色
- * @param {*} event event
- * @return {*}
- */
-function setBrushColor(color, event) {
-    zegoSuperBoard.setBrushColor(color);
-
-    updateActiveBrushColorDomHandle(event);
-}
-
-/**
- * @description: 设置文本大小
- * @param {*} fontSize 文本大小
- * @param {*} event event
- * @return {*}
- */
-function setFontSize(fontSize, event) {
-    zegoSuperBoard.setFontSize(fontSize);
-
-    updateActiveFontSizeDomHandle(event);
-}
-
-/**
- * @description: 设置文本粗体
- * @param {*} event event
- * @return {*}
- */
-function setFontBold(event) {
-    var bold = zegoSuperBoard.isFontBold();
-    zegoSuperBoard.setFontBold(!bold);
-
-    updateActiveFontBoldHandle(event);
-}
-
-/**
- * @description: 设置文本斜体
- * @param {*} event event
- * @return {*}
- */
-function setFontItalic(event) {
-    var italic = zegoSuperBoard.isFontItalic();
-    zegoSuperBoard.setFontItalic(!italic);
-
-    updateActiveFontItalicHandle(event);
-}
-
-/**
  * @description: 清空所有页
  * @param {*}
  * @return {*}
@@ -477,11 +417,6 @@ layui.form.on('select(sheetList)', async function(data) {
     var uniqueID = temp[0];
     var sheetIndex = temp[1];
     await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
-});
-
-// 开启笔锋
-layui.form.on('switch(handwriting)', function(data) {
-    zegoSuperBoard.enableHandwriting(this.checked);
 });
 
 // 绑定创建文件白板事件

@@ -77,7 +77,6 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', $('#dynamicPPT_AutomaticPage').val());
     // 设置 PPT 视频下载
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', $('#unloadVideoSrc').val());
-
     // 注册白板回调
     onSuperBoardEventHandle();
 }
@@ -120,8 +119,7 @@ function loginRoom() {
         // 获取 token
         var appID = zegoConfig.env === '1' ? zegoConfig.appID : zegoConfig.overseaAppID;
         var token = await getToken(appID, zegoConfig.userID, zegoConfig.tokenUrl);
-
-        // 初始化 SDK
+        // 初始化 SDK 
         initSDK(token);
 
         // 登录房间
@@ -169,6 +167,9 @@ function logoutRoom() {
 
     // 清空成员列表
     userList = [];
+    // 清空白板列表
+    zegoSuperBoardSubViewModelList = [];
+    updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList)
 
     togglePageDomHandle(2);
 }

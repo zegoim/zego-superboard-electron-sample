@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-12 13:38:29
+ * @LastEditTime: 2021-08-12 16:53:58
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -179,6 +179,17 @@ function toggleSheetSelectDomHandle(type) {
         updateExcelSheetListDomHandle('', []);
         $('#sheetListItem').hide();
     }
+}
+
+/**
+ * @description: 更新 缩放 下拉框
+ * @param {*}
+ * @return {*}
+ */
+function updateScaleListDomHandle(zegoScale) {
+    $('#scaleList').val(zegoScale);
+    // 更新下拉框 form.render(type, filter);
+    layui.form.render('select', 'customForm');
 }
 
 /**

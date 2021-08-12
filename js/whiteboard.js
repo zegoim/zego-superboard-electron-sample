@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-13 00:45:12
+ * @LastEditTime: 2021-08-13 01:07:52
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -193,6 +193,7 @@ async function querySuperBoardSubViewList() {
 
         // 更新白板列表
         updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList);
+        (!zegoSuperBoardSubViewModelList || !zegoSuperBoardSubViewModelList.length) && toggleSheetSelectDomHandle(2);
 
         //  获取当前挂载的白板
         var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();

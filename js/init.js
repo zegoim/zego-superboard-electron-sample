@@ -10,19 +10,21 @@
 // 白板、文件 SDK 配置
 var zegoConfig = {
     // 获取登录房间 token，开发者自行在后台实现改接口；测试环境可以使用 ZEGO 提供的接口获取（参考 https://doc-zh.zego.im/article/7638#3_3）
-    tokenUrl: 'https://doc.zego.im/data/getSdkToken',
+    // tokenUrl: 'https://doc.zego.im/data/getSdkToken',
+    tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
     fileListUrl: './fileList.json', // 引入已上传的文件列表路径，可以是本地路径或者服务器路径（https://storage.zego.im/goclass/config.json）
     fileListData: {}, // 文件列表
-    env: getEnv(), // 1 国内 2 海外 3 alpha
+    env: getEnv(), // 1 国内 2 海外 
     appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
-    alphaAppID: 1803117167, // alpha
     superBoardEnv: 'test', // 合并层 SDK 环境
     server: 'wss://webliveroom-test.zego.im/ws', // 国内测试环境
     serverProd: 'wss://webliveroom3606078772-api.zego.im/ws', // 国内正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
     overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // 海外测试环境
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
-    alphaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // alpha
+    alphaAppID: 1803117167, // alpha
+    alphaServer: 'wss://webliveroom1803117167-api.zego.im/ws', // alpha
+    alphaOverseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws',
     roomID: getRoomID(), // 房间 ID
     userID: getUserID(), // 用户 ID
     userName: '', // 用户名称
@@ -36,23 +38,55 @@ var zegoConfig = {
 
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
-var zegoSuperBoardToolType = [
-    { type: 256, name: '点击' },
-    { type: 32, name: '选择' },
-    { type: null, name: '拖拽' },
-    { type: 128, name: '激光笔' },
-    { type: 1, name: '画笔' },
-    { type: 2, name: '文本' },
+var zegoSuperBoardToolType = [{
+        type: 256,
+        name: '点击'
+    },
+    {
+        type: 32,
+        name: '选择'
+    },
+    {
+        type: null,
+        name: '拖拽'
+    },
+    {
+        type: 128,
+        name: '激光笔'
+    },
+    {
+        type: 1,
+        name: '画笔'
+    },
+    {
+        type: 2,
+        name: '文本'
+    },
     {
         name: '图形',
-        child: [
-            { type: 8, name: '矩形' },
-            { type: 16, name: '椭圆' },
-            { type: 4, name: '直线' }
+        child: [{
+                type: 8,
+                name: '矩形'
+            },
+            {
+                type: 16,
+                name: '椭圆'
+            },
+            {
+                type: 4,
+                name: '直线'
+            }
         ]
     },
-    { type: 512, name: '自定义图形', child: [] },
-    { type: 64, name: '橡皮擦' }
+    {
+        type: 512,
+        name: '自定义图形',
+        child: []
+    },
+    {
+        type: 64,
+        name: '橡皮擦'
+    }
 ]; // 工具类型
 
 var parentDomID = 'main-whiteboard'; // 白板、文件挂载的父容器

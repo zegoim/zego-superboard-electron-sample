@@ -14,7 +14,7 @@
  */
 function onSuperBoardEventHandle() {
     zegoSuperBoard.on('error', toast);
-    zegoSuperBoard.on('superBoardSubViewScrolled', function(uniqueID, page, step) {
+    zegoSuperBoard.on('superBoardSubViewScrolled', function (uniqueID, page, step) {
         console.warn('SuperBoard Demo superBoardSubViewScrolled', ...arguments);
         var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
@@ -22,31 +22,32 @@ function onSuperBoardEventHandle() {
             updateCurrPageDomHandle(page);
         }
     });
-    zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function() {
+    zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewAdded', ...arguments);
         // 初次查询一定要在此回调中
         querySuperBoardSubViewList();
     });
-    zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function() {
+    zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewRemoved', ...arguments);
         querySuperBoardSubViewList();
     });
-    zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function() {
+    zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewSwitched', ...arguments);
         querySuperBoardSubViewList();
     });
-    zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function() {
+    zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
         querySuperBoardSubViewList();
     });
-    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function() {
+    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function () {
         console.warn('SuperBoard Demo remoteSuperBoardAuthChanged', ...arguments);
     });
-    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function() {
+    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function () {
         console.warn('SuperBoard Demo remoteSuperBoardGraphicAuthChanged', ...arguments);
     });
-    zegoSuperBoard.on('remoteScaleChanged', function() {
-        console.warn('SuperBoard Demo remoteScaleChanged', ...arguments);
+    zegoSuperBoard.on('remoteScaleChanged', function (data) {
+        console.warn('SuperBoard Demo remoteScaleChanged', data);
+        updateScaleListDomHandle(data)
     });
 }
 
@@ -87,7 +88,9 @@ async function createWhiteboardView() {
  */
 async function createFileView(fileID) {
     try {
-        await zegoSuperBoard.createFileView({ fileID });
+        await zegoSuperBoard.createFileView({
+            fileID
+        });
         var zegoSuperBoardSubViewModel = zegoSuperBoard
             .getSuperBoardView()
             .getCurrentSuperBoardSubView()
@@ -100,11 +103,11 @@ async function createFileView(fileID) {
         updateCurrWhiteboardDomHandle(zegoSuperBoardSubViewModel.uniqueID);
         toggleThumbBtnDomHandle(
             zegoSuperBoardSubViewModel.fileType === 1 ||
-                zegoSuperBoardSubViewModel.fileType === 8 ||
-                zegoSuperBoardSubViewModel.fileType === 512 ||
-                zegoSuperBoardSubViewModel.fileType === 4096
-                ? 1
-                : 2
+            zegoSuperBoardSubViewModel.fileType === 8 ||
+            zegoSuperBoardSubViewModel.fileType === 512 ||
+            zegoSuperBoardSubViewModel.fileType === 4096 ?
+            1 :
+            2
         );
     } catch (errorData) {
         toast(errorData);
@@ -137,7 +140,7 @@ async function destroySuperBoardSubView(type) {
 
             var tasks = [];
             var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
-            zegoSuperBoardSubViewModelList.forEach(function(zegoSuperBoardSubViewModel) {
+            zegoSuperBoardSubViewModelList.forEach(function (zegoSuperBoardSubViewModel) {
                 tasks.push(zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubViewModel.uniqueID));
             });
             await Promise.all(tasks);
@@ -167,7 +170,7 @@ function getExcelSheetNameList() {
     updateExcelSheetListDomHandle(zegoSuperBoardSubView.getModel().uniqueID, zegoExcelSheetNameList);
 
     // 获取当前 sheetIndex
-    zegoExcelSheetNameList.forEach(function(element, index) {
+    zegoExcelSheetNameList.forEach(function (element, index) {
         element === sheetName && (sheetIndex = index);
     });
     updateCurrSheetDomHandle(zegoSuperBoardSubView.getModel().uniqueID, sheetIndex);
@@ -202,11 +205,11 @@ async function querySuperBoardSubViewList() {
             );
             toggleThumbBtnDomHandle(
                 zegoSuperBoardSubViewModel.fileType === 1 ||
-                    zegoSuperBoardSubViewModel.fileType === 8 ||
-                    zegoSuperBoardSubViewModel.fileType === 512 ||
-                    zegoSuperBoardSubViewModel.fileType === 4096
-                    ? 1
-                    : 2
+                zegoSuperBoardSubViewModel.fileType === 8 ||
+                zegoSuperBoardSubViewModel.fileType === 512 ||
+                zegoSuperBoardSubViewModel.fileType === 4096 ?
+                1 :
+                2
             );
             if (zegoSuperBoardSubViewModel.fileType === 4) {
                 // excel 文件白板
@@ -272,11 +275,11 @@ function resetToolType(zegoSuperBoardSubViewModel) {
 }
 
 // 切换白板
-layui.form.on('select(whiteboardList)', async function(data) {
+layui.form.on('select(whiteboardList)', async function (data) {
     var uniqueID = data.value;
     var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
     var zegoSuperBoardSubViewModel;
-    zegoSuperBoardSubViewModelList.forEach(function(element) {
+    zegoSuperBoardSubViewModelList.forEach(function (element) {
         if (uniqueID === element.uniqueID) {
             zegoSuperBoardSubViewModel = element;
         }
@@ -299,11 +302,11 @@ layui.form.on('select(whiteboardList)', async function(data) {
     );
     toggleThumbBtnDomHandle(
         zegoSuperBoardSubViewModel.fileType === 1 ||
-            zegoSuperBoardSubViewModel.fileType === 8 ||
-            zegoSuperBoardSubViewModel.fileType === 512 ||
-            zegoSuperBoardSubViewModel.fileType === 4096
-            ? 1
-            : 2
+        zegoSuperBoardSubViewModel.fileType === 8 ||
+        zegoSuperBoardSubViewModel.fileType === 512 ||
+        zegoSuperBoardSubViewModel.fileType === 4096 ?
+        1 :
+        2
     );
 
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -313,7 +316,7 @@ layui.form.on('select(whiteboardList)', async function(data) {
 });
 
 // 切换 sheet
-layui.form.on('select(sheetList)', async function(data) {
+layui.form.on('select(sheetList)', async function (data) {
     var temp = data.value.split(',');
     var uniqueID = temp[0];
     var sheetIndex = temp[1];
@@ -321,7 +324,7 @@ layui.form.on('select(sheetList)', async function(data) {
 });
 
 // 绑定创建文件白板事件
-$('#file-list').click(function(event) {
+$('#file-list').click(function (event) {
     // 限频
     var target = event.target;
     var fileID;

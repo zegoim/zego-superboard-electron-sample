@@ -182,6 +182,17 @@ function toggleSheetSelectDomHandle(type) {
 }
 
 /**
+ * @description: 更新 缩放 下拉框
+ * @param {*}
+ * @return {*}
+ */
+function updateScaleListDomHandle(zegoScale) {
+    $('#scaleList').val(zegoScale)
+    // 更新下拉框 form.render(type, filter);
+    layui.form.render('select', 'customForm');
+}
+
+/**
  * @description: 显示、隐藏步数切换
  * @param {*} type 1: 显示 2: 隐藏
  * @return {*}

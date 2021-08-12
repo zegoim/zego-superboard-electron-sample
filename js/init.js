@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-13 00:57:43
+ * @LastEditTime: 2021-08-13 02:57:34
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -142,6 +142,9 @@ async function init() {
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
         await loginRoom();
         togglePageDomHandle(1);
+
+        // 注册白板回调
+        onSuperBoardEventHandle();
 
         setTimeout(async function() {
             // 查询当前白板列表

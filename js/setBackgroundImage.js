@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-12 10:35:14
+ * @LastEditTime: 2021-08-12 17:30:20
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -66,11 +66,7 @@ layui.form.on('select(bgUrl)', async function() {
     var bgUrl = formData.bgUrl; // 当前选择的背景图 URL
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
-    try {
-        await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, toast);
-    } catch (errorData) {
-        toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
-    }
+    await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, toast);
 });
 
 /**

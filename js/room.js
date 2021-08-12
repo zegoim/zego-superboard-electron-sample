@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-12 21:48:03
+ * @LastEditTime: 2021-08-12 21:59:01
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -15,21 +15,20 @@
 function initSDK(token) {
     // 初始化 Express SDK
     var appID = zegoConfig.appID;
-    var server = zegoConfig.server;
     var isTestEnv = zegoConfig.superBoardEnv === 'test';
-
-    console.warn('===zegoConfig===', zegoConfig);
+    var server = isTestEnv ? zegoConfig.server : zegoConfig.serverProd;
 
     if (zegoConfig.env === '2') {
-        if (zegoConfig.superBoardEnv === 'alpha') {
-            appID = zegoConfig.alphaAppID;
-            server = zegoConfig.alphaServer;
-        } else {
-            // 海外环境
-            appID = zegoConfig.overseaAppID;
-            server = isTestEnv ? zegoConfig.overseaServer : zegoConfig.overseaServerProd;
-        }
+        // 海外环境
+        appID = zegoConfig.overseaAppID;
+        server = isTestEnv ? zegoConfig.overseaServer : zegoConfig.overseaServerProd;
     }
+
+    if (zegoConfig.superBoardEnv === 'alpha') {
+        appID = zegoConfig.alphaAppID;
+        server = zegoConfig.env === '2' ? zegoConfig.alphaOverseaServer : zegoConfig.alphaServer;
+    }
+
     zegoEngine = new ZegoExpressEngine(appID, server);
 
     // 初始化合并层 SDK
@@ -129,6 +128,7 @@ function loginRoom() {
         } else {
             appID = zegoConfig.env === '1' ? zegoConfig.appID : zegoConfig.overseaAppID;
         }
+        console.warn('loginroom:', appID);
         // 获取 token
         token = await getToken(appID, zegoConfig.userID, zegoConfig.tokenUrl);
         console.warn('====token====', token);

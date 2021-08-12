@@ -24,7 +24,6 @@ var zegoConfig = {
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
     alphaAppID: 1803117167, // alpha
     alphaServer: 'wss://webliveroom1803117167-api.zego.im/ws', // alpha
-    alphaOverseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws',
     roomID: getRoomID(), // 房间 ID
     userID: getUserID(), // 用户 ID
     userName: '', // 用户名称

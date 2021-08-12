@@ -13,14 +13,16 @@ var zegoConfig = {
     tokenUrl: 'https://doc.zego.im/data/getSdkToken',
     fileListUrl: './fileList.json', // 引入已上传的文件列表路径，可以是本地路径或者服务器路径（https://storage.zego.im/goclass/config.json）
     fileListData: {}, // 文件列表
-    env: getEnv(), // 1 国内 2 海外
+    env: getEnv(), // 1 国内 2 海外 3 alpha
     appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
+    alphaAppID: 1803117167, // alpha
     superBoardEnv: 'test', // 合并层 SDK 环境
     server: 'wss://webliveroom-test.zego.im/ws', // 国内测试环境
     serverProd: 'wss://webliveroom3606078772-api.zego.im/ws', // 国内正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
     overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // 海外测试环境
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
+    alphaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // alpha
     roomID: getRoomID(), // 房间 ID
     userID: getUserID(), // 用户 ID
     userName: '', // 用户名称

@@ -740,6 +740,10 @@
   background-color: #ffa402;
 }
 
+#filelistModal .file-item .state.h5 {
+  background-color: #00baff;
+}
+
 /* 缩略图弹框 */
 #thumbModal {
   position: fixed;

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-11 16:29:59
+ * @LastEditTime: 2021-08-12 13:38:29
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -30,9 +30,9 @@ function updateFileListDomHandle() {
             '<li class="file-item" data-file-id="' +
             element.id +
             '"><div class="state ' +
-            (element.isDynamic || element.isH5 ? 'dynamic' : '') +
+            (element.isDynamic ? 'dynamic' : element.isH5 ? 'h5' : '') +
             '">' +
-            (element.isDynamic || element.isH5 ? '动态' : '静态') +
+            (element.isDynamic ? '动态' : element.isH5 ? 'H5' : '静态') +
             '</div>' +
             element.name +
             '</li>';

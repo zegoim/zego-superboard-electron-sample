@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-11 15:07:48
- * @LastEditTime: 2021-08-11 15:27:45
+ * @LastEditTime: 2021-08-12 18:19:31
  * @LastEditors: Please set LastEditors
  * @Description: 上传自定义 H5 文件
  * @FilePath: /superboard/js/uploadH5File.js
@@ -21,9 +21,9 @@ layui.upload.render({
     accept: 'file',
     exts: 'zip',
     auto: false,
-    choose: function (obj) {
+    choose: function(obj) {
         // 选择完文件
-        obj.preview(function (index, file, result) {
+        obj.preview(function(index, file, result) {
             // file 为当前选中文件
             selectedH5File = file;
             toast('选择文件成功');
@@ -34,7 +34,7 @@ layui.upload.render({
 /**
  * @description: 上传 H5 文件
  */
-$('#uploadH5FileBtn').click(async function () {
+$('#uploadH5FileBtn').click(async function() {
     // 判断 file、width、height、pageCount、h5ThumbnailList
     if (!selectedH5File) {
         return toast('未选择文件');
@@ -44,7 +44,7 @@ $('#uploadH5FileBtn').click(async function () {
     var h5Height = Number(data.h5Height);
     var h5PageCount = Number(data.h5PageCount);
     var h5ThumbnailList = data.h5ThumbnailListStr ? data.h5ThumbnailListStr.split(',') : null;
-    console.warn(h5Width, h5Height, h5PageCount, h5ThumbnailList)
+    console.warn(h5Width, h5Height, h5PageCount, h5ThumbnailList);
     if (!h5Width || !h5Height || !h5PageCount || !h5ThumbnailList) {
         return toast('文件参数有误');
     }
@@ -56,7 +56,9 @@ $('#uploadH5FileBtn').click(async function () {
         thumbnailList: h5ThumbnailList // 自定义文件缩略图相对路径数组
     };
     try {
-        var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, toast);
+        var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, function(res) {
+            toast(res.uploadPercent + '%');
+        });
         // 这里上传完成立即创建文件白板，开发者根据实际情况处理
         createFileView(fileID);
     } catch (errorData) {

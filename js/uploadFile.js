@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-11 15:08:11
- * @LastEditTime: 2021-08-11 16:13:49
+ * @LastEditTime: 2021-08-12 17:41:30
  * @LastEditors: Please set LastEditors
  * @Description: 上传静态、动态文件
  * @FilePath: /superboard/js/uploadFile.js
@@ -31,7 +31,7 @@ function uploadFile(renderType, file) {
 
     zegoSuperBoard
         .uploadFile(file, renderType, function(res) {
-            toast(uploadFileTipsMap[res.status] + (res.uploadPercent || ''));
+            toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
         })
         .then(function(fileID) {
             // 关闭弹框

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-11 15:53:27
+ * @LastEditTime: 2021-08-12 10:35:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -27,7 +27,7 @@ $(document).ready(initBgListDomHandle);
  */
 function initBgListDomHandle() {
     var $str = '<option value>请选择</option>';
-    customBgList.forEach(function (element, index) {
+    customBgList.forEach(function(element, index) {
         $str += '<option value="' + element + '">图片' + (index + 1) + '</option>';
     });
     $('#bgList').html($str);
@@ -44,9 +44,9 @@ layui.upload.render({
     elem: '#selectBgImage', // 绑定元素
     accept: 'images', // 只接受 image 文件
     auto: false, // 不自动上传
-    choose: function (obj) {
+    choose: function(obj) {
         // 选择完文件的回调
-        obj.preview(function (index, file, result) {
+        obj.preview(function(index, file, result) {
             // file 为当前选中文件
             selectedBgImgFile = file;
             toast('选择文件成功');
@@ -58,7 +58,7 @@ layui.upload.render({
  * @description: 监听选择框，切换背景图
  * @description: 这里只展示选择框监听，开发者根据实际情况处理
  */
-layui.form.on('select(bgUrl)', async function () {
+layui.form.on('select(bgUrl)', async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -77,7 +77,7 @@ layui.form.on('select(bgUrl)', async function () {
  * @description: 输入可用背景图 URL
  * @description: 绑定设置背景图事件
  */
-$('#setBackgroundImageByURLBtn').click(async function () {
+$('#setBackgroundImageByURLBtn').click(async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -97,7 +97,7 @@ $('#setBackgroundImageByURLBtn').click(async function () {
 /**
  * @description: 选择本地文件
  */
-$('#setBackgroundImageByFileBtn').click(async function () {
+$('#setBackgroundImageByFileBtn').click(async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -116,7 +116,7 @@ $('#setBackgroundImageByFileBtn').click(async function () {
 /**
  * @description: 清除背景图
  */
-$('#clearBackgroundImageBtn').click(function () {
+$('#clearBackgroundImageBtn').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearBackgroundImage();
 });

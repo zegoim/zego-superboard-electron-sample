@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-11 16:29:19
+ * @LastEditTime: 2021-08-12 12:36:22
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -47,26 +47,6 @@ function onSuperBoardEventHandle() {
     });
     zegoSuperBoard.on('remoteScaleChanged', function() {
         console.warn('SuperBoard Demo remoteScaleChanged', ...arguments);
-    });
-}
-
-/**
- * @description: 监听其他回调
- * @param {*}
- * @return {*}
- */
-function onDocumentEventHandle() {
-    window.addEventListener('keydown', function(event) {
-        var e = event || window.event || arguments.callee.caller.arguments[0];
-        if (!e) return;
-        switch (e.keyCode) {
-            case 8: // 监听 backspace 按键，批量删除选中图元
-            case 46: // 监听 Delete 按键，批量删除选中图元
-                clearSelected();
-                break;
-            default:
-                break;
-        }
     });
 }
 
@@ -169,19 +149,6 @@ async function destroySuperBoardSubView(type) {
             toast(errorData);
         }
     }
-}
-
-/**
- * @description: 设置渲染延时
- * @param {*}
- * @return {*}
- */
-function setDeferredRenderingTime() {
-    var deferredRenderingTime = getFormData('form2').deferredRenderingTime;
-    if (!deferredRenderingTime) return toast('请输入延时时长');
-
-    zegoSuperBoard.setDeferredRenderingTime(+deferredRenderingTime);
-    toast('设置成功');
 }
 
 /**
@@ -288,52 +255,6 @@ function setToolType(toolType, event) {
 }
 
 /**
- * @description: 清空所有页
- * @param {*}
- * @return {*}
- */
-function clearAllPage() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.clearAllPage();
-}
-
-/**
- * @description: 撤销
- * @param {*}
- * @return {*}
- */
-function undo() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.undo();
-}
-
-/**
- * @description: 重做
- * @param {*}
- * @return {*}
- */
-function redo() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.redo();
-}
-
-/**
- * @description: 白板快照
- * @param {*}
- * @return {*}
- */
-function snapshot() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView &&
-        zegoSuperBoardSubView.snapshot().then(function(data) {
-            var link = document.createElement('a');
-            link.href = data.image;
-            link.download = zegoSuperBoardSubView.getModel().name + seqMap.saveImg++ + '.png';
-            dispatchClickEvent(link);
-        });
-}
-
-/**
  * @description: 重置白板工具，在动态 PPT 白板切换到其他白板是时使用
  * @param {*} zegoSuperBoardSubViewModel zegoSuperBoardSubViewModel
  * @return {*}
@@ -348,26 +269,6 @@ function resetToolType(zegoSuperBoardSubViewModel) {
         zegoSuperBoard.setToolType(1);
         resetToolTypeDomHandle();
     }
-}
-
-/**
- * @description: 清空当前页图元，在橡皮擦工具时生效
- * @param {*}
- * @return {*}
- */
-function clearCurrentPage() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.clearCurrentPage();
-}
-
-/**
- * @description: 删除选中图元
- * @param {*}
- * @return {*}
- */
-function clearSelected() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.clearSelected();
 }
 
 // 切换白板
@@ -429,7 +330,9 @@ $('#file-list').click(function(event) {
     } else if (target.tagName === 'DIV') {
         fileID = $(target.parentNode).attr('data-file-id');
     }
+    // 关闭文件弹框
     $('#filelistModal').modal('hide');
 
+    // 创建文件白板
     createFileView(fileID);
 });

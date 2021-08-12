@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-07 16:51:20
+ * @LastEditTime: 2021-08-12 12:03:29
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -178,29 +178,4 @@ function copyInviteLink() {
     $('#showInviteLink').select(); // 选中文本
     document.execCommand('copy'); // 执行浏览器复制命令
     alert('复制成功');
-}
-
-/**
- * @description: 触发模拟点击
- * @param {*}
- * @return {*}
- */
-function dispatchClickEvent(dom) {
-    if (isTouch) {
-        var e1 = document.createEvent('Events');
-        e1.initEvent('touchstart', true, true);
-        var e2 = document.createEvent('Events');
-        e2.initEvent('touchend', true, true);
-        dom.dispatchEvent(e1);
-        e2 = dom.dispatchEvent(e2);
-        // ipad 14.2 非标准兼容处理
-        if (e2) {
-            e1 = document.createEvent('Events');
-            e1.initEvent('click', true, true);
-            e1 = dom.dispatchEvent(e1);
-            dom.click && dom.click();
-        }
-    } else {
-        dom.click();
-    }
 }

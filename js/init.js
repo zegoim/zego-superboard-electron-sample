@@ -1,13 +1,11 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-11 15:33:15
+ * @LastEditTime: 2021-08-12 12:04:00
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
  */
-
-var isTouch = 'ontouchstart' in window; // 当前是否是触摸设备
 
 // 白板、文件 SDK 配置
 var zegoConfig = {
@@ -91,13 +89,6 @@ async function init() {
     if (!zegoConfig.appID || !zegoConfig.tokenUrl) {
         alert('请填写 appID 和 tokenUrl');
         return;
-    }
-
-    // 触摸设备增加 vconsole
-    if (isTouch) {
-        await loadScript('./lib/vconsole.js');
-        // 初始化 vconsole
-        new VConsole();
     }
 
     // 获取 sessionStorage 已登录信息

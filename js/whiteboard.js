@@ -271,7 +271,7 @@ function setToolType(toolType, event) {
 
     if (toolType !== undefined) {
         var result = zegoSuperBoard.setToolType(toolType);
-
+        console.warn('result', result)
         // 设置失败，直接返回
         if (!result) return toast('设置失败');
 

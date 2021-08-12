@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-12 21:47:47
+ * @LastEditTime: 2021-08-13 00:42:24
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -14,7 +14,7 @@ var zegoConfig = {
     tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
     fileListUrl: './fileList.json', // 引入已上传的文件列表路径，可以是本地路径或者服务器路径（https://storage.zego.im/goclass/config.json）
     fileListData: {}, // 文件列表
-    env: getEnv(), // 1 国内 2 海外 
+    env: getEnv(), // 1 国内 2 海外
     appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     superBoardEnv: 'test', // 合并层 SDK 环境
@@ -38,7 +38,8 @@ var zegoConfig = {
 
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
-var zegoSuperBoardToolType = [{
+var zegoSuperBoardToolType = [
+    {
         type: 256,
         name: '点击'
     },
@@ -64,7 +65,8 @@ var zegoSuperBoardToolType = [{
     },
     {
         name: '图形',
-        child: [{
+        child: [
+            {
                 type: 8,
                 name: '矩形'
             },
@@ -142,11 +144,15 @@ async function init() {
         await loginRoom();
         togglePageDomHandle(1);
 
-        // 查询当前白板列表
-        querySuperBoardSubViewList();
+        setTimeout(async function() {
+            // 查询当前白板列表
+            var result = await querySuperBoardSubViewList();
+            console.error(result);
 
-        // 设置自动进房自动挂载最新白板
-        zegoSuperBoard.attachSuperView();
+            // 设置自动进房自动挂载最新白板
+            result.uniqueID &&
+                (await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
+        }, 500);
     } else {
         // 未登录过，显示登录页
         togglePageDomHandle(2);

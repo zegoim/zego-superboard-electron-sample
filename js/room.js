@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-12 21:59:01
+ * @LastEditTime: 2021-08-13 00:42:33
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -230,11 +230,14 @@ $('#login-btn').click(async function() {
     // 注册白板回调
     onSuperBoardEventHandle();
 
-    // 查询当前白板列表
-    querySuperBoardSubViewList();
-
-    // 设置自动进房自动挂载最新白板
-    zegoSuperBoard.attachSuperView();
+    setTimeout(async function() {
+        // 查询当前白板列表
+        var result = await querySuperBoardSubViewList();
+        console.error(result);
+        // 设置自动进房自动挂载最新白板
+        result.uniqueID &&
+            (await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
+    }, 500);
 });
 
 // 绑定退出房间事件

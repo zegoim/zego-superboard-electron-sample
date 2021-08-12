@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-12 11:56:27
- * @LastEditTime: 2021-08-12 12:29:17
+ * @LastEditTime: 2021-08-12 18:40:04
  * @LastEditors: Please set LastEditors
  * @Description: 清空、撤销、重做、保存快照、清空当前页、清除选中
  * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/other.js

@@ -8,7 +8,7 @@
  */
 
 // bootstrap tooltip、popover 初始化
-$(function() {
+$(function () {
     $('[data-toggle="tooltip"]').tooltip();
     $('#openPopover').popover();
 });
@@ -30,9 +30,9 @@ function updateFileListDomHandle() {
             '<li class="file-item" data-file-id="' +
             element.id +
             '"><div class="state ' +
-            (element.isDynamic || element.isH5 ? 'dynamic' : '') +
+            (element.isDynamic || element.isH5 ? element.isH5 ? 'h5' : 'dynamic' : '') +
             '">' +
-            (element.isDynamic || element.isH5 ? '动态' : '静态') +
+            (element.isDynamic || element.isH5 ? element.isH5 ? 'H5' : '动态' : '静态') +
             '</div>' +
             element.name +
             '</li>';
@@ -79,7 +79,7 @@ function updateUserListDomHandle() {
     $('#user-list').html('');
 
     var $str = '';
-    userList.forEach(function(element) {
+    userList.forEach(function (element) {
         $str += '<li class="user-item">' + element.userName + '</li>';
     });
     $('#user-list').html($str);
@@ -136,7 +136,7 @@ function togglePlaceholderDomHandle(type) {
 function updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList) {
     var $str = '';
     $('#whiteboardList').html('');
-    zegoSuperBoardSubViewModelList.forEach(function(element) {
+    zegoSuperBoardSubViewModelList.forEach(function (element) {
         $str +=
             '<option value="' +
             element.uniqueID +
@@ -159,7 +159,7 @@ function updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList) {
 function updateExcelSheetListDomHandle(uniqueID, zegoExcelSheetNameList) {
     var $str = '';
     $('#sheetList').html('');
-    zegoExcelSheetNameList.forEach(function(element, index) {
+    zegoExcelSheetNameList.forEach(function (element, index) {
         $str += '<option value="' + uniqueID + ',' + index + '">' + element + '</option>';
     });
     $('#sheetList').html($str);
@@ -346,12 +346,12 @@ function closeLoading() {
 }
 
 // 绑定预览事件
-$('#thumb-button').click(function(event) {
+$('#thumb-button').click(function (event) {
     $('#thumbModal').toggleClass('active');
 });
 
 // 绑定切换功能区事件
-$('#right-header').click(function(event) {
+$('#right-header').click(function (event) {
     var target = event.target;
     var index = $(target).attr('data-index');
     $('.nav-item').removeClass('active');
@@ -362,23 +362,23 @@ $('#right-header').click(function(event) {
 });
 
 // 更新邀请信息
-$('.inivate-btn').click(function(event) {
+$('.inivate-btn').click(function (event) {
     var inivateLink = location.origin + '?roomId=' + zegoConfig.roomID + '&env=' + zegoConfig.env;
     $('#showInviteLink').val(inivateLink);
     $('#showRoomEnv').html(zegoConfig.env == 1 ? '中国内地' : '海外');
 });
 
 // 阻止事件
-$('.pencil-text-setting').click(function(event) {
+$('.pencil-text-setting').click(function (event) {
     event.stopPropagation();
 });
 
-$('.custom-graph-setting').click(function(event) {
+$('.custom-graph-setting').click(function (event) {
     event.stopPropagation();
 });
 
 // 点击空白处关闭白板工具弹出框、关闭缩略图弹框
-$(document).click(function(event) {
+$(document).click(function (event) {
     if (!$(this).parents('.tool-item').length > 0) {
         $('.pencil-text-setting').removeClass('active');
         $('.custom-graph-setting').removeClass('active');

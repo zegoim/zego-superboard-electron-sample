@@ -727,6 +727,7 @@
   display: inline-block;
   padding: 0 5px;
   height: 16px;
+  width: 35px;
   border-radius: 4px;
   background-color: #0045ff;
   color: #fff;
@@ -738,6 +739,10 @@
 
 #filelistModal .file-item .state.dynamic {
   background-color: #ffa402;
+}
+
+#filelistModal .file-item .state.h5 {
+  background-color: #00baff;
 }
 
 /* 缩略图弹框 */

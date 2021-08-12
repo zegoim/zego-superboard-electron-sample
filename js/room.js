@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-09 15:53:01
+ * @LastEditTime: 2021-08-12 12:08:04
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -78,9 +78,6 @@ function initSuperBoardSDKConfig() {
 
     // 注册白板回调
     onSuperBoardEventHandle();
-
-    // 注册其他回调
-    onDocumentEventHandle();
 }
 
 /**

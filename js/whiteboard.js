@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-13 02:00:50
+ * @LastEditTime: 2021-08-13 02:19:41
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -193,9 +193,11 @@ function getExcelSheetNameList() {
  */
 async function querySuperBoardSubViewList() {
     try {
+        loading('查询列表中');
         var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
         console.warn('SuperBoard Demo querySuperBoardSubViewList', zegoSuperBoardSubViewModelList);
-
+        closeLoading();
+        toast('查询成功');
         // 更新白板列表
         updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList);
         if (!zegoSuperBoardSubViewModelList || !zegoSuperBoardSubViewModelList.length) {
@@ -323,11 +325,17 @@ async function switchWhitebopard(uniqueID) {
 
     if (zegoSuperBoardSubViewModel.fileType === 4) {
         // 默认切换到第一个 sheet（SDK 内部没有记录上一次的下标）
+        loading();
         await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, 0);
+        closeLoading();
+        toast('切换成功');
         toggleSheetSelectDomHandle(1);
         getExcelSheetNameList();
     } else {
+        loading();
         await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID);
+        closeLoading();
+        toast('切换成功');
         toggleSheetSelectDomHandle(2);
     }
 
@@ -359,7 +367,10 @@ layui.form.on('select(sheetList)', async function(data) {
     var temp = data.value.split(',');
     var uniqueID = temp[0];
     var sheetIndex = temp[1];
+    loading('切换中');
     await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
+    closeLoading();
+    toast('切换成功');
 });
 
 // 绑定创建文件白板事件

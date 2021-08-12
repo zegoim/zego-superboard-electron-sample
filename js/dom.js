@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-12 16:53:58
+ * @LastEditTime: 2021-08-12 20:49:08
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -48,12 +48,12 @@ function updateFileListDomHandle() {
 function togglePageDomHandle(type) {
     if (type === 1) {
         // 显示房间页
-        $('#room-page').css('display', 'flex');
-        $('#login-page').css('display', 'none');
+        $('#room-page').addClass('active');
+        $('#login-page').removeClass('active');
     } else {
         // 显示登录页
-        $('#room-page').css('display', 'none');
-        $('#login-page').css('display', 'block');
+        $('#room-page').removeClass('active');
+        $('#login-page').addClass('active');
     }
 }
 

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-12 12:04:00
+ * @LastEditTime: 2021-08-12 21:47:47
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -107,6 +107,10 @@ async function init() {
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
         await loginRoom();
         togglePageDomHandle(1);
+
+        // 查询当前白板列表
+        querySuperBoardSubViewList();
+
         // 设置自动进房自动挂载最新白板
         zegoSuperBoard.attachSuperView();
     } else {

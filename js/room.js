@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-12 13:25:49
+ * @LastEditTime: 2021-08-12 21:48:03
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -18,18 +18,17 @@ function initSDK(token) {
     var server = zegoConfig.server;
     var isTestEnv = zegoConfig.superBoardEnv === 'test';
 
-    console.warn('===zegoConfig===', zegoConfig)
+    console.warn('===zegoConfig===', zegoConfig);
 
     if (zegoConfig.env === '2') {
         if (zegoConfig.superBoardEnv === 'alpha') {
             appID = zegoConfig.alphaAppID;
-            server = zegoConfig.alphaServer
+            server = zegoConfig.alphaServer;
         } else {
             // 海外环境
             appID = zegoConfig.overseaAppID;
             server = isTestEnv ? zegoConfig.overseaServer : zegoConfig.overseaServerProd;
         }
-
     }
     zegoEngine = new ZegoExpressEngine(appID, server);
 
@@ -85,8 +84,6 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', $('#dynamicPPT_AutomaticPage').val());
     // 设置 PPT 视频下载
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', $('#unloadVideoSrc').val());
-    // 注册白板回调
-    onSuperBoardEventHandle();
 }
 
 /**
@@ -95,17 +92,17 @@ function initSuperBoardSDKConfig() {
  * @return {*}
  */
 function onRoomUserUpdate() {
-    zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
+    zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
         if (type == 'ADD') {
-            list.forEach(function (v) {
+            list.forEach(function(v) {
                 userList.push({
                     userID: v.userID,
                     userName: v.userName
                 });
             });
         } else if (type == 'DELETE') {
-            list.forEach(function (v) {
-                var index = userList.findIndex(function (item) {
+            list.forEach(function(v) {
+                var index = userList.findIndex(function(item) {
                     return v.userID == item.userID;
                 });
                 if (index != -1) {
@@ -123,10 +120,10 @@ function onRoomUserUpdate() {
  * @return {*}
  */
 function loginRoom() {
-    return new Promise(async function (resolve, reject) {
-        console.warn('zegoConfig', zegoConfig)
+    return new Promise(async function(resolve, reject) {
+        console.warn('zegoConfig', zegoConfig);
         var appID;
-        var token
+        var token;
         if (zegoConfig.superBoardEnv === 'alpha') {
             appID = zegoConfig.alphaAppID;
         } else {
@@ -134,18 +131,20 @@ function loginRoom() {
         }
         // 获取 token
         token = await getToken(appID, zegoConfig.userID, zegoConfig.tokenUrl);
-        console.warn('====token====', token)
-        // 初始化 SDK 
+        console.warn('====token====', token);
+        // 初始化 SDK
         initSDK(token);
-        
+
         // 登录房间
         try {
             await zegoSuperBoard.loginRoom(
                 zegoConfig.roomID,
-                token, {
+                token,
+                {
                     userID: zegoConfig.userID,
                     userName: zegoConfig.userName
-                }, {
+                },
+                {
                     maxMemberCount: 10,
                     userUpdate: true
                 }
@@ -183,13 +182,16 @@ function logoutRoom() {
     userList = [];
     // 清空白板列表
     zegoSuperBoardSubViewModelList = [];
-    updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList)
+    updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList);
 
+    // 清除已挂载白板
+    $('#main-whiteboard').html('');
+    togglePlaceholderDomHandle(1);
     togglePageDomHandle(2);
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(async function () {
+$('#login-btn').click(async function() {
     // 校验 roomID、userName
     var roomID = $('#roomID').val();
     var userName = $('#userName').val();
@@ -220,14 +222,22 @@ $('#login-btn').click(async function () {
     sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
 
     // 显示房间页
-    $('#room-page').css('display', 'flex');
-    $('#login-page').css('display', 'none');
+    togglePageDomHandle(1);
 
     // 更新房间号
     $('#showRoomID').html(zegoConfig.roomID);
+
+    // 注册白板回调
+    onSuperBoardEventHandle();
+
+    // 查询当前白板列表
+    querySuperBoardSubViewList();
+
+    // 设置自动进房自动挂载最新白板
+    zegoSuperBoard.attachSuperView();
 });
 
 // 绑定退出房间事件
-$('#logout-btn').click(function () {
+$('#logout-btn').click(function() {
     logoutRoom();
 });

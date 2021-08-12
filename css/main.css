@@ -11,7 +11,13 @@
 #login-page {
   width: 100%;
   height: 100%;
+  display: none;
 }
+
+#login-page.active {
+  display: block;
+}
+
 #login-form {
   box-shadow: 3px 3px 30px rgb(0 0 0 / 8%);
   border-radius: 6px;
@@ -110,6 +116,11 @@
 #room-page {
   height: 100%;
   width: 100%;
+  display: none;
+}
+
+#room-page.active {
+  display: flex;
 }
 
 #room-page-left {

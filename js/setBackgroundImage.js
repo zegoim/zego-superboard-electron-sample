@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-12 17:30:20
+ * @LastEditTime: 2021-08-12 19:07:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -83,11 +83,7 @@ $('#setBackgroundImageByURLBtn').click(async function() {
 
     if (!customBgUrl) return toast('请输入 URL');
 
-    try {
-        await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, toast);
-    } catch (errorData) {
-        toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
-    }
+    await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, toast);
 });
 
 /**
@@ -102,11 +98,7 @@ $('#setBackgroundImageByFileBtn').click(async function() {
 
     if (!selectedBgImgFile) return toast('请先选择文件');
 
-    try {
-        await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, toast);
-    } catch (errorData) {
-        toast(errorData.code + '：' + (imageErrorTipsMap[errorData.code] || errorData.msg));
-    }
+    await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, toast);
 });
 
 /**

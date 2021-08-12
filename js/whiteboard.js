@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-13 02:19:41
+ * @LastEditTime: 2021-08-13 03:04:33
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -271,7 +271,7 @@ function setToolType(toolType, event) {
 
     if (toolType !== undefined) {
         var result = zegoSuperBoard.setToolType(toolType);
-        console.warn('result', result)
+        console.warn('result', result);
         // 设置失败，直接返回
         if (!result) return toast('设置失败');
 
@@ -282,6 +282,7 @@ function setToolType(toolType, event) {
     } else {
         // 默认矩形
         var result = zegoSuperBoard.setToolType(8);
+        console.warn('result', result);
 
         // 设置失败，直接返回
         if (!result) return toast('设置失败');
@@ -302,6 +303,8 @@ function resetToolType(zegoSuperBoardSubViewModel) {
         zegoSuperBoard.getToolType() === 256
     ) {
         var result = zegoSuperBoard.setToolType(1);
+        console.warn('result', result);
+
         // 设置失败，直接返回
         if (!result) return toast('设置失败');
 

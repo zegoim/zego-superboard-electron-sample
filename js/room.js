@@ -160,6 +160,8 @@ function loginRoom() {
             // 更新成员列表
             updateUserListDomHandle();
 
+            updateFileListDomHandle();
+
             resolve();
         } catch (error) {
             reject();

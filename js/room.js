@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-13 00:42:33
+ * @LastEditTime: 2021-08-13 01:02:46
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -91,17 +91,17 @@ function initSuperBoardSDKConfig() {
  * @return {*}
  */
 function onRoomUserUpdate() {
-    zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
+    zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
         if (type == 'ADD') {
-            list.forEach(function (v) {
+            list.forEach(function(v) {
                 userList.push({
                     userID: v.userID,
                     userName: v.userName
                 });
             });
         } else if (type == 'DELETE') {
-            list.forEach(function (v) {
-                var index = userList.findIndex(function (item) {
+            list.forEach(function(v) {
+                var index = userList.findIndex(function(item) {
                     return v.userID == item.userID;
                 });
                 if (index != -1) {
@@ -119,7 +119,7 @@ function onRoomUserUpdate() {
  * @return {*}
  */
 function loginRoom() {
-    return new Promise(async function (resolve, reject) {
+    return new Promise(async function(resolve, reject) {
         console.warn('zegoConfig', zegoConfig);
         var appID;
         var token;
@@ -139,10 +139,12 @@ function loginRoom() {
         try {
             await zegoSuperBoard.loginRoom(
                 zegoConfig.roomID,
-                token, {
+                token,
+                {
                     userID: zegoConfig.userID,
                     userName: zegoConfig.userName
-                }, {
+                },
+                {
                     maxMemberCount: 10,
                     userUpdate: true
                 }
@@ -179,8 +181,9 @@ function logoutRoom() {
     // 清空成员列表
     userList = [];
     // 清空白板列表
-    zegoSuperBoardSubViewModelList = [];
-    updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList);
+    updateWhiteboardListDomHandle([]);
+    // 清空 excel sheet 列表
+    toggleSheetSelectDomHandle(2);
 
     // 清除已挂载白板
     $('#main-whiteboard').html('');
@@ -189,7 +192,7 @@ function logoutRoom() {
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(async function () {
+$('#login-btn').click(async function() {
     // 校验 roomID、userName
     var roomID = $('#roomID').val();
     var userName = $('#userName').val();
@@ -233,12 +236,14 @@ $('#login-btn').click(async function () {
         var result = await querySuperBoardSubViewList();
         console.error(result);
         // 设置自动进房自动挂载最新白板
-        result.uniqueID &&
-            (await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
+        if (result.uniqueID) {
+            var superBoardView = zegoSuperBoard.getSuperBoardView();
+            superBoardView && (await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
+        }
     }, 500);
 });
 
 // 绑定退出房间事件
-$('#logout-btn').click(function () {
+$('#logout-btn').click(function() {
     logoutRoom();
 });

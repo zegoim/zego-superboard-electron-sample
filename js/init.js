@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-13 00:42:24
+ * @LastEditTime: 2021-08-13 00:57:43
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -147,10 +147,11 @@ async function init() {
             // 查询当前白板列表
             var result = await querySuperBoardSubViewList();
             console.error(result);
-
             // 设置自动进房自动挂载最新白板
-            result.uniqueID &&
-                (await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
+            if (result.uniqueID) {
+                var superBoardView = zegoSuperBoard.getSuperBoardView();
+                superBoardView && (await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
+            }
         }, 500);
     } else {
         // 未登录过，显示登录页

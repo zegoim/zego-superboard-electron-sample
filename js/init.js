@@ -37,8 +37,7 @@ var zegoConfig = {
 
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
-var zegoSuperBoardToolType = [
-    {
+var zegoSuperBoardToolType = [{
         type: 256,
         name: '点击'
     },
@@ -64,8 +63,7 @@ var zegoSuperBoardToolType = [
     },
     {
         name: '图形',
-        child: [
-            {
+        child: [{
                 type: 8,
                 name: '矩形'
             },
@@ -146,14 +144,17 @@ async function init() {
         // 注册白板回调
         onSuperBoardEventHandle();
 
-        setTimeout(async function() {
+        setTimeout(async function () {
             // 查询当前白板列表
             var result = await querySuperBoardSubViewList();
-            console.error(result);
             // 设置自动进房自动挂载最新白板
             if (result.uniqueID) {
                 var superBoardView = zegoSuperBoard.getSuperBoardView();
                 superBoardView && (await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
+                var curView = superBoardView.getCurrentSuperBoardSubView();
+                // 更新总页数、当前页\
+                updatePageCountDomHandle(curView.getPageCount());
+                updateCurrPageDomHandle(curView.getCurrentPage());
             }
         }, 500);
     } else {

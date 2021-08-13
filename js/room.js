@@ -242,7 +242,6 @@ $('#login-btn').click(async function() {
     setTimeout(async function() {
         // 查询当前白板列表
         var result = await querySuperBoardSubViewList();
-        console.error(result);
         // 设置自动进房自动挂载最新白板
         if (result.uniqueID) {
             var superBoardView = zegoSuperBoard.getSuperBoardView();

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-13 01:02:46
+ * @LastEditTime: 2021-08-13 11:00:12
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -35,6 +35,7 @@ function initSDK(token) {
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
     zegoSuperBoard.init(zegoEngine, {
         parentDomID,
+        userID: zegoConfig.userID,
         appID,
         token,
         isTestEnv
@@ -159,8 +160,6 @@ function loginRoom() {
             });
             // 更新成员列表
             updateUserListDomHandle();
-
-            updateFileListDomHandle();
 
             resolve();
         } catch (error) {

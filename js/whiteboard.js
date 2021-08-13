@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-13 03:04:33
+ * @LastEditTime: 2021-08-13 03:24:32
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -61,8 +61,8 @@ async function createWhiteboardView() {
         loading('创建中');
         await zegoSuperBoard.createWhiteboardView({
             name: zegoConfig.userName + '创建的白板' + seqMap.viewSeq++,
-            perPageWidth: 500,
-            perPageHeight: 500,
+            perPageWidth: 1600,
+            perPageHeight: 900,
             pageCount: 5 // 默认水平分页
         });
         closeLoading();
@@ -221,6 +221,7 @@ async function querySuperBoardSubViewList() {
             result.uniqueID = zegoSuperBoardSubViewModel.uniqueID;
 
             // 更新总页数、当前页
+            console.warn('SuperBoard Demo getPageCount ', zegoSuperBoardSubView.getPageCount());
             updatePageCountDomHandle(zegoSuperBoardSubView.getPageCount());
             updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
             toggleStepDomHandle(
@@ -356,6 +357,7 @@ async function switchWhitebopard(uniqueID) {
 
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     // 更新总页数、当前页
+    console.warn('SuperBoard Demo getPageCount ', zegoSuperBoardSubView.getPageCount());
     updatePageCountDomHandle(zegoSuperBoardSubView.getPageCount());
     updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
 }

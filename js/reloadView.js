@@ -24,7 +24,7 @@ window.addEventListener('resize', onResizeHandle);
 function onResizeHandle() {
     if (!resizeTicking) {
         resizeTicking = true;
-        setTimeout(function() {
+        setTimeout(function () {
             autoReloadViewHandle();
             resizeTicking = false;
         }, 1000);
@@ -40,7 +40,7 @@ function reloadViewHandle() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         // 当前有白板挂载
-        setTimeout(function() {
+        setTimeout(function () {
             zegoSuperBoardSubView.reloadView();
         }, 120); // 动画120ms
     }
@@ -104,10 +104,10 @@ function customReloadViewHandle() {
     var height_set = +layui.form.val('form2').parentHeight;
 
     // 判断当前自定义的尺寸，这里容器有 2px 边框，所以不允许小于 2，可视实际情况而定
-    if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return toast('请输入有效的宽高值');
+    // if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return toast('请输入有效的宽高值');
 
     // 为更好的显示页面布局效果，这里自定义的值不允许超过当前自适应的容器尺寸，可视实际情况而定
-    if (width_set > width || height_set > height) return toast('请输入小于当前容器尺寸的宽高值');
+    // if (width_set > width || height_set > height) return toast('请输入小于当前容器尺寸的宽高值');
 
     // 更新容器尺寸
     dom.style.cssText += `width:${width_set}px;height:${height_set}px;`;
@@ -125,10 +125,10 @@ function customReloadViewHandle() {
  */
 function fullScreenHandle() {
     supportRequestFullscreen(document.getElementById(parentDomID))
-        .then(function() {
+        .then(function () {
             toast('已全屏');
         })
-        .catch(function() {
+        .catch(function () {
             toast('当前浏览器不支持全屏');
         });
 }

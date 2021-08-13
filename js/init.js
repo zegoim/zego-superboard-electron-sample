@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-13 02:57:34
+ * @LastEditTime: 2021-08-13 11:18:07
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -114,14 +114,6 @@ var userList = []; // 房间内成员列表
  * @return {*}
  */
 async function init() {
-    // 获取文件列表
-    var fileListData = await getFilelist(zegoConfig.fileListUrl);
-    // 更新文件列表
-    zegoConfig.fileListData = fileListData;
-
-    // 更新视图
-    updateFileListDomHandle();
-
     // 校验 appID、tokenUrl
     if (!zegoConfig.appID || !zegoConfig.tokenUrl) {
         alert('请填写 appID 和 tokenUrl');
@@ -139,6 +131,14 @@ async function init() {
         loginInfo.roomID = zegoConfig.roomID;
         // 使用 loginInfo 自动登录房间
         Object.assign(zegoConfig, loginInfo);
+
+        // 获取文件列表
+        var fileListData = await getFilelist(zegoConfig.fileListUrl);
+        // 更新文件列表
+        zegoConfig.fileListData = fileListData;
+        // 更新视图
+        updateFileListDomHandle();
+
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
         await loginRoom();
         togglePageDomHandle(1);

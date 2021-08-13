@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-13 11:00:12
+ * @LastEditTime: 2021-08-13 11:19:17
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -219,6 +219,13 @@ $('#login-btn').click(async function() {
 
     // 更新 zegoConfig
     Object.assign(zegoConfig, loginInfo);
+
+    // 获取文件列表
+    var fileListData = await getFilelist(zegoConfig.fileListUrl);
+    // 更新文件列表
+    zegoConfig.fileListData = fileListData;
+    // 更新视图
+    updateFileListDomHandle();
 
     await loginRoom();
     sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));

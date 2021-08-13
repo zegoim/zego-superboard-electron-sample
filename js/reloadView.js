@@ -82,6 +82,7 @@ function supportRequestFullscreen(dom) {
 function updateSizeDomHandle() {
     // 获取当前容器宽高
     var dom = document.getElementById(parentDomID);
+    dom.removeAttribute('style')
     var width = dom.clientWidth + 2; // +边框
     var height = dom.clientHeight + 2; // +边框
 

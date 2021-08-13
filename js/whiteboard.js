@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-13 03:24:32
+ * @LastEditTime: 2021-08-13 11:56:00
  * @LastEditors: Please set LastEditors
  * @Description: 白板、文件相关
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -91,11 +91,17 @@ async function createWhiteboardView() {
 async function createFileView(fileID) {
     try {
         loading('创建中');
-        await zegoSuperBoard.createFileView({
-            fileID
-        });
-        closeLoading();
-        toast('创建成功');
+        try {
+            await zegoSuperBoard.createFileView({
+                fileID
+            });
+            toast('创建成功');
+            closeLoading();
+        } catch (errorData) {
+            closeLoading();
+            return toast(errorData);
+        }
+
         var zegoSuperBoardSubViewModel = zegoSuperBoard
             .getSuperBoardView()
             .getCurrentSuperBoardSubView()

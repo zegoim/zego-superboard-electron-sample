@@ -143,20 +143,10 @@ async function init() {
 
         // 注册白板回调
         onSuperBoardEventHandle();
-
-        setTimeout(async function () {
-            // 查询当前白板列表
-            var result = await querySuperBoardSubViewList();
-            // 设置自动进房自动挂载最新白板
-            if (result.uniqueID) {
-                var superBoardView = zegoSuperBoard.getSuperBoardView();
-                superBoardView && (await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
-                var curView = superBoardView.getCurrentSuperBoardSubView();
-                // 更新总页数、当前页\
-                updatePageCountDomHandle(curView.getPageCount());
-                updateCurrPageDomHandle(curView.getCurrentPage());
-            }
-        }, 500);
+        console.warn('====刷新 查询当前白板列表=====')
+        // setTimeout(async function () {
+        await attachActiveView()
+        // }, 500);
     } else {
         // 未登录过，显示登录页
         togglePageDomHandle(2);
@@ -167,6 +157,28 @@ async function init() {
 
     // 更新接入环境
     updateEnvDomHandle();
+}
+
+/**
+ * @description: 登陆或刷新页面重新获取当前 SuperBoardSubView 并挂载，更新相关数据
+ * @param {*}
+ * @return {*}
+ */
+async function attachActiveView() {
+    // 查询当前白板列表
+    var result = await querySuperBoardSubViewList();
+    console.warn('result', result)
+    // 设置自动进房自动挂载最新白板
+    if (result.uniqueID) {
+        var superBoardView = zegoSuperBoard.getSuperBoardView();
+        superBoardView && (await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
+        var curView = superBoardView.getCurrentSuperBoardSubView();
+        // 更新总页数、当前页
+        const totalPage = curView.getPageCount()
+        const curPage = curView.getCurrentPage()
+        updatePageCountDomHandle(totalPage);
+        updateCurrPageDomHandle(curPage);
+    }
 }
 
 // 默认根据配置初始化并登录房间

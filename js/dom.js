@@ -24,8 +24,6 @@ function updateFileListDomHandle() {
         zegoConfig.fileListData[
             zegoConfig.superBoardEnv === 'test' ?
             'docs_test' :
-            zegoConfig.superBoardEnv === 'alpha' ?
-            'docs_alpha' :
             'docs_prod'
         ];
     var $fileListCon = $('#file-list');

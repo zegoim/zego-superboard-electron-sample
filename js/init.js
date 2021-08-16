@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-16 19:37:47
+ * @LastEditTime: 2021-08-17 00:36:29
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -10,9 +10,8 @@
 // 白板、文件 SDK 配置
 var zegoConfig = {
     // 获取登录房间 token，开发者自行在后台实现改接口；测试环境可以使用 ZEGO 提供的接口获取（参考 https://doc-zh.zego.im/article/7638#3_3）
-    // tokenUrl: 'https://doc.zego.im/data/getSdkToken',
     tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
-    fileListUrl: './fileList.json', // 引入已上传的文件列表路径，可以是本地路径或者服务器路径（https://storage.zego.im/goclass/config.json）
+    fileListUrl: './fileList.json', // 引入已上传的文件列表路径，可以是本地路径或者服务器路径
     fileListData: {}, // 文件列表
     env: getEnv(), // 1 国内 2 海外
     appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
@@ -37,74 +36,8 @@ var zegoConfig = {
 
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
-var zegoSuperBoardToolType = [
-    {
-        type: 256,
-        name: '点击'
-    },
-    {
-        type: 32,
-        name: '选择'
-    },
-    {
-        type: null,
-        name: '拖拽'
-    },
-    {
-        type: 128,
-        name: '激光笔'
-    },
-    {
-        type: 1,
-        name: '画笔'
-    },
-    {
-        type: 2,
-        name: '文本'
-    },
-    {
-        name: '图形',
-        child: [
-            {
-                type: 8,
-                name: '矩形'
-            },
-            {
-                type: 16,
-                name: '椭圆'
-            },
-            {
-                type: 4,
-                name: '直线'
-            }
-        ]
-    },
-    {
-        type: 512,
-        name: '自定义图形',
-        child: []
-    },
-    {
-        type: 64,
-        name: '橡皮擦'
-    }
-]; // 工具类型
 
 var parentDomID = 'main-whiteboard'; // 白板、文件挂载的父容器
-var seqMap = {
-    viewSeq: 1, // 白板索引，创建多个普通白板时，白板名称编号进行叠加
-    upload: 0, // 上传索引
-    cache: 0,
-    saveImg: 1 // 白板快照索引
-};
-
-var imageErrorTipsMap = {
-    3000002: '参数错误',
-    3000005: '下载失败',
-    3030008: '图片大小超过限制，请重新选择',
-    3030009: '图片格式暂不支持',
-    3030010: 'url地址错误或无效'
-}; // 自定义图形、图片上传错误
 
 var userList = []; // 房间内成员列表
 
@@ -114,49 +47,53 @@ var userList = []; // 房间内成员列表
  * @return {*}
  */
 async function init() {
-    // 校验 appID、tokenUrl
-    if (!zegoConfig.appID || !zegoConfig.tokenUrl) {
-        alert('请填写 appID 和 tokenUrl');
-        return;
+    try {
+        // 校验 appID、tokenUrl
+        if (!zegoConfig.appID || !zegoConfig.tokenUrl) {
+            alert('请填写 appID 和 tokenUrl');
+            return;
+        }
+
+        // 获取 sessionStorage 已登录信息
+        var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
+
+        if (loginInfo && loginInfo.roomID) {
+            // 已登录过，显示房间页
+
+            // 更新 loginInfo
+            loginInfo.env = zegoConfig.env;
+            // loginInfo.roomID = zegoConfig.roomID;
+            // 使用 loginInfo 自动登录房间
+            Object.assign(zegoConfig, loginInfo);
+
+            // 获取文件列表
+            var fileListData = await getFilelist(zegoConfig.fileListUrl);
+            // 更新文件列表
+            zegoConfig.fileListData = fileListData;
+            // 更新视图
+            updateFileListDomHandle();
+
+            sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
+            await loginRoom();
+            togglePageDomHandle(1);
+
+            // 注册白板回调
+            onSuperBoardEventHandle();
+            console.warn('====刷新 查询当前白板列表=====');
+            // await attachActiveView();
+        } else {
+            // 未登录过，显示登录页
+            togglePageDomHandle(2);
+        }
+
+        // 更新房间号
+        updateRoomIDDomHandle();
+
+        // 更新接入环境
+        updateEnvDomHandle();
+    } catch (error) {
+        debugger;
     }
-
-    // 获取 sessionStorage 已登录信息
-    var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
-
-    if (loginInfo && loginInfo.roomID) {
-        // 已登录过，显示房间页
-
-        // 更新 loginInfo
-        loginInfo.env = zegoConfig.env;
-        loginInfo.roomID = zegoConfig.roomID;
-        // 使用 loginInfo 自动登录房间
-        Object.assign(zegoConfig, loginInfo);
-
-        // 获取文件列表
-        var fileListData = await getFilelist(zegoConfig.fileListUrl);
-        // 更新文件列表
-        zegoConfig.fileListData = fileListData;
-        // 更新视图
-        updateFileListDomHandle();
-
-        sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
-        await loginRoom();
-        togglePageDomHandle(1);
-
-        // 注册白板回调
-        onSuperBoardEventHandle();
-        console.warn('====刷新 查询当前白板列表=====');
-        await attachActiveView();
-    } else {
-        // 未登录过，显示登录页
-        togglePageDomHandle(2);
-    }
-
-    // 更新房间号
-    updateRoomIDDomHandle();
-
-    // 更新接入环境
-    updateEnvDomHandle();
 }
 
 /**

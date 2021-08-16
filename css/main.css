@@ -347,7 +347,7 @@
 }
 
 .tool-item.active .custom-graph-icon {
-  background-image: url('../img/custom-icon.png');
+  background-image: url('../img/custom-icon-active.png');
 }
 
 .custom-graph-setting {

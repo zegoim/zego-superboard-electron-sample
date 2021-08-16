@@ -1,13 +1,15 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-12 11:56:27
- * @LastEditTime: 2021-08-13 02:38:12
+ * @LastEditTime: 2021-08-16 20:54:24
  * @LastEditors: Please set LastEditors
  * @Description: 清空、撤销、重做、保存快照、清空当前页、清除选中
  * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/other.js
  */
 
 // zegoSuperBoard 为全局 SuperBoard Instance
+
+var saveImg = 1; // 白板快照索引
 
 /**
  * @description: 监听按键清除选中图元
@@ -58,7 +60,7 @@ function snapshot() {
         zegoSuperBoardSubView.snapshot().then(function(data) {
             var link = document.createElement('a');
             link.href = data.image;
-            link.download = zegoSuperBoardSubView.getModel().name + seqMap.saveImg++ + '.png';
+            link.download = zegoSuperBoardSubView.getModel().name + saveImg++ + '.png';
             link.click();
         });
 }

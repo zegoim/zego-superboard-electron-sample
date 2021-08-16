@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-16 20:32:25
+ * @LastEditTime: 2021-08-17 00:03:37
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -28,7 +28,7 @@ function updateFileListDomHandle() {
     var $str = '';
     fileList.forEach((element) => {
         $str +=
-            '<li class="file-item" data-file-id="' +
+            '<li onclick="createFileViewByFileID(event)" class="file-item" data-file-id="' +
             element.id +
             '"><div class="state ' +
             (element.isDynamic ? 'dynamic' : element.isH5 ? 'h5' : '') +
@@ -96,9 +96,8 @@ function updatePageCountDomHandle(pageCount) {
 }
 
 /**
- * @description: 更新 currPage
+ * @description: 更新 currPage，包括顶部翻页按钮 + 缩略图
  * @param {*} currPage
- * @return {*}
  */
 function updateCurrPageDomHandle(currPage) {
     $('#currPage').html(currPage);
@@ -118,11 +117,11 @@ function updateEnvDomHandle() {
 
 /**
  * @description: 显示、隐藏白板区域占位
- * @param {*} type 1 显示 2 隐藏
+ * @param {*} type true 显示 false 隐藏
  * @return {*}
  */
 function togglePlaceholderDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         $('#main-whiteboard-placeholder').addClass('active');
     } else {
         $('#main-whiteboard-placeholder').removeClass('active');
@@ -170,11 +169,11 @@ function updateExcelSheetListDomHandle(uniqueID, zegoExcelSheetNameList) {
 
 /**
  * @description: 显示、隐藏 sheet 下拉框
- * @param {*} type 1: 显示 2: 隐藏
+ * @param {*} type true: 显示 false: 隐藏
  * @return {*}
  */
 function toggleSheetSelectDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         $('#sheetListItem').show();
     } else {
         updateExcelSheetListDomHandle('', []);
@@ -187,19 +186,19 @@ function toggleSheetSelectDomHandle(type) {
  * @param {*}
  * @return {*}
  */
-function updateScaleListDomHandle(zegoScale) {
-    $('#scaleList').val(zegoScale);
+function updateCurrScaleDomHandle(scale) {
+    $('#scaleList').val(scale);
     // 更新下拉框 form.render(type, filter);
     layui.form.render('select', 'customForm');
 }
 
 /**
  * @description: 显示、隐藏步数切换
- * @param {*} type 1: 显示 2: 隐藏
+ * @param {*} type true: 显示 false: 隐藏
  * @return {*}
  */
 function toggleStepDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         $('.ppt-dynamic').addClass('active');
     } else {
         $('.ppt-dynamic').removeClass('active');
@@ -208,11 +207,11 @@ function toggleStepDomHandle(type) {
 
 /**
  * @description: 显示、隐藏缩略图按钮
- * @param {*} type 1: 显示 2: 隐藏
+ * @param {*} type true: 显示 false: 隐藏
  * @return {*}
  */
 function toggleThumbBtnDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         $('#thumb-button').addClass('active');
     } else {
         $('#thumb-button').removeClass('active');

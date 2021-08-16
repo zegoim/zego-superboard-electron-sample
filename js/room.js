@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-16 19:40:52
+ * @LastEditTime: 2021-08-17 00:36:36
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -184,11 +184,11 @@ function logoutRoom() {
     // 清空白板列表
     updateWhiteboardListDomHandle([]);
     // 清空 excel sheet 列表
-    toggleSheetSelectDomHandle(2);
+    toggleSheetSelectDomHandle(false);
 
     // 清除已挂载白板
     $('#main-whiteboard').html('');
-    togglePlaceholderDomHandle(1);
+    togglePlaceholderDomHandle(true);
     togglePageDomHandle(2);
 }
 
@@ -240,7 +240,7 @@ $('#login-btn').click(async function() {
     // 注册白板回调
     onSuperBoardEventHandle();
 
-    await attachActiveView();
+    // await attachActiveView();
 });
 
 // 绑定退出房间事件

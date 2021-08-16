@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-13 01:01:51
+ * @LastEditTime: 2021-08-16 19:59:50
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -88,7 +88,7 @@ function updateUserListDomHandle() {
 
     var $str = '';
     userList.forEach(function(element) {
-        $str += '<li class="user-item">' + element.userName + '</li>';
+        $str += '<li class="user-item">' + element.userName + ' (' + element.userID + ')' + '</li>';
     });
     $('#user-list').html($str);
 }

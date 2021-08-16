@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-12 12:03:29
+ * @LastEditTime: 2021-08-16 18:21:15
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -63,7 +63,7 @@ function getQueryVariable(variable) {
     var vars = query.split('&');
     for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split('=');
-        if (pair[0] == variable) {
+        if (pair[0].toLowerCase() == variable.toLowerCase()) {
             return pair[1];
         }
     }
@@ -139,15 +139,19 @@ function getUserID() {
  * @return {*}
  */
 function getRoomID() {
-    // 获取 url 中 roomID，邀请链接中会携带 roomID
-    var roomID = getQueryVariable('roomID') || $('#roomID').val();
-
+    // 获取 url 中 roomID，邀请链接中会携带 roomID，若存在以 url 中的值为准
+    var roomID = getQueryVariable('roomID') || '';
     // 获取已登录的 roomID
     var loginInfo = sessionStorage.getItem('loginInfo');
-    if (loginInfo) {
-        roomID = JSON.parse(loginInfo).roomID;
+    if (loginInfo && loginInfo.roomID) {
+        if (!roomID) {
+            // 已登录过，以 loginInfo 中为准
+            roomID = JSON.parse(loginInfo).roomID;
+        } else {
+            // 已登录过，更新 loginInfo 中 roomID
+            sessionStorage.setItem('loginInfo', JSON.stringify(JSON.parse({ ...loginInfo, roomID })));
+        }
     }
-
     return roomID;
 }
 

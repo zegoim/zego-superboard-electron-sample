@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-13 11:19:17
+ * @LastEditTime: 2021-08-16 19:40:52
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -79,11 +79,11 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('thumbnailMode', zegoConfig.thumbnailMode);
 
     // 设置 PPT 转码清晰度
-    zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', $('#dynamicPPT_HD').val());
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', zegoConfig.dynamicPPT_HD);
     // 设置 PPT 自动翻页
-    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', $('#dynamicPPT_AutomaticPage').val());
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
     // 设置 PPT 视频下载
-    zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', $('#unloadVideoSrc').val());
+    zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
 }
 
 /**
@@ -92,17 +92,17 @@ function initSuperBoardSDKConfig() {
  * @return {*}
  */
 function onRoomUserUpdate() {
-    zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
+    zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
         if (type == 'ADD') {
-            list.forEach(function (v) {
+            list.forEach(function(v) {
                 userList.push({
                     userID: v.userID,
                     userName: v.userName
                 });
             });
         } else if (type == 'DELETE') {
-            list.forEach(function (v) {
-                var index = userList.findIndex(function (item) {
+            list.forEach(function(v) {
+                var index = userList.findIndex(function(item) {
                     return v.userID == item.userID;
                 });
                 if (index != -1) {
@@ -120,7 +120,7 @@ function onRoomUserUpdate() {
  * @return {*}
  */
 function loginRoom() {
-    return new Promise(async function (resolve, reject) {
+    return new Promise(async function(resolve, reject) {
         console.warn('zegoConfig', zegoConfig);
         var appID;
         var token;
@@ -140,10 +140,12 @@ function loginRoom() {
         try {
             await zegoSuperBoard.loginRoom(
                 zegoConfig.roomID,
-                token, {
+                token,
+                {
                     userID: zegoConfig.userID,
                     userName: zegoConfig.userName
-                }, {
+                },
+                {
                     maxMemberCount: 10,
                     userUpdate: true
                 }
@@ -191,7 +193,7 @@ function logoutRoom() {
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(async function () {
+$('#login-btn').click(async function() {
     // 校验 roomID、userName
     var roomID = $('#roomID').val();
     var userName = $('#userName').val();
@@ -201,18 +203,19 @@ $('#login-btn').click(async function () {
     }
 
     // 登录信息
+    var settingData = layui.form.val('settingForm');
     var loginInfo = {
         env: $('.inlineRadio:checked').val(),
         roomID,
         userName,
         userID: zegoConfig.userID,
-        superBoardEnv: $('#superBoardEnv select').val(),
-        fontFamily: $('#fontFamily select').val(),
-        thumbnailMode: $('#thumbnailMode select').val(),
-        pptStepMode: $('#pptStepMode select').val(),
-        dynamicPPT_HD: $('#dynamicPPT_HD select').val(),
-        dynamicPPT_AutomaticPage: $('#dynamicPPT_AutomaticPage select').val(),
-        unloadVideoSrc: $('#unloadVideoSrc select').val()
+        superBoardEnv: settingData.superBoardEnv,
+        fontFamily: settingData.fontFamily,
+        thumbnailMode: settingData.thumbnailMode,
+        pptStepMode: settingData.pptStepMode,
+        dynamicPPT_HD: settingData.dynamicPPT_HD,
+        dynamicPPT_AutomaticPage: settingData.dynamicPPT_AutomaticPage,
+        unloadVideoSrc: settingData.unloadVideoSrc
     };
 
     // 更新 zegoConfig
@@ -237,10 +240,10 @@ $('#login-btn').click(async function () {
     // 注册白板回调
     onSuperBoardEventHandle();
 
-    await attachActiveView()
+    await attachActiveView();
 });
 
 // 绑定退出房间事件
-$('#logout-btn').click(function () {
+$('#logout-btn').click(function() {
     logoutRoom();
 });

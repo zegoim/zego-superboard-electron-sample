@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-16 17:54:29
+ * @LastEditTime: 2021-08-16 18:58:49
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -79,11 +79,11 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('thumbnailMode', zegoConfig.thumbnailMode);
 
     // 设置 PPT 转码清晰度
-    zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', $('#dynamicPPT_HD').val());
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', zegoConfig.dynamicPPT_HD);
     // 设置 PPT 自动翻页
-    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', $('#dynamicPPT_AutomaticPage').val());
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
     // 设置 PPT 视频下载
-    zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', $('#unloadVideoSrc').val());
+    zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
 }
 
 /**

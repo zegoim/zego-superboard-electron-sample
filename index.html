@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-12 18:38:59
+ * @LastEditTime: 2021-08-16 18:55:48
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -41,11 +41,11 @@
             <h4 class="modal-title" id="myModalLabel1">SDK 设置</h4>
           </div>
           <div class="modal-body">
-            <form class="layui-form" action="" name="form">
+            <form id="settingForm" class="layui-form" action="" name="form" lay-filter="settingForm">
               <div class="layui-form-item" id="superBoardEnv">
                 <label class="layui-form-label">SuperBoard 环境</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="superBoardEnv">
                     <option value="test">测试</option>
                     <option value="prod">正式</option>
                     <option value="alpha">alpha</option>
@@ -55,7 +55,7 @@
               <div class="layui-form-item" id="fontFamily">
                 <label class="layui-form-label">字体类型</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="fontFamily">
                     <option value="system">系统字体</option>
                     <option value="ZgFont">思源雅黑</option>
                   </select>
@@ -64,7 +64,7 @@
               <div class="layui-form-item" id="thumbnailMode">
                 <label class="layui-form-label">缩略图清晰度</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="thumbnailMode">
                     <option value="1">普通</option>
                     <option value="2">标清</option>
                     <option value="3">高清</option>
@@ -74,7 +74,7 @@
               <div class="layui-form-item" id="pptStepMode">
                 <label class="layui-form-label">PPT 模式</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="pptStepMode">
                     <option value="1">正常</option>
                     <option value="2">不跳转</option>
                   </select>
@@ -84,7 +84,7 @@
               <div class="layui-form-item" id="dynamicPPT_HD">
                 <label class="layui-form-label">PPT 清晰度</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="dynamicPPT_HD">
                     <option value="false">正常</option>
                     <option value="true">高清</option>
                   </select>
@@ -93,7 +93,7 @@
               <div class="layui-form-item" id="dynamicPPT_AutomaticPage">
                 <label class="layui-form-label">PPT 自动翻页</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="dynamicPPT_AutomaticPage">
                     <option value="false">正常</option>
                     <option value="true">禁止</option>
                   </select>
@@ -102,7 +102,7 @@
               <div class="layui-form-item" id="unloadVideoSrc">
                 <label class="layui-form-label">PPT 视频下载</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="unloadVideoSrc">
                     <option value="false">正常</option>
                     <option value="true">禁止</option>
                   </select>

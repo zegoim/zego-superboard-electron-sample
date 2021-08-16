@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-13 11:18:07
+ * @LastEditTime: 2021-08-16 17:54:14
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -37,7 +37,8 @@ var zegoConfig = {
 
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
-var zegoSuperBoardToolType = [{
+var zegoSuperBoardToolType = [
+    {
         type: 256,
         name: '点击'
     },
@@ -63,7 +64,8 @@ var zegoSuperBoardToolType = [{
     },
     {
         name: '图形',
-        child: [{
+        child: [
+            {
                 type: 8,
                 name: '矩形'
             },
@@ -143,10 +145,8 @@ async function init() {
 
         // 注册白板回调
         onSuperBoardEventHandle();
-        console.warn('====刷新 查询当前白板列表=====')
-        // setTimeout(async function () {
-        await attachActiveView()
-        // }, 500);
+        console.warn('====刷新 查询当前白板列表=====');
+        await attachActiveView();
     } else {
         // 未登录过，显示登录页
         togglePageDomHandle(2);
@@ -167,15 +167,15 @@ async function init() {
 async function attachActiveView() {
     // 查询当前白板列表
     var result = await querySuperBoardSubViewList();
-    console.warn('result', result)
+    console.warn('result', result);
     // 设置自动进房自动挂载最新白板
     if (result.uniqueID) {
         var superBoardView = zegoSuperBoard.getSuperBoardView();
         superBoardView && (await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
         var curView = superBoardView.getCurrentSuperBoardSubView();
         // 更新总页数、当前页
-        const totalPage = curView.getPageCount()
-        const curPage = curView.getCurrentPage()
+        const totalPage = curView.getPageCount();
+        const curPage = curView.getCurrentPage();
         updatePageCountDomHandle(totalPage);
         updateCurrPageDomHandle(curPage);
     }

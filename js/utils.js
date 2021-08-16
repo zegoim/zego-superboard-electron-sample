@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-12 12:03:29
+ * @LastEditTime: 2021-08-16 18:02:20
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -63,7 +63,7 @@ function getQueryVariable(variable) {
     var vars = query.split('&');
     for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split('=');
-        if (pair[0] == variable) {
+        if (pair[0].toLowerCase() == variable.toLowerCase()) {
             return pair[1];
         }
     }

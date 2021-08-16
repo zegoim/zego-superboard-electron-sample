@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-16 19:35:10
+ * @LastEditTime: 2021-08-16 19:40:52
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -81,7 +81,7 @@ function initSuperBoardSDKConfig() {
     // 设置 PPT 转码清晰度
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', zegoConfig.dynamicPPT_HD);
     // 设置 PPT 自动翻页
-    // zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
     // 设置 PPT 视频下载
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
 }
@@ -203,18 +203,19 @@ $('#login-btn').click(async function() {
     }
 
     // 登录信息
+    var settingData = layui.form.val('settingForm');
     var loginInfo = {
         env: $('.inlineRadio:checked').val(),
         roomID,
         userName,
         userID: zegoConfig.userID,
-        superBoardEnv: $('#superBoardEnv select').val(),
-        fontFamily: $('#fontFamily select').val(),
-        thumbnailMode: $('#thumbnailMode select').val(),
-        pptStepMode: $('#pptStepMode select').val(),
-        dynamicPPT_HD: $('#dynamicPPT_HD select').val(),
-        dynamicPPT_AutomaticPage: $('#dynamicPPT_AutomaticPage select').val(),
-        unloadVideoSrc: $('#unloadVideoSrc select').val()
+        superBoardEnv: settingData.superBoardEnv,
+        fontFamily: settingData.fontFamily,
+        thumbnailMode: settingData.thumbnailMode,
+        pptStepMode: settingData.pptStepMode,
+        dynamicPPT_HD: settingData.dynamicPPT_HD,
+        dynamicPPT_AutomaticPage: settingData.dynamicPPT_AutomaticPage,
+        unloadVideoSrc: settingData.unloadVideoSrc
     };
 
     // 更新 zegoConfig

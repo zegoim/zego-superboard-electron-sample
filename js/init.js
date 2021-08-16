@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-16 19:20:48
+ * @LastEditTime: 2021-08-16 19:37:47
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -31,7 +31,7 @@ var zegoConfig = {
     thumbnailMode: '1', // 缩略图清晰度 1: 普通 2: 标清 3: 高清
     pptStepMode: '1', // PPT 切页模式 1: 正常 2: 不跳转
     dynamicPPT_HD: 'false', // false: 正常 true: 高清
-    dynamicPPT_AutomaticPage: 'false', // false: 自动翻页 true: 禁止
+    dynamicPPT_AutomaticPage: 'true', // true: 自动翻页 false: 禁止
     unloadVideoSrc: 'false' // false: 正常 true: 禁止
 };
 

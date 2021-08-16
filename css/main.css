@@ -339,6 +339,17 @@
   stroke: #04f;
 }
 
+.custom-graph-icon {
+  width: 20px;
+  height: 20px;
+  background-image: url('../img/custom-icon.png');
+  background-size: contain;
+}
+
+.tool-item.active .custom-graph-icon {
+  background-image: url('../img/custom-icon.png');
+}
+
 .custom-graph-setting {
   position: absolute;
   right: 50px;

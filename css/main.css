@@ -586,8 +586,9 @@
 #main-whiteboard {
   border: 1px solid #f0f8ff;
   position: relative;
-  height: 100%;
-  width: 100%;
+  width: 70vw;
+  height: 39.37vw;
+  transition: width 0.1s, height 0.1s;
 }
 
 #left-footer {

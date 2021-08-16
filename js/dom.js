@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-16 19:59:50
+ * @LastEditTime: 2021-08-16 20:32:25
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -20,14 +20,7 @@ $(function() {
  */
 function updateFileListDomHandle() {
     console.warn('zegoConfig.superBoardEnv', zegoConfig.superBoardEnv);
-    var fileList =
-        zegoConfig.fileListData[
-            zegoConfig.superBoardEnv === 'test'
-                ? 'docs_test'
-                : zegoConfig.superBoardEnv === 'alpha'
-                ? 'docs_alpha'
-                : 'docs_prod'
-        ];
+    var fileList = zegoConfig.fileListData[zegoConfig.superBoardEnv === 'test' ? 'docs_test' : 'docs_prod'];
     var $fileListCon = $('#file-list');
     // 清空原有
     $fileListCon.html('');

@@ -66,7 +66,7 @@ function updateThumbListDomHandle(thumbnailUrlList, currPage) {
 $('#previousPage').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
-        zegoSuperBoardSubView.flipToPrevPage();
+        zegoSuperBoardSubView.flipToPrePage();
 
         updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
     }
@@ -89,7 +89,7 @@ $('#nextPage').click(function() {
  */
 $('#previousStep').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.previousStep();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.preStep();
 });
 
 /**

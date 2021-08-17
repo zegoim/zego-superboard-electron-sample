@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-17 13:25:34
+ * @LastEditTime: 2021-08-17 13:55:25
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -84,6 +84,29 @@ async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
         }
     });
     return zegoSuperBoardSubViewModel;
+}
+
+/**
+ * @description: 重置白板工具
+ */
+function resetToolTypeDomHandle() {
+    $('.tool-item').removeClass('active');
+    $('.pencil-text-setting').removeClass('active');
+    $('.tool-item.pen').addClass('active');
+}
+
+/**
+ * @description: 是否禁止点击工具，增加禁止样式
+ * @description: 非动态 PPT、自定义 H5 时需要禁止
+ * @description: 每次切换白板时调用
+ * @param {*} type true: 禁止 false: 隐藏
+ */
+function toggleDisabledDomHandle(type) {
+    if (type) {
+        $('.tool-item.clickType').addClass('disabled');
+    } else {
+        $('.tool-item.clickType').removeClass('disabled');
+    }
 }
 
 /**
@@ -321,6 +344,8 @@ async function querySuperBoardSubViewList() {
         toggleStepDomHandle(canJumpStep());
         // 判断是否显示页面上的缩略图按钮
         toggleThumbBtnDomHandle(hasThumb());
+        // 判断是否需要禁止点击工具
+        toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
         if (fileType === 4) {
             // excel 文件白板显示 sheet 下拉框
             toggleSheetSelectDomHandle(true);
@@ -418,6 +443,9 @@ async function switchWhitebopard(uniqueID) {
 
         // 判断是否重置画笔工具
         resetToolType(fileType);
+
+        // 判断是否需要禁止点击工具
+        toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
 
         // 判断是否显示页面上的切步按钮
         toggleStepDomHandle(canJumpStep());

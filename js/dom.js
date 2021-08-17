@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-17 00:03:37
+ * @LastEditTime: 2021-08-17 13:38:20
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -291,37 +291,6 @@ function updateActiveToolDomHandle(type, event) {
         default:
             break;
     }
-}
-
-/**
- * @description: 重置白板工具
- * @param {*}
- * @return {*}
- */
-function resetToolTypeDomHandle() {
-    $('.tool-item').removeClass('active');
-    $('.pencil-text-setting').removeClass('active');
-    $('.tool-item:nth-of-type(5)').addClass('active');
-}
-
-/**
- * @description: 开启、关闭不可操作模式
- * @param {*} type 1: 开启 2: 关闭
- * @return {*}
- */
-function updateUnOperatedModeDomHandle(type) {
-    layui.form.val('form2', {
-        unOperatedMode: type === 1 ? 'on' : ''
-    });
-}
-
-/**
- * @description: 获取表单当前数据
- * @param {*} form form name
- * @return {*}
- */
-function getFormData(form) {
-    return layui.form.val(form);
 }
 
 /**

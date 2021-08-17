@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-17 12:19:55
+ * @LastEditTime: 2021-08-17 13:09:15
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -93,28 +93,6 @@ async function init() {
         updateEnvDomHandle();
     } catch (error) {
         console.error(error);
-    }
-}
-
-/**
- * @description: 登陆或刷新页面重新获取当前 SuperBoardSubView 并挂载，更新相关数据
- * @param {*}
- * @return {*}
- */
-async function attachActiveView() {
-    // 查询当前白板列表
-    var result = await querySuperBoardSubViewList();
-    console.warn('result', result);
-    // 设置自动进房自动挂载最新白板
-    if (result.uniqueID) {
-        var superBoardView = zegoSuperBoard.getSuperBoardView();
-        superBoardView && (await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
-        var curView = superBoardView.getCurrentSuperBoardSubView();
-        // 更新总页数、当前页
-        const totalPage = curView.getPageCount();
-        const curPage = curView.getCurrentPage();
-        updatePageCountDomHandle(totalPage);
-        updateCurrPageDomHandle(curPage);
     }
 }
 

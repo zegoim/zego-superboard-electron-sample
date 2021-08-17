@@ -240,7 +240,7 @@ $('#login-btn').click(async function() {
     // 注册白板回调
     onSuperBoardEventHandle();
 
-    // await attachActiveView();
+    await attachActiveView();
 });
 
 // 绑定退出房间事件

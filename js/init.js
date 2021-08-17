@@ -80,7 +80,7 @@ async function init() {
             // 注册白板回调
             onSuperBoardEventHandle();
             console.warn('====刷新 查询当前白板列表=====');
-            // await attachActiveView();
+            await attachActiveView();
         } else {
             // 未登录过，显示登录页
             togglePageDomHandle(2);

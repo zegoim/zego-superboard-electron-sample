@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-17 18:51:09
+ * @LastEditTime: 2021-08-17 19:21:55
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -544,11 +544,12 @@ async function attachActiveView() {
             if (curViewModel.fileType === 4) {
                 cacheSheetMap[result.uniqueID] = result.sheetIndex;
             }
+
+            // 初始化白板工具
+            initToolType();
             // 更新总页数、当前页
-            const totalPage = curView.getPageCount();
-            const curPage = curView.getCurrentPage();
-            updatePageCountDomHandle(totalPage);
-            updateCurrPageDomHandle(curPage);
+            updatePageCountDomHandle(curView.getPageCount());
+            updateCurrPageDomHandle(curView.getCurrentPage());
         }
     }
 }

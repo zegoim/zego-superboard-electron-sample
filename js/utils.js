@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-17 00:31:43
+ * @LastEditTime: 2021-08-17 12:10:15
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -143,15 +143,20 @@ function getRoomID() {
     var roomID = getQueryVariable('roomID') || '';
     // 获取已登录的 loginInfo
     var loginInfo = sessionStorage.getItem('loginInfo');
-    if (loginInfo && loginInfo.roomID) {
-        if (!roomID) {
-            // 已登录过，以 loginInfo 中为准
-            roomID = JSON.parse(loginInfo).roomID;
-        } else {
-            // 已登录过，更新 loginInfo 中 roomID
-            sessionStorage.setItem('loginInfo', JSON.stringify(JSON.parse({ ...loginInfo, roomID })));
+    if (loginInfo) {
+        loginInfo = JSON.parse(loginInfo);
+        if (loginInfo.roomID) {
+            // 已登录过
+            if (!roomID) {
+                // 以 loginInfo 中为准
+                roomID = loginInfo.roomID;
+            } else {
+                // 更新 loginInfo 中 roomID
+                sessionStorage.setItem('loginInfo', JSON.stringify({ ...loginInfo, roomID }));
+            }
         }
     }
+
     return roomID;
 }
 
@@ -166,16 +171,21 @@ function getEnv() {
 
     // 获取已登录的 loginInfo
     var loginInfo = sessionStorage.getItem('loginInfo');
-    if (loginInfo && loginInfo.roomID) {
-        if (!env) {
-            // 已登录过，以 loginInfo 中为准
-            env = JSON.parse(loginInfo).env;
-        } else {
-            // 已登录过，更新 loginInfo 中 env
-            sessionStorage.setItem('loginInfo', JSON.stringify(JSON.parse({ ...loginInfo, env })));
+    if (loginInfo) {
+        loginInfo = JSON.parse(loginInfo);
+        if (loginInfo.roomID) {
+            // 已登录过
+            if (!env) {
+                // 以 loginInfo 中为准
+                env = loginInfo.env;
+            } else {
+                // 更新 loginInfo 中 env
+                sessionStorage.setItem('loginInfo', JSON.stringify({ ...loginInfo, env }));
+            }
         }
     }
-    return env;
+    // 增加一个默认值
+    return env || '1';
 }
 
 /**

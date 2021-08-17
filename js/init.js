@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-17 00:36:29
+ * @LastEditTime: 2021-08-17 12:00:51
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -92,7 +92,7 @@ async function init() {
         // 更新接入环境
         updateEnvDomHandle();
     } catch (error) {
-        debugger;
+        console.error(error);
     }
 }
 

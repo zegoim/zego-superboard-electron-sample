@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-11 15:08:11
- * @LastEditTime: 2021-08-12 17:41:30
+ * @LastEditTime: 2021-08-17 17:50:28
  * @LastEditors: Please set LastEditors
  * @Description: 上传静态、动态文件
  * @FilePath: /superboard/js/uploadFile.js
@@ -36,6 +36,8 @@ function uploadFile(renderType, file) {
         .then(function(fileID) {
             // 关闭弹框
             $('#filelistModal').modal('hide');
+            // 关闭文件下拉框
+            $('.layui-dropdown').hide();
 
             // 这里上传完成立即创建文件白板，开发者根据实际情况处理
             createFileView(fileID);
@@ -46,5 +48,6 @@ function uploadFile(renderType, file) {
 // 绑定打开上传文件选项
 layui.dropdown.render({
     elem: '#openPopover',
-    content: $('#uploadPopoverContent').html()
+    content: $('#uploadPopoverContent').html(),
+    click: function(data, othis) {}
 });

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-17 00:36:36
+ * @LastEditTime: 2021-08-17 13:09:09
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -240,7 +240,7 @@ $('#login-btn').click(async function() {
     // 注册白板回调
     onSuperBoardEventHandle();
 
-    // await attachActiveView();
+    await attachActiveView();
 });
 
 // 绑定退出房间事件

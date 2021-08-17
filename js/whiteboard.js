@@ -1,13 +1,14 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-17 00:12:18
+ * @LastEditTime: 2021-08-17 13:25:34
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
  */
 
 var viewSeq = 1; // 白板索引，创建多个普通白板时，白板名称编号进行叠加
+var cacheSheetMap = {}; // 缓存上次 excel 对应的白板 { uniqueID: sheetIndex }
 
 /**
  * @description: 返回当前 ZegoSuperBoardSubView
@@ -325,6 +326,9 @@ async function querySuperBoardSubViewList() {
             toggleSheetSelectDomHandle(true);
             // 查询 sheet 列表
             result.sheetIndex = getExcelSheetNameList();
+
+            // 缓存当前 excel 白板 的 sheet
+            cacheSheetMap[result.uniqueID] = result.sheetIndex;
         } else {
             // 非 excel 白板隐藏 sheet 下拉框
             toggleSheetSelectDomHandle(false);
@@ -401,7 +405,11 @@ async function switchWhitebopard(uniqueID) {
 
         // 除去 excel 白板，其他白板第二个参数可忽略
         // excel 白板默认切换到第一个 sheet（SDK 内部没有记录上一次的下标）
-        await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, fileType === 4 ? 0 : undefined);
+        // 先寻找 cacheSheetMap 中是否存在
+        var sheetIndex = cacheSheetMap[uniqueID];
+        await zegoSuperBoard
+            .getSuperBoardView()
+            .switchSuperBoardSubView(uniqueID, fileType === 4 ? sheetIndex || 0 : undefined);
 
         // 除去 excel 白板，隐藏页面 sheet 列表
         toggleSheetSelectDomHandle(fileType === 4);
@@ -454,6 +462,9 @@ layui.form.on('select(sheetList)', async function(data) {
 
         await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
 
+        // 缓存当前 excel 白板 的 sheet
+        cacheSheetMap[uniqueID] = sheetIndex;
+
         closeLoading();
         toast('切换成功');
     } catch (errorData) {
@@ -475,4 +486,33 @@ function createFileViewByFileID(event) {
 
     // 关闭文件弹框
     $('#filelistModal').modal('hide');
+}
+
+/**
+ * @description: 登陆或刷新页面重新获取当前 SuperBoardSubView 并挂载，更新相关数据
+ * @description: 需要业务层主动挂载，SDK 内部不会主动挂载当前 SuperBoardSubView
+ */
+async function attachActiveView() {
+    // 查询当前白板列表
+    var result = await querySuperBoardSubViewList();
+    console.warn('SuperBoard Demo attachActiveView', result);
+    // 设置自动进房自动挂载最新白板
+    if (result.uniqueID) {
+        var superBoardView = zegoSuperBoard.getSuperBoardView();
+        if (superBoardView) {
+            await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex);
+            var curView = superBoardView.getCurrentSuperBoardSubView();
+            var curViewModel = curView.getModel();
+
+            // 缓存当前 excel 白板 的 sheet
+            if (curViewModel.fileType === 4) {
+                cacheSheetMap[result.uniqueID] = result.sheetIndex;
+            }
+            // 更新总页数、当前页
+            const totalPage = curView.getPageCount();
+            const curPage = curView.getCurrentPage();
+            updatePageCountDomHandle(totalPage);
+            updateCurrPageDomHandle(curPage);
+        }
+    }
 }

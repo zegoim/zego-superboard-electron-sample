@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-17 13:55:25
+ * @LastEditTime: 2021-08-17 14:11:17
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -544,3 +544,11 @@ async function attachActiveView() {
         }
     }
 }
+
+$('#createFileBtn').click(function() {
+    var fileID = layui.form.val('form3').createFileID;
+
+    if (!fileID) return toast('请输入 fileID');
+    // 创建文件白板
+    createFileView(fileID);
+});

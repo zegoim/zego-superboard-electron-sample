@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-17 14:11:17
+ * @LastEditTime: 2021-08-17 18:51:09
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -406,15 +406,23 @@ function setToolType(toolType, event) {
  * @description: 这里只展示功能，开发者可根据实际情况设置
  * @param {*} fileType 文件类型
  */
-function resetToolType(fileType) {
+function resetToolTypeAfterSwitch(fileType) {
     if (fileType !== 512 && fileType !== 4096 && zegoSuperBoard.getToolType() === 256) {
-        var result = zegoSuperBoard.setToolType(1);
-        // 设置失败，直接返回
-        if (!result) {
-            return toast('设置失败');
-        } else {
-            resetToolTypeDomHandle();
-        }
+        initToolType();
+    }
+}
+
+/**
+ * @description: 初始化白板工具为画笔
+ */
+function initToolType() {
+    var result = zegoSuperBoard.setToolType(1);
+    console.warn('SuperBoard Demo initToolType', result);
+    // 设置失败，直接返回
+    if (!result) {
+        return toast('设置失败');
+    } else {
+        resetToolTypeDomHandle();
     }
 }
 
@@ -442,7 +450,7 @@ async function switchWhitebopard(uniqueID) {
         fileType === 4 && getExcelSheetNameList();
 
         // 判断是否重置画笔工具
-        resetToolType(fileType);
+        resetToolTypeAfterSwitch(fileType);
 
         // 判断是否需要禁止点击工具
         toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);

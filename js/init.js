@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-17 13:09:15
+ * @LastEditTime: 2021-08-17 18:42:45
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard_demo_web/js/init.js
@@ -79,6 +79,10 @@ async function init() {
 
             // 注册白板回调
             onSuperBoardEventHandle();
+
+            // 初始化白板工具
+            initToolType();
+
             console.warn('====刷新 查询当前白板列表=====');
             await attachActiveView();
         } else {

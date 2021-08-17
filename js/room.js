@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-17 16:42:50
+ * @LastEditTime: 2021-08-17 18:42:28
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -242,6 +242,9 @@ $('#login-btn').click(async function() {
 
     // 注册白板回调
     onSuperBoardEventHandle();
+
+    // 初始化白板工具
+    initToolType();
 
     await attachActiveView();
 });

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-17 12:10:15
+ * @LastEditTime: 2021-08-17 16:40:31
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -197,4 +197,39 @@ function copyInviteLink() {
     $('#showInviteLink').select(); // 选中文本
     document.execCommand('copy'); // 执行浏览器复制命令
     alert('复制成功');
+}
+
+/**
+ * @description: 更新页面 URL
+ * @param {*} key1 字段名称1
+ * @param {*} value1 字段值1
+ * @param {*} key2 字段名称2
+ * @param {*} value2 字段值2
+ */
+function updateUrl(key1, value1, key2, value2) {
+    var url = window.location.href;
+    var newUrl1 = updateQueryStringParameter(url, key1, value1);
+    var newUrl2 = updateQueryStringParameter(newUrl1, key2, value2);
+    // 向当前 url 添加参数，没有历史记录，不刷新页面
+    window.history.replaceState({ path: newUrl2 }, '', newUrl2);
+}
+
+/**
+ * @description: 更新页面 URL 中单个参数
+ * @param {*} url url
+ * @param {*} key 字段名称
+ * @param {*} value 字段值
+ */
+function updateQueryStringParameter(url, key, value) {
+    if (!value) return url;
+
+    var re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
+    var separator = url.indexOf('?') !== -1 ? '&' : '?';
+    if (url.match(re)) {
+        // 替换
+        return url.replace(re, '$1' + key + '=' + value + '$2');
+    } else {
+        // 追加参数
+        return url + separator + key + '=' + value;
+    }
 }

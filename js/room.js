@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-17 13:09:09
+ * @LastEditTime: 2021-08-17 16:42:50
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -230,6 +230,9 @@ $('#login-btn').click(async function() {
 
     await loginRoom();
     sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
+
+    // 更新页面 url
+    updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
 
     // 显示房间页
     togglePageDomHandle(1);

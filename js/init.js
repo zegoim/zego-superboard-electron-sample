@@ -92,7 +92,8 @@ async function init() {
         // 更新接入环境
         updateEnvDomHandle();
     } catch (error) {
-        debugger;
+        console.error('init', error)
+        // debugger;
     }
 }
 

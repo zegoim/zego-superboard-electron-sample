@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 22:16:06
- * @LastEditTime: 2021-08-18 10:06:49
+ * @LastEditTime: 2021-08-18 16:25:44
  * @LastEditors: Please set LastEditors
  * @Description: 白板翻页
  * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/flipPage.js
@@ -32,8 +32,8 @@ function updateCurrPageDomHandle(currPage) {
  * @param {*} page 目标页面
  * @return {*}
  */
-function flipToPage(page) {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+async function flipToPage(page) {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.flipToPage(page);
 
     updateCurrPageDomHandle(page);
@@ -66,8 +66,8 @@ function updateThumbListDomHandle(thumbnailUrlList, currPage) {
 /**
  * @description: 绑定上一页事件
  */
-$('#previousPage').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#previousPage').click(async function() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.flipToPrePage();
 
@@ -78,8 +78,8 @@ $('#previousPage').click(function() {
 /**
  * @description: 绑定下一页事件
  */
-$('#nextPage').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#nextPage').click(async function() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.flipToNextPage();
 
@@ -90,16 +90,16 @@ $('#nextPage').click(function() {
 /**
  * @description: 绑定上一步事件
  */
-$('#previousStep').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#previousStep').click(async function() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.preStep();
 });
 
 /**
  * @description: 绑定下一步事件
  */
-$('#nextStep').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#nextStep').click(async function() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.nextStep();
 });
 
@@ -115,8 +115,8 @@ $('#flipToPageBtn').click(function() {
 /**
  * @description: 获取缩略图 URL 列表
  */
-$('#thumb-button').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#thumb-button').click(async function() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         var type = zegoSuperBoardSubView.getModel().fileType;
         // 仅支持 PDF，PPT，动态 PPT 文件格式

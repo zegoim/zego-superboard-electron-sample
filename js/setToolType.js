@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-12 12:21:41
- * @LastEditTime: 2021-08-17 20:58:49
+ * @LastEditTime: 2021-08-18 16:29:47
  * @LastEditors: Please set LastEditors
  * @Description: 设置白板工具
  * @FilePath: /superboard/js/setToolType.js
@@ -12,8 +12,8 @@
  * @param {*} toolType 工具类型
  * @param {*} event event
  */
-function setToolType(toolType, event) {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+async function setToolType(toolType, event) {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     if (toolType === 256) {

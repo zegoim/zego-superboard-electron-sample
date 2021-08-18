@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-10 16:50:36
- * @LastEditTime: 2021-08-16 20:52:51
+ * @LastEditTime: 2021-08-18 16:24:17
  * @LastEditors: Please set LastEditors
  * @Description: 添加自定义图形、插入图片
  * @FilePath: /superboard/js/addImage.js
@@ -50,7 +50,7 @@ layui.upload.render({
  * @return {*}
  */
 async function setCustomGraph(graphIndex, event) {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     await zegoSuperBoardSubView.addImage(1, 0, 0, customGraphList[graphIndex]);
@@ -114,7 +114,7 @@ function updateActiveGraphDomHandle(graphIndex, event) {
  * @description: 通过 URL 添加自定义图形
  */
 $('#addImageByURLBtn1').click(async function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var url = layui.form.val('form1').customGraphUrl; // 当前选择的自定义图形 URL
@@ -141,7 +141,7 @@ $('#addImageByURLBtn1').click(async function() {
  * @description: 通过 URL 插入网络图片
  */
 $('#addImageByURLBtn2').click(async function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var url = layui.form.val('form1').customImageUrl;
@@ -159,7 +159,7 @@ $('#addImageByURLBtn2').click(async function() {
  * @description: 选择本地文件添加
  */
 $('#addImageByFileBtn').click(async function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     if (!selectedInsetImgFile) return toast('请先选择文件');

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-12 19:07:47
+ * @LastEditTime: 2021-08-18 16:28:19
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -59,7 +59,7 @@ layui.upload.render({
  * @description: 这里只展示选择框监听，开发者根据实际情况处理
  */
 layui.form.on('select(bgUrl)', async function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var formData = layui.form.val('form1');
@@ -74,7 +74,7 @@ layui.form.on('select(bgUrl)', async function() {
  * @description: 绑定设置背景图事件
  */
 $('#setBackgroundImageByURLBtn').click(async function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var formData = layui.form.val('form1');
@@ -90,7 +90,7 @@ $('#setBackgroundImageByURLBtn').click(async function() {
  * @description: 选择本地文件
  */
 $('#setBackgroundImageByFileBtn').click(async function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var formData = layui.form.val('form1');
@@ -104,7 +104,7 @@ $('#setBackgroundImageByFileBtn').click(async function() {
 /**
  * @description: 清除背景图
  */
-$('#clearBackgroundImageBtn').click(function() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#clearBackgroundImageBtn').click(async function() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearBackgroundImage();
 });

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-12 11:56:27
- * @LastEditTime: 2021-08-16 20:54:24
+ * @LastEditTime: 2021-08-18 16:27:05
  * @LastEditors: Please set LastEditors
  * @Description: 清空、撤销、重做、保存快照、清空当前页、清除选中
  * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/other.js
@@ -30,32 +30,32 @@ window.addEventListener('keydown', function(event) {
 /**
  * @description: 清空所有页
  */
-function clearAllPage() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+async function clearAllPage() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearAllPage();
 }
 
 /**
  * @description: 撤销
  */
-function undo() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+async function undo() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.undo();
 }
 
 /**
  * @description: 重做
  */
-function redo() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+async function redo() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.redo();
 }
 
 /**
  * @description: 白板快照
  */
-function snapshot() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+async function snapshot() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView &&
         zegoSuperBoardSubView.snapshot().then(function(data) {
             var link = document.createElement('a');
@@ -68,16 +68,16 @@ function snapshot() {
 /**
  * @description: 删除选中图元
  */
-function clearSelected() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+async function clearSelected() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearSelected();
 }
 
 /**
  * @description: 清空当前页图元，在橡皮擦工具时生效
  */
-function clearCurrentPage() {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+async function clearCurrentPage() {
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearCurrentPage();
 }
 

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-10 11:47:35
- * @LastEditTime: 2021-08-11 16:23:34
+ * @LastEditTime: 2021-08-18 16:29:32
  * @LastEditors: Please set LastEditors
  * @Description: 白板缩放
  * @FilePath: /superboard/js/setScaleFactor.js
@@ -25,11 +25,11 @@ function updateScaleDomHandle(scale) {
  * @description: 监听选择框，切换 scale
  * @description: 这里只展示选择框监听，开发者根据实际情况处理
  */
-layui.form.on('select(scaleList)', function() {
+layui.form.on('select(scaleList)', async function() {
     var formData = layui.form.val('customForm');
     var scale = +formData.scale; // 当前选择的 scale
 
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.setScaleFactor(scale);
 });
 
@@ -56,13 +56,13 @@ layui.form.on('switch(responseScale)', function() {
 /**
  * @description: 设置缩放 缩小
  */
-$('#setScaleFactorCut').click(function() {
+$('#setScaleFactorCut').click(async function() {
     var currScale = +layui.form.val('customForm').scale;
     if (currScale === 1) return; // 最小为 1
 
     var targetScale = currScale - 0.25;
 
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.setScaleFactor(targetScale);
 
@@ -73,13 +73,13 @@ $('#setScaleFactorCut').click(function() {
 /**
  * @description: 设置缩放 放大
  */
-$('#setScaleFactorAdd').click(function() {
+$('#setScaleFactorAdd').click(async function() {
     var currScale = +layui.form.val('customForm').scale;
     if (currScale === 3) return; // 最大为 3
 
     var targetScale = currScale + 0.25;
 
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.setScaleFactor(targetScale);
 

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-18 15:50:35
+ * @LastEditTime: 2021-08-18 15:55:01
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard/js/init.js
@@ -121,7 +121,7 @@ function initExpressSDKConfig() {
 function initSuperBoardSDKConfig() {
     // 设置字体
     if (zegoConfig.fontFamily === 'ZgFont') {
-        document.body.style.fontFamily = zegoConfig.fontFamily;
+        document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;
     }
     // 设置动态 PPT 步数切页模式
     zegoSuperBoard.setCustomizedConfig('pptStepMode', zegoConfig.pptStepMode);

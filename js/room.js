@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-18 15:50:44
+ * @LastEditTime: 2021-08-18 16:01:20
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
  * @FilePath: /superboard/js/room.js
@@ -138,6 +138,8 @@ $('#login-btn').click(async function() {
     // 显示登录页
     togglePageDomHandle(true);
     updateRoomIDDomHandle();
+    // 挂载当前激活白板
+    attachActiveView();
 });
 
 /**

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-18 15:55:01
+ * @LastEditTime: 2021-08-18 16:01:33
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard/js/init.js
@@ -169,6 +169,8 @@ async function init() {
             await loginRoom(token);
             // 显示房间页面
             togglePageDomHandle(true);
+            // 挂载当前激活白板
+            attachActiveView();
         } else {
             // 显示登录页面
             togglePageDomHandle(false);

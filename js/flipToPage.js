@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 22:16:06
- * @LastEditTime: 2021-08-17 12:44:22
+ * @LastEditTime: 2021-08-18 10:06:49
  * @LastEditors: Please set LastEditors
  * @Description: 白板翻页
  * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/flipPage.js
@@ -22,6 +22,9 @@ function updateCurrPageDomHandle(currPage) {
     // 更新缩略图当前页
     $('.thumb-item').removeClass('active');
     $('.thumb-item:nth-of-type(' + currPage + ')').addClass('active');
+    // 自动滚动到缩略图指定位置
+    var scrollTop = 112 * (currPage - 1);
+    $('.thumb-main')[0].scrollTop = scrollTop;
 }
 
 /**

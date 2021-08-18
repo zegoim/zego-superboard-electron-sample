@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-18 16:01:20
+ * @LastEditTime: 2021-08-18 16:58:14
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
  * @FilePath: /superboard/js/room.js
@@ -162,6 +162,10 @@ function logoutRoom() {
     toggleSheetSelectDomHandle(false);
     // 显示页面白板占位
     togglePlaceholderDomHandle(true);
+    // 隐藏缩略图按钮
+    toggleThumbBtnDomHandle(false);
+    // 清空缩略图列表
+    updateThumbListDomHandle([]);
 }
 
 // 绑定退出房间事件

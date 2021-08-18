@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-18 16:40:40
+ * @LastEditTime: 2021-08-18 16:49:31
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -17,7 +17,8 @@ var cacheSheetMap = {}; // 缓存上次 excel 对应的白板 { uniqueID: sheetI
 async function getCurrentSuperBoardSubView() {
     var superBoardView = zegoSuperBoard.getSuperBoardView();
     if (superBoardView) {
-        return await superBoardView.getCurrentSuperBoardSubView();
+        var result = await superBoardView.getCurrentSuperBoardSubView();
+        return result;
     } else {
         return null;
     }

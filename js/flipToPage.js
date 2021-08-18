@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 22:16:06
- * @LastEditTime: 2021-08-10 15:08:14
+ * @LastEditTime: 2021-08-17 12:44:22
  * @LastEditors: Please set LastEditors
  * @Description: 白板翻页
  * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/flipPage.js
@@ -66,7 +66,7 @@ function updateThumbListDomHandle(thumbnailUrlList, currPage) {
 $('#previousPage').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
-        zegoSuperBoardSubView.flipToPrevPage();
+        zegoSuperBoardSubView.flipToPrePage();
 
         updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
     }
@@ -89,7 +89,7 @@ $('#nextPage').click(function() {
  */
 $('#previousStep').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.previousStep();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.preStep();
 });
 
 /**
@@ -98,6 +98,15 @@ $('#previousStep').click(function() {
 $('#nextStep').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.nextStep();
+});
+
+/**
+ * @description: 绑定跳转到指定页事件
+ */
+$('#flipToPageBtn').click(function() {
+    var page = layui.form.val('form2').targetPage;
+    if (!page) return toast('请输入目标页码，从 1 开始');
+    flipToPage(+page);
 });
 
 /**

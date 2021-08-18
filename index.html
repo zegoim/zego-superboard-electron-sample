@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-12 18:38:59
+ * @LastEditTime: 2021-08-17 20:34:51
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard_demo_web/index.html
@@ -20,13 +20,12 @@
     <!-- lay ui css 资源-->
     <link rel="stylesheet" href="./lib/css/layui.css" />
     <!-- Demo 样式 -->
-    <link href="./css/base.css" type="text/css" rel="stylesheet" />
-    <link href="./css/main.css" type="text/css" rel="stylesheet" />
+    <link href="./main.css" type="text/css" rel="stylesheet" />
     <!-- jquery 资源 -->
     <script src="./lib/jquery-3.3.1.min.js"></script>
     <!-- bootstrap js 资源 -->
     <script src="./lib/bootstrap.min.js"></script>
-    <!-- lay ui js 资源 -->
+    <!-- layui js 资源 -->
     <script src="./lib/layui.js"></script>
   </head>
   <body>
@@ -41,11 +40,11 @@
             <h4 class="modal-title" id="myModalLabel1">SDK 设置</h4>
           </div>
           <div class="modal-body">
-            <form class="layui-form" action="" name="form">
+            <form id="settingForm" class="layui-form" action="" name="form" lay-filter="settingForm">
               <div class="layui-form-item" id="superBoardEnv">
                 <label class="layui-form-label">SuperBoard 环境</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="superBoardEnv">
                     <option value="test">测试</option>
                     <option value="prod">正式</option>
                     <option value="alpha">alpha</option>
@@ -55,7 +54,7 @@
               <div class="layui-form-item" id="fontFamily">
                 <label class="layui-form-label">字体类型</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="fontFamily">
                     <option value="system">系统字体</option>
                     <option value="ZgFont">思源雅黑</option>
                   </select>
@@ -64,7 +63,7 @@
               <div class="layui-form-item" id="thumbnailMode">
                 <label class="layui-form-label">缩略图清晰度</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="thumbnailMode">
                     <option value="1">普通</option>
                     <option value="2">标清</option>
                     <option value="3">高清</option>
@@ -74,7 +73,7 @@
               <div class="layui-form-item" id="pptStepMode">
                 <label class="layui-form-label">PPT 模式</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="pptStepMode">
                     <option value="1">正常</option>
                     <option value="2">不跳转</option>
                   </select>
@@ -84,7 +83,7 @@
               <div class="layui-form-item" id="dynamicPPT_HD">
                 <label class="layui-form-label">PPT 清晰度</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="dynamicPPT_HD">
                     <option value="false">正常</option>
                     <option value="true">高清</option>
                   </select>
@@ -93,16 +92,16 @@
               <div class="layui-form-item" id="dynamicPPT_AutomaticPage">
                 <label class="layui-form-label">PPT 自动翻页</label>
                 <div class="layui-input-block">
-                  <select name="align">
-                    <option value="false">正常</option>
-                    <option value="true">禁止</option>
+                  <select name="dynamicPPT_AutomaticPage">
+                    <option value="true">正常</option>
+                    <option value="false">禁止</option>
                   </select>
                 </div>
               </div>
               <div class="layui-form-item" id="unloadVideoSrc">
                 <label class="layui-form-label">PPT 视频下载</label>
                 <div class="layui-input-block">
-                  <select name="align">
+                  <select name="unloadVideoSrc">
                     <option value="false">正常</option>
                     <option value="true">禁止</option>
                   </select>
@@ -318,7 +317,7 @@
           <div id="main-whiteboard-tool">
             <ul class="tools-list">
               <li
-                class="tool-item disabled"
+                class="tool-item disabled clickType"
                 data-toggle="tooltip"
                 data-placement="right"
                 title="点击"
@@ -509,7 +508,7 @@
                 <!-- <div class="tooltip">激光笔</div> -->
               </li>
               <li
-                class="tool-item active"
+                class="tool-item active pen"
                 data-toggle="tooltip"
                 data-placement="right"
                 title="画笔"
@@ -1835,32 +1834,13 @@
                 </div>
               </li>
               <li
-                class="tool-item"
+                class="tool-item "
                 data-toggle="tooltip"
                 data-placement="right"
                 title="自定义图形"
                 onclick="setToolType(512,event)"
               >
-                <div>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <defs>
-                      <style>
-                        .cls-1 {
-                          fill: #fff;
-                          opacity: 0;
-                        }
-                      </style>
-                    </defs>
-                    <rect class="cls-1" width="20" height="20" transform="translate(20) rotate(90)"></rect>
-                    <path
-                      class="hover-fill"
-                      fill-rule="evenodd"
-                      fill="#b1b4bb"
-                      d="M14,4.5V7a4.07,4.07,0,0,0-.5,0A5.5,5.5,0,0,0,8,12.5,5.33,5.33,0,0,0,8.21,14H3.5A1.5,1.5,0,0,1,2,12.5v-8A1.5,1.5,0,0,1,3.5,3h9A1.5,1.5,0,0,1,14,4.5Z"
-                    ></path>
-                    <circle class="hover-fill" fill="#b1b4bb" cx="13.5" cy="12.5" r="4.5"></circle>
-                  </svg>
-                </div>
+                <div class="custom-graph-icon"></div>
                 <ul class="custom-graph-setting"></ul>
               </li>
               <li
@@ -2391,6 +2371,20 @@
                   </button>
                 </div>
               </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">跳转指定页</label>
+                <div class="layui-input-inline" style="width: 146px;margin-left: 10px;">
+                  <input name="targetPage" type="text" placeholder="目标页" class="layui-input" />
+                </div>
+                <button
+                  id="flipToPageBtn"
+                  type="button"
+                  class="layui-btn layui-btn-sm"
+                  style="margin-top: 3px"
+                >
+                  跳转
+                </button>
+              </div>
               <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
               <!-- 白板操作模式 -->
               <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
@@ -2549,6 +2543,15 @@
                 </div>
                 <button id="cacheFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
                   预加载
+                </button>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">文件 ID</label>
+                <div class="layui-input-inline" style="margin-left: 10px">
+                  <input name="createFileID" type="text" placeholder="请输入 fileID" class="layui-input" />
+                </div>
+                <button id="createFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                  创建
                 </button>
               </div>
             </form>

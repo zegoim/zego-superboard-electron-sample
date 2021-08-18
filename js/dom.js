@@ -1,14 +1,14 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-13 01:01:51
+ * @LastEditTime: 2021-08-17 20:58:46
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
  */
 
 // bootstrap tooltip、popover 初始化
-$(function () {
+$(function() {
     $('[data-toggle="tooltip"]').tooltip();
     $('#openPopover').popover();
 });
@@ -19,15 +19,8 @@ $(function () {
  * @return {*}
  */
 function updateFileListDomHandle() {
-    console.warn('zegoConfig.superBoardEnv', zegoConfig.superBoardEnv)
-    var fileList =
-        zegoConfig.fileListData[
-            zegoConfig.superBoardEnv === 'test' ?
-            'docs_test' :
-            zegoConfig.superBoardEnv === 'alpha' ?
-            'docs_alpha' :
-            'docs_prod'
-        ];
+    console.warn('zegoConfig.superBoardEnv', zegoConfig.superBoardEnv);
+    var fileList = zegoConfig.fileListData[zegoConfig.superBoardEnv === 'test' ? 'docs_test' : 'docs_prod'];
     var $fileListCon = $('#file-list');
     // 清空原有
     $fileListCon.html('');
@@ -35,7 +28,7 @@ function updateFileListDomHandle() {
     var $str = '';
     fileList.forEach((element) => {
         $str +=
-            '<li class="file-item" data-file-id="' +
+            '<li onclick="createFileViewByFileID(event)" class="file-item" data-file-id="' +
             element.id +
             '"><div class="state ' +
             (element.isDynamic ? 'dynamic' : element.isH5 ? 'h5' : '') +
@@ -87,8 +80,8 @@ function updateUserListDomHandle() {
     $('#user-list').html('');
 
     var $str = '';
-    userList.forEach(function (element) {
-        $str += '<li class="user-item">' + element.userName + '</li>';
+    userList.forEach(function(element) {
+        $str += '<li class="user-item">' + element.userName + ' (' + element.userID + ')' + '</li>';
     });
     $('#user-list').html($str);
 }
@@ -103,9 +96,8 @@ function updatePageCountDomHandle(pageCount) {
 }
 
 /**
- * @description: 更新 currPage
+ * @description: 更新 currPage，包括顶部翻页按钮 + 缩略图
  * @param {*} currPage
- * @return {*}
  */
 function updateCurrPageDomHandle(currPage) {
     $('#currPage').html(currPage);
@@ -125,11 +117,11 @@ function updateEnvDomHandle() {
 
 /**
  * @description: 显示、隐藏白板区域占位
- * @param {*} type 1 显示 2 隐藏
+ * @param {*} type true 显示 false 隐藏
  * @return {*}
  */
 function togglePlaceholderDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         $('#main-whiteboard-placeholder').addClass('active');
     } else {
         $('#main-whiteboard-placeholder').removeClass('active');
@@ -144,7 +136,7 @@ function togglePlaceholderDomHandle(type) {
 function updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList) {
     var $str = '';
     $('#whiteboardList').html('');
-    zegoSuperBoardSubViewModelList.forEach(function (element) {
+    zegoSuperBoardSubViewModelList.forEach(function(element) {
         $str +=
             '<option value="' +
             element.uniqueID +
@@ -167,7 +159,7 @@ function updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList) {
 function updateExcelSheetListDomHandle(uniqueID, zegoExcelSheetNameList) {
     var $str = '';
     $('#sheetList').html('');
-    zegoExcelSheetNameList.forEach(function (element, index) {
+    zegoExcelSheetNameList.forEach(function(element, index) {
         $str += '<option value="' + uniqueID + ',' + index + '">' + element + '</option>';
     });
     $('#sheetList').html($str);
@@ -177,11 +169,11 @@ function updateExcelSheetListDomHandle(uniqueID, zegoExcelSheetNameList) {
 
 /**
  * @description: 显示、隐藏 sheet 下拉框
- * @param {*} type 1: 显示 2: 隐藏
+ * @param {*} type true: 显示 false: 隐藏
  * @return {*}
  */
 function toggleSheetSelectDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         $('#sheetListItem').show();
     } else {
         updateExcelSheetListDomHandle('', []);
@@ -194,19 +186,19 @@ function toggleSheetSelectDomHandle(type) {
  * @param {*}
  * @return {*}
  */
-function updateScaleListDomHandle(zegoScale) {
-    $('#scaleList').val(zegoScale);
+function updateCurrScaleDomHandle(scale) {
+    $('#scaleList').val(scale);
     // 更新下拉框 form.render(type, filter);
     layui.form.render('select', 'customForm');
 }
 
 /**
  * @description: 显示、隐藏步数切换
- * @param {*} type 1: 显示 2: 隐藏
+ * @param {*} type true: 显示 false: 隐藏
  * @return {*}
  */
 function toggleStepDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         $('.ppt-dynamic').addClass('active');
     } else {
         $('.ppt-dynamic').removeClass('active');
@@ -215,11 +207,11 @@ function toggleStepDomHandle(type) {
 
 /**
  * @description: 显示、隐藏缩略图按钮
- * @param {*} type 1: 显示 2: 隐藏
+ * @param {*} type true: 显示 false: 隐藏
  * @return {*}
  */
 function toggleThumbBtnDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         $('#thumb-button').addClass('active');
     } else {
         $('#thumb-button').removeClass('active');
@@ -246,90 +238,6 @@ function updateCurrSheetDomHandle(uniqueID, sheetIndex) {
     layui.form.val('customForm', {
         sheet: uniqueID + ',' + sheetIndex
     });
-}
-
-/**
- * @description: 更新当前选中工具
- * @param {*} type 工具类型
- * @param {*} event event
- * @return {*}
- */
-function updateActiveToolDomHandle(type, event) {
-    event.stopPropagation();
-    switch (type) {
-        case 256:
-        case 32:
-        case null:
-        case 128:
-        case 64:
-            $('.tool-item').removeClass('active');
-            $('.pencil-text-setting').removeClass('active');
-            $('.custom-graph-setting').removeClass('active');
-            $(event.currentTarget).addClass('active');
-            break;
-        case 1:
-        case 2:
-        case undefined: // 图形
-            $('.tool-item').removeClass('active');
-            $('.pencil-text-setting').removeClass('active');
-            $('.custom-graph-setting').removeClass('active');
-            $(event.currentTarget)
-                .addClass('active')
-                .find('.pencil-text-setting')
-                .addClass('active');
-            if (type === undefined) {
-                $('.graph-style-item').removeClass('active');
-                $('.graph-style-item:nth-of-type(1)').addClass('active');
-            }
-            break;
-        case 8: // 矩形
-        case 16: // 椭圆
-        case 4: // 直线
-            $('.graph-style-item').removeClass('active');
-            $('.graph-style-item:nth-of-type(' + (type === 8 ? 1 : type === 16 ? 2 : 3) + ')').addClass('active');
-            break;
-        case 512: // 自定义图形
-            $('.tool-item').removeClass('active');
-            $('.pencil-text-setting').removeClass('active');
-            $(event.currentTarget)
-                .addClass('active')
-                .find('.custom-graph-setting')
-                .addClass('active');
-            break;
-        default:
-            break;
-    }
-}
-
-/**
- * @description: 重置白板工具
- * @param {*}
- * @return {*}
- */
-function resetToolTypeDomHandle() {
-    $('.tool-item').removeClass('active');
-    $('.pencil-text-setting').removeClass('active');
-    $('.tool-item:nth-of-type(5)').addClass('active');
-}
-
-/**
- * @description: 开启、关闭不可操作模式
- * @param {*} type 1: 开启 2: 关闭
- * @return {*}
- */
-function updateUnOperatedModeDomHandle(type) {
-    layui.form.val('form2', {
-        unOperatedMode: type === 1 ? 'on' : ''
-    });
-}
-
-/**
- * @description: 获取表单当前数据
- * @param {*} form form name
- * @return {*}
- */
-function getFormData(form) {
-    return layui.form.val(form);
 }
 
 /**
@@ -365,12 +273,12 @@ function closeLoading() {
 }
 
 // 绑定预览事件
-$('#thumb-button').click(function (event) {
+$('#thumb-button').click(function(event) {
     $('#thumbModal').toggleClass('active');
 });
 
 // 绑定切换功能区事件
-$('#right-header').click(function (event) {
+$('#right-header').click(function(event) {
     var target = event.target;
     var index = $(target).attr('data-index');
     $('.nav-item').removeClass('active');
@@ -381,23 +289,23 @@ $('#right-header').click(function (event) {
 });
 
 // 更新邀请信息
-$('.inivate-btn').click(function (event) {
-    var inivateLink = location.origin + '?roomId=' + zegoConfig.roomID + '&env=' + zegoConfig.env;
+$('.inivate-btn').click(function(event) {
+    var inivateLink = location.origin + '?roomID=' + zegoConfig.roomID + '&env=' + zegoConfig.env;
     $('#showInviteLink').val(inivateLink);
     $('#showRoomEnv').html(zegoConfig.env == 1 ? '中国内地' : '海外');
 });
 
 // 阻止事件
-$('.pencil-text-setting').click(function (event) {
+$('.pencil-text-setting').click(function(event) {
     event.stopPropagation();
 });
 
-$('.custom-graph-setting').click(function (event) {
+$('.custom-graph-setting').click(function(event) {
     event.stopPropagation();
 });
 
 // 点击空白处关闭白板工具弹出框、关闭缩略图弹框
-$(document).click(function (event) {
+$(document).click(function(event) {
     if (!$(this).parents('.tool-item').length > 0) {
         $('.pencil-text-setting').removeClass('active');
         $('.custom-graph-setting').removeClass('active');

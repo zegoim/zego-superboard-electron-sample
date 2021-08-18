@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-12 12:03:29
+ * @LastEditTime: 2021-08-17 16:40:31
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -63,7 +63,7 @@ function getQueryVariable(variable) {
     var vars = query.split('&');
     for (var i = 0; i < vars.length; i++) {
         var pair = vars[i].split('=');
-        if (pair[0] == variable) {
+        if (pair[0].toLowerCase() == variable.toLowerCase()) {
             return pair[1];
         }
     }
@@ -139,13 +139,22 @@ function getUserID() {
  * @return {*}
  */
 function getRoomID() {
-    // 获取 url 中 roomID，邀请链接中会携带 roomID
-    var roomID = getQueryVariable('roomID') || $('#roomID').val();
-
-    // 获取已登录的 roomID
+    // 获取 url 中 roomID，邀请链接中会携带 roomID，若存在以 url 中的值为准
+    var roomID = getQueryVariable('roomID') || '';
+    // 获取已登录的 loginInfo
     var loginInfo = sessionStorage.getItem('loginInfo');
     if (loginInfo) {
-        roomID = JSON.parse(loginInfo).roomID;
+        loginInfo = JSON.parse(loginInfo);
+        if (loginInfo.roomID) {
+            // 已登录过
+            if (!roomID) {
+                // 以 loginInfo 中为准
+                roomID = loginInfo.roomID;
+            } else {
+                // 更新 loginInfo 中 roomID
+                sessionStorage.setItem('loginInfo', JSON.stringify({ ...loginInfo, roomID }));
+            }
+        }
     }
 
     return roomID;
@@ -158,15 +167,25 @@ function getRoomID() {
  */
 function getEnv() {
     // 获取 url 中 env，邀请链接中会携带 env
-    var env = getQueryVariable('env') || $('.inlineRadio:checked').val() || '1';
+    var env = getQueryVariable('env') || '';
 
-    // 获取已登录的 env
+    // 获取已登录的 loginInfo
     var loginInfo = sessionStorage.getItem('loginInfo');
     if (loginInfo) {
-        env = JSON.parse(loginInfo).env || '1';
+        loginInfo = JSON.parse(loginInfo);
+        if (loginInfo.roomID) {
+            // 已登录过
+            if (!env) {
+                // 以 loginInfo 中为准
+                env = loginInfo.env;
+            } else {
+                // 更新 loginInfo 中 env
+                sessionStorage.setItem('loginInfo', JSON.stringify({ ...loginInfo, env }));
+            }
+        }
     }
-
-    return env;
+    // 增加一个默认值
+    return env || '1';
 }
 
 /**
@@ -178,4 +197,39 @@ function copyInviteLink() {
     $('#showInviteLink').select(); // 选中文本
     document.execCommand('copy'); // 执行浏览器复制命令
     alert('复制成功');
+}
+
+/**
+ * @description: 更新页面 URL
+ * @param {*} key1 字段名称1
+ * @param {*} value1 字段值1
+ * @param {*} key2 字段名称2
+ * @param {*} value2 字段值2
+ */
+function updateUrl(key1, value1, key2, value2) {
+    var url = window.location.href;
+    var newUrl1 = updateQueryStringParameter(url, key1, value1);
+    var newUrl2 = updateQueryStringParameter(newUrl1, key2, value2);
+    // 向当前 url 添加参数，没有历史记录，不刷新页面
+    window.history.replaceState({ path: newUrl2 }, '', newUrl2);
+}
+
+/**
+ * @description: 更新页面 URL 中单个参数
+ * @param {*} url url
+ * @param {*} key 字段名称
+ * @param {*} value 字段值
+ */
+function updateQueryStringParameter(url, key, value) {
+    if (!value) return url;
+
+    var re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
+    var separator = url.indexOf('?') !== -1 ? '&' : '?';
+    if (url.match(re)) {
+        // 替换
+        return url.replace(re, '$1' + key + '=' + value + '$2');
+    } else {
+        // 追加参数
+        return url + separator + key + '=' + value;
+    }
 }

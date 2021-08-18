@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 21:28:34
- * @LastEditTime: 2021-08-10 16:37:09
+ * @LastEditTime: 2021-08-17 13:37:21
  * @LastEditors: Please set LastEditors
  * @Description: 白板操作模式
  * @FilePath: /superboard/js/operationMode.js
@@ -30,6 +30,16 @@ function updateOperatedModeDomHandle(type) {
             scaleMode: ''
         });
     }
+}
+/**
+ * @description: 开启、关闭不可操作模式
+ * @param {*} type true: 开启 false: 关闭
+ * @return {*}
+ */
+function updateUnOperatedModeDomHandle(type) {
+    layui.form.val('form2', {
+        unOperatedMode: type ? 'on' : ''
+    });
 }
 
 /**
@@ -89,7 +99,7 @@ layui.form.on('switch(scrollMode)', function() {
 
     var operationMode = setOperatedMode();
 
-    updateUnOperatedModeDomHandle(operationMode === 1 ? 1 : 2);
+    updateUnOperatedModeDomHandle(operationMode === 1);
 
     console.warn('SuperBoard Demo operationMode', operationMode);
     zegoSuperBoardSubView.setOperationMode(operationMode);
@@ -106,7 +116,7 @@ layui.form.on('switch(drawMode)', function() {
 
     var operationMode = setOperatedMode();
 
-    updateUnOperatedModeDomHandle(operationMode === 1 ? 1 : 2);
+    updateUnOperatedModeDomHandle(operationMode === 1);
 
     console.warn('SuperBoard Demo operationMode', operationMode);
     zegoSuperBoardSubView.setOperationMode(operationMode);
@@ -123,7 +133,7 @@ layui.form.on('switch(scaleMode)', function() {
 
     var operationMode = setOperatedMode();
 
-    updateUnOperatedModeDomHandle(operationMode === 1 ? 1 : 2);
+    updateUnOperatedModeDomHandle(operationMode === 1);
 
     console.warn('SuperBoard Demo operationMode', operationMode);
     zegoSuperBoardSubView.setOperationMode(operationMode);

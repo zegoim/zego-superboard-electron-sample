@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-13 11:19:17
+ * @LastEditTime: 2021-08-17 19:20:08
  * @LastEditors: Please set LastEditors
  * @Description: 房间相关
  * @FilePath: /superboard_demo_web/js/room.js
@@ -79,11 +79,11 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('thumbnailMode', zegoConfig.thumbnailMode);
 
     // 设置 PPT 转码清晰度
-    zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', $('#dynamicPPT_HD').val());
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', zegoConfig.dynamicPPT_HD);
     // 设置 PPT 自动翻页
-    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', $('#dynamicPPT_AutomaticPage').val());
+    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
     // 设置 PPT 视频下载
-    zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', $('#unloadVideoSrc').val());
+    zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
 }
 
 /**
@@ -184,11 +184,11 @@ function logoutRoom() {
     // 清空白板列表
     updateWhiteboardListDomHandle([]);
     // 清空 excel sheet 列表
-    toggleSheetSelectDomHandle(2);
+    toggleSheetSelectDomHandle(false);
 
     // 清除已挂载白板
     $('#main-whiteboard').html('');
-    togglePlaceholderDomHandle(1);
+    togglePlaceholderDomHandle(true);
     togglePageDomHandle(2);
 }
 
@@ -203,18 +203,19 @@ $('#login-btn').click(async function() {
     }
 
     // 登录信息
+    var settingData = layui.form.val('settingForm');
     var loginInfo = {
         env: $('.inlineRadio:checked').val(),
         roomID,
         userName,
         userID: zegoConfig.userID,
-        superBoardEnv: $('#superBoardEnv select').val(),
-        fontFamily: $('#fontFamily select').val(),
-        thumbnailMode: $('#thumbnailMode select').val(),
-        pptStepMode: $('#pptStepMode select').val(),
-        dynamicPPT_HD: $('#dynamicPPT_HD select').val(),
-        dynamicPPT_AutomaticPage: $('#dynamicPPT_AutomaticPage select').val(),
-        unloadVideoSrc: $('#unloadVideoSrc select').val()
+        superBoardEnv: settingData.superBoardEnv,
+        fontFamily: settingData.fontFamily,
+        thumbnailMode: settingData.thumbnailMode,
+        pptStepMode: settingData.pptStepMode,
+        dynamicPPT_HD: settingData.dynamicPPT_HD,
+        dynamicPPT_AutomaticPage: settingData.dynamicPPT_AutomaticPage,
+        unloadVideoSrc: settingData.unloadVideoSrc
     };
 
     // 更新 zegoConfig
@@ -230,6 +231,9 @@ $('#login-btn').click(async function() {
     await loginRoom();
     sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
 
+    // 更新页面 url
+    updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
+
     // 显示房间页
     togglePageDomHandle(1);
 
@@ -239,16 +243,7 @@ $('#login-btn').click(async function() {
     // 注册白板回调
     onSuperBoardEventHandle();
 
-    setTimeout(async function() {
-        // 查询当前白板列表
-        var result = await querySuperBoardSubViewList();
-        console.error(result);
-        // 设置自动进房自动挂载最新白板
-        if (result.uniqueID) {
-            var superBoardView = zegoSuperBoard.getSuperBoardView();
-            superBoardView && (await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex));
-        }
-    }, 500);
+    await attachActiveView();
 });
 
 // 绑定退出房间事件

@@ -1,19 +1,26 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-10 16:50:36
- * @LastEditTime: 2021-08-11 15:53:13
+ * @LastEditTime: 2021-08-16 20:52:51
  * @LastEditors: Please set LastEditors
  * @Description: 添加自定义图形、插入图片
  * @FilePath: /superboard/js/addImage.js
  */
 
+var selectedInsetImgFile = null; // 当前选择的插入图片文件
 var customGraphList = [
     'https://storage.zego.im/goclass/wbpic/diamond.svg',
     'https://storage.zego.im/goclass/wbpic/star.svg',
     'https://storage.zego.im/goclass/wbpic/axis.svg',
     'https://storage.zego.im/goclass/wbpic/chemical_instrument.svg'
 ]; // 自定义图形列表
-var selectedInsetImgFile = null; // 当前选择的插入图片文件
+var imageErrorTipsMap = {
+    3000002: '参数错误',
+    3000005: '下载失败',
+    3030008: '图片大小超过限制，请重新选择',
+    3030009: '图片格式暂不支持',
+    3030010: 'url地址错误或无效'
+}; // 自定义图形、图片上传错误
 
 // 页面 DOM 加载完成更新自定义图形列表到页面
 $(document).ready(initGraphListDomHandle);

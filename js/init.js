@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-18 15:43:14
+ * @LastEditTime: 2021-08-18 15:50:35
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard/js/init.js
@@ -168,10 +168,10 @@ async function init() {
             var token = await initZegoSDK();
             await loginRoom(token);
             // 显示房间页面
-            togglePageDomHandle(1);
+            togglePageDomHandle(true);
         } else {
             // 显示登录页面
-            togglePageDomHandle(2);
+            togglePageDomHandle(false);
         }
         updateRoomIDDomHandle();
         updateEnvDomHandle();

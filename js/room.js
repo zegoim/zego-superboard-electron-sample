@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-18 15:44:08
+ * @LastEditTime: 2021-08-18 15:50:44
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
  * @FilePath: /superboard/js/room.js
@@ -136,7 +136,7 @@ $('#login-btn').click(async function() {
     // 更新页面 url
     updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
     // 显示登录页
-    togglePageDomHandle(1);
+    togglePageDomHandle(true);
     updateRoomIDDomHandle();
 });
 
@@ -151,7 +151,7 @@ function logoutRoom() {
     // 清空成员列表
     userList = [];
     // 显示登录页
-    togglePageDomHandle(2);
+    togglePageDomHandle(false);
     // 清除页面已挂载白板
     $('#main-whiteboard').html('');
     // 清空页面白板列表下拉框

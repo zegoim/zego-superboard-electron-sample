@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-18 15:05:59
+ * @LastEditTime: 2021-08-18 15:50:09
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -15,11 +15,11 @@ $(function() {
 
 /**
  * @description: 显示、隐藏登录页、房间页
- * @param {*} type 1: 显示 2: 隐藏
+ * @param {*} type true: 显示 false: 隐藏
  * @return {*}
  */
 function togglePageDomHandle(type) {
-    if (type === 1) {
+    if (type) {
         // 显示房间页
         $('#room-page').addClass('active');
         $('#login-page').removeClass('active');

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-18 16:34:55
+ * @LastEditTime: 2021-08-18 16:40:40
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -348,7 +348,7 @@ async function querySuperBoardSubViewList() {
         updatePageCountDomHandle(pageCount);
         updateCurrPageDomHandle(currentPage);
         // 判断是否显示页面上的切步按钮
-        toggleStepDomHandle(canJumpStep());
+        toggleStepDomHandle(await canJumpStep());
         // 判断是否显示页面上的缩略图按钮
         toggleThumbBtnDomHandle(await hasThumb());
         // 判断是否需要禁止点击工具
@@ -428,7 +428,7 @@ async function switchWhitebopard(uniqueID) {
         toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
 
         // 判断是否显示页面上的切步按钮
-        toggleStepDomHandle(canJumpStep());
+        toggleStepDomHandle(await canJumpStep());
         // 判断是否显示页面上的缩略图按钮
         toggleThumbBtnDomHandle(await hasThumb());
 

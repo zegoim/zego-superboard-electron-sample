@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 20:04:01
- * @LastEditTime: 2021-08-16 17:52:36
+ * @LastEditTime: 2021-08-18 09:51:28
  * @LastEditors: Please set LastEditors
  * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
  * @FilePath: /superboard/js/reloadView.js
@@ -37,8 +37,11 @@ function onResizeHandle() {
  * @return {*}
  */
 function reloadViewHandle() {
+    // 未实例化之前，触发 resize 直接返回
+    if (!zegoSuperBoard) return;
+
     var zegoSuperBoardView = zegoSuperBoard.getSuperBoardView();
-    if (!zegoSuperBoardView) return false;
+    if (!zegoSuperBoardView) return;
 
     var zegoSuperBoardSubView = zegoSuperBoardView.getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {

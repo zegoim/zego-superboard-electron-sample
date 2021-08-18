@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-18 09:45:45
+ * @LastEditTime: 2021-08-18 10:22:43
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -502,20 +502,27 @@ async function attachActiveView() {
     if (result.uniqueID) {
         var superBoardView = zegoSuperBoard.getSuperBoardView();
         if (superBoardView) {
-            await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex);
-            var curView = superBoardView.getCurrentSuperBoardSubView();
-            var curViewModel = curView.getModel();
+            try {
+                await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex);
+                var curView = superBoardView.getCurrentSuperBoardSubView();
+                var pageCount = curView.getPageCount();
+                var currPage = curView.getCurrentPage();
+                var curViewModel = curView.getModel();
+                console.warn('SuperBoard Demo attachActiveView', pageCount, currPage);
 
-            // 缓存当前 excel 白板 的 sheet
-            if (curViewModel.fileType === 4) {
-                cacheSheetMap[result.uniqueID] = result.sheetIndex;
+                // 缓存当前 excel 白板 的 sheet
+                if (curViewModel.fileType === 4) {
+                    cacheSheetMap[result.uniqueID] = result.sheetIndex;
+                }
+
+                // 初始化白板工具
+                initToolType();
+                // 更新总页数、当前页
+                updatePageCountDomHandle(pageCount);
+                updateCurrPageDomHandle(currPage);
+            } catch (errorData) {
+                toast(errorData);
             }
-
-            // 初始化白板工具
-            initToolType();
-            // 更新总页数、当前页
-            updatePageCountDomHandle(curView.getPageCount());
-            updateCurrPageDomHandle(curView.getCurrentPage());
         }
     }
 }

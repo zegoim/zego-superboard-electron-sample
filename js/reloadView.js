@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 20:04:01
- * @LastEditTime: 2021-08-18 09:51:28
+ * @LastEditTime: 2021-08-18 12:08:38
  * @LastEditors: Please set LastEditors
  * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
  * @FilePath: /superboard/js/reloadView.js
@@ -88,7 +88,10 @@ function supportRequestFullscreen(dom) {
 function updateSizeDomHandle() {
     // 获取当前容器宽高
     var dom = document.getElementById(parentDomID);
-    dom.removeAttribute('style');
+
+    // 初始化容器尺寸
+    dom.style.cssText += 'width:70vw;height:39.375vw;';
+
     var width = dom.clientWidth + 2; // +边框
     var height = dom.clientHeight + 2; // +边框
 

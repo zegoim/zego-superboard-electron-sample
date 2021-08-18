@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-17 20:58:46
+ * @LastEditTime: 2021-08-18 15:05:59
  * @LastEditors: Please set LastEditors
  * @Description: dom 相关方法
  * @FilePath: /superboard_demo_web/js/dom.js
@@ -12,34 +12,6 @@ $(function() {
     $('[data-toggle="tooltip"]').tooltip();
     $('#openPopover').popover();
 });
-
-/**
- * @description: 更新文件列表
- * @param {*}
- * @return {*}
- */
-function updateFileListDomHandle() {
-    console.warn('zegoConfig.superBoardEnv', zegoConfig.superBoardEnv);
-    var fileList = zegoConfig.fileListData[zegoConfig.superBoardEnv === 'test' ? 'docs_test' : 'docs_prod'];
-    var $fileListCon = $('#file-list');
-    // 清空原有
-    $fileListCon.html('');
-
-    var $str = '';
-    fileList.forEach((element) => {
-        $str +=
-            '<li onclick="createFileViewByFileID(event)" class="file-item" data-file-id="' +
-            element.id +
-            '"><div class="state ' +
-            (element.isDynamic ? 'dynamic' : element.isH5 ? 'h5' : '') +
-            '">' +
-            (element.isDynamic ? '动态' : element.isH5 ? 'H5' : '静态') +
-            '</div>' +
-            element.name +
-            '</li>';
-    });
-    $fileListCon.html($str);
-}
 
 /**
  * @description: 显示、隐藏登录页、房间页
@@ -59,34 +31,6 @@ function togglePageDomHandle(type) {
 }
 
 /**
- * @description: 更新房间号
- * @param {*}
- * @return {*}
- */
-function updateRoomIDDomHandle() {
-    $('#showRoomID').html(zegoConfig.roomID);
-    $('#roomID').val(zegoConfig.roomID);
-}
-
-/**
- * @description: 更新房间成员列表
- * @param {*}
- * @return {*}
- */
-function updateUserListDomHandle() {
-    $('#memberNum').html(userList.length);
-
-    $('#subMemberNum').html(userList.length);
-    $('#user-list').html('');
-
-    var $str = '';
-    userList.forEach(function(element) {
-        $str += '<li class="user-item">' + element.userName + ' (' + element.userID + ')' + '</li>';
-    });
-    $('#user-list').html($str);
-}
-
-/**
  * @description: 更新 pageCount
  * @param {*} pageCount
  * @return {*}
@@ -103,16 +47,6 @@ function updateCurrPageDomHandle(currPage) {
     $('#currPage').html(currPage);
     $('.thumb-item').removeClass('active');
     $('.thumb-item:nth-of-type(' + currPage + ')').addClass('active');
-}
-
-/**
- * @description: 更新接入环境
- * @param {*}
- * @return {*}
- */
-function updateEnvDomHandle() {
-    $('.radio-inline:nth-of-type(' + zegoConfig.env + ') .inlineRadio').attr('checked', true);
-    $('.radio-inline:nth-of-type(' + (zegoConfig.env == 1 ? 2 : 1) + ') .inlineRadio').attr('checked', false);
 }
 
 /**

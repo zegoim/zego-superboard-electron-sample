@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-11 15:08:11
- * @LastEditTime: 2021-08-17 17:50:28
+ * @LastEditTime: 2021-08-18 12:48:14
  * @LastEditors: Please set LastEditors
  * @Description: 上传静态、动态文件
  * @FilePath: /superboard/js/uploadFile.js
@@ -51,3 +51,37 @@ layui.dropdown.render({
     content: $('#uploadPopoverContent').html(),
     click: function(data, othis) {}
 });
+
+$('.share-item.file').click(async function() {
+    // 获取文件列表
+    var fileListData = await getFilelist();
+
+    // 更新视图
+    updateFileListDomHandle(fileListData, zegoConfig.superBoardEnv);
+});
+
+/**
+ * @description: 更新文件列表
+ * @param {*} fileListData
+ */
+function updateFileListDomHandle(fileListData, superBoardEnv) {
+    var fileList = fileListData[superBoardEnv === 'test' ? 'docs_test' : 'docs_prod'];
+    var $fileListCon = $('#file-list');
+    // 清空原有
+    $fileListCon.html('');
+
+    var $str = '';
+    fileList.forEach((element) => {
+        $str +=
+            '<li onclick="createFileViewByFileID(event)" class="file-item" data-file-id="' +
+            element.id +
+            '"><div class="state ' +
+            (element.isDynamic ? 'dynamic' : element.isH5 ? 'h5' : '') +
+            '">' +
+            (element.isDynamic ? '动态' : element.isH5 ? 'H5' : '静态') +
+            '</div>' +
+            element.name +
+            '</li>';
+    });
+    $fileListCon.html($str);
+}

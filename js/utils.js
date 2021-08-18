@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-17 16:40:31
+ * @LastEditTime: 2021-08-18 12:35:16
  * @LastEditors: Please set LastEditors
  * @Description: 工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -100,7 +100,7 @@ function getToken(appID, userID, tokenUrl) {
  * @param {*} filelistUrl
  * @return {*}
  */
-function getFilelist(filelistUrl) {
+function getFilelist(filelistUrl = './fileList.json') {
     return new Promise(function(resolve) {
         $.get(
             filelistUrl,

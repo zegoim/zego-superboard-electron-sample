@@ -75,13 +75,12 @@ async function init() {
 
             sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
             await loginRoom();
+
             togglePageDomHandle(1);
 
             // 注册白板回调
             onSuperBoardEventHandle();
 
-            console.warn('====刷新 查询当前白板列表=====');
-            await attachActiveView();
         } else {
             // 未登录过，显示登录页
             togglePageDomHandle(2);

@@ -92,17 +92,17 @@ function initSuperBoardSDKConfig() {
  * @return {*}
  */
 function onRoomUserUpdate() {
-    zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
+    zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
         if (type == 'ADD') {
-            list.forEach(function(v) {
+            list.forEach(function (v) {
                 userList.push({
                     userID: v.userID,
                     userName: v.userName
                 });
             });
         } else if (type == 'DELETE') {
-            list.forEach(function(v) {
-                var index = userList.findIndex(function(item) {
+            list.forEach(function (v) {
+                var index = userList.findIndex(function (item) {
                     return v.userID == item.userID;
                 });
                 if (index != -1) {
@@ -120,7 +120,7 @@ function onRoomUserUpdate() {
  * @return {*}
  */
 function loginRoom() {
-    return new Promise(async function(resolve, reject) {
+    return new Promise(async function (resolve, reject) {
         console.warn('zegoConfig', zegoConfig);
         var appID;
         var token;
@@ -138,18 +138,17 @@ function loginRoom() {
 
         // 登录房间
         try {
-            await zegoSuperBoard.loginRoom(
+            await zegoEngine.loginRoom(
                 zegoConfig.roomID,
-                token,
-                {
+                token, {
                     userID: zegoConfig.userID,
                     userName: zegoConfig.userName
-                },
-                {
+                }, {
                     maxMemberCount: 10,
                     userUpdate: true
                 }
             );
+         
 
             console.warn('SuperBoard Demo 登录成功');
 
@@ -193,7 +192,7 @@ function logoutRoom() {
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(async function() {
+$('#login-btn').click(async function () {
     // 校验 roomID、userName
     var roomID = $('#roomID').val();
     var userName = $('#userName').val();
@@ -247,6 +246,6 @@ $('#login-btn').click(async function() {
 });
 
 // 绑定退出房间事件
-$('#logout-btn').click(function() {
+$('#logout-btn').click(function () {
     logoutRoom();
 });

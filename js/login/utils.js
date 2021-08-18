@@ -1,73 +1,60 @@
 /*
  * @Author: ZegoDev
- * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-18 12:35:16
+ * @Date: 2021-08-18 17:53:39
+ * @LastEditTime: 2021-08-18 18:06:30
  * @LastEditors: Please set LastEditors
- * @Description: 工具方法
- * @FilePath: /superboard_demo_web/js/utils.js
+ * @Description: 登录页更新 DOM 的相关方法、相关工具方法
+ * @FilePath: /superboard/js/login/dom.js
  */
 
 /**
- * @description 动态加载 Script 资源
- * @param {*} url 资源地址
- * @return {*} Promise
- */
-function loadScript(url) {
-    // 不支持 Promise 的浏览器开发者需要自行做好兼容
-    return new Promise(function(resolve) {
-        var head = document.getElementsByTagName('head')[0];
-        var script = document.createElement('script');
-
-        script.type = 'text/javascript';
-        script.src = url;
-        if (script.readyState) {
-            // IE Browser
-            script.onreadystatechange = function() {
-                if (script.readyState == 'loaded' || script.readyState == 'complete') {
-                    script.onreadystatechange = null;
-                }
-            };
-        } else {
-            // Others Browser
-            script.onload = function() {
-                console.log(url + ' 加载成功');
-                resolve();
-            };
-            script.onerror = function() {
-                console.error(url + ' 加载异常');
-            };
-        }
-        head.appendChild(script);
-    });
-}
-
-/**
- * @description: 批量动态加载 Script 资源
- * @param {*} pathList
+ * @description: 显示、隐藏登录页、房间页
+ * @param {*} type true: 显示 false: 隐藏
  * @return {*}
  */
-function loadAllScript(pathList) {
-    var tasks = pathList.map(function(path) {
-        return loadScript(path);
-    });
-    return Promise.all(tasks);
-}
-
-/**
- * @description: 获取 url 中指定参数值
- * @param {*} variable
- * @return {*}
- */
-function getQueryVariable(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split('&');
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split('=');
-        if (pair[0].toLowerCase() == variable.toLowerCase()) {
-            return pair[1];
-        }
+function togglePageDomHandle(type) {
+    if (type) {
+        // 显示房间页
+        $('#room-page').addClass('active');
+        $('#login-page').removeClass('active');
+    } else {
+        // 显示登录页
+        $('#room-page').removeClass('active');
+        $('#login-page').addClass('active');
     }
-    return false;
+}
+
+/**
+ * @description: 更新页面房间号
+ */
+function updateRoomIDDomHandle() {
+    // 登录页输入框
+    $('#roomID').val(zegoConfig.roomID);
+    // 房间页左上角房间号
+    $('#showRoomID').html(zegoConfig.roomID);
+}
+
+/**
+ * @description: 更新页面接入环境勾选
+ */
+function updateEnvDomHandle() {
+    $('.radio-inline:nth-of-type(' + zegoConfig.env + ') .inlineRadio').attr('checked', true);
+    $('.radio-inline:nth-of-type(' + (zegoConfig.env == 1 ? 2 : 1) + ') .inlineRadio').attr('checked', false);
+}
+
+/**
+ * @description: 更新页面弹框房间成员列表
+ * @param {*} userList
+ */
+function updateUserListDomHandle(userList) {
+    $('#memberNum').html(userList.length);
+    $('#subMemberNum').html(userList.length);
+    $('#user-list').html('');
+    var $str = '';
+    userList.forEach(function(element) {
+        $str += '<li class="user-item">' + element.userName + ' (' + element.userID + ')' + '</li>';
+    });
+    $('#user-list').html($str);
 }
 
 /**
@@ -75,7 +62,7 @@ function getQueryVariable(variable) {
  * @param {*} appID
  * @param {*} userID
  * @param {*} tokenUrl
- * @return {*}
+ * @return {*} Promise
  */
 function getToken(appID, userID, tokenUrl) {
     return new Promise(function(resolve) {
@@ -96,47 +83,24 @@ function getToken(appID, userID, tokenUrl) {
 }
 
 /**
- * @description: 这里仅演示获取 fileList 的示例代码
- * @param {*} filelistUrl
+ * @description: 获取 url 中指定参数值
+ * @param {*} variable
  * @return {*}
  */
-function getFilelist(filelistUrl = './fileList.json') {
-    return new Promise(function(resolve) {
-        $.get(
-            filelistUrl,
-            null,
-            function(fileList) {
-                if (fileList) {
-                    resolve(fileList);
-                }
-            },
-            'json'
-        );
-    });
-}
-
-/**
- * @description: 生成 userID
- * @param {*}
- * @return {*}
- */
-function getUserID() {
-    // 获取已登录的 userID
-    var loginInfo = sessionStorage.getItem('loginInfo');
-    var userID;
-    if (loginInfo) {
-        userID = JSON.parse(loginInfo).userID;
-    } else {
-        userID = 'web' + new Date().getTime();
-        sessionStorage.setItem('loginInfo', JSON.stringify({ userID }));
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (pair[0].toLowerCase() == variable.toLowerCase()) {
+            return pair[1];
+        }
     }
-    return userID;
+    return false;
 }
 
 /**
  * @description: 获取 roomID
- * @param {*}
- * @return {*}
  */
 function getRoomID() {
     // 获取 url 中 roomID，邀请链接中会携带 roomID，若存在以 url 中的值为准
@@ -162,8 +126,6 @@ function getRoomID() {
 
 /**
  * @description: 获取接入环境
- * @param {*}
- * @return {*}
  */
 function getEnv() {
     // 获取 url 中 env，邀请链接中会携带 env
@@ -189,14 +151,19 @@ function getEnv() {
 }
 
 /**
- * @description: 复制邀请链接
- * @param {*}
- * @return {*}
+ * @description: 生成 userID
  */
-function copyInviteLink() {
-    $('#showInviteLink').select(); // 选中文本
-    document.execCommand('copy'); // 执行浏览器复制命令
-    alert('复制成功');
+function getUserID() {
+    // 获取已登录的 userID
+    var loginInfo = sessionStorage.getItem('loginInfo');
+    var userID;
+    if (loginInfo) {
+        userID = JSON.parse(loginInfo).userID;
+    } else {
+        userID = 'web' + new Date().getTime();
+        sessionStorage.setItem('loginInfo', JSON.stringify({ userID }));
+    }
+    return userID;
 }
 
 /**

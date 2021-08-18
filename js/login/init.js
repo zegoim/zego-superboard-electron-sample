@@ -1,10 +1,10 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-18 16:01:33
+ * @LastEditTime: 2021-08-18 18:12:29
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
- * @FilePath: /superboard/js/init.js
+ * @FilePath: /superboard/js/login/init.js
  */
 
 // 环境相关配置
@@ -108,9 +108,7 @@ async function initZegoSDK() {
  */
 function initExpressSDKConfig() {
     // 设置日志级别
-    zegoEngine.setLogConfig({
-        logLevel: 'disable'
-    });
+    zegoEngine.setLogConfig({ logLevel: 'disable' });
     // 关闭 debug
     zegoEngine.setDebugVerbose(false);
 }
@@ -137,24 +135,6 @@ function initSuperBoardSDKConfig() {
 }
 
 /**
- * @description: 更新页面接入环境勾选
- */
-function updateEnvDomHandle() {
-    $('.radio-inline:nth-of-type(' + zegoConfig.env + ') .inlineRadio').attr('checked', true);
-    $('.radio-inline:nth-of-type(' + (zegoConfig.env == 1 ? 2 : 1) + ') .inlineRadio').attr('checked', false);
-}
-
-/**
- * @description: 更新页面房间号
- */
-function updateRoomIDDomHandle() {
-    // 登录页输入框
-    $('#roomID').val(zegoConfig.roomID);
-    // 房间页左上角房间号
-    $('#showRoomID').html(zegoConfig.roomID);
-}
-
-/**
  * @description: 根据配置初始化并登录房间
  */
 async function init() {
@@ -169,7 +149,7 @@ async function init() {
             await loginRoom(token);
             // 显示房间页面
             togglePageDomHandle(true);
-            // 挂载当前激活白板
+            // 挂载当前激活白板（room 内方法）
             attachActiveView();
         } else {
             // 显示登录页面

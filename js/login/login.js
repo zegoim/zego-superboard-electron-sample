@@ -1,27 +1,13 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-18 16:58:14
+ * @LastEditTime: 2021-08-18 18:12:22
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
- * @FilePath: /superboard/js/room.js
+ * @FilePath: /superboard/js/login/login.js
  */
 
 var userList = []; // 房间内成员列表
-
-/**
- * @description: 更新页面弹框房间成员列表
- */
-function updateUserListDomHandle() {
-    $('#memberNum').html(userList.length);
-    $('#subMemberNum').html(userList.length);
-    $('#user-list').html('');
-    var $str = '';
-    userList.forEach(function(element) {
-        $str += '<li class="user-item">' + element.userName + ' (' + element.userID + ')' + '</li>';
-    });
-    $('#user-list').html($str);
-}
 
 /**
  * @description: 监听房间成员变更
@@ -46,7 +32,7 @@ function onRoomUserUpdate() {
             });
         }
         // 更新页面弹框房间成员列表
-        updateUserListDomHandle();
+        updateUserListDomHandle(userList);
     });
 }
 
@@ -59,7 +45,7 @@ function pushOwn() {
         userName: zegoConfig.userName
     });
     // 更新页面弹框房间成员列表
-    updateUserListDomHandle();
+    updateUserListDomHandle(userList);
 }
 
 /**
@@ -85,7 +71,7 @@ async function loginRoom(token) {
         );
         // 添加自己到成员列表
         pushOwn();
-        // 注册白板回调
+        // 注册白板回调（room 内方法）
         onSuperBoardEventHandle();
     } catch (error) {
         console.error(error);
@@ -103,6 +89,32 @@ function checkInput() {
         return false;
     }
     return { roomID, userName };
+}
+
+/**
+ * @description: 退出房间
+ */
+function logoutRoom() {
+    // 退出房间
+    zegoEngine.logoutRoom(zegoConfig.roomID);
+    // 清除 sessionStorage
+    sessionStorage.removeItem('loginInfo');
+    // 清空成员列表
+    userList = [];
+    // 显示登录页
+    togglePageDomHandle(false);
+    // 清除页面已挂载白板
+    $('#main-whiteboard').html('');
+    // 清空页面白板列表下拉框（room 内方法）
+    updateWhiteboardListDomHandle([]);
+    // 清空页面 excel sheet 列表下拉框（room 内方法）
+    toggleSheetSelectDomHandle(false);
+    // 显示页面白板占位（room 内方法）
+    togglePlaceholderDomHandle(true);
+    // 隐藏缩略图按钮（room 内方法）
+    toggleThumbBtnDomHandle(false);
+    // 清空缩略图列表（room 内方法）
+    updateThumbListDomHandle([]);
 }
 
 // 绑定登录房间事件
@@ -138,35 +150,9 @@ $('#login-btn').click(async function() {
     // 显示登录页
     togglePageDomHandle(true);
     updateRoomIDDomHandle();
-    // 挂载当前激活白板
+    // 挂载当前激活白板（room 内方法）
     attachActiveView();
 });
-
-/**
- * @description: 退出房间
- */
-function logoutRoom() {
-    // 退出房间
-    zegoEngine.logoutRoom(zegoConfig.roomID);
-    // 清除 sessionStorage
-    sessionStorage.removeItem('loginInfo');
-    // 清空成员列表
-    userList = [];
-    // 显示登录页
-    togglePageDomHandle(false);
-    // 清除页面已挂载白板
-    $('#main-whiteboard').html('');
-    // 清空页面白板列表下拉框
-    updateWhiteboardListDomHandle([]);
-    // 清空页面 excel sheet 列表下拉框
-    toggleSheetSelectDomHandle(false);
-    // 显示页面白板占位
-    togglePlaceholderDomHandle(true);
-    // 隐藏缩略图按钮
-    toggleThumbBtnDomHandle(false);
-    // 清空缩略图列表
-    updateThumbListDomHandle([]);
-}
 
 // 绑定退出房间事件
 $('#logout-btn').click(logoutRoom);

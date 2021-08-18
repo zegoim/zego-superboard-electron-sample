@@ -1,34 +1,126 @@
 /*
  * @Author: ZegoDev
- * @Date: 2021-08-02 15:35:52
- * @LastEditTime: 2021-08-18 15:50:09
+ * @Date: 2021-07-28 14:23:27
+ * @LastEditTime: 2021-08-18 18:43:38
  * @LastEditors: Please set LastEditors
- * @Description: dom 相关方法
- * @FilePath: /superboard_demo_web/js/dom.js
+ * @Description: 房间页更新 DOM 的相关方法、相关工具方法
+ * @FilePath: /superboard_demo_web/js/utils.js
  */
+
+/**
+ * @description 动态加载 Script 资源
+ * @param {*} url 资源地址
+ * @return {*} Promise
+ */
+function loadScript(url) {
+    // 不支持 Promise 的浏览器开发者需要自行做好兼容
+    return new Promise(function(resolve) {
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+
+        script.type = 'text/javascript';
+        script.src = url;
+        if (script.readyState) {
+            // IE Browser
+            script.onreadystatechange = function() {
+                if (script.readyState == 'loaded' || script.readyState == 'complete') {
+                    script.onreadystatechange = null;
+                }
+            };
+        } else {
+            // Others Browser
+            script.onload = function() {
+                console.log(url + ' 加载成功');
+                resolve();
+            };
+            script.onerror = function() {
+                console.error(url + ' 加载异常');
+            };
+        }
+        head.appendChild(script);
+    });
+}
+
+/**
+ * @description: 批量动态加载 Script 资源
+ * @param {*} pathList
+ * @return {*}
+ */
+function loadAllScript(pathList) {
+    var tasks = pathList.map(function(path) {
+        return loadScript(path);
+    });
+    return Promise.all(tasks);
+}
+
+/**
+ * @description: 这里仅演示获取 fileList 的示例代码
+ * @param {*} filelistUrl
+ * @return {*}
+ */
+function getFilelist(filelistUrl = './fileList.json') {
+    return new Promise(function(resolve) {
+        $.get(
+            filelistUrl,
+            null,
+            function(fileList) {
+                if (fileList) {
+                    resolve(fileList);
+                }
+            },
+            'json'
+        );
+    });
+}
+
+/**
+ * @description: 复制邀请链接
+ * @param {*}
+ * @return {*}
+ */
+function copyInviteLink() {
+    $('#showInviteLink').select(); // 选中文本
+    document.execCommand('copy'); // 执行浏览器复制命令
+    alert('复制成功');
+}
+
+/**
+ * @description: 提示框
+ * @param {*}
+ * @return {*}
+ */
+function toast(content) {
+    content = typeof content === 'string' ? content : JSON.stringify(content);
+    layui.layer.msg(content);
+}
+
+/**
+ * @description: 打开 loading
+ * @param {*} content
+ * @return {*}
+ */
+function loading(content) {
+    content = typeof content === 'string' ? content : JSON.stringify(content);
+    layui.layer.open({
+        type: 3,
+        content
+    });
+}
+
+/**
+ * @description: 关闭 loading
+ * @param {*}
+ * @return {*}
+ */
+function closeLoading() {
+    layui.layer.closeAll();
+}
 
 // bootstrap tooltip、popover 初始化
 $(function() {
     $('[data-toggle="tooltip"]').tooltip();
     $('#openPopover').popover();
 });
-
-/**
- * @description: 显示、隐藏登录页、房间页
- * @param {*} type true: 显示 false: 隐藏
- * @return {*}
- */
-function togglePageDomHandle(type) {
-    if (type) {
-        // 显示房间页
-        $('#room-page').addClass('active');
-        $('#login-page').removeClass('active');
-    } else {
-        // 显示登录页
-        $('#room-page').removeClass('active');
-        $('#login-page').addClass('active');
-    }
-}
 
 /**
  * @description: 更新 pageCount
@@ -64,8 +156,6 @@ function togglePlaceholderDomHandle(type) {
 
 /**
  * @description: 更新白板列表下拉框
- * @param {*}
- * @return {*}
  */
 function updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList) {
     var $str = '';
@@ -175,35 +265,26 @@ function updateCurrSheetDomHandle(uniqueID, sheetIndex) {
 }
 
 /**
- * @description: 提示框
- * @param {*}
- * @return {*}
+ * @description: 重置白板工具
  */
-function toast(content) {
-    content = typeof content === 'string' ? content : JSON.stringify(content);
-    layui.layer.msg(content);
+function resetToolTypeDomHandle() {
+    $('.tool-item').removeClass('active');
+    $('.pencil-text-setting').removeClass('active');
+    $('.tool-item.pen').addClass('active');
 }
 
 /**
- * @description: 打开 loading
- * @param {*} content
- * @return {*}
+ * @description: 是否禁止点击工具，增加禁止样式
+ * @description: 非动态 PPT、自定义 H5 时需要禁止
+ * @description: 每次切换白板时调用
+ * @param {*} type true: 禁止 false: 隐藏
  */
-function loading(content) {
-    content = typeof content === 'string' ? content : JSON.stringify(content);
-    layui.layer.open({
-        type: 3,
-        content
-    });
-}
-
-/**
- * @description: 关闭 loading
- * @param {*}
- * @return {*}
- */
-function closeLoading() {
-    layui.layer.closeAll();
+function toggleDisabledDomHandle(type) {
+    if (type) {
+        $('.tool-item.clickType').addClass('disabled');
+    } else {
+        $('.tool-item.clickType').removeClass('disabled');
+    }
 }
 
 // 绑定预览事件

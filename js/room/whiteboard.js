@@ -1,28 +1,27 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-18 17:11:45
+ * @LastEditTime: 2021-08-18 18:52:06
  * @LastEditors: Please set LastEditors
- * @Description: 创建、销毁、切换、查询白板
- * @FilePath: /superboard_demo_web/js/whiteboard.js
+ * @Description: 创建、销毁、切换、查询白板列表
+ * @FilePath: /superboard/js/room/whiteboard.js
  */
 
 var viewSeq = 1; // 白板索引，创建多个普通白板时，白板名称编号进行叠加
-var cacheSheetMap = {}; // 缓存上次 excel 对应的白板 { uniqueID: sheetIndex }
+var cacheSheetMap = {}; // 缓存上次 excel 白板对应的 sheetIndex { uniqueID: sheetIndex }
 
 /**
  * @description: 返回当前 ZegoSuperBoardSubView
  * @return {*} ZegoSuperBoardSubView | null;
  */
 async function getCurrentSuperBoardSubView() {
+    var current = null;
     var superBoardView = zegoSuperBoard.getSuperBoardView();
     if (superBoardView) {
-        var result = await superBoardView.getCurrentSuperBoardSubView();
-        console.warn('SuperBoard Demo getCurrentSuperBoardSubView', result);
-        return result;
-    } else {
-        return null;
+        current = await superBoardView.getCurrentSuperBoardSubView();
     }
+    console.warn('SuperBoard Demo getCurrentSuperBoardSubView', current);
+    return current;
 }
 
 /**
@@ -31,14 +30,13 @@ async function getCurrentSuperBoardSubView() {
  * @return {*} true: 有 false: 无
  */
 async function hasThumb() {
-    var cur = await getCurrentSuperBoardSubView();
-    var zegoSuperBoardSubViewModel = cur.getModel();
-    return (
-        zegoSuperBoardSubViewModel.fileType === 1 ||
-        zegoSuperBoardSubViewModel.fileType === 8 ||
-        zegoSuperBoardSubViewModel.fileType === 512 ||
-        zegoSuperBoardSubViewModel.fileType === 4096
-    );
+    var current = await getCurrentSuperBoardSubView();
+    if (current) {
+        var model = current.getModel();
+        return model.fileType === 1 || model.fileType === 8 || model.fileType === 512 || model.fileType === 4096;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -47,9 +45,13 @@ async function hasThumb() {
  * @return {*} true: 可以 false: 不可以
  */
 async function canJumpStep() {
-    var cur = await getCurrentSuperBoardSubView();
-    var zegoSuperBoardSubViewModel = cur.getModel();
-    return zegoSuperBoardSubViewModel.fileType === 512 || zegoSuperBoardSubViewModel.fileType === 4096;
+    var current = await getCurrentSuperBoardSubView();
+    if (current) {
+        var model = current.getModel();
+        return model.fileType === 512 || model.fileType === 4096;
+    } else {
+        return false;
+    }
 }
 
 /**
@@ -57,17 +59,14 @@ async function canJumpStep() {
  */
 async function updateWhiteboardList() {
     // 获取 model 列表
-    var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
-    console.warn('SuperBoard Demo querySuperBoardSubViewList', zegoSuperBoardSubViewModelList);
-
+    var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
+    console.warn('SuperBoard Demo querySuperBoardSubViewList', modelList);
     // 更新页面白板列表
-    updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList);
-
+    updateWhiteboardListDomHandle(modelList);
     // 列表为空，隐藏页面 sheet 下拉框
-    if (!zegoSuperBoardSubViewModelList || !zegoSuperBoardSubViewModelList.length) {
+    if (!modelList || !modelList.length) {
         // 隐藏 sheet 下拉框
         toggleSheetSelectDomHandle(false);
-
         // 初始化 currentPage、totalPage 为 1
         updateCurrPageDomHandle(1);
         updatePageCountDomHandle(1);
@@ -80,37 +79,14 @@ async function updateWhiteboardList() {
  * @return {*} SuperBoardSubViewModel
  */
 async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
-    var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
-    var zegoSuperBoardSubViewModel;
-    zegoSuperBoardSubViewModelList.forEach(function(element) {
+    var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
+    var model;
+    modelList.forEach(function(element) {
         if (uniqueID === element.uniqueID) {
-            zegoSuperBoardSubViewModel = element;
+            model = element;
         }
     });
-    return zegoSuperBoardSubViewModel;
-}
-
-/**
- * @description: 重置白板工具
- */
-function resetToolTypeDomHandle() {
-    $('.tool-item').removeClass('active');
-    $('.pencil-text-setting').removeClass('active');
-    $('.tool-item.pen').addClass('active');
-}
-
-/**
- * @description: 是否禁止点击工具，增加禁止样式
- * @description: 非动态 PPT、自定义 H5 时需要禁止
- * @description: 每次切换白板时调用
- * @param {*} type true: 禁止 false: 隐藏
- */
-function toggleDisabledDomHandle(type) {
-    if (type) {
-        $('.tool-item.clickType').addClass('disabled');
-    } else {
-        $('.tool-item.clickType').removeClass('disabled');
-    }
+    return model;
 }
 
 /**
@@ -219,9 +195,7 @@ async function createFileView(fileID) {
     try {
         loading('创建文件白板中');
 
-        await zegoSuperBoard.createFileView({
-            fileID
-        });
+        await zegoSuperBoard.createFileView({ fileID });
 
         closeLoading();
         toast('创建成功');
@@ -269,9 +243,9 @@ async function destroySuperBoardSubView(type) {
 
             // 销毁白板为异步过程，这里构建异步任务数组
             var tasks = [];
-            var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
-            zegoSuperBoardSubViewModelList.forEach(function(zegoSuperBoardSubViewModel) {
-                tasks.push(zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubViewModel.uniqueID));
+            var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
+            modelList.forEach(function(model) {
+                tasks.push(zegoSuperBoard.destroySuperBoardSubView(model.uniqueID));
             });
             await Promise.all(tasks);
 
@@ -324,22 +298,18 @@ async function getExcelSheetNameList() {
  * @return {*} { uniqueID: xx, sheetIndex: xx } 这里返回查询完成后，当前的 uniqueID，如果是 excel 白板，还返回 sheetIndex
  */
 async function querySuperBoardSubViewList() {
-    var result = {
-        uniqueID: 0,
-        sheetIndex: 0
-    };
-    //  获取当前挂载的白板
-    var zegoSuperBoardSubView = await getCurrentSuperBoardSubView();
-
+    var result = { uniqueID: 0, sheetIndex: 0 };
     // 更新页面白板下拉框
     await updateWhiteboardList();
+    //  获取当前挂载的白板
+    var zegoSuperBoardSubView = await getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         // 当前有挂载白板
-        var zegoSuperBoardSubViewModel = zegoSuperBoardSubView.getModel();
+        var model = zegoSuperBoardSubView.getModel();
         var pageCount = zegoSuperBoardSubView.getPageCount();
         var currentPage = zegoSuperBoardSubView.getCurrentPage();
-        var uniqueID = zegoSuperBoardSubViewModel.uniqueID;
-        var fileType = zegoSuperBoardSubViewModel.fileType;
+        var uniqueID = model.uniqueID;
+        var fileType = model.fileType;
         result.uniqueID = uniqueID;
 
         // 隐藏白板占位
@@ -380,9 +350,7 @@ async function querySuperBoardSubViewList() {
  * @param {*} fileType 文件类型
  */
 function resetToolTypeAfterSwitch(fileType) {
-    if (fileType !== 512 && fileType !== 4096 && zegoSuperBoard.getToolType() === 256) {
-        initToolType();
-    }
+    fileType !== 512 && fileType !== 4096 && zegoSuperBoard.getToolType() === 256 && initToolType();
 }
 
 /**
@@ -403,8 +371,8 @@ function initToolType() {
  * @description: 根据目标 uniqueID 切换指定白板
  */
 async function switchWhitebopard(uniqueID) {
-    var zegoSuperBoardSubViewModel = await getSuperBoardSubViewModelByUniqueID(uniqueID);
-    var fileType = zegoSuperBoardSubViewModel.fileType;
+    var model = await getSuperBoardSubViewModelByUniqueID(uniqueID);
+    var fileType = model.fileType;
 
     try {
         loading('切换白板中');
@@ -413,11 +381,9 @@ async function switchWhitebopard(uniqueID) {
         // excel 白板默认切换到第一个 sheet（SDK 内部没有记录上一次的下标）
         // 先寻找 cacheSheetMap 中是否存在
         var sheetIndex = cacheSheetMap[uniqueID];
-        console.warn('switchSuperBoardSubView');
         await zegoSuperBoard
             .getSuperBoardView()
             .switchSuperBoardSubView(uniqueID, fileType === 4 ? sheetIndex || 0 : undefined);
-        console.warn('switchSuperBoardSubView done');
         // 除去 excel 白板，隐藏页面 sheet 列表
         toggleSheetSelectDomHandle(fileType === 4);
         // excel 白板，更新页面 sheet 列表
@@ -503,12 +469,12 @@ function createFileViewByFileID(event) {
  * @description: 需要业务层主动挂载，SDK 内部不会主动挂载当前 SuperBoardSubView
  */
 async function attachActiveView() {
-    console.error('SuperBoard Demo parent', $('#' + parentDomID)[0].clientWidth, $('#' + parentDomID)[0].clientHeight);
+    console.warn('SuperBoard Demo parent', $('#' + parentDomID)[0].clientWidth, $('#' + parentDomID)[0].clientHeight);
 
     // 查询当前白板列表
     var result = await querySuperBoardSubViewList();
     console.warn('SuperBoard Demo attachActiveView', result);
-    // 设置自动进房自动挂载最新白板
+    // 进房自动挂载最新白板
     if (result.uniqueID) {
         var superBoardView = zegoSuperBoard.getSuperBoardView();
         if (superBoardView) {
@@ -524,7 +490,6 @@ async function attachActiveView() {
                 if (curViewModel.fileType === 4) {
                     cacheSheetMap[result.uniqueID] = result.sheetIndex;
                 }
-
                 // 初始化白板工具
                 initToolType();
                 // 更新总页数、当前页

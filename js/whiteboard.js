@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-17 19:21:55
+ * @LastEditTime: 2021-08-18 10:22:43
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -377,42 +377,6 @@ async function querySuperBoardSubViewList() {
 }
 
 /**
- * @description: 设置工具类型
- * @param {*} toolType 工具类型
- * @param {*} event event
- */
-function setToolType(toolType, event) {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if (!zegoSuperBoardSubView) return;
-
-    if (toolType === 256) {
-        var zegoSuperBoardSubViewModel = zegoSuperBoardSubView.getModel();
-        // 非动态 PPT、自定义 H5 不允许使用点击工具
-        if (zegoSuperBoardSubViewModel.fileType !== 512 && zegoSuperBoardSubViewModel.fileType !== 4096) return;
-    }
-
-    if (toolType !== undefined) {
-        var result = zegoSuperBoard.setToolType(toolType);
-        console.warn('result', result);
-        // 设置失败，直接返回
-        if (!result) return toast('设置失败');
-
-        if (toolType === 512) {
-            // 默认第一个自定义图形
-            setCustomGraph(0, event);
-        }
-    } else {
-        // 默认矩形
-        var result = zegoSuperBoard.setToolType(8);
-        console.warn('result', result);
-
-        // 设置失败，直接返回
-        if (!result) return toast('设置失败');
-    }
-    updateActiveToolDomHandle(toolType, event);
-}
-
-/**
  * @description: 重置白板工具，在动态 PPT 白板、自定义 H5 白板切换到其他白板时，如何当前是点击工具，主动重置为画笔
  * @description: 这里只展示功能，开发者可根据实际情况设置
  * @param {*} fileType 文件类型
@@ -541,6 +505,8 @@ function createFileViewByFileID(event) {
  * @description: 需要业务层主动挂载，SDK 内部不会主动挂载当前 SuperBoardSubView
  */
 async function attachActiveView() {
+    console.error('SuperBoard Demo parent', $('#' + parentDomID)[0].clientWidth, $('#' + parentDomID)[0].clientHeight);
+
     // 查询当前白板列表
     var result = await querySuperBoardSubViewList();
     console.warn('SuperBoard Demo attachActiveView', result);
@@ -548,20 +514,27 @@ async function attachActiveView() {
     if (result.uniqueID) {
         var superBoardView = zegoSuperBoard.getSuperBoardView();
         if (superBoardView) {
-            await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex);
-            var curView = superBoardView.getCurrentSuperBoardSubView();
-            var curViewModel = curView.getModel();
+            try {
+                await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex);
+                var curView = superBoardView.getCurrentSuperBoardSubView();
+                var pageCount = curView.getPageCount();
+                var currPage = curView.getCurrentPage();
+                var curViewModel = curView.getModel();
+                console.warn('SuperBoard Demo attachActiveView', pageCount, currPage);
 
-            // 缓存当前 excel 白板 的 sheet
-            if (curViewModel.fileType === 4) {
-                cacheSheetMap[result.uniqueID] = result.sheetIndex;
+                // 缓存当前 excel 白板 的 sheet
+                if (curViewModel.fileType === 4) {
+                    cacheSheetMap[result.uniqueID] = result.sheetIndex;
+                }
+
+                // 初始化白板工具
+                initToolType();
+                // 更新总页数、当前页
+                updatePageCountDomHandle(pageCount);
+                updateCurrPageDomHandle(currPage);
+            } catch (errorData) {
+                toast(errorData);
             }
-
-            // 初始化白板工具
-            initToolType();
-            // 更新总页数、当前页
-            updatePageCountDomHandle(curView.getPageCount());
-            updateCurrPageDomHandle(curView.getCurrentPage());
         }
     }
 }

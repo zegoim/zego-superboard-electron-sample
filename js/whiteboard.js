@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-18 15:52:07
+ * @LastEditTime: 2021-08-18 16:34:55
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -30,7 +30,7 @@ async function getCurrentSuperBoardSubView() {
  */
 async function hasThumb() {
     var cur = await getCurrentSuperBoardSubView();
-    var zegoSuperBoardSubViewModel = cur.getModel()
+    var zegoSuperBoardSubViewModel = cur.getModel();
     return (
         zegoSuperBoardSubViewModel.fileType === 1 ||
         zegoSuperBoardSubViewModel.fileType === 8 ||
@@ -46,7 +46,7 @@ async function hasThumb() {
  */
 async function canJumpStep() {
     var cur = await getCurrentSuperBoardSubView();
-    var zegoSuperBoardSubViewModel = cur.getModel()
+    var zegoSuperBoardSubViewModel = cur.getModel();
     return zegoSuperBoardSubViewModel.fileType === 512 || zegoSuperBoardSubViewModel.fileType === 4096;
 }
 
@@ -80,7 +80,7 @@ async function updateWhiteboardList() {
 async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
     var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
     var zegoSuperBoardSubViewModel;
-    zegoSuperBoardSubViewModelList.forEach(function (element) {
+    zegoSuperBoardSubViewModelList.forEach(function(element) {
         if (uniqueID === element.uniqueID) {
             zegoSuperBoardSubViewModel = element;
         }
@@ -116,13 +116,13 @@ function toggleDisabledDomHandle(type) {
  */
 function onSuperBoardEventHandle() {
     // 监听错误回调，SDK 内部错误均通过此回调抛出，除了直接在接口中直接返回的错误外
-    zegoSuperBoard.on('error', function (errorData) {
+    zegoSuperBoard.on('error', function(errorData) {
         console.warn('SuperBoard Demo error', errorData);
         toast(errorData);
     });
 
     // 监听白板翻页、滚动
-    zegoSuperBoard.on('superBoardSubViewScrolled', async function (uniqueID, page, step) {
+    zegoSuperBoard.on('superBoardSubViewScrolled', async function(uniqueID, page, step) {
         console.warn('SuperBoard Demo superBoardSubViewScrolled', ...arguments);
         var zegoSuperBoardSubView = await getCurrentSuperBoardSubView();
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
@@ -132,47 +132,47 @@ function onSuperBoardEventHandle() {
     });
 
     // 监听远端新增白板
-    zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewAdded', ...arguments);
         // 查询、更新页面白板列表，新增的白板 SDK 内部不会自动挂载
         querySuperBoardSubViewList();
     });
 
     // 监听远端销毁白板
-    zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewRemoved', ...arguments);
         // 查询、更新页面白板列表，销毁的白板 SDK 内部会自动销毁
         querySuperBoardSubViewList();
     });
 
     // 监听远端切换白板
-    zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewSwitched', ...arguments);
         // 查询、更新页面白板列表，切换的白板 SDK 内部会自动切换
         querySuperBoardSubViewList();
     });
 
     // 监听远端切换 Excel Sheet
-    zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
         // 查询、更新页面白板列表，切换的 Excel Sheet SDK 内部会自动切换
         querySuperBoardSubViewList();
     });
 
     // 监听远端白板权限变更
-    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function () {
+    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardAuthChanged', ...arguments);
         // 内部会自动更改为当前权限与对端同步
     });
 
     // 监听远端白板图元权限变更
-    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function () {
+    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardGraphicAuthChanged', ...arguments);
         // 内部会自动更改为当前权限与对端同步
     });
 
     // 监听远端白板缩放
-    zegoSuperBoard.on('remoteScaleChanged', function (scale) {
+    zegoSuperBoard.on('remoteScaleChanged', function(scale) {
         console.warn('SuperBoard Demo remoteScaleChanged', scale);
         updateCurrScaleDomHandle(scale);
     });
@@ -230,7 +230,7 @@ async function createFileView(fileID) {
         // 隐藏白板占位
         togglePlaceholderDomHandle(false);
         // 显示、隐藏打开缩略图弹框的按钮
-        toggleThumbBtnDomHandle(hasThumb());
+        toggleThumbBtnDomHandle(await hasThumb());
     } catch (errorData) {
         closeLoading();
         toast(errorData);
@@ -268,7 +268,7 @@ async function destroySuperBoardSubView(type) {
             // 销毁白板为异步过程，这里构建异步任务数组
             var tasks = [];
             var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
-            zegoSuperBoardSubViewModelList.forEach(function (zegoSuperBoardSubViewModel) {
+            zegoSuperBoardSubViewModelList.forEach(function(zegoSuperBoardSubViewModel) {
                 tasks.push(zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubViewModel.uniqueID));
             });
             await Promise.all(tasks);
@@ -303,7 +303,7 @@ async function getExcelSheetNameList() {
     console.warn('SuperBoard Demo getExcelSheetNameList', zegoExcelSheetNameList);
 
     // 获取当前 sheetName 对应 sheetIndex
-    zegoExcelSheetNameList.forEach(function (element, index) {
+    zegoExcelSheetNameList.forEach(function(element, index) {
         element === sheetName && (sheetIndex = index);
     });
     console.warn('SuperBoard Demo getCurrentSheetIndex', sheetIndex);
@@ -350,7 +350,7 @@ async function querySuperBoardSubViewList() {
         // 判断是否显示页面上的切步按钮
         toggleStepDomHandle(canJumpStep());
         // 判断是否显示页面上的缩略图按钮
-        toggleThumbBtnDomHandle(hasThumb());
+        toggleThumbBtnDomHandle(await hasThumb());
         // 判断是否需要禁止点击工具
         toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
         if (fileType === 4) {
@@ -430,7 +430,7 @@ async function switchWhitebopard(uniqueID) {
         // 判断是否显示页面上的切步按钮
         toggleStepDomHandle(canJumpStep());
         // 判断是否显示页面上的缩略图按钮
-        toggleThumbBtnDomHandle(hasThumb());
+        toggleThumbBtnDomHandle(await hasThumb());
 
         // 更新页面上总页数、当前页
         var zegoSuperBoardSubView = await getCurrentSuperBoardSubView();
@@ -449,7 +449,7 @@ async function switchWhitebopard(uniqueID) {
  * @description: 监听白板下拉选择框
  * @description: 这里只展示监听下拉框，开发者根据实际情况处理
  */
-layui.form.on('select(whiteboardList)', async function (data) {
+layui.form.on('select(whiteboardList)', async function(data) {
     switchWhitebopard(data.value);
 });
 
@@ -458,7 +458,7 @@ layui.form.on('select(whiteboardList)', async function (data) {
  * @description: 这里只展示监听下拉框，开发者根据实际情况处理
  * @description: 获取下拉框当前选中，开发者根据实际情况处理
  */
-layui.form.on('select(sheetList)', async function (data) {
+layui.form.on('select(sheetList)', async function(data) {
     // 获取下拉框当前选中的值('uniqueID,sheetIndex')
     var temp = data.value.split(',');
     // 拆分出 uniqueID、sheetIndex
@@ -535,7 +535,7 @@ async function attachActiveView() {
     }
 }
 
-$('#createFileBtn').click(function () {
+$('#createFileBtn').click(function() {
     var fileID = layui.form.val('form3').createFileID;
 
     if (!fileID) return toast('请输入 fileID');

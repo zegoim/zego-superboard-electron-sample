@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-18 16:49:31
+ * @LastEditTime: 2021-08-18 17:11:45
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板
  * @FilePath: /superboard_demo_web/js/whiteboard.js
@@ -18,6 +18,7 @@ async function getCurrentSuperBoardSubView() {
     var superBoardView = zegoSuperBoard.getSuperBoardView();
     if (superBoardView) {
         var result = await superBoardView.getCurrentSuperBoardSubView();
+        console.warn('SuperBoard Demo getCurrentSuperBoardSubView', result);
         return result;
     } else {
         return null;
@@ -57,7 +58,7 @@ async function canJumpStep() {
 async function updateWhiteboardList() {
     // 获取 model 列表
     var zegoSuperBoardSubViewModelList = await zegoSuperBoard.querySuperBoardSubViewList();
-    // console.warn('SuperBoard Demo querySuperBoardSubViewList', zegoSuperBoardSubViewModelList);
+    console.warn('SuperBoard Demo querySuperBoardSubViewList', zegoSuperBoardSubViewModelList);
 
     // 更新页面白板列表
     updateWhiteboardListDomHandle(zegoSuperBoardSubViewModelList);

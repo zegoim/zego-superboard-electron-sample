@@ -329,7 +329,7 @@ async function querySuperBoardSubViewList() {
             // excel 文件白板显示 sheet 下拉框
             toggleSheetSelectDomHandle(true);
             // 查询 sheet 列表
-            result.sheetIndex = getExcelSheetNameList();
+            result.sheetIndex = await getExcelSheetNameList();
 
             // 缓存当前 excel 白板 的 sheet
             cacheSheetMap[result.uniqueID] = result.sheetIndex;

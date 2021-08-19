@@ -22,7 +22,7 @@ li {
   margin: 0;
 }
 
-/* 自定义字体 */
+/* Zego 自定义字体 */
 @font-face {
   font-family: 'ZgFont';
   src: url('./lib/SourceHanSansSC-Regular.otf');

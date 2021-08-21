@@ -33,9 +33,9 @@ layui.upload.render({
     elem: '#selectImage', // 绑定元素
     accept: 'images', // 只接受 image 文件
     auto: false, // 不自动上传
-    choose: function(obj) {
+    choose: function (obj) {
         // 选择完文件
-        obj.preview(function(index, file, result) {
+        obj.preview(function (index, file, result) {
             // file 为当前选中文件
             selectedInsetImgFile = file;
             toast('选择文件成功');
@@ -50,7 +50,7 @@ layui.upload.render({
  * @return {*}
  */
 async function setCustomGraph(graphIndex, event) {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     await zegoSuperBoardSubView.addImage(1, 0, 0, customGraphList[graphIndex]);
@@ -84,7 +84,7 @@ function appendGraphDomHandle(address) {
  */
 function initGraphListDomHandle() {
     var $str = '';
-    customGraphList.forEach(function(element, index) {
+    customGraphList.forEach(function (element, index) {
         $str +=
             '<li data-index="' +
             index +
@@ -113,15 +113,15 @@ function updateActiveGraphDomHandle(graphIndex, event) {
 /**
  * @description: 通过 URL 添加自定义图形
  */
-$('#addImageByURLBtn1').click(async function() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#addImageByURLBtn1').click(async function () {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var url = layui.form.val('form1').customGraphUrl; // 当前选择的自定义图形 URL
     if (!url) return toast('请输入 URL');
 
     // 查找本地是否已存在
-    var index = customGraphList.findIndex(function(element) {
+    var index = customGraphList.findIndex(function (element) {
         return element === url;
     });
     try {
@@ -140,8 +140,8 @@ $('#addImageByURLBtn1').click(async function() {
 /**
  * @description: 通过 URL 插入网络图片
  */
-$('#addImageByURLBtn2').click(async function() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#addImageByURLBtn2').click(async function () {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var url = layui.form.val('form1').customImageUrl;
@@ -158,8 +158,8 @@ $('#addImageByURLBtn2').click(async function() {
 /**
  * @description: 选择本地文件添加
  */
-$('#addImageByFileBtn').click(async function() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+$('#addImageByFileBtn').click(async function () {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     if (!selectedInsetImgFile) return toast('请先选择文件');

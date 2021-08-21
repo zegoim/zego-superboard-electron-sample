@@ -12,8 +12,8 @@
  * @param {*} toolType 工具类型
  * @param {*} event event
  */
-async function setToolType(toolType, event) {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+function setToolType(toolType, event) {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     if (toolType === 256) {

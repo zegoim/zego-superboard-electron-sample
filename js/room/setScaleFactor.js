@@ -25,11 +25,11 @@ function updateScaleDomHandle(scale) {
  * @description: 监听选择框，切换 scale
  * @description: 这里只展示选择框监听，开发者根据实际情况处理
  */
-layui.form.on('select(scaleList)', async function() {
+layui.form.on('select(scaleList)', function () {
     var formData = layui.form.val('customForm');
     var scale = +formData.scale; // 当前选择的 scale
 
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.setScaleFactor(scale);
 });
 
@@ -38,7 +38,7 @@ layui.form.on('select(scaleList)', async function() {
  * @description: 监听指定 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(syncScale)', function() {
+layui.form.on('switch(syncScale)', function () {
     var bool = this.checked; // 表示当前开关打开，开发者根据实际情况判断
     zegoSuperBoard.enableSyncScale(bool);
 });
@@ -48,7 +48,7 @@ layui.form.on('switch(syncScale)', function() {
  * @description: 监听指定 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(responseScale)', function() {
+layui.form.on('switch(responseScale)', function () {
     var bool = this.checked; // 表示当前开关打开，开发者根据实际情况判断
     zegoSuperBoard.enableResponseScale(bool);
 });
@@ -56,13 +56,13 @@ layui.form.on('switch(responseScale)', function() {
 /**
  * @description: 设置缩放 缩小
  */
-$('#setScaleFactorCut').click(async function() {
+$('#setScaleFactorCut').click(function () {
     var currScale = +layui.form.val('customForm').scale;
     if (currScale === 1) return; // 最小为 1
 
     var targetScale = currScale - 0.25;
 
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.setScaleFactor(targetScale);
 
@@ -73,13 +73,13 @@ $('#setScaleFactorCut').click(async function() {
 /**
  * @description: 设置缩放 放大
  */
-$('#setScaleFactorAdd').click(async function() {
+$('#setScaleFactorAdd').click(function () {
     var currScale = +layui.form.val('customForm').scale;
     if (currScale === 3) return; // 最大为 3
 
     var targetScale = currScale + 0.25;
 
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.setScaleFactor(targetScale);
 

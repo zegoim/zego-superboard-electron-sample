@@ -14,7 +14,7 @@ var saveImg = 1; // 白板快照索引
 /**
  * @description: 监听按键清除选中图元
  */
-window.addEventListener('keydown', function(event) {
+window.addEventListener('keydown', function (event) {
     var e = event || window.event || arguments.callee.caller.arguments[0];
     if (!e) return;
     switch (e.keyCode) {
@@ -30,34 +30,34 @@ window.addEventListener('keydown', function(event) {
 /**
  * @description: 清空所有页
  */
-async function clearAllPage() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+function clearAllPage() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearAllPage();
 }
 
 /**
  * @description: 撤销
  */
-async function undo() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+function undo() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.undo();
 }
 
 /**
  * @description: 重做
  */
-async function redo() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+function redo() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.redo();
 }
 
 /**
  * @description: 白板快照
  */
-async function snapshot() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+function snapshot() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView &&
-        zegoSuperBoardSubView.snapshot().then(function(data) {
+        zegoSuperBoardSubView.snapshot().then(function (data) {
             var link = document.createElement('a');
             link.href = data.image;
             link.download = zegoSuperBoardSubView.getModel().name + saveImg++ + '.png';
@@ -68,23 +68,23 @@ async function snapshot() {
 /**
  * @description: 删除选中图元
  */
-async function clearSelected() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+function clearSelected() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearSelected();
 }
 
 /**
  * @description: 清空当前页图元，在橡皮擦工具时生效
  */
-async function clearCurrentPage() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+function clearCurrentPage() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearCurrentPage();
 }
 
 /**
  * @description: 设置渲染延时
  */
-$('#setDeferredRenderingTimeBtn').click(function() {
+$('#setDeferredRenderingTimeBtn').click(function () {
     var deferredRenderingTime = layui.form.val('form2').deferredRenderingTime;
     if (!deferredRenderingTime) return toast('请输入延时时长');
 

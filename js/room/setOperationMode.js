@@ -75,8 +75,8 @@ function setOperatedMode() {
  * @description: 监听指定 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(unOperatedMode)', async function() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+layui.form.on('switch(unOperatedMode)', function () {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     // 可操作模式下，默认开启滚动、绘制、缩放
@@ -93,8 +93,8 @@ layui.form.on('switch(unOperatedMode)', async function() {
  * @description: 监听指定 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(scrollMode)', async function() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+layui.form.on('switch(scrollMode)', function () {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var operationMode = setOperatedMode();
@@ -110,8 +110,8 @@ layui.form.on('switch(scrollMode)', async function() {
  * @description: 监听指定 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(drawMode)', async function() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+layui.form.on('switch(drawMode)', function () {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var operationMode = setOperatedMode();
@@ -127,8 +127,8 @@ layui.form.on('switch(drawMode)', async function() {
  * @description: 监听指定 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(scaleMode)', async function() {
-    var zegoSuperBoardSubView = await zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+layui.form.on('switch(scaleMode)', function () {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     var operationMode = setOperatedMode();

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-23 11:20:53
+ * @LastEditTime: 2021-08-23 12:41:52
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard/js/login/init.js
@@ -23,7 +23,7 @@ var zegoEnvConfig = {
 
 // SDK 功能配置
 var zegoFeatureConfig = {
-    fontFamily: 'system', // 白板 SDK 字体
+    fontFamily: 'system', // Superboard SDK 字体
     thumbnailMode: '1', // 缩略图清晰度 1: 普通 2: 标清 3: 高清
     pptStepMode: '1', // PPT 切页模式 1: 正常 2: 不跳转
     dynamicPPT_HD: 'false', // false: 正常 true: 高清
@@ -47,7 +47,7 @@ var zegoConfig = {
     ...zegoOtherConfig
 };
 
-var parentDomID = 'main-whiteboard'; // 白板、文件挂载的父容器
+var parentDomID = 'main-whiteboard'; // SupboardView 挂载的父容器
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
 
@@ -64,7 +64,7 @@ function checkConfig() {
 
 /**
  * @description: 根据配置初始化 SDK
- * @return {*} token
+ * @return {String} token
  */
 async function initZegoSDK() {
     var appID = zegoConfig.appID;
@@ -139,24 +139,35 @@ function initSuperBoardSDKConfig() {
  */
 async function init() {
     try {
+        // 校验参数
         if (!checkConfig()) return;
+        // 获取已登录信息
         var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
-        // 判断是否已登录过
+        // 判断是否已登录
         if (loginInfo && loginInfo.roomID) {
+            // 已登录
             // 更新本地 zegoConfig
             Object.assign(zegoConfig, loginInfo);
+
+            // 初始化SDK
             var token = await initZegoSDK();
+            // 登录房间
             await loginRoom(token);
+
             // 显示房间页面
             loginUtils.togglePageDomHandle(true);
-            // 挂载当前激活白板（room 内方法）
+
+            // 挂载当前激活 SuperboardSubView（room 内方法）
             attachActiveView();
         } else {
+            // 未登录
             // 显示登录页面
             loginUtils.togglePageDomHandle(false);
         }
-        loginUtils.updateRoomIDDomHandle();
-        loginUtils.updateEnvDomHandle();
+        // 更新页面上房间号
+        loginUtils.updateRoomIDDomHandle(zegoConfig.roomID);
+        // 更新页面接入环境勾选
+        loginUtils.updateEnvDomHandle(zegoConfig.env);
     } catch (error) {
         console.error(error);
     }

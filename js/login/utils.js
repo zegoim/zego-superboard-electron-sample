@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-18 17:53:39
- * @LastEditTime: 2021-08-23 12:15:39
+ * @LastEditTime: 2021-08-23 12:27:40
  * @LastEditors: Please set LastEditors
  * @Description: 登录页更新 DOM 的相关方法、相关工具方法
  * @FilePath: /superboard/js/login/utils.js
@@ -26,20 +26,22 @@ var loginUtils = {
 
     /**
      * @description: 更新页面房间号
+     * @param {String} roomID 房间 ID
      */
-    updateRoomIDDomHandle: function() {
+    updateRoomIDDomHandle: function(roomID) {
         // 登录页输入框
-        $('#roomID').val(zegoConfig.roomID);
+        $('#roomID').val(roomID);
         // 房间页左上角房间号
-        $('#showRoomID').html(zegoConfig.roomID);
+        $('#showRoomID').html(roomID);
     },
 
     /**
      * @description: 更新页面接入环境勾选
+     * @param {Number|String} env 接入环境 1: 国内 2: 海外
      */
-    updateEnvDomHandle: function() {
-        $('.radio-inline:nth-of-type(' + zegoConfig.env + ') .inlineRadio').attr('checked', true);
-        $('.radio-inline:nth-of-type(' + (zegoConfig.env == 1 ? 2 : 1) + ') .inlineRadio').attr('checked', false);
+    updateEnvDomHandle: function(env) {
+        $('.radio-inline:nth-of-type(' + env + ') .inlineRadio').attr('checked', true);
+        $('.radio-inline:nth-of-type(' + (env == 1 ? 2 : 1) + ') .inlineRadio').attr('checked', false);
     },
 
     /**

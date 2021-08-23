@@ -24,7 +24,7 @@ window.addEventListener('resize', onResizeHandle);
 function onResizeHandle() {
     if (!resizeTicking) {
         resizeTicking = true;
-        setTimeout(function() {
+        setTimeout(function () {
             autoReloadViewHandle();
             resizeTicking = false;
         }, 1000);
@@ -36,17 +36,17 @@ function onResizeHandle() {
  * @param {*}
  * @return {*}
  */
-async function reloadViewHandle() {
+function reloadViewHandle() {
     // 未实例化之前，触发 resize 直接返回
     if (!zegoSuperBoard) return;
 
     var zegoSuperBoardView = zegoSuperBoard.getSuperBoardView();
     if (!zegoSuperBoardView) return;
 
-    var zegoSuperBoardSubView = await zegoSuperBoardView.getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = zegoSuperBoardView.getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         // 当前有白板挂载
-        setTimeout(function() {
+        setTimeout(function () {
             zegoSuperBoardSubView.reloadView();
         }, 120); // 动画120ms
     }
@@ -135,10 +135,10 @@ function customReloadViewHandle() {
  */
 function fullScreenHandle() {
     supportRequestFullscreen(document.getElementById(parentDomID))
-        .then(function() {
+        .then(function () {
             toast('已全屏');
         })
-        .catch(function() {
+        .catch(function () {
             toast('当前浏览器不支持全屏');
         });
 }

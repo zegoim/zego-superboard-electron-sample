@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-18 18:12:22
+ * @LastEditTime: 2021-08-20 18:26:45
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
  * @FilePath: /superboard/js/login/login.js
@@ -147,7 +147,7 @@ $('#login-btn').click(async function() {
     sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
     // 更新页面 url
     updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
-    // 显示登录页
+    // 显示房间页
     togglePageDomHandle(true);
     updateRoomIDDomHandle();
     // 挂载当前激活白板（room 内方法）

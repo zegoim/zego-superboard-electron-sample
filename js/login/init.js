@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-18 18:12:29
+ * @LastEditTime: 2021-08-20 18:14:02
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard/js/login/init.js

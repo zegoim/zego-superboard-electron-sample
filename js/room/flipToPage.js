@@ -1,10 +1,10 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 22:16:06
- * @LastEditTime: 2021-08-23 21:53:04
+ * @LastEditTime: 2021-08-23 22:14:01
  * @LastEditors: Please set LastEditors
  * @Description: 白板翻页
- * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/flipPage.js
+ * @FilePath: /superboard/js/room/flipPage.js
  */
 
 // zegoSuperBoard 为全局 SuperBoard Instance

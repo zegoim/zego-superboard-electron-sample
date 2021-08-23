@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 20:04:01
- * @LastEditTime: 2021-08-18 16:27:20
+ * @LastEditTime: 2021-08-23 22:14:19
  * @LastEditors: Please set LastEditors
  * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
  * @FilePath: /superboard/js/reloadView.js
@@ -24,7 +24,7 @@ window.addEventListener('resize', onResizeHandle);
 function onResizeHandle() {
     if (!resizeTicking) {
         resizeTicking = true;
-        setTimeout(function () {
+        setTimeout(function() {
             autoReloadViewHandle();
             resizeTicking = false;
         }, 1000);
@@ -46,7 +46,7 @@ function reloadViewHandle() {
     var zegoSuperBoardSubView = zegoSuperBoardView.getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         // 当前有白板挂载
-        setTimeout(function () {
+        setTimeout(function() {
             zegoSuperBoardSubView.reloadView();
         }, 120); // 动画120ms
     }
@@ -135,10 +135,10 @@ function customReloadViewHandle() {
  */
 function fullScreenHandle() {
     supportRequestFullscreen(document.getElementById(parentDomID))
-        .then(function () {
+        .then(function() {
             toast('已全屏');
         })
-        .catch(function () {
+        .catch(function() {
             toast('当前浏览器不支持全屏');
         });
 }

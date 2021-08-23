@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-23 12:41:52
+ * @LastEditTime: 2021-08-23 19:29:51
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard/js/login/init.js
@@ -117,6 +117,9 @@ function initExpressSDKConfig() {
  * @description: 根据配置初始化 SuperBoard SDK
  */
 function initSuperBoardSDKConfig() {
+    // 设置 alpha 环境
+    zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+
     // 设置字体
     if (zegoConfig.fontFamily === 'ZgFont') {
         document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;

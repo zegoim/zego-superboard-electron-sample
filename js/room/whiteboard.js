@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-23 15:00:47
+ * @LastEditTime: 2021-08-23 15:33:25
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板列表
  * @FilePath: /superboard/js/room/whiteboard.js
@@ -242,16 +242,15 @@ async function destroySuperBoardSubView(type) {
     } else {
         try {
             var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
-            modelList.forEach(async function(model) {
+            for (let index = 0; index < modelList.length; index++) {
+                const model = modelList[index];
                 loading('销毁白板 ' + model.name + ' 中');
                 console.warn('SuperBoard Demo destroySuperBoardSubView', model.name);
-                zegoSuperBoard.destroySuperBoardSubView(model.uniqueID).then(function() {
-                    console.warn('SuperBoard Demo destroySuperBoardSubView suc', model.name);
-                    toast('销毁白板 ' + model.name + ' 成功');
-                    closeLoading();
-                });
-            });
-
+                await zegoSuperBoard.destroySuperBoardSubView(model.uniqueID);
+                console.warn('SuperBoard Demo destroySuperBoardSubView suc', model.name);
+                toast('销毁白板 ' + model.name + ' 成功');
+                closeLoading();
+            }
             // 查询、更新页面白板列表，销毁成功后白板 SDK 内部会自动删除相关内容，并移除挂载的内容
             querySuperBoardSubViewList();
         } catch (errorData) {

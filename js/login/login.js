@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-23 12:42:43
+ * @LastEditTime: 2021-08-23 21:53:17
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
  * @FilePath: /superboard/js/login/login.js
@@ -119,7 +119,7 @@ function logoutRoom() {
     // 隐藏缩略图按钮（room 内方法）
     toggleThumbBtnDomHandle(false);
     // 清空缩略图列表（room 内方法）
-    updateThumbListDomHandle([]);
+    flipToPageUtils.updateThumbListDomHandle([]);
 }
 
 // 绑定登录房间事件

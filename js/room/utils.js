@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-18 18:43:38
+ * @LastEditTime: 2021-08-23 15:07:52
  * @LastEditors: Please set LastEditors
  * @Description: 房间页更新 DOM 的相关方法、相关工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -290,6 +290,11 @@ function toggleDisabledDomHandle(type) {
 // 绑定预览事件
 $('#thumb-button').click(function(event) {
     $('#thumbModal').toggleClass('active');
+});
+
+// 绑定关闭缩略图弹框事件
+$('.thumb-header span').click(function(event) {
+    $('#thumbModal').removeClass('active');
 });
 
 // 绑定切换功能区事件

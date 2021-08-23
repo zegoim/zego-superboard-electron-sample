@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 22:16:06
- * @LastEditTime: 2021-08-18 16:25:44
+ * @LastEditTime: 2021-08-23 15:07:34
  * @LastEditors: Please set LastEditors
  * @Description: 白板翻页
  * @FilePath: /goclass_web/Users/zego-lh/Desktop/ZEGOProject/zego-whiteboard/sample/superboard/js/flipPage.js
@@ -48,7 +48,7 @@ function flipToPage(page) {
 function updateThumbListDomHandle(thumbnailUrlList, currPage) {
     $('.thumb-main').html('');
     var $str = '';
-    thumbnailUrlList.forEach(function (element, index) {
+    thumbnailUrlList.forEach(function(element, index) {
         $str +=
             '<li onclick="flipToPage(' +
             (index + 1) +
@@ -66,7 +66,7 @@ function updateThumbListDomHandle(thumbnailUrlList, currPage) {
 /**
  * @description: 绑定上一页事件
  */
-$('#previousPage').click(function () {
+$('#previousPage').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.flipToPrePage();
@@ -78,7 +78,7 @@ $('#previousPage').click(function () {
 /**
  * @description: 绑定下一页事件
  */
-$('#nextPage').click(function () {
+$('#nextPage').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.flipToNextPage();
@@ -90,7 +90,7 @@ $('#nextPage').click(function () {
 /**
  * @description: 绑定上一步事件
  */
-$('#previousStep').click(function () {
+$('#previousStep').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.preStep();
 });
@@ -98,7 +98,7 @@ $('#previousStep').click(function () {
 /**
  * @description: 绑定下一步事件
  */
-$('#nextStep').click(function () {
+$('#nextStep').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.nextStep();
 });
@@ -106,7 +106,7 @@ $('#nextStep').click(function () {
 /**
  * @description: 绑定跳转到指定页事件
  */
-$('#flipToPageBtn').click(function () {
+$('#flipToPageBtn').click(function() {
     var page = layui.form.val('form2').targetPage;
     if (!page) return toast('请输入目标页码，从 1 开始');
     flipToPage(+page);
@@ -115,7 +115,7 @@ $('#flipToPageBtn').click(function () {
 /**
  * @description: 获取缩略图 URL 列表
  */
-$('#thumb-button').click(function () {
+$('#thumb-button').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         var type = zegoSuperBoardSubView.getModel().fileType;

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-11 15:08:11
- * @LastEditTime: 2021-08-18 12:48:14
+ * @LastEditTime: 2021-08-23 14:50:37
  * @LastEditors: Please set LastEditors
  * @Description: 上传静态、动态文件
  * @FilePath: /superboard/js/uploadFile.js
@@ -53,6 +53,14 @@ layui.dropdown.render({
 });
 
 $('.share-item.file').click(async function() {
+    // 获取文件列表
+    var fileListData = await getFilelist();
+
+    // 更新视图
+    updateFileListDomHandle(fileListData, zegoConfig.superBoardEnv);
+});
+
+$('#shareFile').click(async function() {
     // 获取文件列表
     var fileListData = await getFilelist();
 

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-20 18:26:45
+ * @LastEditTime: 2021-08-23 11:23:41
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
  * @FilePath: /superboard/js/login/login.js
@@ -13,17 +13,17 @@ var userList = []; // 房间内成员列表
  * @description: 监听房间成员变更
  */
 function onRoomUserUpdate() {
-    zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
+    zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
         if (type == 'ADD') {
-            list.forEach(function (v) {
+            list.forEach(function(v) {
                 userList.push({
                     userID: v.userID,
                     userName: v.userName
                 });
             });
         } else if (type == 'DELETE') {
-            list.forEach(function (v) {
-                var index = userList.findIndex(function (item) {
+            list.forEach(function(v) {
+                var index = userList.findIndex(function(item) {
                     return v.userID == item.userID;
                 });
                 if (index != -1) {
@@ -32,7 +32,7 @@ function onRoomUserUpdate() {
             });
         }
         // 更新页面弹框房间成员列表
-        updateUserListDomHandle(userList);
+        loginUtils.updateUserListDomHandle(userList);
     });
 }
 
@@ -45,7 +45,7 @@ function pushOwn() {
         userName: zegoConfig.userName
     });
     // 更新页面弹框房间成员列表
-    updateUserListDomHandle(userList);
+    loginUtils.updateUserListDomHandle(userList);
 }
 
 /**
@@ -59,10 +59,12 @@ async function loginRoom(token) {
         // 登录房间
         await zegoEngine.loginRoom(
             zegoConfig.roomID,
-            token, {
+            token,
+            {
                 userID: zegoConfig.userID,
                 userName: zegoConfig.userName
-            }, {
+            },
+            {
                 maxMemberCount: 10,
                 userUpdate: true
             }
@@ -103,7 +105,7 @@ function logoutRoom() {
     // 清空成员列表
     userList = [];
     // 显示登录页
-    togglePageDomHandle(false);
+    loginUtils.togglePageDomHandle(false);
     // 清除页面已挂载白板
     $('#main-whiteboard').html('');
     // 清空页面白板列表下拉框（room 内方法）
@@ -119,7 +121,7 @@ function logoutRoom() {
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(async function () {
+$('#login-btn').click(async function() {
     var result = checkInput();
     if (!result) return;
     // 登录信息
@@ -147,10 +149,10 @@ $('#login-btn').click(async function () {
     // 存储 sessionStorage
     sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
     // 更新页面 url
-    updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
+    loginUtils.updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
     // 显示房间页
-    togglePageDomHandle(true);
-    updateRoomIDDomHandle();
+    loginUtils.togglePageDomHandle(true);
+    loginUtils.updateRoomIDDomHandle();
     // 挂载当前激活白板（room 内方法）
     attachActiveView();
 });

@@ -1,22 +1,22 @@
 /*
- * @Author: your name
+ * @Author: ZegoDev
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-18 16:28:19
+ * @LastEditTime: 2021-08-25 01:15:59
  * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /superboard/js/setBackgroundImage.js
+ * @Description: 设置白板背景图
+ * @FilePath: /superboard/js/room/setBackgroundImage.js
  */
 
 // zegoSuperBoard 为全局 SuperBoard Instance
 // toast 为全局提示框，开发者根据实际情况使用相应的提示框
 
-var selectedBgImgFile = null; // 当前选择的背景图文件
+var selectedBgImgFile = null; // 当前选择的本地背景图文件
 var customBgList = [
     'https://storage.zego.im/goclass/wbbg/1.jpg',
     'https://storage.zego.im/goclass/wbbg/2.jpg',
     'https://storage.zego.im/goclass/wbbg/3.png',
     'https://storage.zego.im/goclass/wbbg/4.jpeg'
-]; // 背景图片列表
+]; // Zego 内置的背景图列表
 
 // 页面 DOM 加载完成更新背景图片列表到页面
 $(document).ready(initBgListDomHandle);
@@ -27,7 +27,7 @@ $(document).ready(initBgListDomHandle);
  */
 function initBgListDomHandle() {
     var $str = '<option value>请选择</option>';
-    customBgList.forEach(function (element, index) {
+    customBgList.forEach(function(element, index) {
         $str += '<option value="' + element + '">图片' + (index + 1) + '</option>';
     });
     $('#bgList').html($str);
@@ -44,10 +44,10 @@ layui.upload.render({
     elem: '#selectBgImage', // 绑定元素
     accept: 'images', // 只接受 image 文件
     auto: false, // 不自动上传
-    choose: function (obj) {
+    choose: function(obj) {
         // 选择完文件的回调
-        obj.preview(function (index, file, result) {
-            // file 为当前选中文件
+        obj.preview(function(index, file, result) {
+            // 存储选择的文件，file 为当前选中文件
             selectedBgImgFile = file;
             toast('选择文件成功');
         });
@@ -55,32 +55,33 @@ layui.upload.render({
 });
 
 /**
- * @description: 监听选择框，切换背景图
- * @description: 这里只展示选择框监听，开发者根据实际情况处理
+ * @description: 监听下拉框，切换背景图
+ * @description: 这里只展示下拉框的选择监听，开发者根据实际情况处理
  */
-layui.form.on('select(bgUrl)', async function () {
+layui.form.on('select(bgUrl)', async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
+    // 获取页面上下拉框中当前选择的背景图、当前选择的背景图填充模式，这里使用的是 layui，开发者可根据实际情况获取
     var formData = layui.form.val('form1');
     var bgUrl = formData.bgUrl; // 当前选择的背景图 URL
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
     try {
         await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, toast);
-    } catch (error) {
-        toast(error.code + '：' + error.message);
+    } catch (errorData) {
+        toast(errorData.code + '：' + errorData.message);
     }
 });
 
 /**
- * @description: 输入可用背景图 URL
- * @description: 绑定设置背景图事件
+ * @description: 根据输入的背景图 URL 来设置背景图
  */
-$('#setBackgroundImageByURLBtn').click(async function () {
+$('#setBackgroundImageByURLBtn').click(async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
+    // 获取页面上下拉框中当前选择的背景图、当前选择的背景图填充模式，这里使用的是 layui，开发者可根据实际情况获取
     var formData = layui.form.val('form1');
     var customBgUrl = formData.customBgUrl; // 当前选择的背景图 URL
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
@@ -89,18 +90,19 @@ $('#setBackgroundImageByURLBtn').click(async function () {
 
     try {
         await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, toast);
-    } catch (error) {
-        toast(error.code + '：' + error.message);
+    } catch (errorData) {
+        toast(errorData.code + '：' + errorData.message);
     }
 });
 
 /**
- * @description: 选择本地文件
+ * @description: 根据本地选择的文件来设置背景图
  */
-$('#setBackgroundImageByFileBtn').click(async function () {
+$('#setBackgroundImageByFileBtn').click(async function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
+    // 获取页面上当前选择的背景图填充模式，这里使用的是 layui，开发者可根据实际情况获取
     var formData = layui.form.val('form1');
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
@@ -108,16 +110,15 @@ $('#setBackgroundImageByFileBtn').click(async function () {
 
     try {
         await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, toast);
-    } catch (error) {
-        toast(error.code + '：' + error.message);
+    } catch (errorData) {
+        toast(errorData.code + '：' + errorData.message);
     }
-
 });
 
 /**
- * @description: 清除背景图
+ * @description: 清除当前背景图
  */
-$('#clearBackgroundImageBtn').click(function () {
+$('#clearBackgroundImageBtn').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearBackgroundImage();
 });

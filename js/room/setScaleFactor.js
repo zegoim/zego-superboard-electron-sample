@@ -1,10 +1,10 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-10 11:47:35
- * @LastEditTime: 2021-08-25 01:32:30
+ * @LastEditTime: 2021-08-25 01:53:43
  * @LastEditors: Please set LastEditors
  * @Description: 白板缩放
- * @FilePath: /superboard/js/setScaleFactor.js
+ * @FilePath: /superboard/js/room/setScaleFactor.js
  */
 
 // zegoSuperBoard 为全局 SuperBoard Instance

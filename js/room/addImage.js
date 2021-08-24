@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-10 16:50:36
- * @LastEditTime: 2021-08-23 19:27:26
+ * @LastEditTime: 2021-08-24 11:51:38
  * @LastEditors: Please set LastEditors
  * @Description: 添加自定义图形、插入图片
  * @FilePath: /superboard/js/room/addImage.js
@@ -17,13 +17,6 @@ var customGraphList = [
     'https://storage.zego.im/goclass/wbpic/axis.svg',
     'https://storage.zego.im/goclass/wbpic/chemical_instrument.svg'
 ]; // Zego 内置自定义图形列表
-var imageErrorTipsMap = {
-    3000002: '参数错误',
-    3000005: '下载失败',
-    3030008: '图片大小超过限制，请重新选择',
-    3030009: '图片格式暂不支持',
-    3030010: 'url地址错误或无效'
-}; // 自定义图形、图片上传错误
 
 /**
  * @description: 选择本地插入图片

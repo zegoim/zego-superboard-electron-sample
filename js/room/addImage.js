@@ -33,9 +33,9 @@ layui.upload.render({
     elem: '#selectImage', // 绑定元素
     accept: 'images', // 只接受 image 文件
     auto: false, // 不自动上传
-    choose: function(obj) {
+    choose: function (obj) {
         // 选择完文件
-        obj.preview(function(index, file, result) {
+        obj.preview(function (index, file, result) {
             // 存储选择的文件，file 为当前选中文件
             selectedInsetImgFile = file;
             toast('选择文件成功');
@@ -85,7 +85,7 @@ function appendGraphDomHandle(address) {
  */
 function initGraphListDomHandle() {
     var $str = '';
-    customGraphList.forEach(function(element, index) {
+    customGraphList.forEach(function (element, index) {
         $str +=
             '<li data-index="' +
             index +
@@ -113,7 +113,7 @@ function updateActiveGraphDomHandle(graphIndex, event) {
 /**
  * @description: 通过 URL 添加自定义图形
  */
-$('#addImageByURLBtn1').click(async function() {
+$('#addImageByURLBtn1').click(async function () {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -122,7 +122,7 @@ $('#addImageByURLBtn1').click(async function() {
     if (!url) return toast('请输入 URL');
 
     // 查找本地 customGraphList 是否已存在该自定义图形 URL
-    var index = customGraphList.findIndex(function(element) {
+    var index = customGraphList.findIndex(function (element) {
         return element === url;
     });
     try {
@@ -135,14 +135,14 @@ $('#addImageByURLBtn1').click(async function() {
             appendGraphDomHandle(url);
         }
     } catch (errorData) {
-        toast(errorData.code + '：' + imageErrorTipsMap[errorData.code]);
+        toast(errorData.code + '：' + errorData.message);
     }
 });
 
 /**
  * @description: 通过 URL 插入网络图片
  */
-$('#addImageByURLBtn2').click(async function() {
+$('#addImageByURLBtn2').click(async function () {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -154,14 +154,14 @@ $('#addImageByURLBtn2').click(async function() {
         await zegoSuperBoardSubView.addImage(0, 0, 0, url, toast);
         toast('上传成功');
     } catch (errorData) {
-        toast(errorData.code + '：' + imageErrorTipsMap[errorData.code]);
+        toast(errorData.code + '：' + errorData.message);
     }
 });
 
 /**
  * @description: 选择本地文件，设置当前要添加到 SuperboardView 上的自定义图形
  */
-$('#addImageByFileBtn').click(async function() {
+$('#addImageByFileBtn').click(async function () {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
@@ -171,6 +171,6 @@ $('#addImageByFileBtn').click(async function() {
         await zegoSuperBoardSubView.addImage(0, 0, 0, selectedInsetImgFile, toast);
         toast('上传成功');
     } catch (errorData) {
-        toast(errorData.code + '：' + imageErrorTipsMap[errorData.code]);
+        toast(errorData.code + '：' + errorData.message);
     }
 });

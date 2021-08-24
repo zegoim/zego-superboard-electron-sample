@@ -66,7 +66,11 @@ layui.form.on('select(bgUrl)', async function () {
     var bgUrl = formData.bgUrl; // 当前选择的背景图 URL
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
-    await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, toast);
+    try {
+        await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, toast);
+    } catch (error) {
+        toast(errorData.code + '：' + errorData.message);
+    }
 });
 
 /**
@@ -83,7 +87,11 @@ $('#setBackgroundImageByURLBtn').click(async function () {
 
     if (!customBgUrl) return toast('请输入 URL');
 
-    await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, toast);
+    try {
+        await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, toast);
+    } catch (error) {
+        toast(errorData.code + '：' + errorData.message);
+    }
 });
 
 /**
@@ -98,7 +106,12 @@ $('#setBackgroundImageByFileBtn').click(async function () {
 
     if (!selectedBgImgFile) return toast('请先选择文件');
 
-    await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, toast);
+    try {
+        await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, toast);
+    } catch (error) {
+        toast(errorData.code + '：' + errorData.message);
+    }
+
 });
 
 /**

@@ -69,7 +69,7 @@ layui.form.on('select(bgUrl)', async function () {
     try {
         await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, toast);
     } catch (error) {
-        toast(errorData.code + '：' + errorData.message);
+        toast(error.code + '：' + error.message);
     }
 });
 
@@ -90,7 +90,7 @@ $('#setBackgroundImageByURLBtn').click(async function () {
     try {
         await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, toast);
     } catch (error) {
-        toast(errorData.code + '：' + errorData.message);
+        toast(error.code + '：' + error.message);
     }
 });
 
@@ -109,7 +109,7 @@ $('#setBackgroundImageByFileBtn').click(async function () {
     try {
         await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, toast);
     } catch (error) {
-        toast(errorData.code + '：' + errorData.message);
+        toast(error.code + '：' + error.message);
     }
 
 });

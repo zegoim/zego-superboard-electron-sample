@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-12 11:56:27
- * @LastEditTime: 2021-08-23 22:13:51
+ * @LastEditTime: 2021-08-24 11:59:42
  * @LastEditors: Please set LastEditors
  * @Description: 清空、撤销、重做、保存快照、清空当前页、清除选中、设置渲染延时
  * @FilePath: /superboard/js/room/other.js
@@ -70,6 +70,7 @@ function snapshot() {
  * @description: 删除选中图元
  */
 function clearSelected() {
+    if (!zegoSuperBoard) return;
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.clearSelected();
 }

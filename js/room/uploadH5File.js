@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-11 15:07:48
- * @LastEditTime: 2021-08-25 02:08:30
+ * @LastEditTime: 2021-08-25 02:30:28
  * @LastEditors: Please set LastEditors
  * @Description: 上传自定义 H5 文件
  * @FilePath: /superboard/js/room/uploadH5File.js
@@ -64,6 +64,7 @@ $('#uploadH5FileBtn').click(async function() {
         });
 
         // 这里上传完成立即创建文件白板，开发者根据实际情况处理
+        // 创建文件白板方法在 js/room/whiteboard.js 中
         createFileView(fileID);
     } catch (errorData) {
         toast(errorData);

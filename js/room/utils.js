@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:23:27
- * @LastEditTime: 2021-08-23 15:07:52
+ * @LastEditTime: 2021-08-25 02:27:04
  * @LastEditors: Please set LastEditors
  * @Description: 房间页更新 DOM 的相关方法、相关工具方法
  * @FilePath: /superboard_demo_web/js/utils.js
@@ -51,26 +51,6 @@ function loadAllScript(pathList) {
         return loadScript(path);
     });
     return Promise.all(tasks);
-}
-
-/**
- * @description: 这里仅演示获取 fileList 的示例代码
- * @param {*} filelistUrl
- * @return {*}
- */
-function getFilelist(filelistUrl = './fileList.json') {
-    return new Promise(function(resolve) {
-        $.get(
-            filelistUrl,
-            null,
-            function(fileList) {
-                if (fileList) {
-                    resolve(fileList);
-                }
-            },
-            'json'
-        );
-    });
 }
 
 /**

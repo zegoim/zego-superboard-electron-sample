@@ -4,7 +4,7 @@
 
 ### 填入所需参数
 
-在 js/login/init.js 文件中填写登录房间所需的 AppID。
+在 js/login/init.js 文件中填写登录房间所需的 AppID、Server。
 ### 启动项目
 
 在项目所在目录下，双击打开 “index.html” 页面，输入房间号和用户名进入房间。

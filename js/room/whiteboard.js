@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-23 15:33:25
+ * @LastEditTime: 2021-08-25 02:30:48
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板列表
  * @FilePath: /superboard/js/room/whiteboard.js
@@ -150,8 +150,8 @@ function onSuperBoardEventHandle() {
     });
 
     // 监听远端白板缩放
-    zegoSuperBoard.on('remoteSuperBoardScaleChanged', function(scale) {
-        console.warn('SuperBoard Demo remoteSuperBoardScaleChanged', scale);
+    zegoSuperBoard.on('remoteSuperBoardScaleChanged', function(uniqueID, scale) {
+        console.warn('SuperBoard Demo remoteSuperBoardScaleChanged', uniqueID, scale);
         updateCurrScaleDomHandle(scale);
     });
 }
@@ -229,7 +229,7 @@ async function destroySuperBoardSubView(type) {
             loading('销毁白板中');
 
             await zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubView.getModel().uniqueID);
-
+            console.warn('===demo destroySuperBoardSubView');
             closeLoading();
             toast('销毁成功');
 

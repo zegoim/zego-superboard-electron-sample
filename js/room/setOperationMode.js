@@ -1,139 +1,139 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 21:28:34
- * @LastEditTime: 2021-08-18 16:28:59
+ * @LastEditTime: 2021-08-25 01:52:17
  * @LastEditors: Please set LastEditors
- * @Description: 白板操作模式
- * @FilePath: /superboard/js/operationMode.js
+ * @Description: 设置白板操作模式
+ * @FilePath: /superboard/js/room/operationMode.js
  */
 
 // zegoSuperBoard 为全局 SuperBoard Instance
 // toast 为全局提示框，开发者根据实际情况使用相应的提示框
 
-/**
- * @description: 开启、关闭滚动、绘制、放缩操作模式
- * @description: 这里只展示 switch 开关的设置，开发者根据实际情况获设置
- * @param {*} type 1: 开启 2: 关闭
- * @return {*}
- */
-function updateOperatedModeDomHandle(type) {
-    if (type === 1) {
+var setOperationModeUtils = {
+    /**
+     * @description: 开启、关闭页面上滚动、绘制、放缩操作模式 switch
+     * @description: 这里只展示更新页面上 switch 的功能，开发者根据实际情况处理
+     * @param {Boolean} type true: 开启 false: 关闭
+     */
+    updateOperatedModeDomHandle: function(type) {
+        if (type) {
+            layui.form.val('form2', {
+                drawMode: 'on',
+                scrollMode: 'on',
+                scaleMode: 'on'
+            });
+        } else {
+            layui.form.val('form2', {
+                drawMode: '',
+                scrollMode: '',
+                scaleMode: ''
+            });
+        }
+    },
+    /**
+     * @description: 开启、关闭页面上不可操作模式 switch
+     * @description: 这里只展示更新页面上 switch 的功能，开发者根据实际情况处理
+     * @param {Boolean} type true: 开启 false: 关闭
+     */
+    updateUnOperatedModeDomHandle: function(type) {
         layui.form.val('form2', {
-            drawMode: 'on',
-            scrollMode: 'on',
-            scaleMode: 'on'
+            unOperatedMode: type ? 'on' : ''
         });
-    } else {
-        layui.form.val('form2', {
-            drawMode: '',
-            scrollMode: '',
-            scaleMode: ''
-        });
+    },
+
+    /**
+     * @description: 获取页面不可操作模式、滚动模式、绘制模式、放缩模式的 switch 开关状态
+     * @description: 这里只展示获取方法，开发者根据实际情况获取
+     * @param {String} str 'unOperatedMode': 不可操作模式 'scrollMode' 滚动模式 'drawMode' 绘制模式 'scaleMode': 放缩模式
+     * @return {Boolean} true: 开 false 关
+     */
+    getTargetOperatedMode: function(str) {
+        var data = layui.form.val('form2');
+        return data[str] === 'on';
+    },
+
+    /**
+     * @description: 计算当前需要设置的操作模式
+     * @return {Number} operationMode 当前需要设置的操作模式
+     */
+    calOperatedMode: function() {
+        var drawMode = setOperationModeUtils.getTargetOperatedMode('drawMode') ? 4 : 0;
+        var scrollMode = setOperationModeUtils.getTargetOperatedMode('scrollMode') ? 2 : 0;
+        var scaleMode = setOperationModeUtils.getTargetOperatedMode('scaleMode') ? 8 : 0;
+        var operationMode = drawMode | scrollMode | scaleMode;
+
+        // 滚动、绘制、放缩均不开启即不可操作模式
+        !operationMode && (operationMode = 1);
+
+        return operationMode;
     }
-}
-/**
- * @description: 开启、关闭不可操作模式
- * @param {*} type true: 开启 false: 关闭
- * @return {*}
- */
-function updateUnOperatedModeDomHandle(type) {
-    layui.form.val('form2', {
-        unOperatedMode: type ? 'on' : ''
-    });
-}
+};
 
 /**
- * @description: 获取指定 switch 开关状态
- * @description: 这里只展示获取方法，开发者根据实际情况获取
- * @param {*} str 'unOperatedMode': 不可操作模式 'scrollMode' 滚动模式 'drawMode' 绘制模式 'scaleMode': 放缩模式
- * @return {*} true: 开 false 关
- */
-function getTargetOperatedMode(str) {
-    var data = layui.form.val('form2');
-    return data[str] === 'on';
-}
-
-/**
- * @description: 设置当前的操作模式
- * @param {*}
- * @return {*} operationMode 当前需要设置的操作模式
- */
-function setOperatedMode() {
-    var drawMode = getTargetOperatedMode('drawMode') ? 4 : 0;
-    var scrollMode = getTargetOperatedMode('scrollMode') ? 2 : 0;
-    var scaleMode = getTargetOperatedMode('scaleMode') ? 8 : 0;
-    var operationMode = drawMode | scrollMode | scaleMode;
-
-    // 滚动、绘制、放缩均不开启即不可操作模式
-    !operationMode && (operationMode = 1);
-
-    return operationMode;
-}
-
-/**
- * @description: 不可操作模式
- * @description: 监听指定 switch 开关状态
+ * @description: 监听不可操作模式 switch 开关状态，更新其他模式的 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(unOperatedMode)', function () {
+layui.form.on('switch(unOperatedMode)', function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    // 可操作模式下，默认开启滚动、绘制、缩放
-    // this.checked 表示当前开关打开，开发者根据实际情况判断
+    // 获取当前 switch 的打开状态，开发者根据实际情况获取
+    // true: 打开 false: 关闭
+    // 不可操作模式关闭下，默认开启滚动、绘制、缩放
     var operationMode = this.checked ? 1 : 14;
-    updateOperatedModeDomHandle(operationMode === 1 ? 2 : 1);
+    setOperationModeUtils.updateOperatedModeDomHandle(operationMode !== 1);
+    console.warn('SuperBoard Demo operationMode', operationMode);
+
+    zegoSuperBoardSubView.setOperationMode(operationMode);
+});
+
+/**
+ * @description: 监听滚动模式 switch 开关状态，更新不可操作模式的 switch 开关状态
+ * @description: 这里只展示监听方法，开发者根据实际情况监听
+ */
+layui.form.on('switch(scrollMode)', function() {
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    if (!zegoSuperBoardSubView) return;
+
+    // 计算当前需要设置的操作模式
+    var operationMode = setOperationModeUtils.calOperatedMode();
+    // 根据当前计算结果 开启、关闭页面上不可操作模式 switch
+    setOperationModeUtils.updateUnOperatedModeDomHandle(operationMode === 1);
 
     console.warn('SuperBoard Demo operationMode', operationMode);
     zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
 /**
- * @description: 滚动模式
- * @description: 监听指定 switch 开关状态
+ * @description: 监听绘制模式 switch 开关状态，更新不可操作模式的 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(scrollMode)', function () {
+layui.form.on('switch(drawMode)', function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    var operationMode = setOperatedMode();
-
-    updateUnOperatedModeDomHandle(operationMode === 1);
+    // 计算当前需要设置的操作模式
+    var operationMode = setOperationModeUtils.calOperatedMode();
+    // 根据当前计算结果 开启、关闭页面上不可操作模式 switch
+    setOperationModeUtils.updateUnOperatedModeDomHandle(operationMode === 1);
 
     console.warn('SuperBoard Demo operationMode', operationMode);
     zegoSuperBoardSubView.setOperationMode(operationMode);
 });
 
 /**
- * @description: 绘制模式
- * @description: 监听指定 switch 开关状态
+ * @description: 监听放缩模式 switch 开关状态，更新不可操作模式的 switch 开关状态
  * @description: 这里只展示监听方法，开发者根据实际情况监听
  */
-layui.form.on('switch(drawMode)', function () {
+layui.form.on('switch(scaleMode)', function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    var operationMode = setOperatedMode();
-
-    updateUnOperatedModeDomHandle(operationMode === 1);
-
-    console.warn('SuperBoard Demo operationMode', operationMode);
-    zegoSuperBoardSubView.setOperationMode(operationMode);
-});
-
-/**
- * @description: 放缩模式
- * @description: 监听指定 switch 开关状态
- * @description: 这里只展示监听方法，开发者根据实际情况监听
- */
-layui.form.on('switch(scaleMode)', function () {
-    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if (!zegoSuperBoardSubView) return;
-
-    var operationMode = setOperatedMode();
-
-    updateUnOperatedModeDomHandle(operationMode === 1);
+    // 计算当前需要设置的操作模式
+    var operationMode = setOperationModeUtils.calOperatedMode();
+    // 根据当前计算结果 开启、关闭页面上不可操作模式 switch
+    setOperationModeUtils.updateUnOperatedModeDomHandle(operationMode === 1);
 
     console.warn('SuperBoard Demo operationMode', operationMode);
     zegoSuperBoardSubView.setOperationMode(operationMode);

@@ -1,30 +1,29 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 20:04:01
- * @LastEditTime: 2021-08-23 22:14:19
+ * @LastEditTime: 2021-08-25 01:04:50
  * @LastEditors: Please set LastEditors
  * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
- * @FilePath: /superboard/js/reloadView.js
+ * @FilePath: /superboard/js/room/reloadView.js
  */
 
 // zegoSuperBoard 为全局 SuperBoard Instance
 // toast 为全局提示框，开发者根据实际情况使用相应的提示框
 // parentDomID 容器 ID
 
-var resizeTicking = false; // 自适应执行开关
+var resizeTicking = false; // 自适应执行开关，这里是延迟 1000 ms 执行
 
 // 白板大小自适应：监听页面 resize 事件
 window.addEventListener('resize', onResizeHandle);
 
 /**
  * @description: resize 回调
- * @param {*} e
- * @return {*}
  */
 function onResizeHandle() {
     if (!resizeTicking) {
         resizeTicking = true;
         setTimeout(function() {
+            // 容器尺寸自动变更后，自动重新加载白板 View
             autoReloadViewHandle();
             resizeTicking = false;
         }, 1000);
@@ -33,8 +32,6 @@ function onResizeHandle() {
 
 /**
  * @description: 重新加载白板 View
- * @param {*}
- * @return {*}
  */
 function reloadViewHandle() {
     // 未实例化之前，触发 resize 直接返回
@@ -48,14 +45,12 @@ function reloadViewHandle() {
         // 当前有白板挂载
         setTimeout(function() {
             zegoSuperBoardSubView.reloadView();
-        }, 120); // 动画120ms
+        }, 120); // 动画 120 ms
     }
 }
 
 /**
  * @description: 容器尺寸自动变更后，自动重新加载白板 View
- * @param {*}
- * @return {*}
  */
 function autoReloadViewHandle() {
     updateSizeDomHandle();
@@ -82,8 +77,6 @@ function supportRequestFullscreen(dom) {
 
 /**
  * @description: 更新当前页面显示 width、height
- * @param {*}
- * @return {*}
  */
 function updateSizeDomHandle() {
     // 获取当前容器宽高

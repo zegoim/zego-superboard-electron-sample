@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 20:04:01
- * @LastEditTime: 2021-08-25 01:04:50
+ * @LastEditTime: 2021-08-27 01:15:14
  * @LastEditors: Please set LastEditors
  * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
  * @FilePath: /superboard/js/room/reloadView.js
@@ -107,10 +107,10 @@ function customReloadViewHandle() {
     var height_set = +layui.form.val('form2').parentHeight;
 
     // 判断当前自定义的尺寸，这里容器有 2px 边框，所以不允许小于 2，可视实际情况而定
-    // if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return toast('请输入有效的宽高值');
+    // if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return roomUtils.toast('请输入有效的宽高值');
 
     // 为更好的显示页面布局效果，这里自定义的值不允许超过当前自适应的容器尺寸，可视实际情况而定
-    // if (width_set > width || height_set > height) return toast('请输入小于当前容器尺寸的宽高值');
+    // if (width_set > width || height_set > height) return roomUtils.toast('请输入小于当前容器尺寸的宽高值');
 
     // 更新容器尺寸
     dom.style.cssText += `width:${width_set}px;height:${height_set}px;`;
@@ -129,10 +129,10 @@ function customReloadViewHandle() {
 function fullScreenHandle() {
     supportRequestFullscreen(document.getElementById(parentDomID))
         .then(function() {
-            toast('已全屏');
+            roomUtils.toast('已全屏');
         })
         .catch(function() {
-            toast('当前浏览器不支持全屏');
+            roomUtils.toast('当前浏览器不支持全屏');
         });
 }
 

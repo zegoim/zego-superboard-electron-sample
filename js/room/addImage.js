@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-10 16:50:36
- * @LastEditTime: 2021-08-24 11:51:38
+ * @LastEditTime: 2021-08-27 01:13:33
  * @LastEditors: Please set LastEditors
  * @Description: 添加自定义图形、插入图片
  * @FilePath: /superboard/js/room/addImage.js
@@ -31,7 +31,7 @@ layui.upload.render({
         obj.preview(function(index, file, result) {
             // 存储选择的文件，file 为当前选中文件
             selectedInsetImgFile = file;
-            toast('选择文件成功');
+            roomUtils.toast('选择文件成功');
         });
     }
 });
@@ -60,15 +60,15 @@ $('#addImageByURLBtn1').click(async function() {
 
     // 获取页面上输入的自定义图形 URL，这里使用的是 layui，开发者可根据实际情况获取
     var url = layui.form.val('form1').customGraphUrl;
-    if (!url) return toast('请输入 URL');
+    if (!url) return roomUtils.toast('请输入 URL');
 
     // 查找本地 customGraphList 是否已存在该自定义图形 URL
     var index = customGraphList.findIndex(function(element) {
         return element === url;
     });
     try {
-        await zegoSuperBoardSubView.addImage(1, 0, 0, url, toast);
-        toast('上传成功');
+        await zegoSuperBoardSubView.addImage(1, 0, 0, url, roomUtils.toast);
+        roomUtils.toast('上传成功');
         if (index === -1) {
             // 不存在 -> 添加到本地自定义图形列表
             customGraphList.push(url);
@@ -76,7 +76,7 @@ $('#addImageByURLBtn1').click(async function() {
             addImageUtils.appendGraphDomHandle(url);
         }
     } catch (errorData) {
-        toast(errorData.code + '：' + errorData.message);
+        roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 
@@ -89,13 +89,13 @@ $('#addImageByURLBtn2').click(async function() {
 
     // 获取页面上输入的网络图片 URL，这里使用的是 layui，开发者可根据实际情况获取
     var url = layui.form.val('form1').customImageUrl;
-    if (!url) return toast('请输入 URL');
+    if (!url) return roomUtils.toast('请输入 URL');
 
     try {
-        await zegoSuperBoardSubView.addImage(0, 0, 0, url, toast);
-        toast('上传成功');
+        await zegoSuperBoardSubView.addImage(0, 0, 0, url, roomUtils.toast);
+        roomUtils.toast('上传成功');
     } catch (errorData) {
-        toast(errorData.code + '：' + errorData.message);
+        roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 
@@ -107,12 +107,12 @@ $('#addImageByFileBtn').click(async function() {
     if (!zegoSuperBoardSubView) return;
 
     // 判断本地是否已经选择文件
-    if (!selectedInsetImgFile) return toast('请先选择文件');
+    if (!selectedInsetImgFile) return roomUtils.toast('请先选择文件');
     try {
-        await zegoSuperBoardSubView.addImage(0, 0, 0, selectedInsetImgFile, toast);
-        toast('上传成功');
+        await zegoSuperBoardSubView.addImage(0, 0, 0, selectedInsetImgFile, roomUtils.toast);
+        roomUtils.toast('上传成功');
     } catch (errorData) {
-        toast(errorData.code + '：' + errorData.message);
+        roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 

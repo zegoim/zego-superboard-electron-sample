@@ -1,53 +1,58 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-12 12:21:41
- * @LastEditTime: 2021-08-18 16:29:47
+ * @LastEditTime: 2021-08-27 01:40:26
  * @LastEditors: Please set LastEditors
  * @Description: 设置白板工具
- * @FilePath: /superboard/js/setToolType.js
+ * @FilePath: /superboard/js/room/setToolType.js
  */
 
 /**
  * @description: 设置工具类型
- * @param {*} toolType 工具类型
- * @param {*} event event
+ * @param {Number} toolType 工具类型
+ * @param {Event} event event
  */
 function setToolType(toolType, event) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
     if (toolType === 256) {
-        var zegoSuperBoardSubViewModel = zegoSuperBoardSubView.getModel();
+        // 目标工具类型为 '点击'
         // 非动态 PPT、自定义 H5 不允许使用点击工具
+        var zegoSuperBoardSubViewModel = zegoSuperBoardSubView.getModel();
         if (zegoSuperBoardSubViewModel.fileType !== 512 && zegoSuperBoardSubViewModel.fileType !== 4096) return;
     }
 
     if (toolType !== undefined) {
+        // 目标工具类型为拖拽、画笔、选择工具、激光笔、文本、自定义图形、橡皮擦
         var result = zegoSuperBoard.setToolType(toolType);
         console.warn('result', result);
         // 设置失败，直接返回
-        if (!result) return toast('设置失败');
+        if (!result) return roomUtils.toast('设置失败');
 
         if (toolType === 512) {
+            // 目标工具类型自定义图形
             // 默认第一个自定义图形
             setCustomGraph(0, event);
         }
     } else {
+        // 目标工具类型为 undefined，仅实现功能定义，实际 SDK 没有这个类型
+        // 这里 toolType 为 undefined 表示是要选择图形: 矩形、椭圆、直线
         // 默认矩形
         var result = zegoSuperBoard.setToolType(8);
         console.warn('result', result);
 
         // 设置失败，直接返回
-        if (!result) return toast('设置失败');
+        if (!result) return roomUtils.toast('设置失败');
     }
     updateActiveToolDomHandle(toolType, event);
 }
 
 /**
- * @description: 更新当前选中工具
- * @param {*} type 工具类型
- * @param {*} event event
- * @return {*}
+ * @description: 更新页面工具栏当前选中工具的样式
+ * @description: 该方法只用来更新页面工具栏样式，开发者可根据实际情况处理
+ * @param {Number|undefined} type 工具类型
+ * @param {Event} event event
  */
 function updateActiveToolDomHandle(type, event) {
     event.stopPropagation();

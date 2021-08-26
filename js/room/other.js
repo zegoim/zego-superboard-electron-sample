@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-12 11:56:27
- * @LastEditTime: 2021-08-24 11:59:42
+ * @LastEditTime: 2021-08-27 01:14:41
  * @LastEditors: Please set LastEditors
  * @Description: 清空、撤销、重做、保存快照、清空当前页、清除选中、设置渲染延时
  * @FilePath: /superboard/js/room/other.js
@@ -89,8 +89,8 @@ function clearCurrentPage() {
 $('#setDeferredRenderingTimeBtn').click(function() {
     // 获取页面上输入的目标页，这里使用的是 layui，开发者可根据实际情况获取
     var deferredRenderingTime = layui.form.val('form2').deferredRenderingTime;
-    if (!deferredRenderingTime) return toast('请输入延时时长');
+    if (!deferredRenderingTime) return roomUtils.toast('请输入延时时长');
 
     zegoSuperBoard.setDeferredRenderingTime(+deferredRenderingTime);
-    toast('设置成功');
+    roomUtils.toast('设置成功');
 });

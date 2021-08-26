@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-10 15:11:22
- * @LastEditTime: 2021-08-26 11:29:30
+ * @LastEditTime: 2021-08-27 01:15:30
  * @LastEditors: Please set LastEditors
  * @Description: 设置背景图
  * @FilePath: /superboard/js/setBackgroundImage.js
@@ -49,7 +49,7 @@ layui.upload.render({
         obj.preview(function(index, file, result) {
             // 存储选择的文件，file 为当前选中文件
             selectedBgImgFile = file;
-            toast('选择文件成功');
+            roomUtils.toast('选择文件成功');
         });
     }
 });
@@ -68,9 +68,9 @@ layui.form.on('select(bgUrl)', async function() {
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
     try {
-        await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, toast);
+        await zegoSuperBoardSubView.setBackgroundImage(bgUrl, imageFitMode, roomUtils.toast);
     } catch (errorData) {
-        toast(errorData.code + '：' + errorData.message);
+        roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 
@@ -86,12 +86,12 @@ $('#setBackgroundImageByURLBtn').click(async function() {
     var customBgUrl = formData.customBgUrl; // 当前选择的背景图 URL
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
-    if (!customBgUrl) return toast('请输入 URL');
+    if (!customBgUrl) return roomUtils.toast('请输入 URL');
 
     try {
-        await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, toast);
+        await zegoSuperBoardSubView.setBackgroundImage(customBgUrl, imageFitMode, roomUtils.toast);
     } catch (errorData) {
-        toast(errorData.code + '：' + errorData.message);
+        roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 
@@ -106,12 +106,12 @@ $('#setBackgroundImageByFileBtn').click(async function() {
     var formData = layui.form.val('form1');
     var imageFitMode = +formData.imageFitMode; // 当前背景图填充模式
 
-    if (!selectedBgImgFile) return toast('请先选择文件');
+    if (!selectedBgImgFile) return roomUtils.toast('请先选择文件');
 
     try {
-        await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, toast);
+        await zegoSuperBoardSubView.setBackgroundImage(selectedBgImgFile, imageFitMode, roomUtils.toast);
     } catch (errorData) {
-        toast(errorData.code + '：' + errorData.message);
+        roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 

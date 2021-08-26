@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-23 21:53:17
+ * @LastEditTime: 2021-08-27 01:25:58
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
  * @FilePath: /superboard/js/login/login.js
@@ -111,13 +111,13 @@ function logoutRoom() {
     // 清除页面已挂载 SuperboardSubView
     $('#main-whiteboard').html('');
     // 清空页面 SuperboardSubView 列表下拉框（room 内方法）
-    updateWhiteboardListDomHandle([]);
+    roomUtils.updateWhiteboardListDomHandle([]);
     // 清空页面 excel sheet 列表下拉框（room 内方法）
-    toggleSheetSelectDomHandle(false);
+    roomUtils.toggleSheetSelectDomHandle(false);
     // 显示页面 SuperboardSubView 占位（room 内方法）
-    togglePlaceholderDomHandle(true);
+    roomUtils.togglePlaceholderDomHandle(true);
     // 隐藏缩略图按钮（room 内方法）
-    toggleThumbBtnDomHandle(false);
+    roomUtils.toggleThumbBtnDomHandle(false);
     // 清空缩略图列表（room 内方法）
     flipToPageUtils.updateThumbListDomHandle([]);
 }

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-25 02:30:48
+ * @LastEditTime: 2021-08-27 01:27:18
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板列表
  * @FilePath: /superboard/js/room/whiteboard.js
@@ -62,14 +62,14 @@ async function updateWhiteboardList() {
     var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
     console.warn('SuperBoard Demo querySuperBoardSubViewList', modelList);
     // 更新页面白板列表
-    updateWhiteboardListDomHandle(modelList);
+    roomUtils.updateWhiteboardListDomHandle(modelList);
     // 列表为空，隐藏页面 sheet 下拉框
     if (!modelList || !modelList.length) {
         // 隐藏 sheet 下拉框
-        toggleSheetSelectDomHandle(false);
+        roomUtils.toggleSheetSelectDomHandle(false);
         // 初始化 currentPage、totalPage 为 1
-        updateCurrPageDomHandle(1);
-        updatePageCountDomHandle(1);
+        roomUtils.updateCurrPageDomHandle(1);
+        roomUtils.updatePageCountDomHandle(1);
     }
 }
 
@@ -81,7 +81,7 @@ async function updateWhiteboardList() {
 async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
     var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
     var model;
-    modelList.forEach(function (element) {
+    modelList.forEach(function(element) {
         if (uniqueID === element.uniqueID) {
             model = element;
         }
@@ -94,65 +94,65 @@ async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
  */
 function onSuperBoardEventHandle() {
     // 监听错误回调，SDK 内部错误均通过此回调抛出，除了直接在接口中直接返回的错误外
-    zegoSuperBoard.on('error', function (errorData) {
+    zegoSuperBoard.on('error', function(errorData) {
         console.warn('SuperBoard Demo error', errorData);
-        toast(errorData);
+        roomUtils.toast(errorData);
     });
 
     // 监听白板翻页、滚动
-    zegoSuperBoard.on('superBoardSubViewScrolled', function (uniqueID, page, step) {
+    zegoSuperBoard.on('superBoardSubViewScrolled', function(uniqueID, page, step) {
         console.warn('SuperBoard Demo superBoardSubViewScrolled', ...arguments);
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
             // 更新页面内容
-            updateCurrPageDomHandle(page);
+            roomUtils.updateCurrPageDomHandle(page);
         }
     });
 
     // 监听远端新增白板
-    zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewAdded', ...arguments);
         // 查询、更新页面白板列表，新增的白板 SDK 内部不会自动挂载
         querySuperBoardSubViewList();
     });
 
     // 监听远端销毁白板
-    zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewRemoved', ...arguments);
         // 查询、更新页面白板列表，销毁的白板 SDK 内部会自动销毁
         querySuperBoardSubViewList();
     });
 
     // 监听远端切换白板
-    zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewSwitched', ...arguments);
         // 查询、更新页面白板列表，切换的白板 SDK 内部会自动切换
         querySuperBoardSubViewList();
     });
 
     // 监听远端切换 Excel Sheet
-    zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
         // 查询、更新页面白板列表，切换的 Excel Sheet SDK 内部会自动切换
         querySuperBoardSubViewList();
     });
 
     // 监听远端白板权限变更
-    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function () {
+    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardAuthChanged', ...arguments);
         // 内部会自动更改为当前权限与对端同步
     });
 
     // 监听远端白板图元权限变更
-    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function () {
+    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardGraphicAuthChanged', ...arguments);
         // 内部会自动更改为当前权限与对端同步
     });
 
     // 监听远端白板缩放
-    zegoSuperBoard.on('superBoardScaleChanged', function (uniqueID, scale) {
+    zegoSuperBoard.on('superBoardScaleChanged', function(uniqueID, scale) {
         console.warn('SuperBoard Demo superBoardScaleChanged', uniqueID, scale);
-        updateCurrScaleDomHandle(scale);
+        roomUtils.updateCurrScaleDomHandle(scale);
     });
 }
 
@@ -161,7 +161,7 @@ function onSuperBoardEventHandle() {
  */
 async function createWhiteboardView() {
     try {
-        loading('创建普通白板中');
+        roomUtils.loading('创建普通白板中');
 
         // 这里 viewSeq 是自定义后缀，创建一次普通白板就累加一次，开发者可自行定义是否需要
         await zegoSuperBoard.createWhiteboardView({
@@ -171,19 +171,19 @@ async function createWhiteboardView() {
             pageCount: 5 // 默认水平分页
         });
 
-        closeLoading();
-        toast('创建成功');
+        roomUtils.closeLoading();
+        roomUtils.toast('创建成功');
 
         // 查询、更新页面白板列表，创建成功后白板 SDK 内部会自动渲染
         querySuperBoardSubViewList();
 
         // 隐藏白板占位
-        togglePlaceholderDomHandle(false);
+        roomUtils.togglePlaceholderDomHandle(false);
         // 隐藏打开缩略图弹框的按钮
-        toggleThumbBtnDomHandle(false);
+        roomUtils.toggleThumbBtnDomHandle(false);
     } catch (errorData) {
-        closeLoading();
-        toast(errorData);
+        roomUtils.closeLoading();
+        roomUtils.toast(errorData);
     }
 }
 
@@ -193,25 +193,25 @@ async function createWhiteboardView() {
  */
 async function createFileView(fileID) {
     try {
-        loading('创建文件白板中');
+        roomUtils.loading('创建文件白板中');
 
         await zegoSuperBoard.createFileView({
             fileID
         });
 
-        closeLoading();
-        toast('创建成功');
+        roomUtils.closeLoading();
+        roomUtils.toast('创建成功');
 
         // 查询、更新页面白板列表，创建成功后白板 SDK 内部会自动渲染
         querySuperBoardSubViewList();
 
         // 隐藏白板占位
-        togglePlaceholderDomHandle(false);
+        roomUtils.togglePlaceholderDomHandle(false);
         // 显示、隐藏打开缩略图弹框的按钮
-        toggleThumbBtnDomHandle(await hasThumb());
+        roomUtils.toggleThumbBtnDomHandle(await hasThumb());
     } catch (errorData) {
-        closeLoading();
-        toast(errorData);
+        roomUtils.closeLoading();
+        roomUtils.toast(errorData);
     }
 }
 
@@ -226,36 +226,36 @@ async function destroySuperBoardSubView(type) {
         if (!zegoSuperBoardSubView) return;
 
         try {
-            loading('销毁白板中');
+            roomUtils.loading('销毁白板中');
 
             await zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubView.getModel().uniqueID);
             console.warn('===demo destroySuperBoardSubView');
-            closeLoading();
-            toast('销毁成功');
+            roomUtils.closeLoading();
+            roomUtils.toast('销毁成功');
 
             // 查询、更新页面白板列表，销毁成功后白板 SDK 内部会自动删除相关内容，并移除挂载的内容
             querySuperBoardSubViewList();
         } catch (errorData) {
-            closeLoading();
-            toast(errorData);
+            roomUtils.closeLoading();
+            roomUtils.toast(errorData);
         }
     } else {
         try {
             var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
             for (let index = 0; index < modelList.length; index++) {
                 const model = modelList[index];
-                loading('销毁白板 ' + model.name + ' 中');
+                roomUtils.loading('销毁白板 ' + model.name + ' 中');
                 console.warn('SuperBoard Demo destroySuperBoardSubView', model.name);
                 await zegoSuperBoard.destroySuperBoardSubView(model.uniqueID);
                 console.warn('SuperBoard Demo destroySuperBoardSubView suc', model.name);
-                toast('销毁白板 ' + model.name + ' 成功');
-                closeLoading();
+                roomUtils.toast('销毁白板 ' + model.name + ' 成功');
+                roomUtils.closeLoading();
             }
             // 查询、更新页面白板列表，销毁成功后白板 SDK 内部会自动删除相关内容，并移除挂载的内容
             querySuperBoardSubViewList();
         } catch (errorData) {
-            closeLoading();
-            toast(errorData);
+            roomUtils.closeLoading();
+            roomUtils.toast(errorData);
         }
     }
 }
@@ -278,15 +278,15 @@ function getExcelSheetNameList() {
     console.warn('SuperBoard Demo getExcelSheetNameList', zegoExcelSheetNameList);
 
     // 获取当前 sheetName 对应 sheetIndex
-    zegoExcelSheetNameList.forEach(function (element, index) {
+    zegoExcelSheetNameList.forEach(function(element, index) {
         element === sheetName && (sheetIndex = index);
     });
     console.warn('SuperBoard Demo getCurrentSheetIndex', sheetIndex);
 
     // 更新页面当前 Excel sheet 列表
-    updateExcelSheetListDomHandle(zegoSuperBoardViewModel.uniqueID, zegoExcelSheetNameList);
+    roomUtils.updateExcelSheetListDomHandle(zegoSuperBoardViewModel.uniqueID, zegoExcelSheetNameList);
     // 更新页面当前选中的 sheet
-    updateCurrSheetDomHandle(zegoSuperBoardViewModel.uniqueID, sheetIndex);
+    roomUtils.updateCurrSheetDomHandle(zegoSuperBoardViewModel.uniqueID, sheetIndex);
 
     return sheetIndex;
 }
@@ -315,21 +315,21 @@ async function querySuperBoardSubViewList() {
         result.uniqueID = uniqueID;
 
         // 隐藏白板占位
-        togglePlaceholderDomHandle(false);
+        roomUtils.togglePlaceholderDomHandle(false);
         // 更新下拉框中当前白板
-        updateCurrWhiteboardDomHandle(uniqueID);
+        roomUtils.updateCurrWhiteboardDomHandle(uniqueID);
         // 更新总页数、当前页
-        updatePageCountDomHandle(pageCount);
-        updateCurrPageDomHandle(currentPage);
+        roomUtils.updatePageCountDomHandle(pageCount);
+        roomUtils.updateCurrPageDomHandle(currentPage);
         // 判断是否显示页面上的切步按钮
-        toggleStepDomHandle(await canJumpStep());
+        roomUtils.toggleStepDomHandle(await canJumpStep());
         // 判断是否显示页面上的缩略图按钮
-        toggleThumbBtnDomHandle(await hasThumb());
+        roomUtils.toggleThumbBtnDomHandle(await hasThumb());
         // 判断是否需要禁止点击工具
-        toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
+        roomUtils.toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
         if (fileType === 4) {
             // excel 文件白板显示 sheet 下拉框
-            toggleSheetSelectDomHandle(true);
+            roomUtils.toggleSheetSelectDomHandle(true);
             // 查询 sheet 列表
             result.sheetIndex = await getExcelSheetNameList();
 
@@ -337,11 +337,11 @@ async function querySuperBoardSubViewList() {
             cacheSheetMap[result.uniqueID] = result.sheetIndex;
         } else {
             // 非 excel 白板隐藏 sheet 下拉框
-            toggleSheetSelectDomHandle(false);
+            roomUtils.toggleSheetSelectDomHandle(false);
         }
     } else {
         // 当前无挂载白板，显示白板占位
-        togglePlaceholderDomHandle(true);
+        roomUtils.togglePlaceholderDomHandle(true);
     }
     return result;
 }
@@ -363,9 +363,9 @@ function initToolType() {
     console.warn('SuperBoard Demo initToolType', result);
     // 设置失败，直接返回
     if (!result) {
-        return toast('设置失败');
+        return roomUtils.toast('设置失败');
     } else {
-        resetToolTypeDomHandle();
+        roomUtils.resetToolTypeDomHandle();
     }
 }
 
@@ -377,7 +377,7 @@ async function switchWhitebopard(uniqueID) {
     var fileType = model.fileType;
 
     try {
-        loading('切换白板中');
+        roomUtils.loading('切换白板中');
 
         // 除去 excel 白板，其他白板第二个参数可忽略
         // excel 白板默认切换到第一个 sheet（SDK 内部没有记录上一次的下标）
@@ -387,7 +387,7 @@ async function switchWhitebopard(uniqueID) {
             .getSuperBoardView()
             .switchSuperBoardSubView(uniqueID, fileType === 4 ? sheetIndex || 0 : undefined);
         // 除去 excel 白板，隐藏页面 sheet 列表
-        toggleSheetSelectDomHandle(fileType === 4);
+        roomUtils.toggleSheetSelectDomHandle(fileType === 4);
         // excel 白板，更新页面 sheet 列表
         fileType === 4 && getExcelSheetNameList();
 
@@ -395,23 +395,23 @@ async function switchWhitebopard(uniqueID) {
         resetToolTypeAfterSwitch(fileType);
 
         // 判断是否需要禁止点击工具
-        toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
+        roomUtils.toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
 
         // 判断是否显示页面上的切步按钮
-        toggleStepDomHandle(canJumpStep());
+        roomUtils.toggleStepDomHandle(canJumpStep());
         // 判断是否显示页面上的缩略图按钮
-        toggleThumbBtnDomHandle(hasThumb());
+        roomUtils.toggleThumbBtnDomHandle(hasThumb());
 
         // 更新页面上总页数、当前页
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
-        updatePageCountDomHandle(zegoSuperBoardSubView.getPageCount());
-        updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
+        roomUtils.updatePageCountDomHandle(zegoSuperBoardSubView.getPageCount());
+        roomUtils.updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
 
-        toast('切换成功');
-        closeLoading();
+        roomUtils.toast('切换成功');
+        roomUtils.closeLoading();
     } catch (errorData) {
-        closeLoading();
-        toast(errorData);
+        roomUtils.closeLoading();
+        roomUtils.toast(errorData);
     }
 }
 
@@ -419,7 +419,7 @@ async function switchWhitebopard(uniqueID) {
  * @description: 监听白板下拉选择框
  * @description: 这里只展示监听下拉框，开发者根据实际情况处理
  */
-layui.form.on('select(whiteboardList)', async function (data) {
+layui.form.on('select(whiteboardList)', async function(data) {
     switchWhitebopard(data.value);
 });
 
@@ -428,7 +428,7 @@ layui.form.on('select(whiteboardList)', async function (data) {
  * @description: 这里只展示监听下拉框，开发者根据实际情况处理
  * @description: 获取下拉框当前选中，开发者根据实际情况处理
  */
-layui.form.on('select(sheetList)', async function (data) {
+layui.form.on('select(sheetList)', async function(data) {
     // 获取下拉框当前选中的值('uniqueID,sheetIndex')
     var temp = data.value.split(',');
     // 拆分出 uniqueID、sheetIndex
@@ -436,18 +436,18 @@ layui.form.on('select(sheetList)', async function (data) {
     var sheetIndex = temp[1];
 
     try {
-        loading('切换中');
+        roomUtils.loading('切换中');
 
         await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
 
         // 缓存当前 excel 白板 的 sheet
         cacheSheetMap[uniqueID] = sheetIndex;
 
-        closeLoading();
-        toast('切换成功');
+        roomUtils.closeLoading();
+        roomUtils.toast('切换成功');
     } catch (errorData) {
-        closeLoading();
-        toast(errorData);
+        roomUtils.closeLoading();
+        roomUtils.toast(errorData);
     }
 });
 
@@ -495,19 +495,19 @@ async function attachActiveView() {
                 // 初始化白板工具
                 initToolType();
                 // 更新总页数、当前页
-                updatePageCountDomHandle(pageCount);
-                updateCurrPageDomHandle(currPage);
+                roomUtils.updatePageCountDomHandle(pageCount);
+                roomUtils.updateCurrPageDomHandle(currPage);
             } catch (errorData) {
-                toast(errorData);
+                roomUtils.toast(errorData);
             }
         }
     }
 }
 
-$('#createFileBtn').click(function () {
+$('#createFileBtn').click(function() {
     var fileID = layui.form.val('form3').createFileID;
 
-    if (!fileID) return toast('请输入 fileID');
+    if (!fileID) return roomUtils.toast('请输入 fileID');
     // 创建文件白板
     createFileView(fileID);
 });

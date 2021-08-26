@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-11 15:08:11
- * @LastEditTime: 2021-08-25 02:28:29
+ * @LastEditTime: 2021-08-27 01:16:21
  * @LastEditors: Please set LastEditors
  * @Description: 上传静态、动态文件
  * @FilePath: /superboard/js/room/uploadFile.js
@@ -83,11 +83,11 @@ var uploadFileUtils = {
  * @param {File} file 文件对象
  */
 function uploadFile(renderType, file) {
-    if (!file) return toast('请先选择文件');
+    if (!file) return roomUtils.toast('请先选择文件');
 
     zegoSuperBoard
         .uploadFile(file, renderType, function(res) {
-            toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
+            roomUtils.toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
         })
         .then(function(fileID) {
             uploadFileUtils.closeFileDomHandle();
@@ -96,7 +96,7 @@ function uploadFile(renderType, file) {
             // 创建文件白板方法在 js/room/whiteboard.js 中
             createFileView(fileID);
         })
-        .catch(toast);
+        .catch(roomUtils.toast);
 }
 
 /**

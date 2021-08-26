@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-11 15:07:48
- * @LastEditTime: 2021-08-25 02:30:28
+ * @LastEditTime: 2021-08-27 01:16:38
  * @LastEditors: Please set LastEditors
  * @Description: 上传自定义 H5 文件
  * @FilePath: /superboard/js/room/uploadH5File.js
@@ -26,7 +26,7 @@ layui.upload.render({
         obj.preview(function(index, file, result) {
             // 存储选择的文件，file 为当前选中文件
             selectedH5File = file;
-            toast('选择文件成功');
+            roomUtils.toast('选择文件成功');
         });
     }
 });
@@ -37,7 +37,7 @@ layui.upload.render({
 $('#uploadH5FileBtn').click(async function() {
     // 判断 file、width、height、pageCount、h5ThumbnailList
     if (!selectedH5File) {
-        return toast('未选择文件');
+        return roomUtils.toast('未选择文件');
     }
 
     // 获取页面上输入的 width、height、pageCount、h5ThumbnailListStr，这里使用的是 layui，开发者可根据实际情况获取
@@ -48,7 +48,7 @@ $('#uploadH5FileBtn').click(async function() {
     // 将页面输入的 h5ThumbnailListStr 转换成数组
     var h5ThumbnailList = data.h5ThumbnailListStr ? data.h5ThumbnailListStr.split(',') : null;
     if (!h5Width || !h5Height || !h5PageCount || !h5ThumbnailList) {
-        return toast('文件参数有误');
+        return roomUtils.toast('文件参数有误');
     }
 
     // 构造上传自定义 H5 接口所需数据
@@ -60,13 +60,13 @@ $('#uploadH5FileBtn').click(async function() {
     };
     try {
         var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, function(res) {
-            toast(res.uploadPercent + '%');
+            roomUtils.toast(res.uploadPercent + '%');
         });
 
         // 这里上传完成立即创建文件白板，开发者根据实际情况处理
         // 创建文件白板方法在 js/room/whiteboard.js 中
         createFileView(fileID);
     } catch (errorData) {
-        toast(errorData);
+        roomUtils.toast(errorData);
     }
 });

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 22:16:06
- * @LastEditTime: 2021-08-23 22:14:01
+ * @LastEditTime: 2021-08-27 01:14:22
  * @LastEditors: Please set LastEditors
  * @Description: 白板翻页
  * @FilePath: /superboard/js/room/flipPage.js
@@ -109,7 +109,7 @@ $('#nextStep').click(function() {
 $('#flipToPageBtn').click(function() {
     // 获取页面上输入的目标页，这里使用的是 layui，开发者可根据实际情况获取
     var page = layui.form.val('form2').targetPage;
-    if (!page) return toast('请输入目标页码，从 1 开始');
+    if (!page) return roomUtils.toast('请输入目标页码，从 1 开始');
 
     flipToPage(+page);
 });
@@ -128,7 +128,7 @@ $('#thumb-button').click(function() {
 
             flipToPageUtils.updateThumbListDomHandle(thumbnailUrlList, zegoSuperBoardSubView.getCurrentPage());
         } else {
-            toast('获取缩略图仅支持“PDF，PPT，动态PPT，H5”文件格式');
+            roomUtils.toast('获取缩略图仅支持“PDF，PPT，动态PPT，H5”文件格式');
         }
     }
 });

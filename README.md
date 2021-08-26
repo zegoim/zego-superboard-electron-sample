@@ -43,7 +43,7 @@ superboard
 ├─ main.css # 项目用到的非第三方 UI 的所有 CSS 样式
 └─ sdk # 项目引用的 ZEGO SDK
    ├─ ZegoSuperBoardWeb-2.0.0.js # ZEGO  超级白板 SDK
-   └─ ZegoExpressWebRTC-2.8.1.js # ZEGO 音视频 SDK
+   └─ ZegoExpressWebRTC-2.9.1.js # ZEGO 音视频 SDK
 
 ```
 

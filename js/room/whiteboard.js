@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 14:33:55
- * @LastEditTime: 2021-08-27 01:27:18
+ * @LastEditTime: 2021-08-27 11:42:14
  * @LastEditors: Please set LastEditors
  * @Description: 创建、销毁、切换、查询白板列表
  * @FilePath: /superboard/js/room/whiteboard.js
@@ -12,7 +12,7 @@ var cacheSheetMap = {}; // 缓存上次 excel 白板对应的 sheetIndex { uniqu
 
 /**
  * @description: 返回当前 ZegoSuperBoardSubView
- * @return {*} ZegoSuperBoardSubView | null;
+ * @return {ZegoSuperBoardSubView|null}
  */
 function getCurrentSuperBoardSubView() {
     var current = null;
@@ -27,7 +27,7 @@ function getCurrentSuperBoardSubView() {
 /**
  * @description: 判断当前文件是否有缩略图
  * @description: fileType 为 1、8、512、4096 时存在缩略图
- * @return {*} true: 有 false: 无
+ * @return {Boolearn} true: 有 false: 无
  */
 function hasThumb() {
     var current = getCurrentSuperBoardSubView();
@@ -40,9 +40,9 @@ function hasThumb() {
 }
 
 /**
- * @description: 判断当前文件是否可以切步，即是否是动态 PPT、自定义 H5
+ * @description: 判断当前文件是否可以切步，即是否是动态 PPT 文件白板、自定义 H5 白板
  * @description: fileType 为 512、4096 时可以切步
- * @return {*} true: 可以 false: 不可以
+ * @return {Boolearn} true: 可以 false: 不可以
  */
 function canJumpStep() {
     var current = getCurrentSuperBoardSubView();
@@ -55,19 +55,17 @@ function canJumpStep() {
 }
 
 /**
- * @description: 更新页面白板列表
+ * @description: 更新页面上白板列表下拉框
+ * @description: 非 Excel 白板时隐藏 sheetList 下拉框
+ * @description: 没有白板时初始化总页数、当前页数为 1
  */
 async function updateWhiteboardList() {
     // 获取 model 列表
     var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
     console.warn('SuperBoard Demo querySuperBoardSubViewList', modelList);
-    // 更新页面白板列表
     roomUtils.updateWhiteboardListDomHandle(modelList);
-    // 列表为空，隐藏页面 sheet 下拉框
     if (!modelList || !modelList.length) {
-        // 隐藏 sheet 下拉框
         roomUtils.toggleSheetSelectDomHandle(false);
-        // 初始化 currentPage、totalPage 为 1
         roomUtils.updateCurrPageDomHandle(1);
         roomUtils.updatePageCountDomHandle(1);
     }
@@ -75,8 +73,8 @@ async function updateWhiteboardList() {
 
 /**
  * @description: 根据 uniqueID 获取指定 SuperBoardSubViewModel
- * @param {*} uniqueID 白板标识
- * @return {*} SuperBoardSubViewModel
+ * @param {String} uniqueID 白板标识
+ * @return {SuperBoardSubViewModel} SuperBoardSubViewModel
  */
 async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
     var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
@@ -113,28 +111,28 @@ function onSuperBoardEventHandle() {
     zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewAdded', ...arguments);
         // 查询、更新页面白板列表，新增的白板 SDK 内部不会自动挂载
-        querySuperBoardSubViewList();
+        querySuperBoardSubViewListHandle();
     });
 
     // 监听远端销毁白板
     zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewRemoved', ...arguments);
         // 查询、更新页面白板列表，销毁的白板 SDK 内部会自动销毁
-        querySuperBoardSubViewList();
+        querySuperBoardSubViewListHandle();
     });
 
     // 监听远端切换白板
     zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewSwitched', ...arguments);
         // 查询、更新页面白板列表，切换的白板 SDK 内部会自动切换
-        querySuperBoardSubViewList();
+        querySuperBoardSubViewListHandle();
     });
 
     // 监听远端切换 Excel Sheet
     zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
         // 查询、更新页面白板列表，切换的 Excel Sheet SDK 内部会自动切换
-        querySuperBoardSubViewList();
+        querySuperBoardSubViewListHandle();
     });
 
     // 监听远端白板权限变更
@@ -175,7 +173,7 @@ async function createWhiteboardView() {
         roomUtils.toast('创建成功');
 
         // 查询、更新页面白板列表，创建成功后白板 SDK 内部会自动渲染
-        querySuperBoardSubViewList();
+        querySuperBoardSubViewListHandle();
 
         // 隐藏白板占位
         roomUtils.togglePlaceholderDomHandle(false);
@@ -189,7 +187,7 @@ async function createWhiteboardView() {
 
 /**
  * @description: 创建文件白板
- * @param {*} fileID 文件 ID
+ * @param {String} fileID 文件 ID
  */
 async function createFileView(fileID) {
     try {
@@ -203,12 +201,12 @@ async function createFileView(fileID) {
         roomUtils.toast('创建成功');
 
         // 查询、更新页面白板列表，创建成功后白板 SDK 内部会自动渲染
-        querySuperBoardSubViewList();
+        querySuperBoardSubViewListHandle();
 
         // 隐藏白板占位
         roomUtils.togglePlaceholderDomHandle(false);
         // 显示、隐藏打开缩略图弹框的按钮
-        roomUtils.toggleThumbBtnDomHandle(await hasThumb());
+        roomUtils.toggleThumbBtnDomHandle(hasThumb());
     } catch (errorData) {
         roomUtils.closeLoading();
         roomUtils.toast(errorData);
@@ -217,7 +215,7 @@ async function createFileView(fileID) {
 
 /**
  * @description: 销毁白板
- * @param {*} type 1: 销毁当前白板 2: 销毁所有白板
+ * @param {String} type 1: 销毁当前白板 2: 销毁所有白板
  */
 async function destroySuperBoardSubView(type) {
     if (type === 1) {
@@ -234,7 +232,7 @@ async function destroySuperBoardSubView(type) {
             roomUtils.toast('销毁成功');
 
             // 查询、更新页面白板列表，销毁成功后白板 SDK 内部会自动删除相关内容，并移除挂载的内容
-            querySuperBoardSubViewList();
+            querySuperBoardSubViewListHandle();
         } catch (errorData) {
             roomUtils.closeLoading();
             roomUtils.toast(errorData);
@@ -252,7 +250,7 @@ async function destroySuperBoardSubView(type) {
                 roomUtils.closeLoading();
             }
             // 查询、更新页面白板列表，销毁成功后白板 SDK 内部会自动删除相关内容，并移除挂载的内容
-            querySuperBoardSubViewList();
+            querySuperBoardSubViewListHandle();
         } catch (errorData) {
             roomUtils.closeLoading();
             roomUtils.toast(errorData);
@@ -262,9 +260,9 @@ async function destroySuperBoardSubView(type) {
 
 /**
  * @description: 查询、更新页面当前 Excel sheet 列表
- * @return {*} 当前挂载的 sheet index
+ * @return {Number} 当前挂载的 sheet index
  */
-function getExcelSheetNameList() {
+function getExcelSheetNameListHandle() {
     var sheetIndex = 0;
     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
     var zegoSuperBoardViewModel = zegoSuperBoardSubView.getModel();
@@ -275,7 +273,7 @@ function getExcelSheetNameList() {
 
     // 获取 sheetList
     var zegoExcelSheetNameList = zegoSuperBoardSubView.getExcelSheetNameList();
-    console.warn('SuperBoard Demo getExcelSheetNameList', zegoExcelSheetNameList);
+    console.warn('SuperBoard Demo getExcelSheetNameListHandle', zegoExcelSheetNameList);
 
     // 获取当前 sheetName 对应 sheetIndex
     zegoExcelSheetNameList.forEach(function(element, index) {
@@ -294,9 +292,9 @@ function getExcelSheetNameList() {
 /**
  * @description: 查询、更新页面白板列表
  * @description: 这里不做渲染白板操作，只是用来更新页面，开发者可根据实际情况处理
- * @return {*} { uniqueID: xx, sheetIndex: xx } 这里返回查询完成后，当前的 uniqueID，如果是 excel 白板，还返回 sheetIndex
+ * @return {Object} { uniqueID: xx, sheetIndex: xx } 这里返回查询完成后，当前的 uniqueID，如果是 excel 白板，还返回 sheetIndex
  */
-async function querySuperBoardSubViewList() {
+async function querySuperBoardSubViewListHandle() {
     var result = {
         uniqueID: 0,
         sheetIndex: 0
@@ -322,16 +320,16 @@ async function querySuperBoardSubViewList() {
         roomUtils.updatePageCountDomHandle(pageCount);
         roomUtils.updateCurrPageDomHandle(currentPage);
         // 判断是否显示页面上的切步按钮
-        roomUtils.toggleStepDomHandle(await canJumpStep());
+        roomUtils.toggleStepDomHandle(canJumpStep());
         // 判断是否显示页面上的缩略图按钮
-        roomUtils.toggleThumbBtnDomHandle(await hasThumb());
+        roomUtils.toggleThumbBtnDomHandle(hasThumb());
         // 判断是否需要禁止点击工具
         roomUtils.toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
         if (fileType === 4) {
             // excel 文件白板显示 sheet 下拉框
             roomUtils.toggleSheetSelectDomHandle(true);
             // 查询 sheet 列表
-            result.sheetIndex = await getExcelSheetNameList();
+            result.sheetIndex = getExcelSheetNameListHandle();
 
             // 缓存当前 excel 白板 的 sheet
             cacheSheetMap[result.uniqueID] = result.sheetIndex;
@@ -349,7 +347,7 @@ async function querySuperBoardSubViewList() {
 /**
  * @description: 重置白板工具，在动态 PPT 白板、自定义 H5 白板切换到其他白板时，如何当前是点击工具，主动重置为画笔
  * @description: 这里只展示功能，开发者可根据实际情况设置
- * @param {*} fileType 文件类型
+ * @param {Number} fileType 文件类型
  */
 function resetToolTypeAfterSwitch(fileType) {
     fileType !== 512 && fileType !== 4096 && zegoSuperBoard.getToolType() === 256 && initToolType();
@@ -371,8 +369,9 @@ function initToolType() {
 
 /**
  * @description: 根据目标 uniqueID 切换指定白板
+ * @param {String} uniqueID uniqueID
  */
-async function switchWhitebopard(uniqueID) {
+async function switchWhitebopardHandle(uniqueID) {
     var model = await getSuperBoardSubViewModelByUniqueID(uniqueID);
     var fileType = model.fileType;
 
@@ -389,7 +388,7 @@ async function switchWhitebopard(uniqueID) {
         // 除去 excel 白板，隐藏页面 sheet 列表
         roomUtils.toggleSheetSelectDomHandle(fileType === 4);
         // excel 白板，更新页面 sheet 列表
-        fileType === 4 && getExcelSheetNameList();
+        fileType === 4 && getExcelSheetNameListHandle();
 
         // 判断是否重置画笔工具
         resetToolTypeAfterSwitch(fileType);
@@ -420,7 +419,7 @@ async function switchWhitebopard(uniqueID) {
  * @description: 这里只展示监听下拉框，开发者根据实际情况处理
  */
 layui.form.on('select(whiteboardList)', async function(data) {
-    switchWhitebopard(data.value);
+    switchWhitebopardHandle(data.value);
 });
 
 /**
@@ -454,7 +453,7 @@ layui.form.on('select(sheetList)', async function(data) {
 /**
  * @description: 根据内置文件创建文件白板
  * @description: 这里只展示根据页面指定 fileID 创建文件白板，开发者可根据实际情况设置
- * @param {*} event event
+ * @param {Event} event event
  */
 function createFileViewByFileID(event) {
     var fileID = $(event.target).attr('data-file-id');
@@ -474,7 +473,7 @@ async function attachActiveView() {
     console.warn('SuperBoard Demo parent', $('#' + parentDomID)[0].clientWidth, $('#' + parentDomID)[0].clientHeight);
 
     // 查询当前白板列表
-    var result = await querySuperBoardSubViewList();
+    var result = await querySuperBoardSubViewListHandle();
     console.warn('SuperBoard Demo attachActiveView', result);
     // 进房自动挂载最新白板
     if (result.uniqueID) {
@@ -504,6 +503,9 @@ async function attachActiveView() {
     }
 }
 
+/**
+ * @description: 这里使用第三方 UI 插件 Layui，获取页面输入的 fileID，开发者可根据实际情况处理
+ */
 $('#createFileBtn').click(function() {
     var fileID = layui.form.val('form3').createFileID;
 

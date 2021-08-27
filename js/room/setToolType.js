@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-12 12:21:41
- * @LastEditTime: 2021-08-27 01:40:26
+ * @LastEditTime: 2021-08-27 11:12:18
  * @LastEditors: Please set LastEditors
  * @Description: 设置白板工具
  * @FilePath: /superboard/js/room/setToolType.js
@@ -36,7 +36,7 @@ function setToolType(toolType, event) {
             setCustomGraph(0, event);
         }
     } else {
-        // 目标工具类型为 undefined，仅实现功能定义，实际 SDK 没有这个类型
+        // 目标工具类型为 undefined，仅实现业务功能定义，实际 SDK 没有这个类型
         // 这里 toolType 为 undefined 表示是要选择图形: 矩形、椭圆、直线
         // 默认矩形
         var result = zegoSuperBoard.setToolType(8);

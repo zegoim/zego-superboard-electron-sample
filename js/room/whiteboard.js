@@ -98,8 +98,8 @@ function onSuperBoardEventHandle() {
     });
 
     // 监听白板翻页、滚动
-    zegoSuperBoard.on('superBoardSubViewScrolled', function (uniqueID, page, step) {
-        console.warn('SuperBoard Demo superBoardSubViewScrolled', ...arguments);
+    zegoSuperBoard.on('superBoardSubViewScrollChanged', function (uniqueID, page, step) {
+        console.warn('SuperBoard Demo superBoardSubViewScrollChanged', ...arguments);
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
             // 更新页面内容

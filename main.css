@@ -22,7 +22,7 @@ li {
   margin: 0;
 }
 
-/* 自定义字体 */
+/* Zego 自定义字体 */
 @font-face {
   font-family: 'ZgFont';
   src: url('./lib/SourceHanSansSC-Regular.otf');
@@ -690,8 +690,8 @@ li {
 #main-whiteboard {
   border: 1px solid #f0f8ff;
   position: relative;
-  width: 70vw;
-  height: 39.375vw;
+  width: 100%;
+  height: 100%;
   transition: width 0.1s, height 0.1s;
 }
 

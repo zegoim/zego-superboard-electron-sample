@@ -1,10 +1,10 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-18 19:00:57
+ * @LastEditTime: 2021-08-31 12:54:50
  * @LastEditors: Please set LastEditors
  * @Description: 入口
- * @FilePath: /superboard_demo_web/index.html
+ * @FilePath: /superboard/index.html
 -->
 
 <!DOCTYPE html>
@@ -28,6 +28,7 @@
     <!-- layui js 资源 -->
     <script src="./lib/layui.js"></script>
   </head>
+
   <body>
     <!-- 设置页 -->
     <div class="modal fade" id="settingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
@@ -306,7 +307,7 @@
               <button type="button" class="shareWhiteboard" onclick="createWhiteboardView()">
                 <span>互动白板</span>
               </button>
-              <button type="button" data-toggle="modal" data-target="#filelistModal">
+              <button id="shareFile" type="button" data-toggle="modal" data-target="#filelistModal">
                 <span>共享文件</span>
               </button>
             </div>
@@ -1923,6 +1924,7 @@
                           fill: #fff;
                           opacity: 0;
                         }
+
                         .cls-2 {
                           fill: #b0b3ba;
                         }
@@ -2555,7 +2557,7 @@
       </div>
       <!-- 缩略图弹框 -->
       <div id="thumbModal">
-        <div class="thumb-header">预览</div>
+        <div class="thumb-header">预览 <span style="float: right;cursor: pointer;">关闭</span></div>
         <ul class="thumb-main"></ul>
       </div>
       <!-- 选择文件弹框 -->
@@ -2631,7 +2633,7 @@
                 </div>
               </form>
               <div style="margin-bottom: 30px; text-align: center">
-                <button type="button" class="layui-btn layui-btn-sm" onclick="copyInviteLink()">
+                <button id="copyLintBtn" type="button" class="layui-btn layui-btn-sm">
                   复制邀请链接
                 </button>
               </div>
@@ -2661,6 +2663,7 @@
                           fill: #fff;
                           opacity: 0;
                         }
+
                         .cls-2,
                         .cls-3 {
                           fill: none;
@@ -2668,6 +2671,7 @@
                           stroke-miterlimit: 10;
                           stroke-width: 1.2px;
                         }
+
                         .cls-3 {
                           stroke-linecap: round;
                         }
@@ -2711,6 +2715,7 @@
                           fill: #fff;
                           opacity: 0;
                         }
+
                         .cls-2 {
                           fill: none;
                           stroke: #999;
@@ -2744,9 +2749,9 @@
     </div>
   </body>
   <!-- Express SDK -->
-  <script src="./sdk/ZegoExpressWebRTC-2.8.1.js"></script>
+  <script src="./sdk/ZegoExpressWebRTC-2.9.1.js"></script>
   <!-- 合并层 SDK -->
-  <script src="/ZegoSuperBoardWeb.js"></script>
+  <script src="./sdk/ZegoSuperBoardWeb-2.0.0.js"></script>
   <!-- 白板业务相关 -->
   <script src="./js/room/utils.js"></script>
   <!-- whiteboard -->

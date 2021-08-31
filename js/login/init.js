@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-18 18:12:29
+ * @LastEditTime: 2021-08-23 19:29:51
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard/js/login/init.js
@@ -9,7 +9,7 @@
 
 // 环境相关配置
 var zegoEnvConfig = {
-    env: getEnv(), // 1 国内 2 海外
+    env: loginUtils.getEnv(), // 1 国内 2 海外
     superBoardEnv: 'test', // 合并层 SDK 环境
     appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
@@ -23,7 +23,7 @@ var zegoEnvConfig = {
 
 // SDK 功能配置
 var zegoFeatureConfig = {
-    fontFamily: 'system', // 白板 SDK 字体
+    fontFamily: 'system', // Superboard SDK 字体
     thumbnailMode: '1', // 缩略图清晰度 1: 普通 2: 标清 3: 高清
     pptStepMode: '1', // PPT 切页模式 1: 正常 2: 不跳转
     dynamicPPT_HD: 'false', // false: 正常 true: 高清
@@ -35,8 +35,8 @@ var zegoFeatureConfig = {
 var zegoOtherConfig = {
     // 获取登录房间 token，开发者自行在后台实现改接口；测试环境可以使用 ZEGO 提供的接口获取（参考 https://doc-zh.zego.im/article/7638#3_3）
     tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
-    roomID: getRoomID(), // 房间 ID
-    userID: getUserID(), // 用户 ID
+    roomID: loginUtils.getRoomID(), // 房间 ID
+    userID: loginUtils.getUserID(), // 用户 ID
     userName: '' // 用户名称
 };
 
@@ -47,7 +47,7 @@ var zegoConfig = {
     ...zegoOtherConfig
 };
 
-var parentDomID = 'main-whiteboard'; // 白板、文件挂载的父容器
+var parentDomID = 'main-whiteboard'; // SupboardView 挂载的父容器
 var zegoEngine; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
 
@@ -64,7 +64,7 @@ function checkConfig() {
 
 /**
  * @description: 根据配置初始化 SDK
- * @return {*} token
+ * @return {String} token
  */
 async function initZegoSDK() {
     var appID = zegoConfig.appID;
@@ -87,7 +87,7 @@ async function initZegoSDK() {
 
     // 初始化合并层 SDK
     // 获取 token
-    var token = await getToken(appID, userID, zegoConfig.tokenUrl);
+    var token = await loginUtils.getToken(appID, userID, zegoConfig.tokenUrl);
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
     zegoSuperBoard.init(zegoEngine, {
         parentDomID,
@@ -117,6 +117,9 @@ function initExpressSDKConfig() {
  * @description: 根据配置初始化 SuperBoard SDK
  */
 function initSuperBoardSDKConfig() {
+    // 设置 alpha 环境
+    zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+
     // 设置字体
     if (zegoConfig.fontFamily === 'ZgFont') {
         document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;
@@ -139,24 +142,35 @@ function initSuperBoardSDKConfig() {
  */
 async function init() {
     try {
+        // 校验参数
         if (!checkConfig()) return;
+        // 获取已登录信息
         var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
-        // 判断是否已登录过
+        // 判断是否已登录
         if (loginInfo && loginInfo.roomID) {
+            // 已登录
             // 更新本地 zegoConfig
             Object.assign(zegoConfig, loginInfo);
+
+            // 初始化SDK
             var token = await initZegoSDK();
+            // 登录房间
             await loginRoom(token);
+
             // 显示房间页面
-            togglePageDomHandle(true);
-            // 挂载当前激活白板（room 内方法）
+            loginUtils.togglePageDomHandle(true);
+
+            // 挂载当前激活 SuperboardSubView（room 内方法）
             attachActiveView();
         } else {
+            // 未登录
             // 显示登录页面
-            togglePageDomHandle(false);
+            loginUtils.togglePageDomHandle(false);
         }
-        updateRoomIDDomHandle();
-        updateEnvDomHandle();
+        // 更新页面上房间号
+        loginUtils.updateRoomIDDomHandle(zegoConfig.roomID);
+        // 更新页面接入环境勾选
+        loginUtils.updateEnvDomHandle(zegoConfig.env);
     } catch (error) {
         console.error(error);
     }

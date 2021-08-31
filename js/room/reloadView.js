@@ -1,30 +1,29 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 20:04:01
- * @LastEditTime: 2021-08-18 16:27:20
+ * @LastEditTime: 2021-08-31 17:37:40
  * @LastEditors: Please set LastEditors
  * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
- * @FilePath: /superboard/js/reloadView.js
+ * @FilePath: /superboard/js/room/reloadView.js
  */
 
 // zegoSuperBoard 为全局 SuperBoard Instance
 // toast 为全局提示框，开发者根据实际情况使用相应的提示框
 // parentDomID 容器 ID
 
-var resizeTicking = false; // 自适应执行开关
+var resizeTicking = false; // 自适应执行开关，这里是延迟 1000 ms 执行
 
 // 白板大小自适应：监听页面 resize 事件
 window.addEventListener('resize', onResizeHandle);
 
 /**
  * @description: resize 回调
- * @param {*} e
- * @return {*}
  */
 function onResizeHandle() {
     if (!resizeTicking) {
         resizeTicking = true;
         setTimeout(function() {
+            // 容器尺寸自动变更后，自动重新加载白板 View
             autoReloadViewHandle();
             resizeTicking = false;
         }, 1000);
@@ -33,29 +32,25 @@ function onResizeHandle() {
 
 /**
  * @description: 重新加载白板 View
- * @param {*}
- * @return {*}
  */
-async function reloadViewHandle() {
+function reloadViewHandle() {
     // 未实例化之前，触发 resize 直接返回
     if (!zegoSuperBoard) return;
 
     var zegoSuperBoardView = zegoSuperBoard.getSuperBoardView();
     if (!zegoSuperBoardView) return;
 
-    var zegoSuperBoardSubView = await zegoSuperBoardView.getCurrentSuperBoardSubView();
+    var zegoSuperBoardSubView = zegoSuperBoardView.getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         // 当前有白板挂载
         setTimeout(function() {
             zegoSuperBoardSubView.reloadView();
-        }, 120); // 动画120ms
+        }, 120); // 动画 120 ms
     }
 }
 
 /**
  * @description: 容器尺寸自动变更后，自动重新加载白板 View
- * @param {*}
- * @return {*}
  */
 function autoReloadViewHandle() {
     updateSizeDomHandle();
@@ -82,15 +77,12 @@ function supportRequestFullscreen(dom) {
 
 /**
  * @description: 更新当前页面显示 width、height
- * @param {*}
- * @return {*}
  */
 function updateSizeDomHandle() {
     // 获取当前容器宽高
     var dom = document.getElementById(parentDomID);
 
-    // 初始化容器尺寸
-    dom.style.cssText += 'width:70vw;height:39.375vw;';
+    dom.style.cssText += 'width:100%;height:100%;';
 
     var width = dom.clientWidth + 2; // +边框
     var height = dom.clientHeight + 2; // +边框
@@ -114,10 +106,10 @@ function customReloadViewHandle() {
     var height_set = +layui.form.val('form2').parentHeight;
 
     // 判断当前自定义的尺寸，这里容器有 2px 边框，所以不允许小于 2，可视实际情况而定
-    // if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return toast('请输入有效的宽高值');
+    if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return roomUtils.toast('请输入有效的宽高值');
 
     // 为更好的显示页面布局效果，这里自定义的值不允许超过当前自适应的容器尺寸，可视实际情况而定
-    // if (width_set > width || height_set > height) return toast('请输入小于当前容器尺寸的宽高值');
+    // if (width_set > width || height_set > height) return roomUtils.toast('请输入小于当前容器尺寸的宽高值');
 
     // 更新容器尺寸
     dom.style.cssText += `width:${width_set}px;height:${height_set}px;`;
@@ -136,10 +128,10 @@ function customReloadViewHandle() {
 function fullScreenHandle() {
     supportRequestFullscreen(document.getElementById(parentDomID))
         .then(function() {
-            toast('已全屏');
+            roomUtils.toast('已全屏');
         })
         .catch(function() {
-            toast('当前浏览器不支持全屏');
+            roomUtils.toast('当前浏览器不支持全屏');
         });
 }
 

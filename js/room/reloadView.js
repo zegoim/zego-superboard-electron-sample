@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-08-09 20:04:01
- * @LastEditTime: 2021-08-27 01:15:14
+ * @LastEditTime: 2021-08-31 12:49:59
  * @LastEditors: Please set LastEditors
  * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
  * @FilePath: /superboard/js/room/reloadView.js
@@ -82,8 +82,7 @@ function updateSizeDomHandle() {
     // 获取当前容器宽高
     var dom = document.getElementById(parentDomID);
 
-    // 初始化容器尺寸
-    dom.style.cssText += 'width:70vw;height:39.375vw;';
+    dom.style.cssText += 'width:100%;height:100%;';
 
     var width = dom.clientWidth + 2; // +边框
     var height = dom.clientHeight + 2; // +边框
@@ -107,10 +106,10 @@ function customReloadViewHandle() {
     var height_set = +layui.form.val('form2').parentHeight;
 
     // 判断当前自定义的尺寸，这里容器有 2px 边框，所以不允许小于 2，可视实际情况而定
-    // if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return roomUtils.toast('请输入有效的宽高值');
+    if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return roomUtils.toast('请输入有效的宽高值');
 
     // 为更好的显示页面布局效果，这里自定义的值不允许超过当前自适应的容器尺寸，可视实际情况而定
-    // if (width_set > width || height_set > height) return roomUtils.toast('请输入小于当前容器尺寸的宽高值');
+    if (width_set > width || height_set > height) return roomUtils.toast('请输入小于当前容器尺寸的宽高值');
 
     // 更新容器尺寸
     dom.style.cssText += `width:${width_set}px;height:${height_set}px;`;

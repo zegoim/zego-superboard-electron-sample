@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-29 12:57:58
- * @LastEditTime: 2021-08-27 01:25:58
+ * @LastEditTime: 2021-09-10 11:07:07
  * @LastEditors: Please set LastEditors
  * @Description: 房间登录、登出相关
  * @FilePath: /superboard/js/login/login.js
@@ -134,6 +134,7 @@ $('#login-btn').click(async function() {
     //     fontFamily: "system",
     //     pptStepMode: "1",
     //     superBoardEnv: "test",
+    //     disableH5ImageDrag: "false",
     //     thumbnailMode: "1",
     //     unloadVideoSrc: "false",
     // }
@@ -147,6 +148,7 @@ $('#login-btn').click(async function() {
         userID: zegoConfig.userID,
         superBoardEnv: settingData.superBoardEnv,
         fontFamily: settingData.fontFamily,
+        disableH5ImageDrag: settingData.disableH5ImageDrag,
         thumbnailMode: settingData.thumbnailMode,
         pptStepMode: settingData.pptStepMode,
         dynamicPPT_HD: settingData.dynamicPPT_HD,

@@ -88,14 +88,14 @@ var roomUtils = {
     updateWhiteboardListDomHandle: function(zegoSuperBoardSubViewModelList) {
         var $str = '';
         $('#whiteboardList').html('');
-        zegoSuperBoardSubViewModelList.forEach(function(element) {
+        zegoSuperBoardSubViewModelList.forEach(function(element,index) {
             $str +=
                 '<option value="' +
                 element.uniqueID +
                 '" data-file-type="' +
                 element.fileType +
                 '">' +
-                element.name +
+                index  + '-' + element.name +
                 '</option>';
         });
         $('#whiteboardList').html($str);

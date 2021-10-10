@@ -20,10 +20,6 @@ window.addEventListener('keydown', async function(event) {
     if (!e) return;
     switch (e.keyCode) {
         case 8: // 监听 backspace 按键，批量删除选中图元
-        case 27: // Esc
-            await clearAllPage();
-            logoutRoom();
-            break;
         case 46: // 监听 Delete 按键，批量删除选中图元
             clearSelected();
             break;

@@ -15,7 +15,7 @@ var saveImg = 1; // 白板快照索引
 /**
  * @description: 监听按键清除选中图元
  */
-window.addEventListener('keydown', function(event) {
+window.addEventListener('keydown', async function(event) {
     var e = event || window.event || arguments.callee.caller.arguments[0];
     if (!e) return;
     switch (e.keyCode) {
@@ -31,9 +31,9 @@ window.addEventListener('keydown', function(event) {
 /**
  * @description: 清空所有页
  */
-function clearAllPage() {
+async function clearAllPage() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView && zegoSuperBoardSubView.clearAllPage();
+    zegoSuperBoardSubView && (await zegoSuperBoardSubView.clearAllPage());
 }
 
 /**

@@ -1,7 +1,7 @@
 /*
  * @Author: ZegoDev
  * @Date: 2021-07-28 14:58:21
- * @LastEditTime: 2021-08-23 19:29:51
+ * @LastEditTime: 2021-09-10 11:05:26
  * @LastEditors: Please set LastEditors
  * @Description: 初始化相关
  * @FilePath: /superboard/js/login/init.js
@@ -24,6 +24,7 @@ var zegoEnvConfig = {
 // SDK 功能配置
 var zegoFeatureConfig = {
     fontFamily: 'system', // Superboard SDK 字体
+    disableH5ImageDrag: 'false', // 图片是否禁用拖拽 true: 禁用 false: 正常
     thumbnailMode: '1', // 缩略图清晰度 1: 普通 2: 标清 3: 高清
     pptStepMode: '1', // PPT 切页模式 1: 正常 2: 不跳转
     dynamicPPT_HD: 'false', // false: 正常 true: 高清
@@ -124,6 +125,10 @@ function initSuperBoardSDKConfig() {
     if (zegoConfig.fontFamily === 'ZgFont') {
         document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;
     }
+
+    // 设置动态 PPT 内部图片是否可拖拽
+    zegoSuperBoard.setCustomizedConfig('disableH5ImageDrag', zegoConfig.disableH5ImageDrag);
+
     // 设置动态 PPT 步数切页模式
     zegoSuperBoard.setCustomizedConfig('pptStepMode', zegoConfig.pptStepMode);
     // 设置缩略图清晰度模式

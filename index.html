@@ -1,7 +1,7 @@
 <!--
  * @Author: ZegoDev
  * @Date: 2021-07-28 11:39:16
- * @LastEditTime: 2021-08-31 18:27:10
+ * @LastEditTime: 2021-10-13 17:13:25
  * @LastEditors: Please set LastEditors
  * @Description: 入口
  * @FilePath: /superboard/index.html
@@ -73,6 +73,15 @@
                     <option value="1">普通</option>
                     <option value="2">标清</option>
                     <option value="3">高清</option>
+                  </select>
+                </div>
+              </div>
+              <div class="layui-form-item" id="disableH5ImageDrag">
+                <label class="layui-form-label">PPT 图片拖拽</label>
+                <div class="layui-input-block">
+                  <select name="disableH5ImageDrag">
+                    <option value="false">正常</option>
+                    <option value="true">禁用</option>
                   </select>
                 </div>
               </div>
@@ -2754,9 +2763,9 @@
     </div>
   </body>
   <!-- Express SDK -->
-  <script src="./sdk/ZegoExpressWebRTC-2.10.1.js"></script>
+  <script src="./sdk/ZegoExpressWebRTC-2.11.0.js"></script>
   <!-- 合并层 SDK -->
-  <script src="./sdk/ZegoSuperBoardWeb-2.0.0.js"></script>
+  <script src="./sdk/ZegoSuperBoardWeb-2.1.0.js"></script>
   <!-- 白板业务相关 -->
   <script src="./js/room/utils.js"></script>
   <!-- whiteboard -->

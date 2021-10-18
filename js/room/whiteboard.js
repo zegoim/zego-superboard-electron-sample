@@ -196,7 +196,6 @@ async function createFileView(fileID) {
         await zegoSuperBoard.createFileView({
             fileID
         });
-
         roomUtils.closeLoading();
         roomUtils.toast('创建成功');
 
@@ -480,7 +479,8 @@ async function attachActiveView() {
         var superBoardView = zegoSuperBoard.getSuperBoardView();
         if (superBoardView) {
             try {
-                await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex);
+                //await superBoardView.switchSuperBoardSubView(result.uniqueID, result.sheetIndex);
+                await superBoardView.switchSuperBoardSubView(result.uniqueID);
                 var curView = superBoardView.getCurrentSuperBoardSubView();
                 var pageCount = curView.getPageCount();
                 var currPage = curView.getCurrentPage();
@@ -507,6 +507,14 @@ async function attachActiveView() {
  * @description: 这里使用第三方 UI 插件 Layui，获取页面输入的 fileID，开发者可根据实际情况处理
  */
 $('#createFileBtn').click(function () {
+    var fileID = layui.form.val('form3').createFileID;
+
+    if (!fileID) return roomUtils.toast('请输入 fileID');
+    // 创建文件白板
+    createFileView(fileID);
+});
+
+$('#getFileBtn').click(function () {
     var fileID = layui.form.val('form3').createFileID;
 
     if (!fileID) return roomUtils.toast('请输入 fileID');

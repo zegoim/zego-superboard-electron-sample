@@ -92,8 +92,9 @@ async function initZegoSDK() {
     var token = await loginUtils.getToken(appID, userID, zegoConfig.tokenUrl);
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
     /**
-     * 注意：
-     * isTestEnv 字段即将废弃，请使用多个 appID 作为环境区分。
+     * 初始化合并层 SDK
+     *
+     * @param isTestEnv 注意：isTestEnv 即将废弃，请使用多个 appID 作环境区分。
      */
     zegoSuperBoard.init(zegoEngine, {
         parentDomID,

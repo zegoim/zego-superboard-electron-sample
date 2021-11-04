@@ -70,19 +70,23 @@ function checkConfig() {
 async function initZegoSDK() {
     var appID = zegoConfig.appID;
     var userID = zegoConfig.userID;
-    var isTestEnv = zegoConfig.superBoardEnv === 'beta';
-    var appID = isTestEnv ? zegoConfig.appIDBeta : zegoConfig.appID;
-    var server = isTestEnv ? zegoConfig.serverBeta : zegoConfig.server;
+    var server = zegoConfig.server;
+
+    switch (zegoConfig.superBoardEnv) {
+        case 'beta':
+            appID = zegoConfig.appIDBeta;
+            server = zegoConfig.serverBeta
+            break;
+        case 'alpha':
+            appID = zegoConfig.appIDAlpha;
+            server = zegoConfig.serverAlpha
+            break;
+    }
 
     if (zegoConfig.env === '2') {
         // 海外环境，统一连接
         appID = zegoConfig.overseaAppID;
         server = zegoConfig.overseaServerProd;
-    }
-
-    if (zegoConfig.superBoardEnv === 'alpha') {
-        appID = zegoConfig.appIDAlpha;
-        server = zegoConfig.serverAlpha;
     }
 
     zegoEngine = new ZegoExpressEngine(appID, server);
@@ -124,7 +128,7 @@ function initExpressSDKConfig() {
  */
 function initSuperBoardSDKConfig() {
     // 设置 alpha 环境
-    zegoConfig.superBoardEnv === 'alpha' || zegoConfig.superBoardEnv === 'beta' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+    zegoConfig.superBoardEnv !== 'prod' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
 
     // 设置字体
     if (zegoConfig.fontFamily === 'ZgFont') {

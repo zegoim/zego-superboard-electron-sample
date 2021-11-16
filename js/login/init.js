@@ -119,6 +119,10 @@ function initExpressSDKConfig() {
     zegoEngine.setLogConfig({
         logLevel: 'disable'
     });
+    // 设置超级白板日志级别
+    zegoSuperBoard.setLogConfig({
+        logLevel: 'disable'
+    });
     // 关闭 debug
     zegoEngine.setDebugVerbose(false);
 }

@@ -10,15 +10,15 @@
 // 环境相关配置
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 国内 2 海外
-    superBoardEnv: 'test', // 合并层 SDK 环境
+    superBoardEnv: 'beta', // 合并层 SDK 环境
     appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
-    server: 'wss://webliveroom-test.zego.im/ws', // 国内测试环境
-    serverProd: 'wss://webliveroom3606078772-api.zego.im/ws', // 国内正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
-    overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // 海外测试环境
-    overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
-    alphaAppID: 1803117167, // alpha
-    alphaServer: 'wss://webliveroom1803117167-api.zego.im/ws' // alpha
+    server: 'wss://webliveroom3606078772-api.zego.im/ws', // 国内正式环境
+    appIDAlpha: 1803117167,
+    serverAlpha: 'wss://webliveroom1803117167-api.zego.im/ws', // 国内 alpha 环境
+    appIDBeta: 1100697004,
+    serverBeta: 'wss://webliveroom1100697004-api.zego.im/ws', // 国内 Beta 环境
+    overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
 };
 
 // SDK 功能配置
@@ -70,18 +70,23 @@ function checkConfig() {
 async function initZegoSDK() {
     var appID = zegoConfig.appID;
     var userID = zegoConfig.userID;
-    var isTestEnv = zegoConfig.superBoardEnv === 'test';
-    var server = isTestEnv ? zegoConfig.server : zegoConfig.serverProd;
+    var server = zegoConfig.server;
 
-    if (zegoConfig.env === '2') {
-        // 海外环境
-        appID = zegoConfig.overseaAppID;
-        server = isTestEnv ? zegoConfig.overseaServer : zegoConfig.overseaServerProd;
+    switch (zegoConfig.superBoardEnv) {
+        case 'beta':
+            appID = zegoConfig.appIDBeta;
+            server = zegoConfig.serverBeta
+            break;
+        case 'alpha':
+            appID = zegoConfig.appIDAlpha;
+            server = zegoConfig.serverAlpha
+            break;
     }
 
-    if (zegoConfig.superBoardEnv === 'alpha') {
-        appID = zegoConfig.alphaAppID;
-        server = zegoConfig.alphaServer;
+    if (zegoConfig.env === '2') {
+        // 海外环境，统一连接
+        appID = zegoConfig.overseaAppID;
+        server = zegoConfig.overseaServerProd;
     }
 
     zegoEngine = new ZegoExpressEngine(appID, server);
@@ -90,12 +95,14 @@ async function initZegoSDK() {
     // 获取 token
     var token = await loginUtils.getToken(appID, userID, zegoConfig.tokenUrl);
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
+    /**
+     * 初始化合并层 SDK
+     */
     zegoSuperBoard.init(zegoEngine, {
         parentDomID,
         userID,
         appID,
-        token,
-        isTestEnv
+        token
     });
 
     initExpressSDKConfig();
@@ -109,7 +116,13 @@ async function initZegoSDK() {
  */
 function initExpressSDKConfig() {
     // 设置日志级别
-    zegoEngine.setLogConfig({ logLevel: 'disable' });
+    zegoEngine.setLogConfig({
+        logLevel: 'disable'
+    });
+    // 设置超级白板日志级别
+    zegoSuperBoard.setLogConfig({
+        logLevel: 'disable'
+    });
     // 关闭 debug
     zegoEngine.setDebugVerbose(false);
 }
@@ -119,7 +132,7 @@ function initExpressSDKConfig() {
  */
 function initSuperBoardSDKConfig() {
     // 设置 alpha 环境
-    zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+    zegoConfig.superBoardEnv !== 'prod' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
 
     // 设置字体
     if (zegoConfig.fontFamily === 'ZgFont') {

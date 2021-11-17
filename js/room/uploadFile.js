@@ -29,10 +29,10 @@ var uploadFileUtils = {
      * @param {Object} fileListData 文件列表数据
      * @param {String} superBoardEnv 当前 ZegoSuperBoard SDK 环境
      */
-    updateFileListDomHandle: function(fileListData, superBoardEnv) {
+    updateFileListDomHandle: function (fileListData, superBoardEnv) {
         var fileList =
             fileListData[
-                superBoardEnv === 'test' ? 'docs_test' : superBoardEnv === 'alpha' ? 'docs_alpha' : 'docs_prod'
+                superBoardEnv === 'beta' || superBoardEnv === 'alpha' ? 'docs_alpha' : 'docs_prod'
             ];
         var $fileListCon = $('#file-list');
         // 清空原有
@@ -53,7 +53,7 @@ var uploadFileUtils = {
         });
         $fileListCon.html($str);
     },
-    closeFileDomHandle: function() {
+    closeFileDomHandle: function () {
         // 关闭文件列表所在弹框
         $('#filelistModal').modal('hide');
         // 关闭静态、动态上传下拉框
@@ -64,12 +64,12 @@ var uploadFileUtils = {
      * @description: 这里仅演示获取 fileList 的示例代码，开发者根据实际情况处理
      * @param {String} filelistUrl 文件列表的 URL
      */
-    getFilelist: function(filelistUrl = './fileList.json') {
-        return new Promise(function(resolve) {
+    getFilelist: function (filelistUrl = './fileList.json') {
+        return new Promise(function (resolve) {
             $.get(
                 filelistUrl,
                 null,
-                function(fileList) {
+                function (fileList) {
                     if (fileList) {
                         resolve(fileList);
                     }
@@ -89,10 +89,10 @@ function uploadFile(renderType, file) {
     if (!file) return roomUtils.toast('请先选择文件');
     //上传文件后转码后渲染模式类型，如果用户涉及到 iOS、Web、Windows、Mac、小程序各端的业务，推荐使用 VectorAndIMG 模式。
     zegoSuperBoard
-        .uploadFile(file, renderType, function(res) {
+        .uploadFile(file, renderType, function (res) {
             roomUtils.toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
         })
-        .then(function(fileID) {
+        .then(function (fileID) {
             uploadFileUtils.closeFileDomHandle();
 
             // 这里上传完成立即创建文件白板，开发者根据实际情况处理
@@ -114,7 +114,7 @@ layui.dropdown.render({
 /**
  * @description: 点击页面下方的‘文件’功能，查询当前文件列表，并更新页面
  */
-$('.share-item.file').click(async function() {
+$('.share-item.file').click(async function () {
     // 获取文件列表
     var fileListData = await uploadFileUtils.getFilelist();
 
@@ -125,7 +125,7 @@ $('.share-item.file').click(async function() {
 /**
  * @description: 点击页面中间的的‘共享文件’功能，查询当前文件列表，并更新页面
  */
-$('#shareFile').click(async function() {
+$('#shareFile').click(async function () {
     // 获取文件列表
     var fileListData = await uploadFileUtils.getFilelist();
 

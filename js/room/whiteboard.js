@@ -432,11 +432,10 @@ layui.form.on('select(sheetList)', async function (data) {
     // 拆分出 uniqueID、sheetIndex
     var uniqueID = temp[0];
     var sheetIndex = temp[1];
-
     try {
         roomUtils.loading('切换中');
 
-        await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, sheetIndex);
+        await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, +sheetIndex);
 
         // 缓存当前 excel 白板 的 sheet
         cacheSheetMap[uniqueID] = sheetIndex;

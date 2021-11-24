@@ -88,13 +88,14 @@ async function initZegoSDK() {
         appID = zegoConfig.overseaAppID;
         server = zegoConfig.overseaServerProd;
     }
-
-    zegoEngine = new ZegoExpressEngine(appID, server);
+    // 如果原先实例变量没有销毁，请继续使用
+    zegoEngine = zegoEngine || new ZegoExpressEngine(appID, server);
 
     // 初始化合并层 SDK
     // 获取 token
     var token = await loginUtils.getToken(appID, userID, zegoConfig.tokenUrl);
-    zegoSuperBoard = ZegoSuperBoardManager.getInstance();
+    // 如果原先实例变量没有销毁，请继续使用
+    zegoSuperBoard = zegoSuperBoard || ZegoSuperBoardManager.getInstance();
     /**
      * 初始化合并层 SDK
      */

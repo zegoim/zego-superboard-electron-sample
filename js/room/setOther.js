@@ -66,6 +66,30 @@ layui.form.on('switch(handwriting)', function() {
 });
 
 /**
+ * @description: 开启自定义光标
+ * @description: 监听页面自定义光标 switch 开关状态
+ * @description: 这里只展示监听方法，开发者根据实际情况监听
+ */
+layui.form.on('switch(enableCustomCursor)', function() {
+    // 获取当前 switch 的打开状态，开发者根据实际情况获取
+    // true: 打开（同步）false: 关闭（不同步）
+    var bool = this.checked;
+    zegoSuperBoard.enableCustomCursor(bool);
+});
+
+/**
+ * @description: 开启自定义光标
+ * @description: 监听页面自定义光标 switch 开关状态
+ * @description: 这里只展示监听方法，开发者根据实际情况监听
+ */
+layui.form.on('switch(enableRemoteCursorVisible)', function() {
+    // 获取当前 switch 的打开状态，开发者根据实际情况获取
+    // true: 打开（同步）false: 关闭（不同步）
+    var bool = this.checked;
+    zegoSuperBoard.enableRemoteCursorVisible(bool);
+});
+
+/**
  * @description: 设置画笔粗细
  * @param {Number} brushSize 画笔粗细
  * @param {Event} event event

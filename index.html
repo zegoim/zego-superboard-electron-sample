@@ -2400,6 +2400,20 @@
                 </div>
               </div>
               <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-inline" style="margin-left: 10px;">
+                  <input id="inputCustomCursorUrl" name="inputCustomCursorUrl" type="text" placeholder="请输入图片 URL" class="layui-input" />
+                </div>
+                <button
+                   id="setCustomCursorByURLBtn"
+                   type="button"
+                   class="layui-btn layui-btn-sm"
+                   style="margin-top: 3px"
+                >
+                  确定
+                </button>
+              </div>
+              <div class="layui-form-item">
                 <label class="layui-form-label">本地上传</label>
                 <div class="layui-input-block">
                   <button name="selectCursorImage" type="button" class="layui-btn layui-btn-sm" id="selectCursorImage">
@@ -2841,6 +2855,8 @@
   <script src="./js/room/setScaleFactor.js"></script>
   <!-- setBackgroundImage -->
   <script src="./js/room/setBackgroundImage.js"></script>
+  <!-- setCustomCursor -->
+  <script src="./js/room/setCustomCursor.js"></script>
   <!-- addImage -->
   <script src="./js/room/addImage.js"></script>
   <!-- uploadFile -->

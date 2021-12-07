@@ -1,6 +1,6 @@
 var cursorList = [
-    'https://docservice-storage-test.zego.im/00c483552faefc8df47184643f9defee/incoming/7e1b84d388e8141f587b96601d2a96ba',
-    'https://docservice-storage.zego.im/00c483552faefc8df47184643f9defee/incoming/2993fe2ad887be7e968b0bd08cfee27b'
+    'https://docservice-storage.zego.im/00c483552faefc8df47184643f9defee/incoming/4b2efa93e93367a47808cef55a179350?.png',
+    'https://docservice-storage.zego.im/00c483552faefc8df47184643f9defee/incoming/4add2d835617108c5644203b7ae894b3?.png'
 ]; // Zego 内置的自定义光标列表
 
 // 页面 DOM 加载完成更新背景图片列表到页面

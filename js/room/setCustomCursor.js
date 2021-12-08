@@ -43,7 +43,7 @@ layui.upload.render({
                 });
             } catch (errorData) {
                 console.error(errorData);
-                roomUtils.toast(errorData.code + '：' + errorData.msg);
+                roomUtils.toast(errorData.code + '：' + errorData.message);
             }
             roomUtils.toast('选择文件成功');
         });
@@ -69,7 +69,7 @@ layui.form.on('select(cursorUrl)', async function() {
         });
     } catch (errorData) {
         console.error(errorData);
-        roomUtils.toast(errorData.code + '：' + errorData.msg);
+        roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 

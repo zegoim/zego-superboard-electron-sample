@@ -13,6 +13,9 @@ var userList = []; // 房间内成员列表
  * @description: 监听房间成员变更
  */
 function onRoomUserUpdate() {
+    // zegoEngine.on('roomStateUpdate', function () {
+    //     console.warn('===roomStateUpdate===',...arguments)
+    // })
     zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
         if (type == 'ADD') {
             list.forEach(function(v) {
@@ -57,7 +60,7 @@ async function loginRoom(token) {
         // 注册 监听房间成员变更
         onRoomUserUpdate();
         // 登录房间
-        await zegoEngine.loginRoom(
+      let res =  await zegoEngine.loginRoom(
             zegoConfig.roomID,
             token,
             {
@@ -68,7 +71,7 @@ async function loginRoom(token) {
                 maxMemberCount: 10,
                 userUpdate: true
             }
-        );
+      );
         // 登录成功后，添加自己到成员列表
         pushOwn();
 
@@ -120,6 +123,9 @@ function logoutRoom() {
     roomUtils.toggleThumbBtnDomHandle(false);
     // 清空缩略图列表（room 内方法）
     flipToPageUtils.updateThumbListDomHandle([]);
+    // zegoSuperBoard.unInit()
+    // zegoSuperBoard = null;
+    // zegoEngine = null;
 }
 
 // 绑定登录房间事件

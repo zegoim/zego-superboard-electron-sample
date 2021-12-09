@@ -49,7 +49,7 @@ var zegoConfig = {
 };
 
 var parentDomID = 'main-whiteboard'; // SupboardView 挂载的父容器
-var zegoEngine; // Express SDK 实例
+var zegoEngine = {}; // Express SDK 实例
 var zegoSuperBoard; // 合并层 SDK 实例
 
 /**
@@ -89,13 +89,12 @@ async function initZegoSDK() {
         server = zegoConfig.overseaServerProd;
     }
     // 如果原先实例变量没有销毁，请继续使用
-    zegoEngine = zegoEngine || new ZegoExpressEngine(appID, server);
-
+    zegoEngine = new ZegoExpressEngine(appID, server);
     // 初始化合并层 SDK
     // 获取 token
     var token = await loginUtils.getToken(appID, userID, zegoConfig.tokenUrl);
     // 如果原先实例变量没有销毁，请继续使用
-    zegoSuperBoard = zegoSuperBoard || ZegoSuperBoardManager.getInstance();
+    zegoSuperBoard = ZegoSuperBoardManager.getInstance();
     /**
      * 初始化合并层 SDK
      */

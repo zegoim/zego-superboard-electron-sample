@@ -24,12 +24,13 @@ function initCursorListDomHandle() {
 }
 
 /**
- * @description: 选择本地背景图片
+ * @description: 选择本地光标图片
  * @description: 这里只展示选择本地文件，开发者根据实际情况处理
  */
 layui.upload.render({
     elem: '#selectCursorImage', // 绑定元素
-    accept: 'images', // 只接受 image 文件
+    // accept: 'images', // 只接受 image 文件
+    accept: 'file', // 只接受 image 文件
     auto: false, // 不自动上传
     choose: function(obj) {
         // 选择完文件的回调
@@ -41,11 +42,10 @@ layui.upload.render({
                     offsetX: +cursorOffsetX.value,
                     offsetY: +cursorOffsetY.value
                 });
+                roomUtils.toast('选择文件成功');
             } catch (errorData) {
-                console.error(errorData);
                 roomUtils.toast(errorData.code + '：' + errorData.message);
             }
-            roomUtils.toast('选择文件成功');
         });
     }
 });
@@ -92,7 +92,6 @@ $('#setCustomCursorByURLBtn').click(async function() {
             offsetY: +cursorOffsetY.value
         });
     } catch (errorData) {
-        console.error(errorData);
-        roomUtils.toast(errorData.code + '：' + errorData.msg);
+        roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });

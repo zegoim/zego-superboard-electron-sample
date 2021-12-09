@@ -88,7 +88,7 @@ async function initZegoSDK() {
         appID = zegoConfig.overseaAppID;
         server = zegoConfig.overseaServerProd;
     }
-    // 如果原先实例变量没有销毁，请继续使用
+   // 初始化 express sdk
     zegoEngine = new ZegoExpressEngine(appID, server);
     // 初始化合并层 SDK
     // 获取 token

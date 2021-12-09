@@ -124,8 +124,8 @@ function logoutRoom() {
     // 清空缩略图列表（room 内方法）
     flipToPageUtils.updateThumbListDomHandle([]);
     // zegoSuperBoard.unInit()
-    // zegoSuperBoard = null;
-    // zegoEngine = null;
+    zegoSuperBoard = null;
+    zegoEngine = null;
 }
 
 // 绑定登录房间事件

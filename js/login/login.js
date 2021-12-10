@@ -13,20 +13,17 @@ var userList = []; // 房间内成员列表
  * @description: 监听房间成员变更
  */
 function onRoomUserUpdate() {
-    // zegoEngine.on('roomStateUpdate', function () {
-    //     console.warn('===roomStateUpdate===',...arguments)
-    // })
-    zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
+    zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
         if (type == 'ADD') {
-            list.forEach(function(v) {
+            list.forEach(function (v) {
                 userList.push({
                     userID: v.userID,
                     userName: v.userName
                 });
             });
         } else if (type == 'DELETE') {
-            list.forEach(function(v) {
-                var index = userList.findIndex(function(item) {
+            list.forEach(function (v) {
+                var index = userList.findIndex(function (item) {
                     return v.userID == item.userID;
                 });
                 if (index != -1) {
@@ -123,13 +120,10 @@ function logoutRoom() {
     roomUtils.toggleThumbBtnDomHandle(false);
     // 清空缩略图列表（room 内方法）
     flipToPageUtils.updateThumbListDomHandle([]);
-    // zegoSuperBoard.unInit()
-    zegoSuperBoard = null;
-    zegoEngine = null;
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(async function() {
+$('#login-btn').click(async function () {
     // 校验输入参数 roomID、userName
     var result = checkInput();
     if (!result) return;

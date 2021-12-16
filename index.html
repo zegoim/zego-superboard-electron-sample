@@ -2387,10 +2387,10 @@
               <div class="layui-form-item">
                 <label class="layui-form-label">设置偏移量</label>
                 <div class="layui-input-inline" style="width: 100px;margin-left: 10px;">
-                  <input id="cursorOffsetX" name="cursorOffsetX" type="text" placeholder="偏移量X" value="0" class="layui-input" />
+                  <input id="cursorOffsetX" name="cursorOffsetX" type="text" placeholder="偏移量X" value="0" class="layui-input" oninput="value=value.replace('-','')" />
                 </div>
                 <div class="layui-input-inline" style="width: 100px; margin-left: 0">
-                  <input id="cursorOffsetY" name="cursorOffsetY" type="text" placeholder="偏移量Y" value="0" class="layui-input" />
+                  <input id="cursorOffsetY" name="cursorOffsetY" type="text" placeholder="偏移量Y" value="0" class="layui-input" oninput="value=value.replace('-','')" />
                 </div>
               </div>
               <div class="layui-form-item">

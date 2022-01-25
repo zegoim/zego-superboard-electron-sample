@@ -92,8 +92,10 @@ li {
 }
 
 /* SDK 设置 */
-#sdk-setting {
-  position: fixed;
+#sdk-setting,
+#sdk-version {
+  /* position: fixed; */
+  display: flex;
   color: #1751f5;
   padding: 5px;
   cursor: pointer;
@@ -228,7 +230,6 @@ li {
   border-left: 1px solid rgba(0, 0, 0, 0.125);
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
 }
 
 #left-header {

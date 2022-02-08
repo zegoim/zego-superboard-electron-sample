@@ -87,7 +87,19 @@ async function initZegoSDK() {
         server = zegoConfig.alphaServer;
     }
     console.warn('====superboard demo appid:', appID)
-    zegoEngine = new ZegoExpressEngine(appID, server);
+    // liveroom + wb
+    zegoEngine = new ZegoClient();
+    var config = zegoEngine.config({
+        "appid": appID, // 必填，应用id，请从 即构管理控制台-https://console.zego.im 获取
+        "idName": userID, // 必填，用户自定义id，全局唯一    
+        "nickName": 'web' + new Date().getTime(), // 必填，用户自定义昵称
+        "server": server, // 必填，接入服务器地址，请从 即构管理控制台-https://console.zego.im 获取
+        "logLevel": 0, //日志级别，debug:0,info:1,warn:2,error:3,report:99,disable:100（数字越大，日志越少），建议选择 1
+        "logUrl": "", // 非必填，logServer 地址，请从 即构管理控制台-https://console.zego.im 获取
+        "remoteLogLevel": 0, // 上传日志最低级别，建议跟 logLevel 一致
+        "audienceCreateRoom": true //是否允许观众创建房间，默认为true
+    })
+    console.warn('====liveroom config', config)
 
     // 初始化合并层 SDK
     // 获取 token
@@ -112,11 +124,11 @@ async function initZegoSDK() {
  */
 function initExpressSDKConfig() {
     // 设置日志级别
-    zegoEngine.setLogConfig({
-        logLevel: 'disable'
-    });
+    // zegoEngine.setLogConfig({
+    //     logLevel: 'disable'
+    // });
     // 关闭 debug
-    zegoEngine.setDebugVerbose(false);
+    // zegoEngine.setDebugVerbose(false);
 }
 
 /**

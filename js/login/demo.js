@@ -2,7 +2,7 @@
  * zego web demo 运行需要，开源时无需关注
  */
 
-if (location.port !== 4003) {
+if (location.port == 4003) {
   if (!getSDKVersionOptions) {
     // 获取 SDK 版本
     function getSDKVersionOptions(list) {

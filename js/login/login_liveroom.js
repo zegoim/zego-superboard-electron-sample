@@ -8,6 +8,7 @@
  */
 
 var userList = []; // 房间内成员列表
+var loginInfo = {}
 
 /**
  * @description: 监听房间成员变更
@@ -62,31 +63,32 @@ async function loginRoom(token) {
             1,
             token,
             function (...args) {
-              alert("登录成功");
+                console.error("登录成功");
+
+                // 登录成功后，添加自己到成员列表
+                pushOwn();
+
+                // 注册 Superboard 回调（room 内方法）
+                onSuperBoardEventHandle();
+
+                console.warn('===完成登陆')
+                // 存储 sessionStorage
+                sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
+                // 更新页面 url
+                loginUtils.updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
+                // 显示房间页
+                loginUtils.togglePageDomHandle(true);
+                // 更新页面房间号
+                loginUtils.updateRoomIDDomHandle(zegoConfig.roomID);
+
+                // 挂载当前激活 SuperboardSubView（room 内方法）
+                attachActiveView();
             },
             function (err) {
-              alert("登录失败");
-              console.log(err);
+                console.error("登录失败", err);
             }
-          );
-        
-        // await zegoEngine.loginRoom(
-        //     zegoConfig.roomID,
-        //     token,
-        //     {
-        //         userID: zegoConfig.userID,
-        //         userName: zegoConfig.userName
-        //     },
-        //     {
-        //         maxMemberCount: 10,
-        //         userUpdate: true
-        //     }
-        // );
-        // 登录成功后，添加自己到成员列表
-        pushOwn();
+        );
 
-        // 注册 Superboard 回调（room 内方法）
-        onSuperBoardEventHandle();
     } catch (error) {
         console.error(error);
     }
@@ -114,7 +116,7 @@ function checkInput() {
  */
 function logoutRoom() {
     // 退出房间
-    zegoEngine.logoutRoom(zegoConfig.roomID);
+    zegoEngine.logout(zegoConfig.roomID);
     // 清除 sessionStorage
     sessionStorage.removeItem('loginInfo');
     // 清空成员列表
@@ -136,7 +138,7 @@ function logoutRoom() {
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(async function() {
+$('#login-btn').click(async function () {
     // 校验输入参数 roomID、userName
     var result = checkInput();
     if (!result) return;
@@ -154,7 +156,7 @@ $('#login-btn').click(async function() {
     var settingData = layui.form.val('settingForm');
     // 获取当前勾选的接入环境
     var env = $('.inlineRadio:checked').val();
-    var loginInfo = {
+    loginInfo = {
         env,
         roomID: result.roomID,
         userName: result.userName,
@@ -175,17 +177,7 @@ $('#login-btn').click(async function() {
         var token = await initZegoSDK();
         // 登录房间
         await loginRoom(token);
-        // 存储 sessionStorage
-        sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
-        // 更新页面 url
-        loginUtils.updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
-        // 显示房间页
-        loginUtils.togglePageDomHandle(true);
-        // 更新页面房间号
-        loginUtils.updateRoomIDDomHandle(zegoConfig.roomID);
 
-        // 挂载当前激活 SuperboardSubView（room 内方法）
-        attachActiveView();
     } catch (error) {
         console.error(error);
     }

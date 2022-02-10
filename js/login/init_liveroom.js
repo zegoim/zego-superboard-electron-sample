@@ -183,11 +183,11 @@ async function init() {
 
             console.warn('=====demo login', login_res)
 
-            // 显示房间页面
-            loginUtils.togglePageDomHandle(true);
+            // // 显示房间页面
+            // loginUtils.togglePageDomHandle(true);
 
-            // 挂载当前激活 SuperboardSubView（room 内方法）
-            attachActiveView();
+            // // 挂载当前激活 SuperboardSubView（room 内方法）
+            // attachActiveView();
 
         } else {
             // 未登录

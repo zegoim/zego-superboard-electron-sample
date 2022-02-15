@@ -92,7 +92,7 @@ async function initZegoSDK() {
         appID = zegoConfig.alphaAppID;
         server = zegoConfig.alphaServer;
     }
-    console.warn('====superboard demo appid:', appID, zegoConfig.superBoardEnv)
+    console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID)
     zegoEngine = new ZegoExpressEngine(appID, server);
 
     // 初始化合并层 SDK
@@ -130,7 +130,7 @@ function initExpressSDKConfig() {
  */
 function initSuperBoardSDKConfig() {
     // 设置 alpha 环境
-    zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+    zegoConfig.superBoardEnv !== 'prod' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
 
     // 设置字体
     if (zegoConfig.fontFamily === 'ZgFont') {

@@ -10,11 +10,12 @@
 // 环境相关配置
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 国内 2 海外
-    superBoardEnv: 'test', // 合并层 SDK 环境
+    superBoardEnv: 'prod', // 合并层 SDK 环境
     appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     serverProd: 'wss://webliveroom3606078772-api.zego.im/ws', // 国内正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
     overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
-    server: 'wss://webliveroom-test.zego.im/ws', // 国内测试环境
+    betaAppID: 1100697004, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
+    betaServer: 'wss://webliveroom-test.zego.im/ws', // 国内测试环境
     overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // 海外测试环境
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
     // alphaAppID: 1803117167, // alpha
@@ -73,7 +74,7 @@ function checkConfig() {
 async function initZegoSDK() {
     var appID = zegoConfig.appID;
     var userID = zegoConfig.userID;
-    var isTestEnv = zegoConfig.superBoardEnv === 'test';
+    var isTestEnv = zegoConfig.superBoardEnv === 'beta';
     var server = isTestEnv ? zegoConfig.server : zegoConfig.serverProd;
 
     if (zegoConfig.env === '2') {
@@ -82,11 +83,16 @@ async function initZegoSDK() {
         server = isTestEnv ? zegoConfig.overseaServer : zegoConfig.overseaServerProd;
     }
 
+    if (zegoConfig.superBoardEnv === 'beta') {
+        appID = zegoConfig.betaAppID;
+        server = zegoConfig.betaServer;
+    }
+
     if (zegoConfig.superBoardEnv === 'alpha') {
         appID = zegoConfig.alphaAppID;
         server = zegoConfig.alphaServer;
     }
-    console.warn('====superboard demo appid:', appID)
+    console.warn('====superboard demo appid:', appID, zegoConfig.superBoardEnv)
     zegoEngine = new ZegoExpressEngine(appID, server);
 
     // 初始化合并层 SDK

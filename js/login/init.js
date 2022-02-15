@@ -15,7 +15,7 @@ var zegoEnvConfig = {
     serverProd: 'wss://webliveroom3606078772-api.zego.im/ws', // 国内正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
     overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     betaAppID: 1100697004, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
-    betaServer: 'wss://webliveroom-test.zego.im/ws', // 国内测试环境
+    betaServer: 'wss://webliveroom1100697004-api.zego.im/ws', // 国内测试环境
     overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // 海外测试环境
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
     // alphaAppID: 1803117167, // alpha

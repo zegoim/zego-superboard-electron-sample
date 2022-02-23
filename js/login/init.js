@@ -39,7 +39,8 @@ var zegoFeatureConfig = {
 // SDK 其他配置
 var zegoOtherConfig = {
     // 获取登录房间 token，开发者自行在后台实现改接口；测试环境可以使用 ZEGO 提供的接口获取（参考 https://doc-zh.zego.im/article/7638#3_3）
-    tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
+    // tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
+    tokenUrl: 'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
     roomID: loginUtils.getRoomID(), // 房间 ID
     userID: loginUtils.getUserID(), // 用户 ID
     userName: '' // 用户名称
@@ -97,7 +98,7 @@ async function initZegoSDK() {
 
     // 初始化合并层 SDK
     // 获取 token
-    var token = await loginUtils.getToken(appID, userID, zegoConfig.tokenUrl);
+    var token = await loginUtils.getToken(appID, userID, zegoConfig.roomID, zegoConfig.tokenUrl);
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
     zegoSuperBoard.init(zegoEngine, {
         parentDomID,

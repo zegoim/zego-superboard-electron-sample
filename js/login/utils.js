@@ -12,7 +12,7 @@ var loginUtils = {
      * @description: 显示、隐藏登录页、房间页
      * @param {Boolean} type true: 显示 false: 隐藏
      */
-    togglePageDomHandle: function(type) {
+    togglePageDomHandle: function (type) {
         if (type) {
             // 显示房间页
             $('#room-page').addClass('active');
@@ -28,7 +28,7 @@ var loginUtils = {
      * @description: 更新页面房间号
      * @param {String} roomID 房间 ID
      */
-    updateRoomIDDomHandle: function(roomID) {
+    updateRoomIDDomHandle: function (roomID) {
         // 登录页输入框
         $('#roomID').val(roomID);
         // 房间页左上角房间号
@@ -39,7 +39,7 @@ var loginUtils = {
      * @description: 更新页面接入环境勾选
      * @param {Number|String} env 接入环境 1: 国内 2: 海外
      */
-    updateEnvDomHandle: function(env) {
+    updateEnvDomHandle: function (env) {
         $('.radio-inline:nth-of-type(' + env + ') .inlineRadio').attr('checked', true);
         $('.radio-inline:nth-of-type(' + (env == 1 ? 2 : 1) + ') .inlineRadio').attr('checked', false);
     },
@@ -49,12 +49,12 @@ var loginUtils = {
      * @description: 列表中显示用户名称、用户 ID
      * @param {Array} userList [{userName: string; userID: string}]
      */
-    updateUserListDomHandle: function(userList) {
+    updateUserListDomHandle: function (userList) {
         $('#memberNum').html(userList.length);
         $('#subMemberNum').html(userList.length);
         $('#user-list').html('');
         var $str = '';
-        userList.forEach(function(element) {
+        userList.forEach(function (element) {
             $str += '<li class="user-item">' + element.userName + ' (' + element.userID + ')' + '</li>';
         });
         $('#user-list').html($str);
@@ -67,21 +67,48 @@ var loginUtils = {
      * @param {String} tokenUrl 获取 token 的 URL
      * @return {Promise} Promise<token: string>
      */
-    getToken: function(appID, userID, tokenUrl) {
-        return new Promise(function(resolve) {
-            $.get(
-                tokenUrl,
-                {
-                    app_id: appID,
-                    id_name: userID
-                },
-                function(token) {
-                    if (token) {
-                        resolve(token);
+    // getToken: function(appID, userID, tokenUrl) {
+    //     return new Promise(function(resolve) {
+    //         $.get(
+    //             tokenUrl,
+    //             {
+    //                 app_id: appID,
+    //                 id_name: userID
+    //             },
+    //             function(token) {
+    //                 if (token) {
+    //                     resolve(token);
+    //                 }
+    //             },
+    //             'text'
+    //         );
+    //     });
+    // },
+
+    getToken: function (appId, idName, roomId, tokenUrl) {
+        return new Promise(function (resolve) {
+            $.ajax({
+                type: 'post',
+                contentType: "application/json",
+                dataType: "json",
+                url: tokenUrl,
+                data: JSON.stringify({
+                    version: "04",
+                    appId,
+                    idName,
+                    roomId,
+                    privilege: {
+                        "1": 1,
+                        "2": 1
+                    },
+                    expire_time: 300
+                }),
+                success: function (data) {
+                    if (data.data.token) {
+                        resolve(data.data.token);
                     }
-                },
-                'text'
-            );
+                }
+            });
         });
     },
 
@@ -90,7 +117,7 @@ var loginUtils = {
      * @param {String} variable 目标参数
      * @returns {String|Boolean} 没有查询到则返回 false
      */
-    getQueryVariable: function(variable) {
+    getQueryVariable: function (variable) {
         var query = window.location.search.substring(1);
         var vars = query.split('&');
         for (var i = 0; i < vars.length; i++) {
@@ -107,7 +134,7 @@ var loginUtils = {
      * @description: 这里 roomID 由 URL 中的 roomID、页面输入框中的 roomID、sessionStorage.loginInfo 中的 roomID 最终决定
      * @returns {String}
      */
-    getRoomID: function() {
+    getRoomID: function () {
         // 获取 URL 中 roomID，邀请链接中会携带 roomID，若存在以 URL 中的值为准
         var roomID = loginUtils.getQueryVariable('roomID') || '';
         // 获取已登录的 loginInfo
@@ -121,7 +148,10 @@ var loginUtils = {
                     roomID = loginInfo.roomID;
                 } else {
                     // 更新 loginInfo 中 roomID
-                    sessionStorage.setItem('loginInfo', JSON.stringify({ ...loginInfo, roomID }));
+                    sessionStorage.setItem('loginInfo', JSON.stringify({
+                        ...loginInfo,
+                        roomID
+                    }));
                 }
             }
         }
@@ -134,7 +164,7 @@ var loginUtils = {
      * @description: 这里 env 由 URL 中的 env、页面输入框中的 env、sessionStorage.loginInfo 中的 env、默认值最终决定
      * @returns {String} '1': 国内 '2': 海外
      */
-    getEnv: function() {
+    getEnv: function () {
         // 获取 URL 中 env，邀请链接中会携带 env
         var env = loginUtils.getQueryVariable('env') || '';
 
@@ -149,7 +179,10 @@ var loginUtils = {
                     env = loginInfo.env;
                 } else {
                     // 更新 loginInfo 中 env
-                    sessionStorage.setItem('loginInfo', JSON.stringify({ ...loginInfo, env }));
+                    sessionStorage.setItem('loginInfo', JSON.stringify({
+                        ...loginInfo,
+                        env
+                    }));
                 }
             }
         }
@@ -162,7 +195,7 @@ var loginUtils = {
      * @description: 生成过的 userID 会存储在 sessionStorage 中，没有清除的情况下会一直使用该 userID
      * @returns {String} 新生成或者原来的 userID
      */
-    getUserID: function() {
+    getUserID: function () {
         // 获取已登录的 userID
         var loginInfo = sessionStorage.getItem('loginInfo');
         var userID;
@@ -170,7 +203,9 @@ var loginUtils = {
             userID = JSON.parse(loginInfo).userID;
         } else {
             userID = 'web' + new Date().getTime();
-            sessionStorage.setItem('loginInfo', JSON.stringify({ userID }));
+            sessionStorage.setItem('loginInfo', JSON.stringify({
+                userID
+            }));
         }
         return userID;
     },
@@ -182,12 +217,14 @@ var loginUtils = {
      * @param {String} key2 字段名称2
      * @param {String|Number} value2 字段值2
      */
-    updateUrl: function(key1, value1, key2, value2) {
+    updateUrl: function (key1, value1, key2, value2) {
         var url = window.location.href;
         var newUrl1 = loginUtils.updateQueryStringParameter(url, key1, value1);
         var newUrl2 = loginUtils.updateQueryStringParameter(newUrl1, key2, value2);
         // 向当前 URL 添加参数，没有历史记录，不刷新页面
-        window.history.replaceState({ path: newUrl2 }, '', newUrl2);
+        window.history.replaceState({
+            path: newUrl2
+        }, '', newUrl2);
     },
 
     /**
@@ -197,7 +234,7 @@ var loginUtils = {
      * @param {String|Number} value 字段值
      * @returns {String} 更新完成后的 URL
      */
-    updateQueryStringParameter: function(url, key, value) {
+    updateQueryStringParameter: function (url, key, value) {
         if (!value) return url;
 
         var re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');

@@ -85,23 +85,23 @@ var loginUtils = {
     //     });
     // },
 
-    getToken: function (appId, idName, roomId, tokenUrl) {
+    getToken: function (expire_time) {
         return new Promise(function (resolve) {
             $.ajax({
                 type: 'post',
                 contentType: "application/json",
                 dataType: "json",
-                url: tokenUrl,
+                url: zegoOtherConfig.tokenUrl,
                 data: JSON.stringify({
                     version: "04",
-                    appId,
-                    idName,
-                    roomId,
+                    appId: zegoConfig.appID,
+                    idName: zegoConfig.userID,
+                    roomId: zegoConfig.roomID,
                     privilege: {
                         "1": 1,
                         "2": 1
                     },
-                    expire_time: 300
+                    expire_time
                 }),
                 success: function (data) {
                     if (data.data.token) {

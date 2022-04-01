@@ -95,10 +95,10 @@ async function initZegoSDK() {
     }
     console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID)
     zegoEngine = new ZegoExpressEngine(appID, server);
-
+    var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
+    console.error('loginInfo', loginInfo)
     // 初始化合并层 SDK
-    // 获取 token
-    var token = await loginUtils.getToken(appID, userID, zegoConfig.roomID, zegoConfig.tokenUrl);
+    var token = $('#token').val() || loginInfo.token
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
     zegoSuperBoard.init(zegoEngine, {
         parentDomID,

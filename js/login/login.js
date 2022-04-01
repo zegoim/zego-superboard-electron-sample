@@ -10,20 +10,20 @@
 var userList = []; // 房间内成员列表
 
 /**
- * @description: 监听房间成员变更
+ * @description: 监听 zegoEngine
  */
-function onRoomUserUpdate() {
-    zegoEngine.on('roomUserUpdate', function(roomID, type, list) {
+function onZegoEngineEvent() {
+    zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
         if (type == 'ADD') {
-            list.forEach(function(v) {
+            list.forEach(function (v) {
                 userList.push({
                     userID: v.userID,
                     userName: v.userName
                 });
             });
         } else if (type == 'DELETE') {
-            list.forEach(function(v) {
-                var index = userList.findIndex(function(item) {
+            list.forEach(function (v) {
+                var index = userList.findIndex(function (item) {
                     return v.userID == item.userID;
                 });
                 if (index != -1) {
@@ -34,6 +34,10 @@ function onRoomUserUpdate() {
         // 更新房间页房间成员列表弹框
         loginUtils.updateUserListDomHandle(userList);
     });
+
+    zegoEngine.on('tokenWillExpire', function (roomID) {
+        console.warn('superboard tokenWillExpire')
+    })
 }
 
 /**
@@ -54,17 +58,15 @@ function pushOwn() {
  */
 async function loginRoom(token) {
     try {
-        // 注册 监听房间成员变更
-        onRoomUserUpdate();
+        // 注册 监听
+        onZegoEngineEvent();
         // 登录房间
         await zegoEngine.loginRoom(
             zegoConfig.roomID,
-            token,
-            {
+            token, {
                 userID: zegoConfig.userID,
                 userName: zegoConfig.userName
-            },
-            {
+            }, {
                 maxMemberCount: 10,
                 userUpdate: true
             }
@@ -123,7 +125,7 @@ function logoutRoom() {
 }
 
 // 绑定登录房间事件
-$('#login-btn').click(async function() {
+$('#login-btn').click(async function () {
     // 校验输入参数 roomID、userName
     var result = checkInput();
     if (!result) return;
@@ -153,7 +155,8 @@ $('#login-btn').click(async function() {
         pptStepMode: settingData.pptStepMode,
         dynamicPPT_HD: settingData.dynamicPPT_HD,
         dynamicPPT_AutomaticPage: settingData.dynamicPPT_AutomaticPage,
-        unloadVideoSrc: settingData.unloadVideoSrc
+        unloadVideoSrc: settingData.unloadVideoSrc,
+        token: $('#token').val()
     };
     // 更新本地 zegoConfig
     Object.assign(zegoConfig, loginInfo);

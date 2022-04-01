@@ -58,6 +58,12 @@
                 </select>
               </div>
             </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">token</label>
+              <div class="layui-input-block">
+                <input class="form-control" type="text" id="token">
+              </div>
+            </div>
             <div class="layui-form-item" id="fontFamily">
               <label class="layui-form-label">字体类型</label>
               <div class="layui-input-block">
@@ -1379,6 +1385,27 @@
                 <button id="fullScreenBtn" type="button" class="layui-btn layui-btn-sm">全屏</button>
               </div>
             </div>
+            <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
+            <!-- token -->
+            <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
+              token 更新
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">有效期</label>
+              <div class="layui-input-inline" style="width: 146px;margin-left: 10px;">
+                <input name="token" type="text" placeholder="token有效期（s）" class="layui-input" id="newToken" />
+              </div>
+              <button id="getNewTokenBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                确定
+              </button>
+            </div>
+            <!-- 更新 token -->
+            <div class="layui-form-item">
+              <label class="layui-form-label">更新 token</label>
+              <button id="renewTokenBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                确定
+              </button>
+            </div>
           </form>
         </div>
         <!-- 文件 -->
@@ -1612,7 +1639,7 @@
   </div>
 </body>
 <!-- Express SDK -->
-<script src="./sdk/ZegoExpressWebRTC-2.12.3.js"></script>
+<script src="./sdk/ZegoExpressWebRTC-2.14.0.js"></script>
 <!-- 合并层 SDK -->
 <!-- <script src="./sdk/jZego-rtc-2.6.0.js"></script> -->
 <!-- <script src="./sdk/ZegoExpressWebRTC-2.13.0.js"></script> -->

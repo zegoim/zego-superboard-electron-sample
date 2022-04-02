@@ -60,32 +60,22 @@ var loginUtils = {
         $('#user-list').html($str);
     },
 
-    /**
-     * @description: 这里仅演示获取 token 的示例代码
-     * @param {Number} appID appID
-     * @param {String} userID userID
-     * @param {String} tokenUrl 获取 token 的 URL
-     * @return {Promise} Promise<token: string>
-     */
-    // getToken: function(appID, userID, tokenUrl) {
-    //     return new Promise(function(resolve) {
-    //         $.get(
-    //             tokenUrl,
-    //             {
-    //                 app_id: appID,
-    //                 id_name: userID
-    //             },
-    //             function(token) {
-    //                 if (token) {
-    //                     resolve(token);
-    //                 }
-    //             },
-    //             'text'
-    //         );
-    //     });
-    // },
-
     getToken: function (expire_time) {
+        var appId = 0;
+        switch (zegoConfig.superBoardEnv) {
+            case 'prod':
+                appId = zegoConfig.appID
+                break;
+            case 'beta':
+                appId = zegoConfig.betaAppID
+                break;
+            case 'alpha':
+                appId = zegoConfig.alphaAppID
+                break;
+            default:
+                break;
+        }
+
         return new Promise(function (resolve) {
             $.ajax({
                 type: 'post',
@@ -94,7 +84,7 @@ var loginUtils = {
                 url: zegoOtherConfig.tokenUrl,
                 data: JSON.stringify({
                     version: "04",
-                    appId: zegoConfig.appID,
+                    appId,
                     idName: zegoConfig.userID,
                     roomId: zegoConfig.roomID,
                     privilege: {

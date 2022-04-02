@@ -35,8 +35,14 @@ function onZegoEngineEvent() {
         loginUtils.updateUserListDomHandle(userList);
     });
 
-    zegoEngine.on('tokenWillExpire', function (roomID) {
-        console.warn('superboard tokenWillExpire')
+    zegoEngine.on('tokenWillExpire', async function (roomID) {
+        console.warn('superboard tokenWillExpire', roomID)
+        var newtoken = await loginUtils.getToken(45)
+        zegoEngine.renewToken(newtoken)
+        zegoSuperBoard.renewToken(newtoken)
+        var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
+        loginInfo.token = newtoken
+        sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo))
     })
 }
 

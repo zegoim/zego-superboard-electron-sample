@@ -18,11 +18,11 @@ var zegoEnvConfig = {
     betaServer: 'wss://webliveroom1100697004-api.zego.im/ws', // 国内测试环境
     overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // 海外测试环境
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
-    // alphaAppID: 1803117167, // alpha
-    // alphaServer: 'wss://webliveroom1803117167-api.zego.im/ws' // alpha
+    alphaAppID: 1803117167, // alpha
+    alphaServer: 'wss://webliveroom1803117167-api.zego.im/ws' // alpha
     // 统一接入
-    alphaAppID: 3104114736,
-    alphaServer: 'wss://webliveroom-alpha.zego.im/ws'
+    // alphaAppID: 3104114736,
+    // alphaServer: 'wss://webliveroom-alpha.zego.im/ws'
 };
 
 // SDK 功能配置
@@ -94,6 +94,7 @@ async function initZegoSDK() {
         server = zegoConfig.alphaServer;
     }
     console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID)
+    console.error('zegoConfig', zegoConfig)
     zegoEngine = new ZegoExpressEngine(appID, server);
     var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
     console.error('loginInfo', loginInfo)

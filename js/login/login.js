@@ -94,13 +94,15 @@ async function loginRoom(token) {
 function checkInput() {
     var roomID = $('#roomID').val();
     var userName = $('#userName').val();
-    if (!userName || !roomID) {
-        alert('请输入用户名和房间 ID');
+    var userID = $('#userID').val()
+    if (!userName || !roomID || !userID) {
+        alert('请输入用户名、房间 ID 和 userID！');
         return false;
     }
     return {
         roomID,
-        userName
+        userName,
+        userID
     };
 }
 
@@ -132,7 +134,7 @@ function logoutRoom() {
 
 // 绑定登录房间事件
 $('#login-btn').click(async function () {
-    // 校验输入参数 roomID、userName
+    // 校验输入参数 roomID、userName、userID
     var result = checkInput();
     if (!result) return;
     // 获取页面上设置的配置信息，这里使用的是 layui，返回值如下，开发者可根据实际情况获取
@@ -153,7 +155,8 @@ $('#login-btn').click(async function () {
         env,
         roomID: result.roomID,
         userName: result.userName,
-        userID: zegoConfig.userID,
+        userID: result.userID,
+        // userID: zegoConfig.userID,
         superBoardEnv: settingData.superBoardEnv,
         fontFamily: settingData.fontFamily,
         disableH5ImageDrag: settingData.disableH5ImageDrag,
@@ -161,8 +164,7 @@ $('#login-btn').click(async function () {
         pptStepMode: settingData.pptStepMode,
         dynamicPPT_HD: settingData.dynamicPPT_HD,
         dynamicPPT_AutomaticPage: settingData.dynamicPPT_AutomaticPage,
-        unloadVideoSrc: settingData.unloadVideoSrc,
-        token: $('#token').val()
+        unloadVideoSrc: settingData.unloadVideoSrc
     };
     // 更新本地 zegoConfig
     Object.assign(zegoConfig, loginInfo);
@@ -174,7 +176,7 @@ $('#login-btn').click(async function () {
         // 存储 sessionStorage
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
         // 更新页面 url
-        loginUtils.updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env);
+        loginUtils.updateUrl('roomID', loginInfo.roomID, 'env', loginInfo.env), 'userID', loginInfo.userID;
         // 显示房间页
         loginUtils.togglePageDomHandle(true);
         // 更新页面房间号

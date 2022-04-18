@@ -83,7 +83,7 @@ var loginUtils = {
                 dataType: "json",
                 url: zegoOtherConfig.tokenUrl,
                 data: JSON.stringify({
-                    version: "04",
+                    version: "03",
                     appId,
                     idName: zegoConfig.userID,
                     roomId: zegoConfig.roomID,
@@ -186,9 +186,10 @@ var loginUtils = {
      * @returns {String} 新生成或者原来的 userID
      */
     getUserID: function () {
+        var userID = loginUtils.getQueryVariable('userID') || '';
         // 获取已登录的 userID
         var loginInfo = sessionStorage.getItem('loginInfo');
-        var userID;
+        // var userID;
         if (loginInfo) {
             userID = JSON.parse(loginInfo).userID;
         } else {
@@ -198,6 +199,7 @@ var loginUtils = {
             }));
         }
         return userID;
+
     },
 
     /**

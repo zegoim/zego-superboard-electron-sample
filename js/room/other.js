@@ -111,3 +111,20 @@ $('#renewTokenBtn').click(function () {
     loginInfo.token = newtoken
     sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo))
 })
+
+/**
+ * @description: 监听下拉框，设置日志等级
+ * @description: 这里只展示下拉框的选择监听，开发者根据实际情况处理
+ */
+layui.form.on('select(logLevel)', async function () {
+    var formData = layui.form.val('form3');
+    var logLevel = formData.logLevel;
+
+    try {
+        await zegoSuperBoard.setLogConfig({
+            logLevel: logLevel
+        });
+    } catch (errorData) {
+        roomUtils.toast(errorData.code + '：' + errorData.message);
+    }
+});

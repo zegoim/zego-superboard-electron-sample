@@ -58,12 +58,6 @@
                 </select>
               </div>
             </div>
-            <div class="layui-form-item">
-              <label class="layui-form-label">token</label>
-              <div class="layui-input-block">
-                <input class="form-control" type="text" id="token">
-              </div>
-            </div>
             <div class="layui-form-item" id="fontFamily">
               <label class="layui-form-label">字体类型</label>
               <div class="layui-input-block">
@@ -151,6 +145,7 @@
         <p class="form-title">SuperBoard</p>
         <input id="roomID" class="form-control" type="text" placeholder="请输入房间 ID" />
         <input id="userName" class="form-control" type="text" placeholder="请输入用户名称" />
+        <input id="userID" class="form-control" type="text" placeholder="请输入 userID" />
         <button type="button" id="login-btn" class="btn btn-primary">
           加入房间
         </button>
@@ -1454,6 +1449,24 @@
                 创建
               </button>
             </div>
+            <!-- 日志等级设置 -->
+            <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
+              日志设置
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label">日志等级</label>
+              <div class="layui-input-block">
+                <select name="logLevel" lay-filter="logLevel">
+                  <option value="debug">debug</option>
+                  <option value="info">info</option>
+                  <option value="warn">warn</option>
+                  <option value="error">error</option>
+                  <option value="report">report</option>
+                  <option value="disable">disable</option>
+                </select>
+              </div>
+            </div>
+
           </form>
         </div>
       </div>

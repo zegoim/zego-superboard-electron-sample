@@ -13,8 +13,8 @@ var zegoEnvConfig = {
     superBoardEnv: 'prod', // 合并层 SDK 环境
     appID: 3606078772, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
     serverProd: 'wss://webliveroom3606078772-api.zego.im/ws', // 国内正式环境 `wss://webliveroom${appID}-api.zego.im/ws`
-    overseaAppID: 1068511430, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
-    betaAppID: 1100697004, // 从 ZEGO 申请的 appID（参考 https://doc-zh.zego.im/article/7638#3_3）
+    overseaAppID: 1068511430,
+    betaAppID: 1100697004,
     betaServer: 'wss://webliveroom1100697004-api.zego.im/ws', // 国内测试环境
     overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // 海外测试环境
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
@@ -23,6 +23,7 @@ var zegoEnvConfig = {
     // 统一接入
     // alphaAppID: 3104114736,
     // alphaServer: 'wss://webliveroom-alpha.zego.im/ws'
+    // token:''
 };
 
 // SDK 功能配置
@@ -43,7 +44,7 @@ var zegoOtherConfig = {
     tokenUrl: 'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
     roomID: loginUtils.getRoomID(), // 房间 ID
     userID: loginUtils.getUserID(), // 用户 ID
-    userName: '' // 用户名称
+    userName: '', // 用户名称
 };
 
 // 配置集合
@@ -94,12 +95,13 @@ async function initZegoSDK() {
         server = zegoConfig.alphaServer;
     }
     console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID)
-    console.error('zegoConfig', zegoConfig)
+
     zegoEngine = new ZegoExpressEngine(appID, server);
-    var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
-    console.error('loginInfo', loginInfo)
+
+    // 获取 token
+    var token = await loginUtils.getToken(appID, userID, zegoConfig.roomID, zegoConfig.tokenUrl);
+
     // 初始化合并层 SDK
-    var token = $('#token').val() || loginInfo.token
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
     zegoSuperBoard.init(zegoEngine, {
         parentDomID,

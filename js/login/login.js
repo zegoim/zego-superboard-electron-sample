@@ -14,25 +14,29 @@ var userList = []; // 房间内成员列表
  */
 function onZegoEngineEvent() {
     zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
-        if (type == 'ADD') {
-            list.forEach(function (v) {
-                userList.push({
-                    userID: v.userID,
-                    userName: v.userName
+        try {
+            if (type == 'ADD') {
+                list.forEach(function (v) {
+                    userList.push({
+                        userID: v.userID,
+                        userName: v.userName
+                    });
                 });
-            });
-        } else if (type == 'DELETE') {
-            list.forEach(function (v) {
-                var index = userList.findIndex(function (item) {
-                    return v.userID == item.userID;
+            } else if (type == 'DELETE') {
+                list.forEach(function (v) {
+                    var index = userList.findIndex(function (item) {
+                        return v.userID == item.userID;
+                    });
+                    if (index != -1) {
+                        userList.splice(index, 1);
+                    }
                 });
-                if (index != -1) {
-                    userList.splice(index, 1);
-                }
-            });
+            }
+            // 更新房间页房间成员列表弹框
+            loginUtils.updateUserListDomHandle(userList);
+        } catch (error) {
+            console.error('roomUserUpdate', error)
         }
-        // 更新房间页房间成员列表弹框
-        loginUtils.updateUserListDomHandle(userList);
     });
 
     zegoEngine.on('tokenWillExpire', async function (roomID) {
@@ -51,6 +55,10 @@ function onZegoEngineEvent() {
         }
 
 
+    })
+
+    zegoEngine.on('roomStateUpdate', function (roomID, state, errorCode, extendedData) {
+        console.warn('roomID,state,errorCode,extendedData', roomID, state, errorCode, extendedData)
     })
 }
 
@@ -72,6 +80,8 @@ function pushOwn() {
  */
 async function loginRoom(token) {
     try {
+        // 注册 监听
+        onZegoEngineEvent();
         // 登录房间
         const res = await zegoEngine.loginRoom(
             zegoConfig.roomID,
@@ -88,14 +98,11 @@ async function loginRoom(token) {
             pushOwn();
             // 注册 Superboard 回调（room 内方法）
             onSuperBoardEventHandle();
-            // 注册 监听
-            onZegoEngineEvent();
         } else {
             console.error('登录失败', res)
         }
     } catch (error) {
-        console.error('登录失败')
-        return;
+        console.error('登录失败', error)
     }
 }
 
@@ -108,7 +115,7 @@ function checkInput() {
     var userName = $('#userName').val();
     var userID = $('#userID').val()
     var token = $('#token').val()
-    var time = $('#time').val()
+    var time = Number($('#time').val()) || 60
     if (!userName || !roomID || !userID) {
         alert('请输入用户名、房间 ID 和 userID！');
         return false;
@@ -187,7 +194,7 @@ $('#login-btn').click(async function () {
     console.warn('result', result)
     try {
         // 初始化 SDK
-        var token = result.token ? result.token : await initZegoSDK(Number(zegoConfig.time));
+        var token = await initZegoSDK(zegoConfig.time);
         console.warn('token', token)
         // 登录房间
         await loginRoom(token);

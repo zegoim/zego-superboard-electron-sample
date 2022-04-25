@@ -113,8 +113,8 @@ async function initZegoSDK(time) {
     document.title = `Superboard demo:${zegoSuperBoard.getSDKVersion()}`;
     initExpressSDKConfig();
     initSuperBoardSDKConfig();
-
-    return token;
+    var inputToken = $('#token').val()
+    return inputToken ? inputToken : token;
 }
 
 /**

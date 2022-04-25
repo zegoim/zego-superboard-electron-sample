@@ -73,7 +73,7 @@ function checkConfig() {
  * @description: 根据配置初始化 SDK
  * @return {String} token
  */
-async function initZegoSDK() {
+async function initZegoSDK(time) {
     var appID = zegoConfig.appID;
     var userID = zegoConfig.userID;
     var isTestEnv = zegoConfig.superBoardEnv === 'beta';
@@ -99,7 +99,7 @@ async function initZegoSDK() {
     zegoEngine = new ZegoExpressEngine(appID, server);
 
     // 获取 token
-    var token = await loginUtils.getToken(appID, userID, zegoConfig.roomID, zegoConfig.tokenUrl);
+    var token = await loginUtils.getToken(time);
 
     // 初始化合并层 SDK
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
@@ -175,7 +175,7 @@ async function init() {
             Object.assign(zegoConfig, loginInfo);
 
             // 初始化SDK
-            var token = await initZegoSDK();
+            var token = await initZegoSDK(Number(zegoConfig.time));
             // 登录房间
             const login_res = await loginRoom(token);
 

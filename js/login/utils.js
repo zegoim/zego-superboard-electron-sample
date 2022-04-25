@@ -83,7 +83,7 @@ var loginUtils = {
                 dataType: "json",
                 url: zegoOtherConfig.tokenUrl,
                 data: JSON.stringify({
-                    version: "03",
+                    version: "04",
                     appId,
                     idName: zegoConfig.userID,
                     roomId: zegoConfig.roomID,

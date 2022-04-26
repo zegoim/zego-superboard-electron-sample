@@ -128,3 +128,12 @@ layui.form.on('select(logLevel)', async function () {
         roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
+
+$('#clearLog').click(function () {
+    zegoSuperBoard.clearLog().then(res => {
+        if (res.code == 0) {
+            console.info('demo log was clear')
+        }
+
+    })
+})

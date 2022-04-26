@@ -115,7 +115,7 @@ function checkInput() {
     var userName = $('#userName').val();
     var userID = $('#userID').val()
     var token = $('#token').val()
-    var time = Number($('#time').val()) || 60
+    var time = !!$('#time').val() ? Number($('#time').val()) : 60
     if (!userName || !roomID || !userID) {
         alert('请输入用户名、房间 ID 和 userID！');
         return false;

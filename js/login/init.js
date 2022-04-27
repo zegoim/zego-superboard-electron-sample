@@ -98,8 +98,9 @@ async function initZegoSDK(time) {
 
     zegoEngine = new ZegoExpressEngine(appID, server);
 
+    var inputToken = $('#token').val()
     // 获取 token
-    var token = await loginUtils.getToken(time);
+    var token = inputToken ? inputToken : await loginUtils.getToken(time);
 
     // 初始化合并层 SDK
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
@@ -113,8 +114,7 @@ async function initZegoSDK(time) {
     document.title = `Superboard demo:${zegoSuperBoard.getSDKVersion()}`;
     initExpressSDKConfig();
     initSuperBoardSDKConfig();
-    var inputToken = $('#token').val()
-    return inputToken ? inputToken : token;
+    return token;
 }
 
 /**

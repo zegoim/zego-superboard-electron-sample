@@ -1464,7 +1464,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">日志等级</label>
-              <div class="layui-input-block">
+              <div class="layui-input-inline">
                 <select name="logLevel" lay-filter="logLevel">
                   <option value="debug">debug</option>
                   <option value="info">info</option>
@@ -1474,6 +1474,9 @@
                   <option value="disable">disable</option>
                 </select>
               </div>
+              <button id="clearLog" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
+                清除日志
+              </button>
             </div>
 
           </form>
@@ -1666,8 +1669,8 @@
 <!-- <script src="./sdk/jZego-rtc-2.6.0.js"></script> -->
 <!-- <script src="./sdk/ZegoExpressWebRTC-2.13.0.js"></script> -->
 <!-- <script src="./sdk/ZegoSuperBoardWeb.js"></script> -->
-<script src="./sdk/ZegoSuperBoardWeb-2.3.0.js"></script>
-<!-- <script src="/ZegoSuperBoardWeb.js"></script> -->
+<!-- <script src="./sdk/ZegoSuperBoardWeb-2.3.0.js"></script> -->
+<script src="/ZegoSuperBoardWeb.js"></script>
 <!-- 白板业务相关 -->
 <script src="./js/room/utils.js"></script>
 <!-- whiteboard -->

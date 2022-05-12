@@ -125,6 +125,11 @@ function initExpressSDKConfig() {
     zegoEngine.setLogConfig({
         logLevel: 'disable'
     });
+    // // 设置日志级别
+    // const res = zegoSuperBoard.setLogConfig({
+    //     logLevel: 'info'
+    // });
+    // console.log('mytag res', res)
     // 关闭 debug
     zegoEngine.setDebugVerbose(false);
 }

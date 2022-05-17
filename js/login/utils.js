@@ -76,6 +76,11 @@ var loginUtils = {
                 break;
         }
 
+        if (zegoConfig.env === '2') {
+            // 海外环境
+            appId = zegoConfig.overseaAppID
+        }
+
         return new Promise(function (resolve) {
             $.ajax({
                 type: 'post',

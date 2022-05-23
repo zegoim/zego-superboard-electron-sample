@@ -101,13 +101,19 @@ async function loginRoom(token) {
 function checkInput() {
     var roomID = $('#roomID').val();
     var userName = $('#userName').val();
-    if (!userName || !roomID) {
-        alert('请输入用户名和房间 ID');
+    var userID = $('#userID').val()
+    var token = $('#token').val()
+    var time = !!$('#time').val() ? Number($('#time').val()) : 60
+    if (!userName || !roomID || !userID) {
+        alert('请输入用户名、房间 ID 和 userID！');
         return false;
     }
     return {
         roomID,
-        userName
+        userName,
+        userID,
+        token,
+        time
     };
 }
 
@@ -160,7 +166,8 @@ $('#login-btn').click(async function () {
         env,
         roomID: result.roomID,
         userName: result.userName,
-        userID: zegoConfig.userID,
+        userID: result.userID,
+        time: result.time,
         superBoardEnv: settingData.superBoardEnv,
         fontFamily: settingData.fontFamily,
         disableH5ImageDrag: settingData.disableH5ImageDrag,

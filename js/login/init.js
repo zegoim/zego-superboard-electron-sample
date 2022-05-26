@@ -129,7 +129,6 @@ function initExpressSDKConfig() {
     // const res = zegoSuperBoard.setLogConfig({
     //     logLevel: 'info'
     // });
-    // console.log('mytag res', res)
     // 关闭 debug
     zegoEngine.setDebugVerbose(false);
 }

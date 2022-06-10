@@ -116,7 +116,7 @@ function onSuperBoardEventHandle() {
     // 监听远端新增白板
     zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewAdded', ...arguments);
-        // 查询、更新页面白板列表，新增的白板 SDK 内部不会自动挂载
+        // 查询、更新页面白板列表，新增的白板 SDK 内部会自动挂载
         querySuperBoardSubViewListHandle();
     });
 

@@ -166,6 +166,10 @@ function initSuperBoardSDKConfig() {
  * @description: 根据配置初始化并登录房间
  */
 async function init() {
+    console.log('mytag zegoConfig', zegoConfig);
+    if ('ontouchstart' in window) {
+        new VConsole();
+    }
     try {
         // 校验参数
         if (!checkConfig()) return;

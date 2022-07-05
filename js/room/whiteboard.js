@@ -116,7 +116,7 @@ function onSuperBoardEventHandle() {
     // 监听远端新增白板
     zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewAdded', ...arguments);
-        // 查询、更新页面白板列表，新增的白板 SDK 内部不会自动挂载
+        // 查询、更新页面白板列表，新增的白板 SDK 内部会自动挂载
         querySuperBoardSubViewListHandle();
     });
 
@@ -162,13 +162,13 @@ async function createWhiteboardView() {
         roomUtils.loading('创建普通白板中');
 
         // 这里 viewSeq 是自定义后缀，创建一次普通白板就累加一次，开发者可自行定义是否需要
-        await zegoSuperBoard.createWhiteboardView({
+        var data = await zegoSuperBoard.createWhiteboardView({
             name: zegoConfig.userName + '创建的白板' + viewSeq++,
             perPageWidth: 1600,
             perPageHeight: 900,
             pageCount: 5 // 默认水平分页
         });
-
+        console.log('mytag demo 创建普通白板 data', data);
         roomUtils.closeLoading();
         roomUtils.toast('创建成功');
 

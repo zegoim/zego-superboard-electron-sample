@@ -18,12 +18,12 @@ var zegoEnvConfig = {
     betaServer: 'wss://webliveroom1100697004-api.zego.im/ws', // 国内测试环境
     overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws', // 海外测试环境
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws', // 海外正式环境 `wss://webliveroom${overseaAppID}-api.zegocloud.com/ws`
-    alphaAppID: 1803117167, // alpha
-    alphaServer: 'wss://webliveroom1803117167-api.zego.im/ws' // alpha
-    // 统一接入
-    // alphaAppID: 3104114736,
-    // alphaServer: 'wss://webliveroom-alpha.zego.im/ws'
-    // token:''
+    // alphaAppID: 1803117167, // alpha
+    // alphaServer: 'wss://webliveroom1803117167-api.zego.im/ws' // alpha
+    //统一接入
+    alphaAppID: 1484763131,
+    alphaServer: 'wss://webliveroom-alpha.zego.im/ws'
+    // token: ''
 };
 
 // SDK 功能配置
@@ -40,7 +40,6 @@ var zegoFeatureConfig = {
 // SDK 其他配置
 var zegoOtherConfig = {
     // 获取登录房间 token，开发者自行在后台实现改接口；测试环境可以使用 ZEGO 提供的接口获取（参考 https://doc-zh.zego.im/article/7638#3_3）
-    // tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
     tokenUrl: 'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
     roomID: loginUtils.getRoomID(), // 房间 ID
     userID: loginUtils.getUserID(), // 用户 ID
@@ -125,11 +124,10 @@ function initExpressSDKConfig() {
     zegoEngine.setLogConfig({
         logLevel: 'disable'
     });
-    // // 设置日志级别
-    // const res = zegoSuperBoard.setLogConfig({
-    //     logLevel: 'info'
-    // });
-    // console.log('mytag res', res)
+    // 设置日志级别
+    zegoSuperBoard.setLogConfig({
+        logLevel: 'disable'
+    });
     // 关闭 debug
     zegoEngine.setDebugVerbose(false);
 }
@@ -168,6 +166,10 @@ function initSuperBoardSDKConfig() {
  * @description: 根据配置初始化并登录房间
  */
 async function init() {
+    console.log('mytag zegoConfig', zegoConfig);
+    if ('ontouchstart' in window) {
+        new VConsole();
+    }
     try {
         // 校验参数
         if (!checkConfig()) return;

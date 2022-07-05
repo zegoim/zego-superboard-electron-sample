@@ -40,20 +40,13 @@ function onZegoEngineEvent() {
     });
 
     zegoEngine.on('tokenWillExpire', async function (roomID) {
-        var tokenFlag = $('#tokenFlag:checked').val()
-        var time = Number(zegoConfig.time)
-        console.warn('superboard tokenWillExpire', roomID, tokenFlag)
-        if (tokenFlag === 'on') {
-            var newtoken = await loginUtils.getToken(time)
-            zegoEngine.renewToken(newtoken)
-            zegoSuperBoard.renewToken(newtoken)
-            var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
-            loginInfo.token = newtoken
-            sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo))
-        } else {
-            console.warn('demo 没开启 token 自动更新')
-        }
-
+        var time = 36000
+        var newtoken = await loginUtils.getToken(time)
+        zegoEngine.renewToken(newtoken)
+        zegoSuperBoard.renewToken(newtoken)
+        var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
+        loginInfo.token = newtoken
+        sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo))
 
     })
 

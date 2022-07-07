@@ -3,27 +3,26 @@
  * @Date: 2021-08-09 20:04:01
  * @LastEditTime: 2021-08-31 17:37:40
  * @LastEditors: Please set LastEditors
- * @Description: reloadView 重新加载白板 View，动态修改挂载父容器大小时可以使用该方法重新加载白板 View
+ * @Description: reloadView reloads the whiteboard view. This method can be used to reload the whiteboard view when dynamically modifying the size of the mounted parent container.
  * @FilePath: /superboard/js/room/reloadView.js
  */
 
-// zegoSuperBoard 为全局 SuperBoard Instance
-// toast 为全局提示框，开发者根据实际情况使用相应的提示框
-// parentDomID 容器 ID
+// zegoSuperBoard is a global Super Board instance.
+// toast is a global pop-up box. You can use pop-up boxes as required.
+// parentDomID Container ID
 
-var resizeTicking = false; // 自适应执行开关，这里是延迟 1000 ms 执行
-
-// 白板大小自适应：监听页面 resize 事件
+var resizeTicking = false; // Adaptive execution switch, here is a delay of 1000 ms execution
+// Adaptive whiteboard size: Listen for the page resize event.
 window.addEventListener('resize', onResizeHandle);
 
 /**
- * @description: resize 回调
+ * @description: resize callback
  */
 function onResizeHandle() {
     if (!resizeTicking) {
         resizeTicking = true;
-        setTimeout(function() {
-            // 容器尺寸自动变更后，自动重新加载白板 View
+        setTimeout(function () {
+            // After the container size is automatically changed, the whiteboard view is automatically re-loaded.
             autoReloadViewHandle();
             resizeTicking = false;
         }, 1000);
@@ -31,10 +30,10 @@ function onResizeHandle() {
 }
 
 /**
- * @description: 重新加载白板 View
+ * @description: Re-load the whiteboard view.
  */
 function reloadViewHandle() {
-    // 未实例化之前，触发 resize 直接返回
+    // Before instantiation, trigger resize to return.
     if (!zegoSuperBoard) return;
 
     var zegoSuperBoardView = zegoSuperBoard.getSuperBoardView();
@@ -42,15 +41,15 @@ function reloadViewHandle() {
 
     var zegoSuperBoardSubView = zegoSuperBoardView.getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
-        // 当前有白板挂载
-        setTimeout(function() {
+        // A whiteboard is mounted.
+        setTimeout(function () {
             zegoSuperBoardSubView.reloadView();
-        }, 120); // 动画 120 ms
+        }, 120);
     }
 }
 
 /**
- * @description: 容器尺寸自动变更后，自动重新加载白板 View
+ * @description: After the container size is automatically changed, the whiteboard view is automatically re-loaded.
  */
 function autoReloadViewHandle() {
     updateSizeDomHandle();
@@ -58,10 +57,10 @@ function autoReloadViewHandle() {
 }
 
 /**
- * @description: 判断当前是否支持 Element.requestFullscreen
- * @description: Element.requestFullscreen 兼容性
- * @param {*} dom 当前需要全屏的 Element
- * @return {*} Promise 异步请求结果
+ * @description: Determine whether Element.requestFullscreen is supported.
+ * @description: Element.requestFullscreen compatibility
+ * @param {*} dom Full-screen elements needed
+ * @return {*} Promise Asynchronous request result
  */
 function supportRequestFullscreen(dom) {
     if (dom.requestFullscreen) {
@@ -76,71 +75,71 @@ function supportRequestFullscreen(dom) {
 }
 
 /**
- * @description: 更新当前页面显示 width、height
+ * @description: Update the width and height displayed on the current page.
  */
 function updateSizeDomHandle() {
-    // 获取当前容器宽高
+    // Obtain the width and height of the current container.
     var dom = document.getElementById(parentDomID);
 
     dom.style.cssText += 'width:100%;height:100%;';
 
-    var width = dom.clientWidth + 2; // +边框
-    var height = dom.clientHeight + 2; // +边框
+    var width = dom.clientWidth + 2; // + board
+    var height = dom.clientHeight + 2; // + board
 
-    // 更新当前页面显示 width、height
+    // Update the width and height displayed on the current page.
     $('#parentWidthHeight').html(width + ' * ' + height);
 }
 
 /**
- * @description: 手动变更容器尺寸，重新加载白板 View
+ * @description: Manually update the container size and reload the whiteboard view.
  * @return {*}
  */
 function customReloadViewHandle() {
-    // 获取当前容器宽高
+    // Obtain the width and height of the current container.
     var dom = document.getElementById(parentDomID);
-    var width = dom.clientWidth + 2; // +边框
-    var height = dom.clientHeight + 2; // +边框
+    var width = dom.clientWidth + 2; // +board
+    var height = dom.clientHeight + 2; // +board
 
-    // 获取自定义尺寸，这里只展示获取方法，开发者根据实际情况获取
+    // Obtain the custom size. Only the obtaining method is displayed here. You can obtain it as required.
     var width_set = +layui.form.val('form2').parentWidth;
     var height_set = +layui.form.val('form2').parentHeight;
 
-    // 判断当前自定义的尺寸，这里容器有 2px 边框，所以不允许小于 2，可视实际情况而定
-    if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return roomUtils.toast('请输入有效的宽高值');
+    // Determine the custom size. The container has 2 px borders. Therefore, the size cannot be less than 2, which can be determined as required.
+    if (!width_set || !height_set || width_set <= 2 || height_set <= 2) return roomUtils.toast('Please enter a valid width and height value');
 
-    // 为更好的显示页面布局效果，这里自定义的值不允许超过当前自适应的容器尺寸，可视实际情况而定
-    // if (width_set > width || height_set > height) return roomUtils.toast('请输入小于当前容器尺寸的宽高值');
+    // To better display the page layout effect, the customized value cannot exceed the adaptive container size, which can be determined as required.
+    // if (width_set > width || height_set > height) return roomUtils.toast('Enter the width and height values less than the current container size.');
 
-    // 更新容器尺寸
+    // Update the container size.
     dom.style.cssText += `width:${width_set}px;height:${height_set}px;`;
 
-    // 更新当前页面显示 width、height
+    // Update the width and height displayed on the current page.
     $('#parentWidthHeight').html(width_set + ' * ' + height_set);
 
     reloadViewHandle();
 }
 
 /**
- * @description: 全屏功能，用 Element.requestFullscreen 实现，但是由于部分浏览器实现可能有问题，代码仅供参考
- * @description: 详见文档：https://developer.mozilla.org/zh-CN/docs/Web/API/Element/requestFullScreen
+ * @description: The full-screen feature is implemented using Element.requestFullscreen. However, issues may occur due to browser implementation. The code is for reference only.
+ * @description: For details, see https://developer.mozilla.org/zh-CN/docs/Web/API/Element/requestFullScreen.
  * @return {*}
  */
 function fullScreenHandle() {
     supportRequestFullscreen(document.getElementById(parentDomID))
-        .then(function() {
-            roomUtils.toast('已全屏');
+        .then(function () {
+            roomUtils.toast('full screen');
         })
-        .catch(function() {
-            roomUtils.toast('当前浏览器不支持全屏');
+        .catch(function () {
+            roomUtils.toast('The current browser does not support full screen');
         });
 }
 
 /**
- * @description: 绑定设置容器尺寸事件
+ * @description: Bind the container size setting event.
  */
 $('#setParentSizeBtn').click(customReloadViewHandle);
 
 /**
- * @description: 绑定全屏事件
+ * @description: Bind the full screen event.
  */
 $('#fullScreenBtn').click(fullScreenHandle);

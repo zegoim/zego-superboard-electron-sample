@@ -3,13 +3,13 @@
  * @Date: 2021-08-12 12:21:41
  * @LastEditTime: 2021-08-27 11:12:18
  * @LastEditors: Please set LastEditors
- * @Description: 设置白板工具
+ * @Description: Set up the whiteboard tool
  * @FilePath: /superboard/js/room/setToolType.js
  */
 
 /**
- * @description: 设置工具类型
- * @param {Number} toolType 工具类型
+ * @description: Set the tool type.
+ * @param {Number} toolType Tool type
  * @param {Event} event event
  */
 function setToolType(toolType, event) {
@@ -17,41 +17,41 @@ function setToolType(toolType, event) {
     if (!zegoSuperBoardSubView) return;
 
     if (toolType === 256) {
-        // 目标工具类型为 '点击'
-        // 非动态 PPT、自定义 H5 不允许使用点击工具
+        // The target tool type is Click.
+        // For non-animated PPT files or custom H5 files, the Click tool cannot be used.
         var zegoSuperBoardSubViewModel = zegoSuperBoardSubView.getModel();
         if (zegoSuperBoardSubViewModel.fileType !== 512 && zegoSuperBoardSubViewModel.fileType !== 4096) return;
     }
 
     if (toolType !== undefined) {
-        // 目标工具类型为拖拽、画笔、选择工具、激光笔、文本、自定义图形、橡皮擦
+        // The target tool types include Drag, Pen, Select, Laser Pen, Text, Custom Graph, and Eraser.
         var result = zegoSuperBoard.setToolType(toolType);
         console.warn('result', result);
-        // 设置失败，直接返回
-        if (!result) return roomUtils.toast('设置失败');
+        // The setting is failed, and a pop-up box of the failure message is displayed.
+        if (!result) return roomUtils.toast('Setup failed');
 
         if (toolType === 512) {
-            // 目标工具类型自定义图形
-            // 默认第一个自定义图形
+            // The target tool type is Custom Graph.
+            // The first custom graph is selected by default.
             setCustomGraph(0, event);
         }
     } else {
-        // 目标工具类型为 undefined，仅实现业务功能定义，实际 SDK 没有这个类型
-        // 这里 toolType 为 undefined 表示是要选择图形: 矩形、椭圆、直线
-        // 默认矩形
+        // When the target tool type is undefined, only business functions can be implemented, which is not supported by the SDK.
+        // When toolType is undefined, it indicates that you need to select a shape from a rectangle, an ellipse, and a straight line. 
+        // The rectangle is selected by default.
         var result = zegoSuperBoard.setToolType(8);
         console.warn('result', result);
 
-        // 设置失败，直接返回
-        if (!result) return roomUtils.toast('设置失败');
+        // The setting is failed, and a pop-up box of the failure message is displayed.
+        if (!result) return roomUtils.toast('Setup failed');
     }
     updateActiveToolDomHandle(toolType, event);
 }
 
 /**
- * @description: 更新页面工具栏当前选中工具的样式
- * @description: 该方法只用来更新页面工具栏样式，开发者可根据实际情况处理
- * @param {Number|undefined} type 工具类型
+ * @description: Update the current tool type on the toolbar.
+ * @description: The method can only be used to update the toolbar on the page. You can handle it as required.
+ * @param {Number|undefined} type Tool type
  * @param {Event} event event
  */
 function updateActiveToolDomHandle(type, event) {
@@ -69,7 +69,7 @@ function updateActiveToolDomHandle(type, event) {
             break;
         case 1:
         case 2:
-        case undefined: // 图形
+        case undefined: // graphics
             $('.tool-item').removeClass('active');
             $('.pencil-text-setting').removeClass('active');
             $('.custom-graph-setting').removeClass('active');
@@ -82,13 +82,13 @@ function updateActiveToolDomHandle(type, event) {
                 $('.graph-style-item:nth-of-type(1)').addClass('active');
             }
             break;
-        case 8: // 矩形
-        case 16: // 椭圆
-        case 4: // 直线
+        case 8: // rectangle
+        case 16: // oval
+        case 4: // straight line
             $('.graph-style-item').removeClass('active');
             $('.graph-style-item:nth-of-type(' + (type === 8 ? 1 : type === 16 ? 2 : 3) + ')').addClass('active');
             break;
-        case 512: // 自定义图形
+        case 512: // custom graphics
             $('.tool-item').removeClass('active');
             $('.pencil-text-setting').removeClass('active');
             $(event.currentTarget)

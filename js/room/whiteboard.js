@@ -3,15 +3,15 @@
  * @Date: 2021-07-29 14:33:55
  * @LastEditTime: 2021-08-27 11:42:14
  * @LastEditors: Please set LastEditors
- * @Description: 创建、销毁、切换、查询白板列表
+ * @Description: Create, destroy, switch, and query whiteboard lists
  * @FilePath: /superboard/js/room/whiteboard.js
  */
 
-var viewSeq = 1; // 白板索引，创建多个普通白板时，白板名称编号进行叠加
-var cacheSheetMap = {}; // 缓存上次 excel 白板对应的 sheetIndex { uniqueID: sheetIndex }
+var viewSeq = 1; // Whiteboard index, when multiple common whiteboards are created, the names and numbers of the whiteboards are superimposed
+var cacheSheetMap = {}; // Cache the sheetIndex { uniqueID: sheetIndex } corresponding to the last excel whiteboard
 
 /**
- * @description: 返回当前 ZegoSuperBoardSubView
+ * @description: Return to the current ZegoSuperBoardSubView.
  * @return {ZegoSuperBoardSubView|null}
  */
 function getCurrentSuperBoardSubView() {
@@ -25,9 +25,9 @@ function getCurrentSuperBoardSubView() {
 }
 
 /**
- * @description: 判断当前文件是否有缩略图
- * @description: fileType 为 1、8、512、4096 时存在缩略图
- * @return {Boolearn} true: 有 false: 无
+ * @description: Determine whether a thumbnail exists for the current file.
+ * @description: The thumbnail exists when fileType is set to 1, 8, 512, and 4096.
+ * @return {Boolearn} true: yes; false: no.
  */
 function hasThumb() {
     var current = getCurrentSuperBoardSubView();
@@ -40,9 +40,9 @@ function hasThumb() {
 }
 
 /**
- * @description: 判断当前文件是否可以切步，即是否是动态 PPT 文件白板、自定义 H5 白板
- * @description: fileType 为 512、4096 时可以切步
- * @return {Boolearn} true: 可以 false: 不可以
+ * @description: Determine whether step switching can be enabled for the current file, that is, whether it is a whiteboard of an animated PPT file or a custom H5 file.
+ * @description: Step switching can be enabled when fileType is set to 512 and 4096.
+ * @return {Boolearn} true: yes; false: no.
  */
 function canJumpStep() {
     var current = getCurrentSuperBoardSubView();
@@ -55,12 +55,12 @@ function canJumpStep() {
 }
 
 /**
- * @description: 更新页面上白板列表下拉框
- * @description: 非 Excel 白板时隐藏 sheetList 下拉框
- * @description: 没有白板时初始化总页数、当前页数为 1
+ * @description: Update the drop-down list of the whiteboard list on the page.
+ * @description: Hide the sheetList drop-down list when the whiteboard is not an Excel file whiteboard.
+ * @description: When no whiteboards are created, initialize the total number of pages and the current page number to 1.
  */
 async function updateWhiteboardList() {
-    // 获取 model 列表
+    // Obtain the model list.
     var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
     console.warn('SuperBoard Demo querySuperBoardSubViewList', modelList);
     roomUtils.updateWhiteboardListDomHandle(modelList);
@@ -72,8 +72,8 @@ async function updateWhiteboardList() {
 }
 
 /**
- * @description: 根据 uniqueID 获取指定 SuperBoardSubViewModel
- * @param {String} uniqueID 白板标识
+ * @description: Obtain the specified SuperBoardSubViewModel based on the uniqueID.
+ * @param {String} uniqueID Whiteboard ID
  * @return {SuperBoardSubViewModel} SuperBoardSubViewModel
  */
 async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
@@ -88,96 +88,96 @@ async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
 }
 
 /**
- * @description: 监听白板回调
+ * @description: Listen for the whiteboard callback.
  */
 function onSuperBoardEventHandle() {
-    // 监听错误回调，SDK 内部错误均通过此回调抛出，除了直接在接口中直接返回的错误外
+    // Callback of the listening-for error. All internal SDK errors are thrown using this callback, except the errors directly returned in the API.
     zegoSuperBoard.on('error', function (errorData) {
         console.warn('SuperBoard Demo error', errorData);
         roomUtils.toast(errorData);
     });
 
-    // 监听白板翻页、滚动
+    // Listen for whiteboard page turning and scrolling.
     zegoSuperBoard.on('superBoardSubViewScrollChanged', function (uniqueID, page, step) {
         console.warn('SuperBoard Demo superBoardSubViewScrollChanged', ...arguments);
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
-            // 更新页面内容
+            // Update the page content.
             roomUtils.updateCurrPageDomHandle(page);
         }
     });
 
-    // 监听远端白板缩放
+    // Listen for remote whiteboard zooming.
     zegoSuperBoard.on('superBoardSubViewScaleChanged', function (uniqueID, scale) {
         console.warn('SuperBoard Demo uperBoardSubViewScaleChanged', uniqueID, scale);
         roomUtils.updateCurrScaleDomHandle(scale);
     });
 
-    // 监听远端新增白板
+    // Listen for remote whiteboard adding.
     zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewAdded', ...arguments);
-        // 查询、更新页面白板列表，新增的白板 SDK 内部会自动挂载
+        // Query and update the whiteboard list on the page. The newly added whiteboard is not mounted to the internal SDK.
         querySuperBoardSubViewListHandle();
     });
 
-    // 监听远端销毁白板
+    // Listen for remote whiteboard destroying.
     zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewRemoved', ...arguments);
-        // 查询、更新页面白板列表，销毁的白板 SDK 内部会自动销毁
+        // Query and update the whiteboard list on the page. The destroyed whiteboard is also destroyed in the SDK.
         querySuperBoardSubViewListHandle();
     });
 
-    // 监听远端切换白板
+    // Listen for remote whiteboard switching.
     zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewSwitched', ...arguments);
-        // 查询、更新页面白板列表，切换的白板 SDK 内部会自动切换
+        // Query and update the whiteboard list on the page. After a whiteboard switching, the SDK automatically switches to the new whiteboard.
         querySuperBoardSubViewListHandle();
     });
 
-    // 监听远端切换 Excel Sheet
+    // Listen for remote Excel sheet switching.
     zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function () {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
-        // 查询、更新页面白板列表，切换的 Excel Sheet SDK 内部会自动切换
+        // Query and update the whiteboard list on the page. After an Excel sheet switching, the SDK automatically switches to the new Excel sheet.
         querySuperBoardSubViewListHandle();
     });
 
-    // 监听远端白板权限变更
+    // Listen for remote whiteboard permission change.
     zegoSuperBoard.on('remoteSuperBoardAuthChanged', function () {
         console.warn('SuperBoard Demo remoteSuperBoardAuthChanged', ...arguments);
-        // 内部会自动更改为当前权限与对端同步
+        // After a permission change, the change is synchronized to the peer.
     });
 
-    // 监听远端白板图元权限变更
+    // Listen for remote permission change of a whiteboard diagram element.
     zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function () {
         console.warn('SuperBoard Demo remoteSuperBoardGraphicAuthChanged', ...arguments);
-        // 内部会自动更改为当前权限与对端同步
+        // After a permission change, the change is synchronized to the peer.
     });
 }
 
 /**
- * @description: 创建普通白板
+ * @description: Create a common whiteboard.
  */
 async function createWhiteboardView() {
     try {
-        roomUtils.loading('创建普通白板中');
+        roomUtils.loading('Create a normal whiteboard');
 
-        // 这里 viewSeq 是自定义后缀，创建一次普通白板就累加一次，开发者可自行定义是否需要
-        var data = await zegoSuperBoard.createWhiteboardView({
-            name: zegoConfig.userName + '创建的白板' + viewSeq++,
+        // viewSeq is a custom suffix, and its value is accumulated with the creation of common whiteboards. You can determine whether the suffix is needed.
+        await zegoSuperBoard.createWhiteboardView({
+            name: zegoConfig.userName + ' whiteboard ' + viewSeq++,
             perPageWidth: 1600,
             perPageHeight: 900,
-            pageCount: 5 // 默认水平分页
+            pageCount: 5 // Default horizontal pagination
         });
-        console.log('mytag demo 创建普通白板 data', data);
-        roomUtils.closeLoading();
-        roomUtils.toast('创建成功');
 
-        // 查询、更新页面白板列表，创建成功后白板 SDK 内部会自动渲染
+        roomUtils.closeLoading();
+        roomUtils.toast('Created successfully');
+
+        // Query and update the whiteboard list on the page. After a whiteboard is created, the whiteboard SDK automatically renders it.
         querySuperBoardSubViewListHandle();
 
-        // 隐藏白板占位
+        // Hide the whiteboard placeholder.
         roomUtils.togglePlaceholderDomHandle(false);
-        // 隐藏打开缩略图弹框的按钮
+        // Hide the button for displaying the thumbnail dialog.
         roomUtils.toggleThumbBtnDomHandle(false);
     } catch (errorData) {
         roomUtils.closeLoading();
@@ -186,25 +186,25 @@ async function createWhiteboardView() {
 }
 
 /**
- * @description: 创建文件白板
- * @param {String} fileID 文件 ID
+ * @description: Create a file whiteboard.
+ * @param {String} fileID File ID
  */
 async function createFileView(fileID) {
     try {
-        roomUtils.loading('创建文件白板中');
+        roomUtils.loading('Create document in whiteboard');
 
         await zegoSuperBoard.createFileView({
             fileID
         });
         roomUtils.closeLoading();
-        roomUtils.toast('创建成功');
+        roomUtils.toast('Created successfully');
 
-        // 查询、更新页面白板列表，创建成功后白板 SDK 内部会自动渲染
+        // Query and update the whiteboard list on the page. After a whiteboard is created, the whiteboard SDK automatically renders it.
         querySuperBoardSubViewListHandle();
 
-        // 隐藏白板占位
+        // Hide the whiteboard placeholder.
         roomUtils.togglePlaceholderDomHandle(false);
-        // 显示、隐藏打开缩略图弹框的按钮
+        // Display or hide the button for displaying the thumbnail dialog.
         roomUtils.toggleThumbBtnDomHandle(hasThumb());
     } catch (errorData) {
         roomUtils.closeLoading();
@@ -213,24 +213,24 @@ async function createFileView(fileID) {
 }
 
 /**
- * @description: 销毁白板
- * @param {String} type 1: 销毁当前白板 2: 销毁所有白板
+ * @description: Destroy a whiteboard.
+ * @param {String} type 1: Destroy the current whiteboard 2: Destroy all whiteboards
  */
 async function destroySuperBoardSubView(type) {
     if (type === 1) {
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
-        // 当前没有白板可以被删除
+        // No whiteboards can be deleted.
         if (!zegoSuperBoardSubView) return;
 
         try {
-            roomUtils.loading('销毁白板中');
+            roomUtils.loading('destroy whiteboard');
 
             await zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubView.getModel().uniqueID);
             console.warn('===demo destroySuperBoardSubView');
             roomUtils.closeLoading();
-            roomUtils.toast('销毁成功');
+            roomUtils.toast('Destroyed successfully');
 
-            // 查询、更新页面白板列表，销毁成功后白板 SDK 内部会自动删除相关内容，并移除挂载的内容
+            // Query and update the whiteboard list on the page. After a whiteboard is destroyed, the whiteboard SDK automatically deletes the relevant data and removes the mounted data.
             querySuperBoardSubViewListHandle();
         } catch (errorData) {
             roomUtils.closeLoading();
@@ -241,14 +241,14 @@ async function destroySuperBoardSubView(type) {
             var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
             for (let index = 0; index < modelList.length; index++) {
                 const model = modelList[index];
-                roomUtils.loading('销毁白板 ' + model.name + ' 中');
+                roomUtils.loading('destroying ' + model.name);
                 console.warn('SuperBoard Demo destroySuperBoardSubView', model.name);
                 await zegoSuperBoard.destroySuperBoardSubView(model.uniqueID);
                 console.warn('SuperBoard Demo destroySuperBoardSubView suc', model.name);
-                roomUtils.toast('销毁白板 ' + model.name + ' 成功');
+                roomUtils.toast('Destroy ' + model.name + ' successfully');
                 roomUtils.closeLoading();
             }
-            // 查询、更新页面白板列表，销毁成功后白板 SDK 内部会自动删除相关内容，并移除挂载的内容
+            // Query and update the whiteboard list on the page. After a whiteboard is destroyed, the whiteboard SDK automatically deletes the relevant data and removes the mounted data.
             querySuperBoardSubViewListHandle();
         } catch (errorData) {
             roomUtils.closeLoading();
@@ -258,52 +258,52 @@ async function destroySuperBoardSubView(type) {
 }
 
 /**
- * @description: 查询、更新页面当前 Excel sheet 列表
- * @return {Number} 当前挂载的 sheet index
+ * @description: Query and update the current Excel sheet list on the page.
+ * @return {Number} Currently mounted sheet index
  */
 function getExcelSheetNameListHandle() {
     var sheetIndex = 0;
     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
     var zegoSuperBoardViewModel = zegoSuperBoardSubView.getModel();
 
-    // 获取当前挂载的 sheetName
+    // Obtain the sheetName of the sheet that is currently mounted.
     var sheetName = zegoSuperBoardSubView.getCurrentSheetName();
     console.warn('SuperBoard Demo getCurrentSheetName', sheetName);
 
-    // 获取 sheetList
+    // Obtain the sheetList.
     var zegoExcelSheetNameList = zegoSuperBoardSubView.getExcelSheetNameList();
     console.warn('SuperBoard Demo getExcelSheetNameListHandle', zegoExcelSheetNameList);
 
-    // 获取当前 sheetName 对应 sheetIndex
+    // Obtain the sheetIndex corresponding to the current sheetName.
     zegoExcelSheetNameList.forEach(function (element, index) {
         element === sheetName && (sheetIndex = index);
     });
     console.warn('SuperBoard Demo getCurrentSheetIndex', sheetIndex);
 
-    // 更新页面当前 Excel sheet 列表
+    // Update the current Excel sheet list on the page.
     roomUtils.updateExcelSheetListDomHandle(zegoSuperBoardViewModel.uniqueID, zegoExcelSheetNameList);
-    // 更新页面当前选中的 sheet
+    // Update the currently selected sheet on the page.
     roomUtils.updateCurrSheetDomHandle(zegoSuperBoardViewModel.uniqueID, sheetIndex);
 
     return sheetIndex;
 }
 
 /**
- * @description: 查询、更新页面白板列表
- * @description: 这里不做渲染白板操作，只是用来更新页面，开发者可根据实际情况处理
- * @return {Object} { uniqueID: xx, sheetIndex: xx } 这里返回查询完成后，当前的 uniqueID，如果是 excel 白板，还返回 sheetIndex
+ * @description: Query and update the whiteboard list on the page.
+ * @description: No whiteboard rendering operation is performed, and this method is used to update the page. You can handle it as required.
+ * @return {Object} { uniqueID: xx, sheetIndex: xx } Return the current uniqueID after the query is completed. If the whiteboard is an Excel file whiteboard, return the sheetIndex at the same time.
  */
 async function querySuperBoardSubViewListHandle() {
     var result = {
         uniqueID: 0,
         sheetIndex: 0
     };
-    // 更新页面白板下拉框
+    // Update the whiteboard drop-down list on the page.
     await updateWhiteboardList();
-    //  获取当前挂载的白板
+    // Obtain the currently mounted whiteboard.
     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
-        // 当前有挂载白板
+        // Currently, a mounted whiteboard exists.
         var model = zegoSuperBoardSubView.getModel();
         var pageCount = zegoSuperBoardSubView.getPageCount();
         var currentPage = zegoSuperBoardSubView.getCurrentPage();
@@ -311,63 +311,63 @@ async function querySuperBoardSubViewListHandle() {
         var fileType = model.fileType;
         result.uniqueID = uniqueID;
 
-        // 隐藏白板占位
+        // Hide the whiteboard placeholder.
         roomUtils.togglePlaceholderDomHandle(false);
-        // 更新下拉框中当前白板
+        // Update the current whiteboard in the drop-down list.
         roomUtils.updateCurrWhiteboardDomHandle(uniqueID);
-        // 更新总页数、当前页
+        // Update the total number of pages and the current page number.
         roomUtils.updatePageCountDomHandle(pageCount);
         roomUtils.updateCurrPageDomHandle(currentPage);
-        // 判断是否显示页面上的切步按钮
+        // Determine whether to display the step switching button on the page.
         roomUtils.toggleStepDomHandle(canJumpStep());
-        // 判断是否显示页面上的缩略图按钮
+        // Determine whether to display the thumbnail icon on the page.
         roomUtils.toggleThumbBtnDomHandle(hasThumb());
-        // 判断是否需要禁止点击工具
+        // Determine whether to disable the Click tool.
         roomUtils.toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
         if (fileType === 4) {
-            // excel 文件白板显示 sheet 下拉框
+            // Display the sheet drop-down list for Excel file whiteboards.
             roomUtils.toggleSheetSelectDomHandle(true);
-            // 查询 sheet 列表
+            // Query the sheet list.
             result.sheetIndex = getExcelSheetNameListHandle();
 
-            // 缓存当前 excel 白板 的 sheet
+            // Cache the sheet of the current Excel file whiteboard.
             cacheSheetMap[result.uniqueID] = result.sheetIndex;
         } else {
-            // 非 excel 白板隐藏 sheet 下拉框
+            // Display the sheet drop-down list when the whiteboard is not an Excel file whiteboard.
             roomUtils.toggleSheetSelectDomHandle(false);
         }
     } else {
-        // 当前无挂载白板，显示白板占位
+        // No mounted whiteboards. Display the whiteboard placeholder.
         roomUtils.togglePlaceholderDomHandle(true);
     }
     return result;
 }
 
 /**
- * @description: 重置白板工具，在动态 PPT 白板、自定义 H5 白板切换到其他白板时，如何当前是点击工具，主动重置为画笔
- * @description: 这里只展示功能，开发者可根据实际情况设置
- * @param {Number} fileType 文件类型
+ * @description: Reset the whiteboard tool. When a whiteboard of an animated PPT file or a custom H5 file is switched to other whiteboards, the Click tool is automatically reset to Pen.
+ * @description: Only functions are displayed here. You can handle it as required.
+ * @param {Number} fileType File type
  */
 function resetToolTypeAfterSwitch(fileType) {
     fileType !== 512 && fileType !== 4096 && zegoSuperBoard.getToolType() === 256 && initToolType();
 }
 
 /**
- * @description: 初始化白板工具为画笔
+ * @description: The initial whiteboard tool is Pen.
  */
 function initToolType() {
     var result = zegoSuperBoard.setToolType(1);
     console.warn('SuperBoard Demo initToolType', result);
-    // 设置失败，直接返回
+    // The setting is failed, and a pop-up box of the failure message is displayed.
     if (!result) {
-        return roomUtils.toast('设置失败');
+        return roomUtils.toast('Setup failed');
     } else {
         roomUtils.resetToolTypeDomHandle();
     }
 }
 
 /**
- * @description: 根据目标 uniqueID 切换指定白板
+ * @description: Switch to a specified whiteboard based on the target uniqueID.
  * @param {String} uniqueID uniqueID
  */
 async function switchWhitebopardHandle(uniqueID) {
@@ -375,37 +375,37 @@ async function switchWhitebopardHandle(uniqueID) {
     var fileType = model.fileType;
 
     try {
-        roomUtils.loading('切换白板中');
+        roomUtils.loading('switch whiteboard');
 
-        // 除去 excel 白板，其他白板第二个参数可忽略
-        // excel 白板默认切换到第一个 sheet（SDK 内部没有记录上一次的下标）
-        // 先寻找 cacheSheetMap 中是否存在
+        // The second parameter of whiteboards other than Excel file whiteboards can be ignored.
+        // The Excel file whiteboard is switched to the first sheet by default. The last subscript is not recorded in the SDK.
+        // Check whether the following strings exist in cacheSheetMap.
         var sheetIndex = cacheSheetMap[uniqueID];
         await zegoSuperBoard
             .getSuperBoardView()
             .switchSuperBoardSubView(uniqueID, fileType === 4 ? sheetIndex || 0 : undefined);
-        // 除去 excel 白板，隐藏页面 sheet 列表
+        // Hide the sheet drop-down list when the whiteboard is not an Excel file whiteboard.
         roomUtils.toggleSheetSelectDomHandle(fileType === 4);
-        // excel 白板，更新页面 sheet 列表
+        // Excel file whiteboard. Update the sheet list on the page.
         fileType === 4 && getExcelSheetNameListHandle();
 
-        // 判断是否重置画笔工具
+        // Determine whether to reset the Pen tool.
         resetToolTypeAfterSwitch(fileType);
 
-        // 判断是否需要禁止点击工具
+        // Determine whether to disable the Click tool.
         roomUtils.toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
 
-        // 判断是否显示页面上的切步按钮
+        // Determine whether to display the step switching button on the page.
         roomUtils.toggleStepDomHandle(canJumpStep());
-        // 判断是否显示页面上的缩略图按钮
+        // Determine whether to display the thumbnail icon on the page.
         roomUtils.toggleThumbBtnDomHandle(hasThumb());
 
-        // 更新页面上总页数、当前页
+        // Update the total number of pages and the current page number on the page.
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
         roomUtils.updatePageCountDomHandle(zegoSuperBoardSubView.getPageCount());
         roomUtils.updateCurrPageDomHandle(zegoSuperBoardSubView.getCurrentPage());
 
-        roomUtils.toast('切换成功');
+        roomUtils.toast('switch successfully');
         roomUtils.closeLoading();
     } catch (errorData) {
         roomUtils.closeLoading();
@@ -414,34 +414,33 @@ async function switchWhitebopardHandle(uniqueID) {
 }
 
 /**
- * @description: 监听白板下拉选择框
- * @description: 这里只展示监听下拉框，开发者根据实际情况处理
- */
+ * @description: Listen for the whiteboard drop-down list.
+ * @description: Only values listened for from the drop-down list are displayed here. You can handle it as required.
 layui.form.on('select(whiteboardList)', async function (data) {
     switchWhitebopardHandle(data.value);
 });
 
 /**
- * @description: 监听白板 sheet 下拉选择框
- * @description: 这里只展示监听下拉框，开发者根据实际情况处理
- * @description: 获取下拉框当前选中，开发者根据实际情况处理
+ * @description: Listen for the sheet drop-down list of the whiteboard.
+ * @description: Only values listened for from the drop-down list are displayed here. You can handle it as required.
+ * @description: Obtain the currently selected value from the drop-down list. You can handle it as required.
  */
 layui.form.on('select(sheetList)', async function (data) {
-    // 获取下拉框当前选中的值('uniqueID,sheetIndex')
+    // Obtain the currently selected value from the drop-down list. ('uniqueID,sheetIndex')
     var temp = data.value.split(',');
-    // 拆分出 uniqueID、sheetIndex
+    // Split out the uniqueID and sheetIndex.
     var uniqueID = temp[0];
     var sheetIndex = temp[1];
     try {
-        roomUtils.loading('切换中');
+        roomUtils.loading('switching');
 
         await zegoSuperBoard.getSuperBoardView().switchSuperBoardSubView(uniqueID, +sheetIndex);
 
-        // 缓存当前 excel 白板 的 sheet
+        // Cache the sheet of the current Excel file whiteboard.
         cacheSheetMap[uniqueID] = sheetIndex;
 
         roomUtils.closeLoading();
-        roomUtils.toast('切换成功');
+        roomUtils.toast('switch successfully');
     } catch (errorData) {
         roomUtils.closeLoading();
         roomUtils.toast(errorData);
@@ -449,31 +448,31 @@ layui.form.on('select(sheetList)', async function (data) {
 });
 
 /**
- * @description: 根据内置文件创建文件白板
- * @description: 这里只展示根据页面指定 fileID 创建文件白板，开发者可根据实际情况设置
+ * @description: Create a file whiteboard based on the built-in file.
+ * @description: Only the file whiteboard created based on the specified fileID on the page is displayed here. You can handle it as required.
  * @param {Event} event event
  */
 function createFileViewByFileID(event) {
     var fileID = $(event.target).attr('data-file-id');
 
-    // 创建文件白板
+    // Create a file whiteboard.
     createFileView(fileID);
 
-    // 关闭文件弹框
+    // Close the File dialog.
     $('#filelistModal').modal('hide');
 }
 
 /**
- * @description: 登陆或刷新页面重新获取当前 SuperBoardSubView 并挂载，更新相关数据
- * @description: 需要业务层主动挂载，SDK 内部不会主动挂载当前 SuperBoardSubView
+ * @description: Log in or refresh the page to obtain and mount the current SuperBoardSubView to update relevant data.
+ * @description: SuperBoardSubView needs to be mounted by the business layer and the internal SDK does not actively mount it.
  */
 async function attachActiveView() {
     console.warn('SuperBoard Demo parent', $('#' + parentDomID)[0].clientWidth, $('#' + parentDomID)[0].clientHeight);
 
-    // 查询当前白板列表
+    // Query the current whiteboard list.
     var result = await querySuperBoardSubViewListHandle();
     console.warn('SuperBoard Demo attachActiveView', result);
-    // 进房自动挂载最新白板
+    // When you enter a room, the latest whiteboard is automatically mounted.
     if (result.uniqueID) {
         var superBoardView = zegoSuperBoard.getSuperBoardView();
         if (superBoardView) {
@@ -486,13 +485,13 @@ async function attachActiveView() {
                 var curViewModel = curView.getModel();
                 console.warn('SuperBoard Demo attachActiveView', pageCount, currPage);
 
-                // 缓存当前 excel 白板 的 sheet
+                // Cache the sheet of the current Excel file whiteboard.
                 if (curViewModel.fileType === 4) {
                     cacheSheetMap[result.uniqueID] = result.sheetIndex;
                 }
-                // 初始化白板工具
+                // Initialize the whiteboard tool.
                 initToolType();
-                // 更新总页数、当前页
+                // Update the total number of pages and the current page number.
                 roomUtils.updatePageCountDomHandle(pageCount);
                 roomUtils.updateCurrPageDomHandle(currPage);
             } catch (errorData) {
@@ -503,20 +502,20 @@ async function attachActiveView() {
 }
 
 /**
- * @description: 这里使用第三方 UI 插件 Layui，获取页面输入的 fileID，开发者可根据实际情况处理
+ * @description: A third-party UI plug-in layui is used here to obtain the fileID entered on the page. You can handle it as required.
  */
 $('#createFileBtn').click(function () {
     var fileID = layui.form.val('form3').createFileID;
 
-    if (!fileID) return roomUtils.toast('请输入 fileID');
-    // 创建文件白板
+    if (!fileID) return roomUtils.toast('Please enter fileID');
+    // Create a file whiteboard.
     createFileView(fileID);
 });
 
 $('#getFileBtn').click(function () {
     var fileID = layui.form.val('form3').createFileID;
 
-    if (!fileID) return roomUtils.toast('请输入 fileID');
-    // 创建文件白板
+    if (!fileID) return roomUtils.toast('Please enter fileID');
+    // Create a file whiteboard.
     createFileView(fileID);
 });

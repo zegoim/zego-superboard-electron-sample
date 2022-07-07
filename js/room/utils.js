@@ -3,75 +3,78 @@
  * @Date: 2021-07-28 14:23:27
  * @LastEditTime: 2021-08-27 01:21:15
  * @LastEditors: Please set LastEditors
- * @Description: 房间页更新 DOM 的相关方法、相关工具方法
+ * @Description: Room page update DOM related methods, related tools and methods
  * @FilePath: /superboard/js/room/utils.js
  */
 
 /**
- * @description: 第三方 UI 插件 Bootstrap tooltip 初始化
+ * @description: Initialization of the third-party UI plug-in Bootstrap tooltip.
  */
-$(function() {
+$(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
-// 房间页更新 DOM 的相关方法、相关工具方法
+// Methods and tools for updating the DOM on the room page.
 var roomUtils = {
     /**
-     * @description: 全局提示框
-     * @description: 这里使用第三方 Layui 插件提示框，开发者根据实际情况使用相应的提示框
-     * @param {String|Object} content 提示内容
+     * @description: A global pop-up box.
+     * @description: A pop-up box of the third-party plug-in layui is used here. You can use pop-up boxes as required.
+     * @param {String|Object} content Pop-up box content
      */
-    toast: function(content) {
-        // 对象转换为字符串后提示
+    toast: function (content) {
+        // A pop-up box is displayed after an object is converted to a string.
         content = typeof content === 'string' ? content : JSON.stringify(content);
         layui.layer.msg(content);
     },
 
     /**
-     * @description: 全局打开 loading
-     * @description: 这里使用第三方 UI 插件 Layui loading，开发者根据实际情况使用相应的 loading
-     * @param {String|Object} content loading 中内容
+     * @description: Enable loading globally.
+     * @description: Loading of the third-party plug-in layui is used here. You can use the loading as required.
+     * @param {String|Object} content loading Loading content
      */
-    loading: function(content) {
+    loading: function (content) {
         content = typeof content === 'string' ? content : JSON.stringify(content);
-        layui.layer.open({ type: 3, content });
+        layui.layer.open({
+            type: 3,
+            content
+        });
     },
 
     /**
-     * @description: 全局关闭 loading
-     * @description: 这里使用第三方 UI 插件 Layui loading，开发者根据实际情况使用相应的 loading
+     * @description: Disable loading globally.
+     * @description: Loading of the third-party plug-in layui is used here. You can use the loading as required.
      */
-    closeLoading: function() {
+    closeLoading: function () {
         layui.layer.closeAll();
     },
 
     /**
-     * @description: 更新页面上顶部总页数 pageCount
+     * @description: Update the total number of pages specified by pageCount at the top of the page.
      * @param {Number} pageCount
      */
-    updatePageCountDomHandle: function(pageCount) {
+    updatePageCountDomHandle: function (pageCount) {
         $('#pageCount').html(pageCount);
     },
 
     /**
-     * @description: 更新页面上当前页 currPage，包括顶部翻页按钮 + 缩略图
+     * @description: Update the currPage, page-turning button, and thumbnail at the top of the page.
      * @param {Number} currPage
      */
-    updateCurrPageDomHandle: function(currPage) {
+    updateCurrPageDomHandle: function (currPage) {
         $('#currPage').html(currPage);
         $('.thumb-item').removeClass('active');
         $('.thumb-item:nth-of-type(' + currPage + ')').addClass('active');
-        // 自动滚动到缩略图指定页位置
+        // Automatically scroll to the page specified in the thumbnail.
         var scrollTop = 112 * (currPage - 1);
         $('.thumb-main')[0].scrollTop = scrollTop;
     },
 
     /**
-     * @description: 显示、隐藏页面白板区域占位
-     * @description: 房间内有白板时，显示白板，没有白板显示占位
-     * @param {Boolean} type true 显示 false 隐藏
+     * @description: Display or hide the whiteboard placeholder on the page.
+     * @description: If a whiteboard exists in the room, the whiteboard is displayed; otherwise, a placeholder is displayed.
+     * @param {Boolean} type true: display; false: hide.
      */
-    togglePlaceholderDomHandle: function(type) {
+    togglePlaceholderDomHandle: function (type) {
         if (type) {
             $('#main-whiteboard-placeholder').addClass('active');
         } else {
@@ -80,81 +83,85 @@ var roomUtils = {
     },
 
     /**
-     * @description: 更新页面顶部白板列表下拉框
-     * @description: 这里使用第三方 UI 插件 Layui 的下拉框，更新页面 DOM 后需要调用 Layui 的方法重新渲染
-     * @description: 开发者可根据实际情况处理
-     * @param {Array} zegoSuperBoardSubViewModelList 白板列表
+     * @description: Update the whiteboard list drop-down list at the top of the page.
+     * @description: A drop-down list of the third-party UI plug-in layui is used here. You need to call layui to re-render after the page DOM is updated.
+     * @description: You can handle it as required.
+     * @param {Array} zegoSuperBoardSubViewModelList Whiteboard list
      */
-    updateWhiteboardListDomHandle: function(zegoSuperBoardSubViewModelList) {
+    updateWhiteboardListDomHandle: function (zegoSuperBoardSubViewModelList) {
         var $str = '';
         $('#whiteboardList').html('');
-        zegoSuperBoardSubViewModelList.forEach(function(element,index) {
+        if (zegoSuperBoardSubViewModelList.length == 0) {
+            $str =
+                '<option>Please Select</option>';
+        }
+        zegoSuperBoardSubViewModelList.forEach(function (element, index) {
             $str +=
                 '<option value="' +
                 element.uniqueID +
                 '" data-file-type="' +
                 element.fileType +
                 '">' +
-                index  + '-' + element.name +
+                index + '-' + element.name +
                 '</option>';
         });
         $('#whiteboardList').html($str);
-        // 更新白板列表下拉框 DOM 后重新渲染
+        // Re-render after the DOM of the whiteboard list drop-down list is updated.
         layui.form.render('select', 'customForm');
     },
 
     /**
-     * @description: 更新页面顶部 Excel 白板 sheetList 下拉框
-     * @description: 一个 Excel 可能存在多个 sheet，就会创建多个 sheet 白板
-     * @description: 这里使用第三方 UI 插件 Layui 的下拉框，更新页面 DOM 后需要调用 Layui 的方法重新渲染
-     * @description: 开发者可根据实际情况处理
+     * @description: Hide the sheetList drop-down list of the Excel file whiteboard at the top of the page.
+     * @description: An Excel file may have multiple sheets. In this case, multiple sheet whiteboards are created.
+     * @description: A drop-down list of the third-party UI plug-in layui is used here. You need to call layui to re-render after the page DOM is updated.
+     * @description: You can handle it as required.
      * @param {String} uniqueID uniqueID
-     * @param {Array} zegoExcelSheetNameList Excel 对应的 sheet 列表
+     * @param {Array} zegoExcelSheetNameList Excel The sheet list corresponding to the Excel file
      */
-    updateExcelSheetListDomHandle: function(uniqueID, zegoExcelSheetNameList) {
+    updateExcelSheetListDomHandle: function (uniqueID, zegoExcelSheetNameList) {
         var $str = '';
         $('#sheetList').html('');
-        zegoExcelSheetNameList.forEach(function(element, index) {
+        zegoExcelSheetNameList.forEach(function (element, index) {
             $str += '<option value="' + uniqueID + ',' + index + '">' + element + '</option>';
         });
         $('#sheetList').html($str);
-        // 更新 sheetList 下拉框 DOM 后重新渲染
+        // Re-render after the DOM of the sheetList drop-down list is updated.
         layui.form.render('select', 'customForm');
     },
 
     /**
-     * @description: 显示、隐藏页面顶部 Excel 白板 sheetList 下拉框
-     * @param {Boolean} type true: 显示 false: 隐藏
+     * @description: Display or hide the sheetList drop-down list of the Excel file whiteboard at the top of the page.
+     * @param {Boolean} type true: display; false: hide.
      */
-    toggleSheetSelectDomHandle: function(type) {
+    toggleSheetSelectDomHandle: function (type) {
         if (type) {
-            // 显示页面 Excel 白板 sheetList 下拉框
+            // Display the sheetList drop-down list of the Excel file whiteboard.
             $('#sheetListItem').show();
         } else {
-            // 更新页面 Excel 白板 sheetList 下拉框
+            // Update the sheetList drop-down list of the Excel file whiteboard.
             roomUtils.updateExcelSheetListDomHandle('', []);
-            // 隐藏页面 Excel 白板 sheetList 下拉框
+            // Hide the sheetList drop-down list of the Excel file whiteboard.
             $('#sheetListItem').hide();
         }
     },
 
     /**
-     * @description: 更新页面顶部缩放列表下拉框
-     * @description: 这里使用第三方 UI 插件 Layui 的下拉框，更新页面 DOM 后需要调用 Layui 的方法重新渲染
-     * @param {Number} scale 缩放值
+     * @description: Update the zooming list drop-down list at the top of the page.
+     * @description: A drop-down list of the third-party UI plug-in layui is used here. You need to call layui to re-render after the page DOM is updated.
+     * @param {Number} scale Zooming value
      */
-    updateCurrScaleDomHandle: function(scale) {
+    updateCurrScaleDomHandle: function (scale) {
         $('#scaleList').val(scale);
-        // 更新页面缩放列表下拉框后重新渲染
+        // Re-render after the zooming list drop-down list is updated.
         layui.form.render('select', 'customForm');
     },
 
     /**
-     * @description: 显示、隐藏动态 PPT 文件白板的步数切换
-     * @description: 非动态 PPT 文件白板不存步数，不能切步
-     * @param {Boolean} type true: 显示 false: 隐藏
+     * @description: Display or hide the step switching of whiteboards of the animated PPT file.
+     * @description: For whiteboards of the non-animated PPT file, the number of steps cannot be saved, and step switching is disabled.
+     * @param {Boolean} type true: display; false: hide.
      */
-    toggleStepDomHandle: function(type) {
+    toggleStepDomHandle: function (type) {
         if (type) {
             $('.ppt-dynamic').addClass('active');
         } else {
@@ -163,11 +170,11 @@ var roomUtils = {
     },
 
     /**
-     * @description: 显示、隐藏页面缩略图按钮
-     * @description: fileType 为 1、8、512、4096 时存在缩略图，显示缩略图按钮
-     * @param {Boolean} type true: 显示 false: 隐藏
+     * @description: Display or hide the thumbnail icon on the page.
+     * @description: The thumbnail icon is displayed when fileType is set to 1, 8, 512, and 4096.
+     * @param {Boolean} type true: display; false: hide.
      */
-    toggleThumbBtnDomHandle: function(type) {
+    toggleThumbBtnDomHandle: function (type) {
         if (type) {
             $('#thumb-button').addClass('active');
         } else {
@@ -176,41 +183,45 @@ var roomUtils = {
     },
 
     /**
-     * @description: 更新页面顶部白板列表下拉框中当前选中白板
-     * @description: 这里使用第三方 UI 插件 Layui 的下拉框，需要调用 Layui 的方法更新页面白板列表下拉框中当前选中白板
+     * @description: Update the currently selected whiteboard in the whiteboard list drop-down list at the top of the page.
+     * @description: A drop-down list of the third-party UI plug-in layui is used here. You need to call layui to update the currently selected whiteboard in the whiteboard list drop-down list.
      * @param {String} uniqueID uniqueID
      */
-    updateCurrWhiteboardDomHandle: function(uniqueID) {
-        layui.form.val('customForm', { whiteboard: uniqueID });
+    updateCurrWhiteboardDomHandle: function (uniqueID) {
+        layui.form.val('customForm', {
+            whiteboard: uniqueID
+        });
     },
 
     /**
-     * @description: 更新页面顶部 Excel 白板 sheetList 下拉框当前选中 sheet
-     * @description: 这里使用第三方 UI 插件 Layui 的下拉框，需要调用 Layui 的方法更新页面 sheetList 下拉框中当前选中 sheet
+     * @description: Update the currently selected sheet in the sheetList drop-down list of the Excel file whiteboard at the top of the page.
+     * @description: A drop-down list of the third-party UI plug-in layui is used here. You need to call layui to update the currently selected sheet in the sheetList drop-down list.
      * @param {String} uniqueID uniqueID
-     * @param {Number} sheetIndex 需要选中的 sheet 下标
+     * @param {Number} sheetIndex Subscript of the sheet to be selected
      */
-    updateCurrSheetDomHandle: function(uniqueID, sheetIndex) {
-        layui.form.val('customForm', { sheet: uniqueID + ',' + sheetIndex });
+    updateCurrSheetDomHandle: function (uniqueID, sheetIndex) {
+        layui.form.val('customForm', {
+            sheet: uniqueID + ',' + sheetIndex
+        });
     },
 
     /**
-     * @description: 重置页面白板工具栏为画笔，并激活当前样式
-     * @description: 初始化 SuperBoard SDK 白板工具为画笔时调用
+     * @description: Reset the whiteboard tool to Pen and enable the current tool.
+     * @description: Initialize the Super Board SDK and call it when the whiteboard tool is set to Pen.
      */
-    resetToolTypeDomHandle: function() {
+    resetToolTypeDomHandle: function () {
         $('.tool-item').removeClass('active');
         $('.pencil-text-setting').removeClass('active');
         $('.tool-item.pen').addClass('active');
     },
 
     /**
-     * @description: 是否禁用点击工具，增加禁用样式
-     * @description: 非动态 PPT、自定义 H5 文件白板时需要禁用点击工具
-     * @description: 每次切换白板时调用，判断当前白板是否需要禁用点击工具
-     * @param {Boolean} type true: 禁止 false: 隐藏
+     * @description: Indicates whether to disable the Click tool and add the disabled tool type.
+     * @description: For whiteboards of non-animated PPT files or custom H5 files, the Click tool needs to be disabled.
+     * @description: Call the method each time the whiteboard is switched to determine whether the Click tool needs to be disabled for the current whiteboard.
+     * @param {Boolean} type true: disable; false: enable.
      */
-    toggleDisabledDomHandle: function(type) {
+    toggleDisabledDomHandle: function (type) {
         if (type) {
             $('.tool-item.clickType').addClass('disabled');
         } else {
@@ -220,25 +231,25 @@ var roomUtils = {
 };
 
 /**
- * @description: 绑定缩略图预览事件
- * @description: 点击缩略图按钮时打开当前文件白板的缩略图右侧弹框
+ * @description: Bind an event for the thumbnail preview.
+ * @description: When you click the thumbnail icon, the dialog on the right of the thumbnail of the current file whiteboard is displayed.
  */
-$('#thumb-button').click(function(event) {
+$('#thumb-button').click(function (event) {
     $('#thumbModal').toggleClass('active');
 });
 
 /**
- * @description: 绑定关闭缩略图列表事件
- * @description: 点击关闭按钮时，关闭缩略图右侧弹框
+ * @description: Bind an event for closing the thumbnail list.
+ * @description: When you click the Close button, the dialog on the right of the thumbnail is closed.
  */
-$('.thumb-header span').click(function(event) {
+$('.thumb-header span').click(function (event) {
     $('#thumbModal').removeClass('active');
 });
 
 /**
- * @description: 绑定切换右侧功能区 Tab 事件
+ * @description: Bind an event for switching the tab in the functional area on the right.
  */
-$('#right-header').click(function(event) {
+$('#right-header').click(function (event) {
     var target = event.target;
     var index = $(target).attr('data-index');
     $('.nav-item').removeClass('active');
@@ -249,35 +260,35 @@ $('#right-header').click(function(event) {
 });
 
 /**
- * @description: 每次打开底部邀请按钮时更新邀请弹框中的邀请信息
+ * @description: Update the information in the dialog each time when the Invite button is clicked.
  */
-$('.inivate-btn').click(function(event) {
+$('.inivate-btn').click(function (event) {
     var inivateLink = location.origin + '?roomID=' + zegoConfig.roomID + '&env=' + zegoConfig.env;
     $('#showInviteLink').val(inivateLink);
     $('#showRoomEnv').html(zegoConfig.env == 1 ? '中国内地' : '海外');
 });
 
 /**
- * @description: 页面白板工具栏，阻止事件传播
- * @description: 仅为实现工具栏点击的打开弹框功能，开发者可根据实际情况处理
+ * @description: The toolbar of the whiteboard on the page. It is used to stop event triggering.
+ * @description: The method is used to implement the function of displaying the dialog based on the clicking of the toolbar. You can handle it as required.
  */
-$('.pencil-text-setting').click(function(event) {
+$('.pencil-text-setting').click(function (event) {
     event.stopPropagation();
 });
 
 /**
- * @description: 页面白板工具栏，阻止事件传播
- * @description: 仅为实现工具栏点击的打开弹框功能，开发者可根据实际情况处理
+ * @description: The toolbar of the whiteboard on the page. It is used to stop event triggering.
+ * @description: The method is used to implement the function of displaying the dialog based on the clicking of the toolbar. You can handle it as required.
  */
-$('.custom-graph-setting').click(function(event) {
+$('.custom-graph-setting').click(function (event) {
     event.stopPropagation();
 });
 
 /**
- * @description: 点击空白处关闭白板工具栏点击后出现的弹出框
- * @description: 仅为实现工具栏点击的打开弹框功能，开发者可根据实际情况处理
+ * @description: A dialog that appears after the click on other tools when the whiteboard toolbar is disabled by clicking on the blank space.
+ * @description: The method is used to implement the function of displaying the dialog based on the clicking of the toolbar. You can handle it as required.
  */
-$(document).click(function(event) {
+$(document).click(function (event) {
     if (!$(this).parents('.tool-item').length > 0) {
         $('.pencil-text-setting').removeClass('active');
         $('.custom-graph-setting').removeClass('active');
@@ -285,10 +296,10 @@ $(document).click(function(event) {
 });
 
 /**
- * @description: 复制邀请链接
+ * @description: Copy the invitation link.
  */
-$('#copyLintBtn').click(function() {
-    $('#showInviteLink').select(); // 选中文本
-    document.execCommand('copy'); // 执行浏览器复制命令
+$('#copyLintBtn').click(function () {
+    $('#showInviteLink').select();
+    document.execCommand('copy');
     roomUtils.toast('复制成功');
 });

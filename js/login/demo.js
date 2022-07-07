@@ -1,10 +1,10 @@
 /**
- * zego web demo 运行需要，开源时无需关注
+ *This code block is needed when the ZEGOCLOUD web demo runs. It does not need to be concerned when the demo is opened.
  */
 
 if (location.port == 4003) {
   if (!getSDKVersionOptions) {
-    // 获取 SDK 版本
+    // Obtain the SDK version.
     function getSDKVersionOptions(list) {
       return list
         .map(function (v) {
@@ -13,7 +13,7 @@ if (location.port == 4003) {
         .join('');
     }
 
-    // SDK 版本设置
+    // SDK version settings
     $('body').append(`
       <div class="modal fade" id="versionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
       <div class="modal-dialog" role="document">
@@ -22,12 +22,12 @@ if (location.port == 4003) {
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title" id="myModalLabel2">SDK 版本</h4>
+            <h4 class="modal-title" id="myModalLabel2">SDK version</h4>
           </div>
           <div class="modal-body">
             <form id="versionForm" class="layui-form" action="" name="form" lay-filter="versionForm">
               <div class="layui-form-item" id="superBoardVer">
-                <label class="layui-form-label">版本</label>
+                <label class="layui-form-label">version</label>
                 <div class="layui-input-block">
                   <select name="superBoardver" id="superBoardver" lay-filter="superBoardver">
                     
@@ -35,7 +35,7 @@ if (location.port == 4003) {
                 </div>
               </div>
             </form>
-            <div onclick="commmit">确定</div>
+            <div onclick="commmit">submit</div>
           </div>
         </div>
       </div>
@@ -63,12 +63,12 @@ if (location.port == 4003) {
       form = layui.form;
 
     form.on('select(superBoardver)', function (data) {
-      console.log(data.value); //得到被选中的值
+      console.log(data.value);
       sessionStorage.setItem('superBoardver', JSON.stringify(data.value));
-      // 替换SDK路径
+      // Replace the SDK path.
       loadScript(base_sdk_url + data.value);
-      //最后再渲柒一次
-      form.render('select'); //select是固定写法 不是选择器
+      // Perform rendering one more time.
+      form.render('select');
     });
   });
 
@@ -80,16 +80,15 @@ if (location.port == 4003) {
       script.type = 'text/javascript';
       script.src = url;
       if (script.readyState) {
-        //IE
+        // IE
         script.onreadystatechange = function () {
           if (script.readyState == 'loaded' || script.readyState == 'complete') {
             script.onreadystatechange = null;
           }
         };
       } else {
-        //Others
+        // Others
         script.onload = function () {
-          console.log('======1', url + '加载成功');
           resolve();
         };
       }
@@ -98,7 +97,7 @@ if (location.port == 4003) {
   }
   var sdkver = JSON.parse(sessionStorage.getItem('superBoardver'))
   console.warn('===sdkver', sdkver)
-  // 替换SDK路径
+  // Replace the SDK path.
   sdkver ? loadScript(base_sdk_url + sdkver) : loadScript(base_sdk_url + $('#superBoardver').val());
 
 }

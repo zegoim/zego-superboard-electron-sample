@@ -3,68 +3,68 @@
  * @Date: 2021-08-11 15:07:48
  * @LastEditTime: 2021-08-27 01:16:38
  * @LastEditors: Please set LastEditors
- * @Description: 上传自定义 H5 文件
+ * @Description: Upload custom H5 file
  * @FilePath: /superboard/js/room/uploadH5File.js
  */
 
-// zegoSuperBoard 为全局 SuperBoard Instance
-// toast 为全局提示框，开发者根据实际情况使用相应的提示框
+// zegoSuperBoard is a global Super Board instance.
+// toast is a global pop-up box. You can use pop-up boxes as required.
 
-var selectedH5File = null; // 当前选择的本地 H5 压缩包文件
+var selectedH5File = null; // The currently selected local H5 archive
 
 /**
- * @description: 选择本地 H5 压缩包文件
- * @description: 这里只展示选择本地文件，开发者根据实际情况处理
+ * @description: Select a local H5 compressed package.
+ * @description: Only selected local files are displayed here. You can handle it as required.
  */
 layui.upload.render({
-    elem: '#selectH5', // 绑定元素
-    accept: 'file', // 接收任意文件
-    exts: 'zip', // 根据后缀名过滤
-    auto: false, // 不自动上传
-    choose: function(obj) {
-        // 选择完文件
-        obj.preview(function(index, file, result) {
-            // 存储选择的文件，file 为当前选中文件
+    elem: '#selectH5',
+    accept: 'file',
+    exts: 'zip',
+    auto: false,
+    choose: function (obj) {
+        // The file is selected.
+        obj.preview(function (index, file, result) {
+            // Save the selected file. The file parameter indicates the file that is currently selected.
             selectedH5File = file;
-            roomUtils.toast('选择文件成功');
+            roomUtils.toast('file selected successfully');
         });
     }
 });
 
 /**
- * @description: 上传自定义 H5 文件
+ * @description: Upload a user-defined H5 file.
  */
-$('#uploadH5FileBtn').click(async function() {
-    // 判断 file、width、height、pageCount、h5ThumbnailList
+$('#uploadH5FileBtn').click(async function () {
+    // Determine the file, width, height, pageCount, and h5ThumbnailList.
     if (!selectedH5File) {
-        return roomUtils.toast('未选择文件');
+        return roomUtils.toast('No file selected');
     }
 
-    // 获取页面上输入的 width、height、pageCount、h5ThumbnailListStr，这里使用的是 layui，开发者可根据实际情况获取
+    // Obtain the width, height, pageCount, and h5ThumbnailListStr entered on the page. layui is used here. You can obtain them as required.
     var data = layui.form.val('form3');
     var h5Width = Number(data.h5Width);
     var h5Height = Number(data.h5Height);
     var h5PageCount = Number(data.h5PageCount);
-    // 将页面输入的 h5ThumbnailListStr 转换成数组
+    // Convert the h5ThumbnailListStr entered on the page to an array.
     var h5ThumbnailList = data.h5ThumbnailListStr ? data.h5ThumbnailListStr.split(',') : null;
     if (!h5Width || !h5Height || !h5PageCount || !h5ThumbnailList) {
-        return roomUtils.toast('文件参数有误');
+        return roomUtils.toast('wrong file parameters');
     }
 
-    // 构造上传自定义 H5 接口所需数据
+    // Specify the data required to upload a custom H5 interface.
     var config = {
-        width: h5Width, // 自定义文件的宽
-        height: h5Height, // 自定义文件的高
-        pageCount: h5PageCount, // 自定义文件的页数
-        thumbnailList: h5ThumbnailList // 自定义文件缩略图相对路径数组
+        width: h5Width, // custom file width
+        height: h5Height, // height of custom file
+        pageCount: h5PageCount, // the number of pages of the custom file
+        thumbnailList: h5ThumbnailList // Custom file thumbnail relative path array
     };
     try {
-        var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, function(res) {
+        var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, function (res) {
             roomUtils.toast(res.uploadPercent + '%');
         });
 
-        // 这里上传完成立即创建文件白板，开发者根据实际情况处理
-        // 创建文件白板方法在 js/room/whiteboard.js 中
+        // A file whiteboard is created immediately after the upload. You can handle it as required.
+        // The method of creating a file whiteboard is shown in js/room/whiteboard.js.
         createFileView(fileID);
     } catch (errorData) {
         roomUtils.toast(errorData);

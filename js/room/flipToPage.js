@@ -3,33 +3,33 @@
  * @Date: 2021-08-09 22:16:06
  * @LastEditTime: 2021-08-27 01:14:22
  * @LastEditors: Please set LastEditors
- * @Description: 白板翻页
+ * @Description: whiteboard page turn
  * @FilePath: /superboard/js/room/flipPage.js
  */
 
-// zegoSuperBoard 为全局 SuperBoard Instance
-// toast 为全局提示框，开发者根据实际情况使用相应的提示框
+// zegoSuperBoard is a global Super Board instance.
+// toast is a global pop-up box. You can use pop-up boxes as required.
 
 var flipToPageUtils = {
     /**
-     * @description: 更新页面当前页相关的元素
-     * @param {Number} currPage 当前页
+     * @description: Update related elements on the current page.
+     * @param {Number} currPage Current page
      */
     updateCurrPageDomHandle: function(currPage) {
-        // 更新 page-bar 当前页
+        // Update the current page-bar page.
         $('#currPage').html(currPage);
-        // 更新缩略图当前页
+        // Update the current thumbnail page.
         $('.thumb-item').removeClass('active');
         $('.thumb-item:nth-of-type(' + currPage + ')').addClass('active');
-        // 自动滚动到缩略图指定页位置
+        // Automatically scroll to the page specified in the thumbnail.
         var scrollTop = 112 * (currPage - 1);
         $('.thumb-main')[0].scrollTop = scrollTop;
     },
 
     /**
-     * @description: 更新缩略图列表
-     * @param {String} thumbnailUrlList 缩略图 url 列表字符串目录，例如："thumbnails/1.jpg,thumbnails/2.jpg,thumbnails/3.jpg"
-     * @param {Number} currPage 当前页码
+     * @description: Update the thumbnail list.
+     * @param {String} thumbnailUrlList Thumbnail URL list, for example, "thumbnails/1.jpg,thumbnails/2.jpg,thumbnails/3.jpg"
+     * @param {Number} currPage Current page number
      */
     updateThumbListDomHandle: function(thumbnailUrlList, currPage) {
         $('.thumb-main').html('');
@@ -50,21 +50,21 @@ var flipToPageUtils = {
     }
 };
 /**
- * @description: 跳转到目标页
- * @param {Number} page 目标页面
+ * @description: Redirect to the target page.
+ * @param {Number} page Target page
  */
 function flipToPage(page) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         zegoSuperBoardSubView.flipToPage(page);
 
-        // 更新页面当前页相关的元素
+        // Update related elements on the current page.
         flipToPageUtils.updateCurrPageDomHandle(page);
     }
 }
 
 /**
- * @description: 绑定上一页事件
+ * @description: Bind the previous page event.
  */
 $('#previousPage').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -76,7 +76,7 @@ $('#previousPage').click(function() {
 });
 
 /**
- * @description: 绑定下一页事件
+ * @description: Bind the next page event.
  */
 $('#nextPage').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -88,7 +88,7 @@ $('#nextPage').click(function() {
 });
 
 /**
- * @description: 绑定上一步事件
+ * @description: Bind the previous step event.
  */
 $('#previousStep').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -96,7 +96,7 @@ $('#previousStep').click(function() {
 });
 
 /**
- * @description: 绑定下一步事件
+ * @description: Bind the next step event.
  */
 $('#nextStep').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -104,31 +104,31 @@ $('#nextStep').click(function() {
 });
 
 /**
- * @description: 绑定跳转到目标页事件
+ * @description: Bind the event of redirection to the target page.
  */
 $('#flipToPageBtn').click(function() {
-    // 获取页面上输入的目标页，这里使用的是 layui，开发者可根据实际情况获取
+    // Obtain the target page entered on the page. layui is used here. You can obtain it as required.
     var page = layui.form.val('form2').targetPage;
-    if (!page) return roomUtils.toast('请输入目标页码，从 1 开始');
+    if (!page) return roomUtils.toast('Please enter a target page number, starting with 1');
 
     flipToPage(+page);
 });
 
 /**
- * @description: 获取缩略图 URL 列表
+ * @description: Obtain the thumbnail URL list.
  */
 $('#thumb-button').click(function() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (zegoSuperBoardSubView) {
         var type = zegoSuperBoardSubView.getModel().fileType;
-        // 仅支持 PDF、PPT、动态 PPT 文件格式、自定义 H5 文件格式
+        // Only PDF, PPT, animated PPT, and custom H5 file formats are supported.
         var supportType = [1, 8, 512, 4096];
         if (supportType.includes(type)) {
             var thumbnailUrlList = zegoSuperBoardSubView.getThumbnailUrlList();
 
             flipToPageUtils.updateThumbListDomHandle(thumbnailUrlList, zegoSuperBoardSubView.getCurrentPage());
         } else {
-            roomUtils.toast('获取缩略图仅支持“PDF，PPT，动态PPT，H5”文件格式');
+            roomUtils.toast('Get Thumbnail only supports "PDF, PPT, Dynamic PPT, H5" file format');
         }
     }
 });

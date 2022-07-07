@@ -3,24 +3,24 @@
  * @Date: 2021-08-12 11:56:27
  * @LastEditTime: 2021-08-27 01:14:41
  * @LastEditors: Please set LastEditors
- * @Description: 清空、撤销、重做、保存快照、清空当前页、清除选中、设置渲染延时
+ * @Description: Clear, Undo, Redo, Save Snapshot, Clear Current Page, Clear Selection, Set Render Delay
  * @FilePath: /superboard/js/room/other.js
  */
 
-// zegoSuperBoard 为全局 SuperBoard Instance
-// toast 为全局提示框，开发者根据实际情况使用相应的提示框
+// zegoSuperBoard is a global Super Board instance.
+// toast is a global pop-up box. You can use pop-up boxes as required.
 
-var saveImg = 1; // 白板快照索引
+var saveImg = 1; // Whiteboard Snapshot Index
 
 /**
- * @description: 监听按键清除选中图元
+ * @description: Listen for keys to clear selected diagram elements.
  */
 window.addEventListener('keydown', async function (event) {
     var e = event || window.event || arguments.callee.caller.arguments[0];
     if (!e) return;
     switch (e.keyCode) {
-        case 8: // 监听 backspace 按键，批量删除选中图元
-        case 46: // 监听 Delete 按键，批量删除选中图元
+        case 8:
+        case 46:
             clearSelected();
             break;
         default:
@@ -29,7 +29,7 @@ window.addEventListener('keydown', async function (event) {
 });
 
 /**
- * @description: 清空所有页
+ * @description: Clear all pages.
  */
 async function clearAllPage() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -37,7 +37,7 @@ async function clearAllPage() {
 }
 
 /**
- * @description: 撤销
+ * @description: Undo.
  */
 function undo() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -45,7 +45,7 @@ function undo() {
 }
 
 /**
- * @description: 重做
+ * @description: Redo.
  */
 function redo() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -53,7 +53,7 @@ function redo() {
 }
 
 /**
- * @description: 白板快照
+ * @description: Whiteboard snapshot.
  */
 function snapshot() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -67,7 +67,7 @@ function snapshot() {
 }
 
 /**
- * @description: 删除选中图元
+ * @description: Delete selected diagram elements.
  */
 function clearSelected() {
     if (!zegoSuperBoard) return;
@@ -76,7 +76,7 @@ function clearSelected() {
 }
 
 /**
- * @description: 清空当前页图元，在橡皮擦工具时生效
+ * @description: Clear diagram elements on the current page. It takes effect only when the eraser is used.
  */
 function clearCurrentPage() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -84,15 +84,15 @@ function clearCurrentPage() {
 }
 
 /**
- * @description: 设置渲染延时
+ * @description: Set the rendering latency.
  */
 $('#setDeferredRenderingTimeBtn').click(function () {
-    // 获取页面上输入的目标页，这里使用的是 layui，开发者可根据实际情况获取
+    // Obtain the target page entered on the page. layui is used here. You can obtain it as required.
     var deferredRenderingTime = layui.form.val('form2').deferredRenderingTime;
-    if (!deferredRenderingTime) return roomUtils.toast('请输入延时时长');
+    if (!deferredRenderingTime) return roomUtils.toast('Please enter the delay time');
 
     zegoSuperBoard.setDeferredRenderingTime(+deferredRenderingTime);
-    roomUtils.toast('设置成功');
+    roomUtils.toast('set successfully');
 });
 
 
@@ -113,8 +113,8 @@ $('#renewTokenBtn').click(function () {
 })
 
 /**
- * @description: 监听下拉框，设置日志等级
- * @description: 这里只展示下拉框的选择监听，开发者根据实际情况处理
+ * @description: Listen for the drop-down list to set the log level.
+ * @description: Only values listened for from the drop-down list are displayed here. You can handle it as required.
  */
 layui.form.on('select(logLevel)', async function () {
     var formData = layui.form.val('form3');
@@ -128,12 +128,3 @@ layui.form.on('select(logLevel)', async function () {
         roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
-
-$('#clearLog').click(function () {
-    zegoSuperBoard.clearLog().then(res => {
-        if (res.code == 0) {
-            console.info('demo log was clear')
-        }
-
-    })
-})

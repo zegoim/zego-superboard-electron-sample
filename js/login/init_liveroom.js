@@ -38,7 +38,7 @@ var zegoFeatureConfig = {
 // SDK 其他配置
 var zegoOtherConfig = {
     // 获取登录房间 token，开发者自行在后台实现改接口；测试环境可以使用 ZEGO 提供的接口获取（参考 https://doc-zh.zego.im/article/7638#3_3）
-    tokenUrl: 'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
+    tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
     roomID: loginUtils.getRoomID(), // 房间 ID
     userID: loginUtils.getUserID(), // 用户 ID
     userName: '' // 用户名称
@@ -91,7 +91,7 @@ async function initZegoSDK() {
     zegoEngine = new ZegoClient();
     var config = zegoEngine.config({
         "appid": appID, // 必填，应用id，请从 即构管理控制台-https://console.zego.im 获取
-        "idName": loginUtils.getUserID(), // 必填，用户自定义id，全局唯一    
+        "idName": userID, // 必填，用户自定义id，全局唯一    
         "nickName": 'web' + new Date().getTime(), // 必填，用户自定义昵称
         "server": server, // 必填，接入服务器地址，请从 即构管理控制台-https://console.zego.im 获取
         "logLevel": 0, //日志级别，debug:0,info:1,warn:2,error:3,report:99,disable:100（数字越大，日志越少），建议选择 1
@@ -105,13 +105,6 @@ async function initZegoSDK() {
     // 获取 token
     var token = await loginUtils.getToken(appID, userID, zegoConfig.tokenUrl);
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
-    console.log('mytag init', {
-        parentDomID,
-        userID,
-        appID,
-        token,
-        isTestEnv
-    });
     zegoSuperBoard.init(zegoEngine, {
         parentDomID,
         userID,

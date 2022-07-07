@@ -3,43 +3,43 @@
  * @Date: 2021-08-10 16:50:36
  * @LastEditTime: 2021-08-27 01:13:33
  * @LastEditors: Please set LastEditors
- * @Description: 添加自定义图形、插入图片
+ * @Description: Add custom graphics, insert pictures
  * @FilePath: /superboard/js/room/addImage.js
  */
 
-// zegoSuperBoard 为全局 SuperBoard Instance
-// toast 为全局提示框，开发者根据实际情况使用相应的提示框
+// zegoSuperBoard is a global Super Board instance.
+// toast is a global pop-up box. You can use pop-up boxes as required.
 
-var selectedInsetImgFile = null; // 当前选择的本地文件
+var selectedInsetImgFile = null; // The currently selected local file
 var customGraphList = [
     'https://storage.zego.im/goclass/wbpic/diamond.svg',
     'https://storage.zego.im/goclass/wbpic/star.svg',
     'https://storage.zego.im/goclass/wbpic/axis.svg',
     'https://storage.zego.im/goclass/wbpic/chemical_instrument.svg'
-]; // Zego 内置自定义图形列表
+]; // Zego built-in custom graphics list
 
 /**
- * @description: 选择本地插入图片
- * @description: 这里只展示选择本地文件，开发者根据实际情况处理
+ * @description: Select insert local images.
+ * @description: Only selected local files are displayed here. You can handle it as required.
  */
 layui.upload.render({
-    elem: '#selectImage', // 绑定元素
-    accept: 'images', // 只接受 image 文件
-    auto: false, // 不自动上传
-    choose: function(obj) {
-        // 选择完文件
-        obj.preview(function(index, file, result) {
-            // 存储选择的文件，file 为当前选中文件
+    elem: '#selectImage',
+    accept: 'images',
+    auto: false,
+    choose: function (obj) {
+        // The file is selected.
+        obj.preview(function (index, file, result) {
+            // Save the selected file. The file parameter indicates the file that is currently selected.
             selectedInsetImgFile = file;
-            roomUtils.toast('选择文件成功');
+            roomUtils.toast('file selected successfully');
         });
     }
 });
 
 /**
- * @description: 自定义图形工具下设置当前自定义图形
- * @param {Number} graphIndex 自定义图形在列表中的下标，用于标识当前目标自定义图形 URL
- * @param {Event} event event 鼠标点击事件
+ * @description: Set the current custom graph under the custom graph tool.
+ * @param {Number} graphIndex The custom graph subscript in the list. It is used to identify the URL of the target custom graph.
+ * @param {Event} event event Mouse click event
  */
 async function setCustomGraph(graphIndex, event) {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -47,32 +47,32 @@ async function setCustomGraph(graphIndex, event) {
 
     await zegoSuperBoardSubView.addImage(1, 0, 0, customGraphList[graphIndex]);
 
-    // 更新当前选择自定义图形的样式
+    // Update the style of the currently selected custom graph.
     addImageUtils.updateActiveGraphDomHandle(graphIndex, event);
 }
 
 /**
- * @description: 通过 URL 添加自定义图形
+ * @description: Add custom graphs through the URL.
  */
-$('#addImageByURLBtn1').click(async function() {
+$('#addImageByURLBtn1').click(async function () {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    // 获取页面上输入的自定义图形 URL，这里使用的是 layui，开发者可根据实际情况获取
+    // Obtain the URL of the custom graph entered on the page. layui is used here. You can obtain the URL as required.
     var url = layui.form.val('form1').customGraphUrl;
-    if (!url) return roomUtils.toast('请输入 URL');
+    if (!url) return roomUtils.toast('Please enter URL');
 
-    // 查找本地 customGraphList 是否已存在该自定义图形 URL
-    var index = customGraphList.findIndex(function(element) {
+    // Check whether this custom graph URL already exists in the local customGraphList.
+    var index = customGraphList.findIndex(function (element) {
         return element === url;
     });
     try {
         await zegoSuperBoardSubView.addImage(1, 0, 0, url, roomUtils.toast);
-        roomUtils.toast('上传成功');
+        roomUtils.toast('Uploaded successfully');
         if (index === -1) {
-            // 不存在 -> 添加到本地自定义图形列表
+            // If it does not exist, add it to the local custom graph list.
             customGraphList.push(url);
-            // 通过 URL 追加自定义图形到页面自定义图形列表
+            // Add custom graphs to the custom graph list on the page through the URL.
             addImageUtils.appendGraphDomHandle(url);
         }
     } catch (errorData) {
@@ -81,50 +81,50 @@ $('#addImageByURLBtn1').click(async function() {
 });
 
 /**
- * @description: 通过 URL 插入网络图片
+ * @description: Insert network images through the URL.
  */
-$('#addImageByURLBtn2').click(async function() {
+$('#addImageByURLBtn2').click(async function () {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    // 获取页面上输入的网络图片 URL，这里使用的是 layui，开发者可根据实际情况获取
+    // Obtain the network image URL entered on the page. layui is used here. You can obtain the URL as required.
     var url = layui.form.val('form1').customImageUrl;
-    if (!url) return roomUtils.toast('请输入 URL');
+    if (!url) return roomUtils.toast('Please enter URL');
 
     try {
         await zegoSuperBoardSubView.addImage(0, 0, 0, url, roomUtils.toast);
-        roomUtils.toast('上传成功');
+        roomUtils.toast('Uploaded successfully');
     } catch (errorData) {
         roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 
 /**
- * @description: 选择本地文件，设置当前要添加到 SuperboardView 上的自定义图形
+ * @description: Select local files and set custom graphs to be added to SuperboardView.
  */
-$('#addImageByFileBtn').click(async function() {
+$('#addImageByFileBtn').click(async function () {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     if (!zegoSuperBoardSubView) return;
 
-    // 判断本地是否已经选择文件
-    if (!selectedInsetImgFile) return roomUtils.toast('请先选择文件');
+    // Check whether a file is selected locally.
+    if (!selectedInsetImgFile) return roomUtils.toast('Please select a file first');
     try {
         await zegoSuperBoardSubView.addImage(0, 0, 0, selectedInsetImgFile, roomUtils.toast);
-        roomUtils.toast('上传成功');
+        roomUtils.toast('Uploaded successfully');
     } catch (errorData) {
         roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 
-// 更新 DOM 的相关方法、相关工具方法
+// DOM update methods and related tool methods
 var addImageUtils = {
     /**
-     * @description: 通过 URL 追加自定义图形到页面自定义图形列表
-     * @description: 这里只展示更新页面功能，开发者根据实际情况处理
-     * @description: 给追加的自定义图形 LI 元素绑定点击事件，用于设置当前要添加到 SuperboardView 上的自定义图形
-     * @param {String} address 自定义图形 URL 地址
+     * @description: Add custom graphs to the custom graph list on the page through the URL.
+     * @description: Only updated functions on the page are displayed here. You can handle it as required.
+     * @description: Bind the click event to the added custom graph in the <li> tag to set the custom graph to be added to SuperboardView.
+     * @param {String} address Custom graph URL
      */
-    appendGraphDomHandle: function(address) {
+    appendGraphDomHandle: function (address) {
         var $str =
             '<li data-index="' +
             (customGraphList.length - 1) +
@@ -134,18 +134,18 @@ var addImageUtils = {
             address +
             '" alt=""></li>';
         $('.custom-graph-setting').append($str);
-        // 更新尺寸，这里的 12、46 用于计算页面自定义图形容器的尺寸
+        // Update the size. 12 and 46 are used to calculate the size of the custom graph container on the page.
         $('.custom-graph-setting').css('width', 12 + 46 * Math.ceil(customGraphList.length / 4) + 'px');
     },
 
     /**
-     * @description: 更新自定义图形列表到页面
-     * @description: 这里只展示更新页面功能，开发者根据实际情况处理
-     * @description: 给每一个自定义图形 LI 元素绑定点击事件，用于设置当前要添加到 SuperboardView 上的自定义图形
+     * @description: Update the custom graph list to the page.
+     * @description: Only updated functions on the page are displayed here. You can handle it as required.
+     * @description: Bind a click event to each custom graph in the <li> tag to set custom graphs to be added to SuperboardView.
      */
-    initGraphListDomHandle: function() {
+    initGraphListDomHandle: function () {
         var $str = '';
-        customGraphList.forEach(function(element, index) {
+        customGraphList.forEach(function (element, index) {
             $str +=
                 '<li data-index="' +
                 index +
@@ -159,17 +159,17 @@ var addImageUtils = {
     },
 
     /**
-     * @description: 更新当前选择自定义图形的样式
-     * @description: 这里只展示更新页面功能，开发者根据实际情况处理
-     * @param {Number} graphIndex 自定义图形在列表中的下标，用于标识当前目标自定义图形 URL
-     * @param {Event} event 鼠标点击事件
+     * @description: Update the style of the currently selected custom graph.
+     * @description: Only updated functions on the page are displayed here. You can handle it as required.
+     * @param {Number} graphIndex The custom graph subscript in the list. It is used to identify the URL of the target custom graph.
+     * @param {Event} event Mouse click event.
      */
-    updateActiveGraphDomHandle: function(graphIndex, event) {
+    updateActiveGraphDomHandle: function (graphIndex, event) {
         event.stopPropagation();
         $('.custom-graph-item').removeClass('active');
         $('.custom-graph-item:nth-of-type(' + (graphIndex + 1) + ')').addClass('active');
     }
 };
 
-// 页面 DOM 加载完成更新自定义图形列表到页面
+// Page DOM loaded. Update the custom graph list to the page.
 $(document).ready(addImageUtils.initGraphListDomHandle);

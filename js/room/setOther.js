@@ -3,15 +3,15 @@
  * @Date: 2021-08-11 16:24:43
  * @LastEditTime: 2021-08-25 02:02:09
  * @LastEditors: Please set LastEditors
- * @Description: 设置笔锋、画笔粗细、画笔颜色、文本大小、文本粗体、文本斜体
+ * @Description: Set stroke, brush thickness, brush color, text size, text bold, text italic
  * @FilePath: /superboard/js/room/setOther.js
  */
 
-// zegoSuperBoard 为全局 SuperBoard Instance
+// zegoSuperBoard is a global Super Board instance.
 
 var setOtherUtils = {
     /**
-     * @description: 更新页面上当前笔触粗细的样式
+     * @description: Update the current pen size on the page.
      * @param {Event} event event
      */
     updateActiveBrushSizeDomHandle: function(event) {
@@ -22,7 +22,7 @@ var setOtherUtils = {
     },
 
     /**
-     * @description: 更新页面上当前笔触颜色的样式
+     * @description: Update the current pen color on the page.
      * @param {Event} event event
      */
     updateActiveBrushColorDomHandle: function(event) {
@@ -33,7 +33,7 @@ var setOtherUtils = {
     },
 
     /**
-     * @description: 更新页面上当前文本大小的样式
+     * @description: Update the current text size on the page.
      * @param {Event} event event
      */
     updateActiveFontSizeDomHandle: function(event) {
@@ -44,7 +44,7 @@ var setOtherUtils = {
     },
 
     /**
-     * @description: 更新页面上当前文本粗体、斜体的样式
+     * @description: Update the current bold style and italic style on the page.
      * @param {Event} event event
      */
     updateActiveFontStyleHandle: function(event) {
@@ -54,44 +54,44 @@ var setOtherUtils = {
 };
 
 /**
- * @description: 开启笔锋
- * @description: 监听页面笔锋 switch 开关状态
- * @description: 这里只展示监听方法，开发者根据实际情况监听
+ * @description: Enable the handwriting mode.
+ * @description: Listen for the switch status of the handwriting mode.
+ * @description: Only the listening method is displayed here. You can listen as required.
  */
 layui.form.on('switch(handwriting)', function() {
-    // 获取当前 switch 的打开状态，开发者根据实际情况获取
-    // true: 打开（同步）false: 关闭（不同步）
+    // Obtain the current switch status. You can obtain it as required.
+    // true: enable; false: disable.
     var bool = this.checked;
     zegoSuperBoard.enableHandwriting(bool);
 });
 
 /**
- * @description: 开启自定义光标
- * @description: 监听页面自定义光标 switch 开关状态
- * @description: 这里只展示监听方法，开发者根据实际情况监听
+ * @description: Enable the custom cursor.
+ * @description: Listen for the switch status of the custom cursor.
+ * @description: Only the listening method is displayed here. You can listen as required.
  */
 layui.form.on('switch(enableCustomCursor)', function() {
-    // 获取当前 switch 的打开状态，开发者根据实际情况获取
-    // true: 打开（同步）false: 关闭（不同步）
+    // Obtain the current switch status. You can obtain it as required.
+    // true: enable; false: disable.
     var bool = this.checked;
     zegoSuperBoard.enableCustomCursor(bool);
 });
 
 /**
- * @description: 开启自定义光标
- * @description: 监听页面自定义光标 switch 开关状态
- * @description: 这里只展示监听方法，开发者根据实际情况监听
+ * @description: Enable the custom cursor.
+ * @description: Listen for the switch status of the custom cursor.
+ * @description: Only the listening method is displayed here. You can listen as required.
  */
 layui.form.on('switch(enableRemoteCursorVisible)', function() {
-    // 获取当前 switch 的打开状态，开发者根据实际情况获取
-    // true: 打开（同步）false: 关闭（不同步）
+    // Obtain the current switch status. You can obtain it as required.
+    // true: enable; false: disable.
     var bool = this.checked;
     zegoSuperBoard.enableRemoteCursorVisible(bool);
 });
 
 /**
- * @description: 设置画笔粗细
- * @param {Number} brushSize 画笔粗细
+ * @description: Set the pen size.
+ * @param {Number} brushSize Pen size
  * @param {Event} event event
  */
 function setBrushSize(brushSize, event) {
@@ -101,8 +101,8 @@ function setBrushSize(brushSize, event) {
 }
 
 /**
- * @description: 设置画笔颜色
- * @param {String} color 画笔颜色
+ * @description: Set the pen color.
+ * @param {String} color Pen color
  * @param {Event} event event
  */
 function setBrushColor(color, event) {
@@ -112,8 +112,8 @@ function setBrushColor(color, event) {
 }
 
 /**
- * @description: 设置文本大小
- * @param {Number} fontSize 文本大小
+ * @description: Set the text size.
+ * @param {Number} fontSize Text size
  * @param {Event} event event
  */
 function setFontSize(fontSize, event) {
@@ -123,26 +123,26 @@ function setFontSize(fontSize, event) {
 }
 
 /**
- * @description: 设置文本粗体
- * @param {Event} event event
- */
+ * @description: Set the bold style.
+     * @param {Event} event event
+     */
 function setFontBold(event) {
-    // 获取当前是否是粗体
+    // Specify whether the bold style is enabled.
     var bold = zegoSuperBoard.isFontBold();
-    // 取反
+    // Bitwise not
     zegoSuperBoard.setFontBold(!bold);
 
     setOtherUtils.updateActiveFontStyleHandle(event);
 }
 
 /**
- * @description: 设置文本斜体
- * @param {Event} event event
- */
+ * @description: Set the italic style.
+     * @param {Event} event event
+     */
 function setFontItalic(event) {
-    // 获取当前是否是斜体
+    // Specify whether the italic style is enabled.
     var italic = zegoSuperBoard.isFontItalic();
-    // 取反
+    // Bitwise not
     zegoSuperBoard.setFontItalic(!italic);
 
     setOtherUtils.updateActiveFontStyleHandle(event);

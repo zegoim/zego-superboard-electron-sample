@@ -3,19 +3,19 @@
  * @Date: 2021-08-10 11:47:35
  * @LastEditTime: 2021-08-25 01:53:43
  * @LastEditors: Please set LastEditors
- * @Description: 白板缩放
+ * @Description: Whiteboard Zoom
  * @FilePath: /superboard/js/room/setScaleFactor.js
  */
 
-// zegoSuperBoard 为全局 SuperBoard Instance
-// toast 为全局提示框，开发者根据实际情况使用相应的提示框
+// zegoSuperBoard is a global Super Board instance.
+// toast is a global pop-up box. You can use pop-up boxes as required.
 var setScaleFactorUtils = {
     /**
-     * @description: 更新页面 scale
-     * @description: 这里只展示更新页面内容，开发者根据实际情况处理
-     * @param {Number} scale 目标 scale
+     * @description: Update the page scale.
+     * @description: Only the updated content is displayed here. You can handle it as required.
+     * @param {Number} scale Target scale
      */
-    updateScaleDomHandle: function(scale) {
+    updateScaleDomHandle: function (scale) {
         layui.form.val('customForm', {
             scale: scale + ''
         });
@@ -23,49 +23,49 @@ var setScaleFactorUtils = {
 };
 
 /**
- * @description: 同步缩放
- * @description: 监听页面同步缩放 switch 开关状态
- * @description: 这里只展示监听方法，开发者根据实际情况监听
+ * @description: Synchronous zooming.
+ * @description: Listen for the switch status of synchronous zooming on the page.
+ * @description: Only the listening method is displayed here. You can listen as required.
  */
-layui.form.on('switch(syncScale)', function() {
-    // 获取当前 switch 的打开状态，开发者根据实际情况获取
-    // true: 打开（同步）false: 关闭（不同步）
+layui.form.on('switch(syncScale)', function () {
+    // Obtain the current switch status. You can obtain it as required.
+    // true: enable; false: disable.
     var bool = this.checked;
     zegoSuperBoard.enableSyncScale(bool);
 });
 
 /**
- * @description: 响应缩放
- * @description: 监听页面响应缩放 switch 开关状态
- * @description: 这里只展示监听方法，开发者根据实际情况监听
+ * @description: Responding zooming.
+ * @description: Listen for the switch status of responding zooming on the page.
+ * @description: Only the listening method is displayed here. You can listen as required.
  */
-layui.form.on('switch(responseScale)', function() {
-    // 获取当前 switch 的打开状态，开发者根据实际情况获取
-    // true: 打开（同步）false: 关闭（不同步）
+layui.form.on('switch(responseScale)', function () {
+    // Obtain the current switch status. You can obtain it as required.
+    // true: enable; false: disable.
     var bool = this.checked;
     zegoSuperBoard.enableResponseScale(bool);
 });
 
 /**
- * @description: 监听下拉框，切换 scale
- * @description: 这里只展示下拉框的选择监听，开发者根据实际情况处理
+ * @description: Listen for the drop-down list to switch the scale.
+ * @description: Only values listened for from the drop-down list are displayed here. You can handle it as required.
  */
-layui.form.on('select(scaleList)', function() {
-    // 获取页面上下拉框中当前选择的 scale，这里使用的是 layui，开发者可根据实际情况获取
+layui.form.on('select(scaleList)', function () {
+    // Obtain the current scale selected from the drop-down list on the page. layui is used here. You can obtain it as required.
     var formData = layui.form.val('customForm');
-    var scale = +formData.scale; // 当前选择的 scale
+    var scale = +formData.scale;
 
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     zegoSuperBoardSubView && zegoSuperBoardSubView.setScaleFactor(scale);
 });
 
 /**
- * @description: 通过页面上 '-' 设置缩放 缩小
+ * @description: Zoom out by clicking the minus sign (-) on the page.
  */
-$('#setScaleFactorCut').click(function() {
-    // 获取页面上下拉框中当前选择的 scale，这里使用的是 layui，开发者可根据实际情况获取
+$('#setScaleFactorCut').click(function () {
+    // Obtain the current scale selected from the drop-down list on the page. layui is used here. You can obtain it as required.
     var currScale = +layui.form.val('customForm').scale;
-    if (currScale === 1) return; // 最小为 1，小于 1 不允许缩小
+    if (currScale === 1) return; // The minimum is 1, less than 1 does not allow shrinking
 
     var targetScale = currScale - 0.25;
 
@@ -78,12 +78,12 @@ $('#setScaleFactorCut').click(function() {
 });
 
 /**
- * @description: 通过页面上 '+' 设置缩放 放大
+ * @description: Zoom in by clicking the plus sign (+) on the page.
  */
-$('#setScaleFactorAdd').click(function() {
-    // 获取页面上下拉框中当前选择的 scale，这里使用的是 layui，开发者可根据实际情况获取
+$('#setScaleFactorAdd').click(function () {
+    // Obtain the current scale selected from the drop-down list on the page. layui is used here. You can obtain it as required.
     var currScale = +layui.form.val('customForm').scale;
-    if (currScale === 3) return; // 最大为 3，大于 3 不允许放大
+    if (currScale === 3) return; // Maximum is 3, larger than 3 does not allow zooming
 
     var targetScale = currScale + 0.25;
 

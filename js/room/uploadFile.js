@@ -3,31 +3,31 @@
  * @Date: 2021-08-11 15:08:11
  * @LastEditTime: 2021-09-10 10:25:47
  * @LastEditors: Please set LastEditors
- * @Description: 上传静态、动态文件
+ * @Description: Upload static and dynamic files
  * @FilePath: /superboard/js/room/uploadFile.js
  */
 
-// zegoSuperBoard 为全局 SuperBoard Instance
-// zegoConfig 为全局配置
-// toast 为全局提示框，开发者根据实际情况使用相应的提示框
+// zegoSuperBoard is a global Super Board instance.
+// zegoConfig is a global configuration.
+// toast is a global pop-up box. You can use pop-up boxes as required.
 
 var uploadFileTipsMap = {
-    1: '上传中',
-    2: '已上传',
-    4: '排队中',
-    8: '转换中',
-    16: '转换成功',
-    32: '转换失败',
-    64: '取消上传'
-}; // 上传状态
+    1: 'uploading',
+    2: 'Uploaded',
+    4: 'In line',
+    8: 'Converting',
+    16: 'Conversion successful',
+    32: 'Conversion failed',
+    64: 'Cancel upload'
+};
 
 var uploadFileUtils = {
     /**
-     * @description: 更新页面上文件列表弹框中的文件列表
-     * @description: 给每一个文件所在 LI 元素绑定创建文件白板事件
-     * @description: 创建文件白板方法在 js/room/whiteboard.js 中
-     * @param {Object} fileListData 文件列表数据
-     * @param {String} superBoardEnv 当前 ZegoSuperBoard SDK 环境
+     * @description: Update the files in the File List dialog on the page.
+     * @description: Create a file whiteboard for each file in the <li> tag and bind the whiteboard to the file.
+     * @description: The method of creating a file whiteboard is shown in js/room/whiteboard.js.
+     * @param {Object} fileListData File list data
+     * @param {String} superBoardEnv Current environment of the ZegoSuperBoard SDK
      */
     updateFileListDomHandle: function (fileListData, superBoardEnv) {
         var fileList =
@@ -35,9 +35,9 @@ var uploadFileUtils = {
                 superBoardEnv === 'beta' || superBoardEnv === 'alpha' ? 'docs_alpha' : 'docs_prod'
             ];
         var $fileListCon = $('#file-list');
-        // 清空原有
+        // Clear the original file list.
         $fileListCon.html('');
-        // 使用最新文件列表
+        // Use the latest file list.
         var $str = '';
         fileList.forEach((element) => {
             $str +=
@@ -46,7 +46,7 @@ var uploadFileUtils = {
                 '"><div class="state ' +
                 (element.isDynamic ? 'dynamic' : element.isH5 ? 'h5' : '') +
                 '">' +
-                (element.isDynamic ? '动态' : element.isH5 ? 'H5' : '静态') +
+                (element.isDynamic ? 'dynamic' : element.isH5 ? 'H5' : 'static') +
                 '</div>' +
                 element.name +
                 '</li>';
@@ -54,15 +54,15 @@ var uploadFileUtils = {
         $fileListCon.html($str);
     },
     closeFileDomHandle: function () {
-        // 关闭文件列表所在弹框
+        // Close the File List dialog.
         $('#filelistModal').modal('hide');
-        // 关闭静态、动态上传下拉框
+        // Close the drop-down list for static or animated file uploading.
         $('.layui-dropdown').hide();
     },
     /**
-     * @description: 从本地根目录下的 fileList.json 中获取文件列表
-     * @description: 这里仅演示获取 fileList 的示例代码，开发者根据实际情况处理
-     * @param {String} filelistUrl 文件列表的 URL
+     * @description: Obtain the file list from fileList.json in the local root directory.
+     * @description: Only the sample code for obtaining fileList is displayed here. You can handle it as required.
+     * @param {String} filelistUrl File list URL
      */
     getFilelist: function (filelistUrl = './fileList.json') {
         return new Promise(function (resolve) {
@@ -81,13 +81,13 @@ var uploadFileUtils = {
 };
 
 /**
- * @description: 选择静态、动态文件进行上传
- * @param {Number} renderType 渲染模式
- * @param {File} file 文件对象
+ * @description: Select a static or animated file and upload it.
+ * @param {Number} renderType Rendering mode
+ * @param {File} file File object
  */
 function uploadFile(renderType, file) {
-    if (!file) return roomUtils.toast('请先选择文件');
-    //上传文件后转码后渲染模式类型，如果用户涉及到 iOS、Web、Windows、Mac、小程序各端的业务，推荐使用 VectorAndIMG 模式。
+    if (!file) return roomUtils.toast('Please select a file first');
+    //Type of rendering mode after the file is uploaded and transcoded. If the business of iOS, Web, Windows, Mac, or mini program is involved, you are advised to use the VectorAndIMG mode.
     zegoSuperBoard
         .uploadFile(file, renderType, function (res) {
             roomUtils.toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
@@ -95,16 +95,16 @@ function uploadFile(renderType, file) {
         .then(function (fileID) {
             uploadFileUtils.closeFileDomHandle();
 
-            // 这里上传完成立即创建文件白板，开发者根据实际情况处理
-            // 创建文件白板方法在 js/room/whiteboard.js 中
+            // A file whiteboard is created immediately after the upload. You can handle it as required.
+            // The method of creating a file whiteboard is shown in js/room/whiteboard.js.
             createFileView(fileID);
         })
         .catch(roomUtils.toast);
 }
 
 /**
- * @description: 点击文件列表中的上传文件，打开下拉框
- * @description: 这里只展示打开下拉框，开发者根据实际情况处理
+ * @description: Click Upload File in the File List dialog to show the drop-down list.
+ * @description: Only the dialog is displayed here. You can handle it as required.
  */
 layui.dropdown.render({
     elem: '#openPopover',
@@ -112,23 +112,23 @@ layui.dropdown.render({
 });
 
 /**
- * @description: 点击页面下方的‘文件’功能，查询当前文件列表，并更新页面
+ * @description: Click File at the bottom of the page to query the current file list and update the page.
  */
 $('.share-item.file').click(async function () {
-    // 获取文件列表
+    // Obtain the file list.
     var fileListData = await uploadFileUtils.getFilelist();
 
-    // 更新页面上文件列表弹框中的文件列表
+    // Update the files in the File List dialog on the page.
     uploadFileUtils.updateFileListDomHandle(fileListData, zegoConfig.superBoardEnv);
 });
 
 /**
- * @description: 点击页面中间的的‘共享文件’功能，查询当前文件列表，并更新页面
+ * @description: Click the file sharing icon in the middle of the page to query the current file list and update the page.
  */
 $('#shareFile').click(async function () {
-    // 获取文件列表
-    var fileListData = await uploadFileUtils.getFilelist();
+    // Obtain the file list.
+    var fileListData = await uploadFileUtils.getFilelist(); 
 
-    // 更新页面上文件列表弹框中的文件列表
+    // Update the files in the File List dialog on the page.
     uploadFileUtils.updateFileListDomHandle(fileListData, zegoConfig.superBoardEnv);
 });

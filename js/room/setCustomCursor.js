@@ -1,41 +1,40 @@
 var cursorList = [
     'https://docservice-storage.zego.im/00c483552faefc8df47184643f9defee/incoming/4b2efa93e93367a47808cef55a179350?.png',
     'https://docservice-storage.zego.im/00c483552faefc8df47184643f9defee/incoming/4add2d835617108c5644203b7ae894b3?.png'
-]; // Zego 内置的自定义光标列表
+]; //Zego's built-in custom cursor list
 
 var UPLOAD_FILE = null;
 
-// 页面 DOM 加载完成更新背景图片列表到页面
+// Page DOM loaded. Update the background image list to the page.
 $(document).ready(function () {
     initCursorListDomHandle();
 });
 
 /**
- * @description: 更新光标图片列表到页面
- * @description: 这里只展示更新页面功能，开发者根据实际情况处理
+ * @description: Update the cursor image list to the page.
+ * @description: Only updated functions on the page are displayed here. You can handle it as required.
  */
 function initCursorListDomHandle() {
-    var $str = '<option value>请选择</option>';
+    var $str = '<option value>please choose</option>';
     cursorList.forEach(function (element, index) {
-        $str += '<option value="' + element + '">图片' + (index + 1) + '</option>';
+        $str += '<option value="' + element + '">picture' + (index + 1) + '</option>';
     });
     $('#cursorList').html($str);
 
-    // 更新下拉框 layui.form.render(type, filter);
+    // Update the drop-down list. layui.form.render(type, filter);
     layui.form.render('select', 'form1');
 }
 
 /**
- * @description: 选择本地光标图片
- * @description: 这里只展示选择本地文件，开发者根据实际情况处理
+ * @description: Select a local cursor image.
+ * @description: Only selected local files are displayed here. You can handle it as required.
  */
 var layer = layui.upload.render({
-    elem: '#selectCursorImage', // 绑定元素
-    // accept: 'images', // 只接受 image 文件
-    accept: 'file', // 只接受 image 文件
-    auto: false, // 不自动上传
+    elem: '#selectCursorImage',
+    accept: 'file',
+    auto: false,
     choose: function (obj) {
-        // 选择完文件的回调
+        // Callback after a file is selected.
         obj.preview(async function (index, file, result) {
             UPLOAD_FILE = file
         });
@@ -43,32 +42,32 @@ var layer = layui.upload.render({
 });
 
 /**
- * @description: 选择本地文件
+ * @description: Select a local file.
  */
 $('#cursorImageByFileBtn').click(async function () {
 
-    // 判断本地是否已经选择文件
-    if (!UPLOAD_FILE) return roomUtils.toast('请先选择文件');
-    // 存储选择的文件，file 为当前选中文件
+    // Check whether a file is selected locally.
+    if (!UPLOAD_FILE) return roomUtils.toast('Please select a file first');
+    // Save the selected file. The file parameter indicates the file that is currently selected.
     try {
         await zegoSuperBoard.setCustomCursorAttribute(1, {
             iconPath: UPLOAD_FILE,
             offsetX: +cursorOffsetX.value,
             offsetY: +cursorOffsetY.value
         });
-        roomUtils.toast('选择文件成功');
+        roomUtils.toast('file selected successfully');
     } catch (errorData) {
         roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
 /**
- * @description: 监听下拉框，切换背景图
- * @description: 这里只展示下拉框的选择监听，开发者根据实际情况处理
+ * @description: Listen for the drop-down list to switch the background image.
+ * @description: Only values listened for from the drop-down list are displayed here. You can handle it as required.
  */
 layui.form.on('select(cursorUrl)', async function () {
     if (!zegoSuperBoard) return;
 
-    // 获取页面上下拉框中当前选择的背景图、当前选择的背景图填充模式，这里使用的是 layui，开发者可根据实际情况获取
+    // Obtain the background image selected from the drop-down list and the selected background image padding mode on the page. layui is used here. You can obtain it as required.
     var formData = layui.form.val('form1');
     var cursorUrl = formData.cursorUrl; // 当前选择的背景图 URL
 
@@ -85,16 +84,16 @@ layui.form.on('select(cursorUrl)', async function () {
 });
 
 /**
- * @description: 根据输入的背景图 URL 来设置背景图
+ * @description: Set the background image based on the entered background image URL.
  */
 $('#setCustomCursorByURLBtn').click(async function () {
     if (!zegoSuperBoard) return;
 
-    // 获取页面上下拉框中当前选择的背景图、当前选择的背景图填充模式，这里使用的是 layui，开发者可根据实际情况获取
+    // Obtain the background image selected from the drop-down list and the selected background image padding mode on the page. layui is used here. You can obtain it as required.
     var formData = layui.form.val('form1');
     var customCursorUrl = formData.inputCustomCursorUrl; // 当前选择的背景图 URL
 
-    if (!customCursorUrl) return roomUtils.toast('请输入 URL');
+    if (!customCursorUrl) return roomUtils.toast('Please enter URL');
 
     try {
         await zegoSuperBoard.setCustomCursorAttribute(1, {

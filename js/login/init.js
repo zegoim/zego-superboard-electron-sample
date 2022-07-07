@@ -34,7 +34,8 @@ var zegoFeatureConfig = {
     pptStepMode: '1', // PPT 切页模式 1: 正常 2: 不跳转
     dynamicPPT_HD: 'false', // false: 正常 true: 高清
     dynamicPPT_AutomaticPage: 'true', // true: 自动翻页 false: 禁止
-    unloadVideoSrc: 'false' // false: 正常 true: 禁止
+    unloadVideoSrc: 'false', // false: 正常 true: 禁止
+    ventor_img_type: '1' // 1: 关闭（png） 2: 开启（svg）
 };
 
 // SDK 其他配置
@@ -158,6 +159,9 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
     // 设置 PPT 视频下载
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
+    console.log('mytag 设置静态文件转码格式 ventor_img_type', zegoConfig.ventor_img_type);
+    // 设置静态文件转码格式
+    zegoSuperBoard.setCustomizedConfig('ventorIMGType', zegoConfig.ventor_img_type);
 
     zegoSuperBoard.enableCustomCursor(true);
 }

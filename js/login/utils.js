@@ -82,28 +82,41 @@ var loginUtils = {
         }
 
         return new Promise(function (resolve) {
-            $.ajax({
-                type: 'post',
-                contentType: "application/json",
-                dataType: "json",
-                url: zegoOtherConfig.tokenUrl,
-                data: JSON.stringify({
-                    version: "04",
-                    appId,
-                    idName: zegoConfig.userID,
-                    roomId: zegoConfig.roomID,
-                    privilege: {
-                        "1": 1,
-                        "2": 1
-                    },
-                    expire_time
-                }),
-                success: function (data) {
-                    if (data.data.token) {
-                        resolve(data.data.token);
+            $.get(
+                'https://wsliveroom-alpha.zego.im:8282/token',
+                {
+                    app_id: appId,
+                    id_name: zegoConfig.userID
+                },
+                function(token) {
+                    if (token) {
+                        resolve(token);
                     }
-                }
-            });
+                },
+                'text'
+            );
+            // $.ajax({
+            //     type: 'post',
+            //     contentType: "application/json",
+            //     dataType: "json",
+            //     url: zegoOtherConfig.tokenUrl,
+            //     data: JSON.stringify({
+            //         version: "04",
+            //         appId,
+            //         idName: zegoConfig.userID,
+            //         roomId: zegoConfig.roomID,
+            //         privilege: {
+            //             "1": 1,
+            //             "2": 1
+            //         },
+            //         expire_time
+            //     }),
+            //     success: function (data) {
+            //         if (data.data.token) {
+            //             resolve(data.data.token);
+            //         }
+            //     }
+            // });
         });
     },
 

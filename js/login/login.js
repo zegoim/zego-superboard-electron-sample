@@ -180,7 +180,8 @@ $('#login-btn').click(async function () {
         pptStepMode: settingData.pptStepMode,
         dynamicPPT_HD: settingData.dynamicPPT_HD,
         dynamicPPT_AutomaticPage: settingData.dynamicPPT_AutomaticPage,
-        unloadVideoSrc: settingData.unloadVideoSrc
+        unloadVideoSrc: settingData.unloadVideoSrc,
+        ventor_img_type: settingData.ventor_img_type,
     };
     // 更新本地 zegoConfig
     Object.assign(zegoConfig, loginInfo);

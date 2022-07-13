@@ -416,6 +416,7 @@ async function switchWhitebopardHandle(uniqueID) {
 /**
  * @description: Listen for the whiteboard drop-down list.
  * @description: Only values listened for from the drop-down list are displayed here. You can handle it as required.
+ */
 layui.form.on('select(whiteboardList)', async function (data) {
     switchWhitebopardHandle(data.value);
 });

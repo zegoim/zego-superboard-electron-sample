@@ -11,15 +11,15 @@
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 mainland 2 overseas
     superBoardEnv: 'prod',
-    appID: 3686678360,
-    serverProd: 'wss://webliveroom3686678360-api.zego.im/ws',
+    appID: 3606078772,
+    serverProd: 'wss://webliveroom3606078772-api.zego.im/ws',
     overseaAppID: 1068511430,
     betaAppID: 1100697004,
     betaServer: 'wss://webliveroom1100697004-api.zego.im/ws',
     overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws',
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws',
-    alphaAppID: 1803117167,
-    alphaServer: 'wss://webliveroom1803117167-api.zego.im/ws'
+    alphaAppID: 1484763131,
+    alphaServer: 'wss://webliveroom1484763131-api.zego.im/ws'
     // 统一接入
     // alphaAppID: 3104114736,
     // alphaServer: 'wss://webliveroom-alpha.zego.im/ws'
@@ -134,7 +134,9 @@ function initExpressSDKConfig() {
  * @description: Initialize the SuperBoard SDK based on the configuration initialization.
  */
 function initSuperBoardSDKConfig() {
-    zegoConfig.superBoardEnv !== 'prod' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+    console.log('mytag  zegoConfig.superBoardEnv',  zegoConfig.superBoardEnv !== 'prod');
+    zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+
 
     if (zegoConfig.fontFamily === 'ZgFont') {
         document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;
@@ -151,8 +153,7 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
 
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
-    console.log('mytag 设置静态文件转码格式 ventor_img_type', zegoConfig.ventor_img_type);
-    // 设置静态文件转码格式
+    
     zegoSuperBoard.setCustomizedConfig('ventorIMGType', zegoConfig.ventor_img_type);
 
     zegoSuperBoard.enableCustomCursor(true);

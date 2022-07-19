@@ -124,7 +124,7 @@ function initExpressSDKConfig() {
         logLevel: 'disable'
     });
     zegoSuperBoard.setLogConfig({
-        logLevel: 'info'
+        logLevel: 'disable'
     });
     // Disable debug.
     zegoEngine.setDebugVerbose(false);
@@ -153,8 +153,6 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
 
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
-    
-    zegoSuperBoard.setCustomizedConfig('ventorIMGType', zegoConfig.ventor_img_type);
 
     zegoSuperBoard.enableCustomCursor(true);
 }

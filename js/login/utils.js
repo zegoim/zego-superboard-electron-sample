@@ -64,7 +64,7 @@ var loginUtils = {
         var appId = 0;
         switch (zegoConfig.superBoardEnv) {
             case 'prod':
-                appId = zegoConfig.appID
+                appId = zegoConfig.env == 1 ? zegoConfig.appID :zegoConfig.overseaAppID
                 break;
             case 'beta':
                 appId = zegoConfig.betaAppID

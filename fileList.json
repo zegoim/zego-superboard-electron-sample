@@ -45,14 +45,14 @@
             "id": "d_bea2Y4S3VP7UCq",
             "name": "语文课.txt"
         },
-        // {
-        //     "id": "TeBClN-ABb-pMjjU",
-        //     "name": "9_53MB.pdf"
-        // },
-        // {
-        //     "id": "DJot0ojdqJmcUgXY",
-        //     "name": "MySQL性能调优与架构设计.pdf"
-        // },
+        {
+            "id": "TeBClN-ABb-pMjjU",
+            "name": "9_53MB.pdf"
+        },
+        {
+            "id": "DJot0ojdqJmcUgXY",
+            "name": "MySQL性能调优与架构设计.pdf"
+        },
         {
             "id": "wPufYRPLGzqx-BW1",
             "name": "开学第一课.pptx",

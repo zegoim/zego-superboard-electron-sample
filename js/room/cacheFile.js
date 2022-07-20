@@ -13,10 +13,37 @@
 /**
  * @description: File pre-loading
  */
-$('#cacheFileBtn').click(function() {
+$('#cacheFileBtn').click(async function() {
     // Obtain the file ID entered on the page. layui is used here. You can obtain it as required.
     var fileID = layui.form.val('form3').fileID;
     if (!fileID) return roomUtils.toast('Please enter a file ID');
 
-    zegoSuperBoard.cacheFile(fileID);
+    try {
+        let timer = Date.now();
+        const res = await zegoSuperBoard.cacheFile(fileID, (result) => {
+            roomUtils.toast(
+                `Cache file seq:${result.seq}, </br>
+                 Cache state:${result.state === 1 ? 'Caching' : 'Cached'}, </br>
+                 Cache progress:${Number(Math.floor((result.loadedFileNum / result.totalFileNum) * 100))}%, </br>
+                 Cache failed count:${result.failedFileNum}`
+            );
+            console.log(`mytag 
+        缓存文件的 seq:${result.seq}, 
+        缓存状态 :${result.state === 1 ? 'Caching' : 'Cached'}, 
+        缓存进度:${Number(Math.floor((result.loadedFileNum / result.totalFileNum) * 100))}%, 
+        缓存失败数量:${result.failedFileNum}`);
+        });
+        console.log('mytag cacheFile info', JSON.stringify(res));
+    } catch (error) {
+        console.error('cacheFile error', error);
+    }
+});
+
+/**
+ * @description: File pre-loading
+ */
+ $('#cancelCacheFileBtn').click(function() {
+    // Obtain the file ID entered on the page. layui is used here. You can obtain it as required.
+    var seq = layui.form.val('form3').cacheFileSeq;
+    const res = zegoSuperBoard.cancelCacheFile(seq);
 });

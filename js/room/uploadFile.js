@@ -48,7 +48,7 @@ var uploadFileUtils = {
                 '">' +
                 (element.isDynamic ? 'dynamic' : element.isH5 ? 'H5' : 'static') +
                 '</div>' +
-                element.name +
+                element.name +'（'+ element.id +'）'+
                 '</li>';
         });
         $fileListCon.html($str);

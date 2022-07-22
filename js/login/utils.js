@@ -7,6 +7,8 @@
  * @FilePath: /superboard/js/login/utils.js
  */
 
+// new VConsole()
+
 var loginUtils = {
     /**
      * @description: Display or hide the login page and room page.

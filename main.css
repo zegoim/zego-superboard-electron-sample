@@ -487,6 +487,7 @@ li {
 
 #customForm {
   display: flex;
+  flex-wrap: wrap;
 }
 
 #customForm .layui-form-item {

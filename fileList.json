@@ -401,8 +401,23 @@
     ],
     "docs_alpha": [
         {
+            "id": "2cZHrbHlRjA6aW2b",
+            "name": "3-3_24MB.pdf",
+            "isDynamic": false
+        },
+        {
+            "id":"sVbgxipDyWeV8vjp",
+            "name": "[现代编译原理C语言描述].(美国)Andrew.W.Appel.清晰版.pdf",
+            "isDynamic": false
+        },
+        {
             "id": "KTTNIKds1Ajf8KoK",
             "name": "作文.docx",
+            "isDynamic": false
+        },
+        {
+            "id": "ZAmS_cm0UPSASHMU",
+            "name": "1异型文件-宽高不一致0616.pdf",
             "isDynamic": false
         },
         {

@@ -402,7 +402,12 @@
     "docs_alpha": [
         {
             "id": "2cZHrbHlRjA6aW2b",
-            "name": "3-3_24MB.pdf",
+            "name": "3-3_24MB.pdf(png)",
+            "isDynamic": false
+        },
+        {
+            "id": "cVqHsL8RGCApVLDv",
+            "name": "3-3_24MB.pdf(svg)",
             "isDynamic": false
         },
         {

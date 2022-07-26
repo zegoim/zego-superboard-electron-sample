@@ -31,7 +31,10 @@ $('#cacheFileBtn').click(async function() {
         缓存文件的 seq:${result.seq}, 
         缓存状态 :${result.state === 1 ? 'Caching' : 'Cached'}, 
         缓存进度:${Number(Math.floor((result.loadedFileNum / result.totalFileNum) * 100))}%, 
-        缓存失败数量:${result.failedFileNum}`);
+        缓存资源总数量:${result.totalFileNum}
+        缓存成功数量:${result.loadedFileNum}
+        缓存失败数量:${result.failedFileNum}
+        `);
         });
         console.log('mytag cacheFile info', JSON.stringify(res));
     } catch (error) {
@@ -42,8 +45,10 @@ $('#cacheFileBtn').click(async function() {
 /**
  * @description: File pre-loading
  */
- $('#cancelCacheFileBtn').click(function() {
+$('#cancelCacheFileBtn').click(function() {
     // Obtain the file ID entered on the page. layui is used here. You can obtain it as required.
     var seq = layui.form.val('form3').cacheFileSeq;
     const res = zegoSuperBoard.cancelCacheFile(seq);
+    // roomUtils.toast(res ? 'option success' : 'option fail');
+    console.log('mytag option success ', res);
 });

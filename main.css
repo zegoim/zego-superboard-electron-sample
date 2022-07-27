@@ -234,7 +234,7 @@ li {
 
 #left-header {
   display: flex;
-  height: 40px;
+  min-height: 40px;
   align-items: center;
   position: relative;
   margin: 20px 0;
@@ -696,6 +696,7 @@ li {
   width: 100%;
   height: 100%;
   transition: width 0.1s, height 0.1s;
+  background-color: #efefef;
 }
 
 #left-footer {

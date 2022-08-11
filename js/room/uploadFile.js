@@ -30,10 +30,21 @@ var uploadFileUtils = {
      * @param {String} superBoardEnv Current environment of the ZegoSuperBoard SDK
      */
     updateFileListDomHandle: function (fileListData, superBoardEnv) {
+        var fileListEnv;
+        switch (superBoardEnv) {
+            case 'beta':
+                fileListEnv = 'docs_test'
+                break;
+            case 'alpha':
+                fileListEnv = 'docs_alpha'
+                break;
+            default:
+                fileListEnv = 'docs_prod'
+                break;
+        }
         var fileList =
-            fileListData[
-                superBoardEnv === 'beta' || superBoardEnv === 'alpha' ? 'docs_alpha' : 'docs_prod'
-            ];
+            fileListData[fileListEnv];
+        console.log('mytag  fileListData[fileListEnv]', fileListEnv);
         var $fileListCon = $('#file-list');
         // Clear the original file list.
         $fileListCon.html('');
@@ -91,7 +102,7 @@ function uploadFile(renderType, file) {
     zegoSuperBoard
         .uploadFile(file, renderType, function (res) {
             roomUtils.toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
-        })
+        },{renderImgType:1})
         .then(function (fileID) {
             uploadFileUtils.closeFileDomHandle();
 

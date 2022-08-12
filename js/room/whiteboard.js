@@ -189,13 +189,14 @@ async function createWhiteboardView() {
  * @description: Create a file whiteboard.
  * @param {String} fileID File ID
  */
-async function createFileView(fileID) {
+async function createFileView(fileID, PPTReady) {
     try {
         roomUtils.loading('Create document in whiteboard');
 
         await zegoSuperBoard.createFileView({
-            fileID
+            fileID,loadOptions:{PPTReady}
         });
+        console.log('mytag 文件加载完成');
         roomUtils.closeLoading();
         roomUtils.toast('Created successfully');
 
@@ -511,6 +512,13 @@ $('#createFileBtn').click(function () {
     if (!fileID) return roomUtils.toast('Please enter fileID');
     // Create a file whiteboard.
     createFileView(fileID);
+});
+$('#createFileBtn2').click(function () {
+    var fileID = layui.form.val('form3').createFileID;
+
+    if (!fileID) return roomUtils.toast('Please enter fileID');
+    // Create a file whiteboard.
+    createFileView(fileID,true);
 });
 
 $('#getFileBtn').click(function () {

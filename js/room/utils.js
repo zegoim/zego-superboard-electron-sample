@@ -14,6 +14,11 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
+window.onload = () => {
+    document.querySelector('#userName').value = 'userName' + String(Date.now()).slice(-5);
+    document.querySelector('#userID').value = 'userID' + String(Date.now()).slice(-5);
+};
+
 // Methods and tools for updating the DOM on the room page.
 var roomUtils = {
     /**

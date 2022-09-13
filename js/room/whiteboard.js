@@ -79,7 +79,7 @@ async function updateWhiteboardList() {
 async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
     var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
     var model;
-    modelList.forEach(function (element) {
+    modelList.forEach(function(element) {
         if (uniqueID === element.uniqueID) {
             model = element;
         }
@@ -87,18 +87,65 @@ async function getSuperBoardSubViewModelByUniqueID(uniqueID) {
     return model;
 }
 
+const debounce = function(fn, delay = 500) {
+    let timer = null;
+    return function() {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+            // 将原始函数的 this 和参数都传进来。
+            fn.apply(this, arguments);
+            timer = null;
+        }, delay);
+    };
+};
+
+// 释放所有的 subView 的 canvas 占用内存
+async function releaseAllCanvas() {
+    const canvasArr = document.querySelector(`#${parentDomID}`).querySelectorAll('canvas');
+    Array.from(canvasArr).forEach((canvasItem) => {
+        releaseCanvas(canvasItem);
+    });
+}
+// 释放指定的 canvsa 占用内存
+function releaseCanvas(canvas) {
+    canvas.width = 1;
+    canvas.height = 1;
+    const ctx = canvas.getContext('2d');
+    ctx && ctx.clearRect(0, 0, 1, 1);
+}
+
+let debounceAlert = debounce((error) => alert('debounce' + JSON.stringify(error)), 1000);
+let debounceReloadView = debounce(() => {
+    // 获取当前 subView 的所有 canvas
+    const currentSubViewAllCanvas = zegoSuperBoardSubView.curDocsView.renderDom.querySelectorAll('canvas');
+    const parentDom = document.querySelector(`#${parentDomID}`);
+    if (currentSubViewAllCanvas.length) {
+        // 在 reloadView 之前，需要释放之前的 canvas ,否则他们的内存会一直无法释放。
+        currentSubViewAllCanvas.forEach((canvas) => releaseCanvas(canvas));
+        zegoSuperBoardSubView.reloadView(true);
+    }
+}, 1000);
+
 /**
  * @description: Listen for the whiteboard callback.
  */
 function onSuperBoardEventHandle() {
     // Callback of the listening-for error. All internal SDK errors are thrown using this callback, except the errors directly returned in the API.
-    zegoSuperBoard.on('error', function (errorData) {
-        console.warn('SuperBoard Demo error', errorData);
+    zegoSuperBoard.on('error', async function(errorData) {
+        // 3130021: get context 失败的错误码，一般是 safari 内存不足
+        // 3130022: canvas drawImage 失败错误码
+        if (errorData.code === 3130021 || errorData.code === 3130022) {
+            debounceAlert(errorData);
+            // 如果是绘制错误，则尝试重绘
+            if (errorData.code === 3130022) {
+                debounceReloadView();
+            }
+        }
         roomUtils.toast(errorData);
     });
 
     // Listen for whiteboard page turning and scrolling.
-    zegoSuperBoard.on('superBoardSubViewScrollChanged', function (uniqueID, page, step) {
+    zegoSuperBoard.on('superBoardSubViewScrollChanged', function(uniqueID, page, step) {
         console.warn('SuperBoard Demo superBoardSubViewScrollChanged', ...arguments);
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
@@ -108,47 +155,47 @@ function onSuperBoardEventHandle() {
     });
 
     // Listen for remote whiteboard zooming.
-    zegoSuperBoard.on('superBoardSubViewScaleChanged', function (uniqueID, scale) {
+    zegoSuperBoard.on('superBoardSubViewScaleChanged', function(uniqueID, scale) {
         console.warn('SuperBoard Demo uperBoardSubViewScaleChanged', uniqueID, scale);
         roomUtils.updateCurrScaleDomHandle(scale);
     });
 
     // Listen for remote whiteboard adding.
-    zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewAdded', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewAdded', ...arguments);
         // Query and update the whiteboard list on the page. The newly added whiteboard is not mounted to the internal SDK.
         querySuperBoardSubViewListHandle();
     });
 
     // Listen for remote whiteboard destroying.
-    zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewRemoved', ...arguments);
         // Query and update the whiteboard list on the page. The destroyed whiteboard is also destroyed in the SDK.
         querySuperBoardSubViewListHandle();
     });
 
     // Listen for remote whiteboard switching.
-    zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewSwitched', ...arguments);
         // Query and update the whiteboard list on the page. After a whiteboard switching, the SDK automatically switches to the new whiteboard.
         querySuperBoardSubViewListHandle();
     });
 
     // Listen for remote Excel sheet switching.
-    zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function () {
+    zegoSuperBoard.on('remoteSuperBoardSubViewExcelSwitched', function() {
         console.warn('SuperBoard Demo remoteSuperBoardSubViewExcelSwitched', ...arguments);
         // Query and update the whiteboard list on the page. After an Excel sheet switching, the SDK automatically switches to the new Excel sheet.
         querySuperBoardSubViewListHandle();
     });
 
     // Listen for remote whiteboard permission change.
-    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function () {
+    zegoSuperBoard.on('remoteSuperBoardAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardAuthChanged', ...arguments);
         // After a permission change, the change is synchronized to the peer.
     });
 
     // Listen for remote permission change of a whiteboard diagram element.
-    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function () {
+    zegoSuperBoard.on('remoteSuperBoardGraphicAuthChanged', function() {
         console.warn('SuperBoard Demo remoteSuperBoardGraphicAuthChanged', ...arguments);
         // After a permission change, the change is synchronized to the peer.
     });
@@ -194,7 +241,8 @@ async function createFileView(fileID, PPTReady) {
         roomUtils.loading('Create document in whiteboard');
 
         await zegoSuperBoard.createFileView({
-            fileID,loadOptions:{PPTReady}
+            fileID,
+            loadOptions: { PPTReady }
         });
         console.log('mytag 文件加载完成');
         roomUtils.closeLoading();
@@ -276,7 +324,7 @@ function getExcelSheetNameListHandle() {
     console.warn('SuperBoard Demo getExcelSheetNameListHandle', zegoExcelSheetNameList);
 
     // Obtain the sheetIndex corresponding to the current sheetName.
-    zegoExcelSheetNameList.forEach(function (element, index) {
+    zegoExcelSheetNameList.forEach(function(element, index) {
         element === sheetName && (sheetIndex = index);
     });
     console.warn('SuperBoard Demo getCurrentSheetIndex', sheetIndex);
@@ -418,7 +466,7 @@ async function switchWhitebopardHandle(uniqueID) {
  * @description: Listen for the whiteboard drop-down list.
  * @description: Only values listened for from the drop-down list are displayed here. You can handle it as required.
  */
-layui.form.on('select(whiteboardList)', async function (data) {
+layui.form.on('select(whiteboardList)', async function(data) {
     switchWhitebopardHandle(data.value);
 });
 
@@ -427,7 +475,7 @@ layui.form.on('select(whiteboardList)', async function (data) {
  * @description: Only values listened for from the drop-down list are displayed here. You can handle it as required.
  * @description: Obtain the currently selected value from the drop-down list. You can handle it as required.
  */
-layui.form.on('select(sheetList)', async function (data) {
+layui.form.on('select(sheetList)', async function(data) {
     // Obtain the currently selected value from the drop-down list. ('uniqueID,sheetIndex')
     var temp = data.value.split(',');
     // Split out the uniqueID and sheetIndex.
@@ -506,19 +554,19 @@ async function attachActiveView() {
 /**
  * @description: A third-party UI plug-in layui is used here to obtain the fileID entered on the page. You can handle it as required.
  */
-$('#createFileBtn').click(function () {
+$('#createFileBtn').click(function() {
     var fileID = layui.form.val('form3').createFileID;
 
     if (!fileID) return roomUtils.toast('Please enter fileID');
     // Create a file whiteboard.
     createFileView(fileID);
 });
-$('#createFileBtn2').click(function () {
+$('#createFileBtn2').click(function() {
     var fileID = layui.form.val('form3').createFileID;
 
     if (!fileID) return roomUtils.toast('Please enter fileID');
     // Create a file whiteboard.
-    createFileView(fileID,true);
+    createFileView(fileID, true);
 });
 
 $('#getFileBtn').click(function () {

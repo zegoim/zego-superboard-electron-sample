@@ -43,6 +43,7 @@ function reloadViewHandle() {
     if (zegoSuperBoardSubView) {
         // A whiteboard is mounted.
         setTimeout(function () {
+            // true or false
             zegoSuperBoardSubView.reloadView();
         }, 120);
     }

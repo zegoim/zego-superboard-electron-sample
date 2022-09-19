@@ -20,7 +20,6 @@ function getCurrentSuperBoardSubView() {
     if (superBoardView) {
         current = superBoardView.getCurrentSuperBoardSubView();
     }
-    console.warn('SuperBoard Demo getCurrentSuperBoardSubView', current);
     return current;
 }
 
@@ -99,31 +98,12 @@ const debounce = function(fn, delay = 500) {
     };
 };
 
-// 释放所有的 subView 的 canvas 占用内存
-async function releaseAllCanvas() {
-    const canvasArr = document.querySelector(`#${parentDomID}`).querySelectorAll('canvas');
-    Array.from(canvasArr).forEach((canvasItem) => {
-        releaseCanvas(canvasItem);
-    });
-}
-// 释放指定的 canvsa 占用内存
-function releaseCanvas(canvas) {
-    canvas.width = 1;
-    canvas.height = 1;
-    const ctx = canvas.getContext('2d');
-    ctx && ctx.clearRect(0, 0, 1, 1);
-}
 
 let debounceAlert = debounce((error) => alert('debounce' + JSON.stringify(error)), 1000);
-let debounceReloadView = debounce(() => {
-    // 获取当前 subView 的所有 canvas
-    const currentSubViewAllCanvas = zegoSuperBoardSubView.curDocsView.renderDom.querySelectorAll('canvas');
-    const parentDom = document.querySelector(`#${parentDomID}`);
-    if (currentSubViewAllCanvas.length) {
-        // 在 reloadView 之前，需要释放之前的 canvas ,否则他们的内存会一直无法释放。
-        currentSubViewAllCanvas.forEach((canvas) => releaseCanvas(canvas));
-        zegoSuperBoardSubView.reloadView(true);
-    }
+let debounceReloadView = debounce((type) => {
+    console.log('debounceReloadView',type)
+    var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView.reloadView({forceReload:true,reloadType:type});
 }, 1000);
 
 /**
@@ -135,10 +115,16 @@ function onSuperBoardEventHandle() {
         // 3130021: get context 失败的错误码，一般是 safari 内存不足
         // 3130022: canvas drawImage 失败错误码
         if (errorData.code === 3130021 || errorData.code === 3130022) {
-            debounceAlert(errorData);
+            // debounceAlert(errorData);
+             // 如果是绘制错误，则尝试重绘
+             if (errorData.code === 3130021) {
+                console.error('canvas 内存不足')
+                debounceReloadView(2);
+            }
             // 如果是绘制错误，则尝试重绘
             if (errorData.code === 3130022) {
-                debounceReloadView();
+                console.error('canvas drawImage 失败')
+                debounceReloadView(1);
             }
         }
         roomUtils.toast(errorData);

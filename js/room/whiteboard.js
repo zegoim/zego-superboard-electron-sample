@@ -98,12 +98,22 @@ const debounce = function(fn, delay = 500) {
     };
 };
 
-
-let debounceAlert = debounce((error) => alert('debounce' + JSON.stringify(error)), 1000);
-let debounceReloadView = debounce((type) => {
-    console.log('debounceReloadView',type)
+function reloadViewCurrnetPage(){
     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView.reloadView({forceReload:true,reloadType:type});
+    zegoSuperBoardSubView.reloadView({ forceReload: true, reloadType: 1 });
+}
+
+// let debounceAlert = debounce((error) => alert('debounce' + JSON.stringify(error)), 1000);
+let debounceReloadView = debounce((type) => {
+    roomUtils.toast(type === 1 ? "reload current" : "reload all");
+    var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView.reloadView({ forceReload: true, reloadType: type });
+}, 1000);
+
+let throttleReloadView = throttle((type) => {
+    roomUtils.toast(type === 1 ? "reload current" : "reload all");
+    var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView.reloadView({ forceReload: true, reloadType: type });
 }, 1000);
 
 /**
@@ -115,19 +125,21 @@ function onSuperBoardEventHandle() {
         // 3130021: get context 失败的错误码，一般是 safari 内存不足
         // 3130022: canvas drawImage 失败错误码
         if (errorData.code === 3130021 || errorData.code === 3130022) {
+            console.error('errorData', errorData);
             // debounceAlert(errorData);
-             // 如果是绘制错误，则尝试重绘
-             if (errorData.code === 3130021) {
-                console.error('canvas 内存不足')
+            // 如果是绘制错误，则尝试重绘
+            if (errorData.code === 3130021) {
+                // console.error('canvas 内存不足')
                 debounceReloadView(2);
             }
             // 如果是绘制错误，则尝试重绘
             if (errorData.code === 3130022) {
-                console.error('canvas drawImage 失败')
+                // console.error('canvas drawImage 失败')
                 debounceReloadView(1);
             }
+        }else{
+            roomUtils.toast(errorData);
         }
-        roomUtils.toast(errorData);
     });
 
     // Listen for whiteboard page turning and scrolling.
@@ -555,7 +567,7 @@ $('#createFileBtn2').click(function() {
     createFileView(fileID, true);
 });
 
-$('#getFileBtn').click(function () {
+$('#getFileBtn').click(function() {
     var fileID = layui.form.val('form3').createFileID;
 
     if (!fileID) return roomUtils.toast('Please enter fileID');

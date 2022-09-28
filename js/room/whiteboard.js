@@ -110,11 +110,11 @@ let debounceReloadView = debounce((type) => {
     zegoSuperBoardSubView.reloadView({ forceReload: true, reloadType: type });
 }, 1000);
 
-let throttleReloadView = throttle((type) => {
-    roomUtils.toast(type === 1 ? "reload current" : "reload all");
-    var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
-    zegoSuperBoardSubView.reloadView({ forceReload: true, reloadType: type });
-}, 1000);
+// let throttleReloadView = throttle((type) => {
+//     roomUtils.toast(type === 1 ? "reload current" : "reload all");
+//     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
+//     zegoSuperBoardSubView.reloadView({ forceReload: true, reloadType: type });
+// }, 1000);
 
 /**
  * @description: Listen for the whiteboard callback.

@@ -76,7 +76,7 @@ li {
 }
 
 .layui-form-label {
-  width: 90px;
+  width: 100px;
   margin-bottom: 0 !important;
   padding: 9px 8px;
 }
@@ -230,6 +230,8 @@ li {
   border-left: 1px solid rgba(0, 0, 0, 0.125);
   display: flex;
   flex-direction: column;
+  background-color: #fff;
+  z-index: 1;
 }
 
 #left-header {

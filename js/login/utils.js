@@ -55,9 +55,10 @@ var loginUtils = {
         $('#memberNum').html(userList.length);
         $('#subMemberNum').html(userList.length);
         $('#user-list').html('');
+        var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));
         var $str = '';
         userList.forEach(function (element) {
-            $str += '<li class="user-item">' + element.userName + ' (' + element.userID + ')' + '</li>';
+            $str += '<li class="user-item">' + element.userName + ' (' + element.userID + (loginInfo.userID === element.userID?'_自己':'')+')' + '</li>';
         });
         $('#user-list').html($str);
     },

@@ -143,6 +143,8 @@ function logoutRoom() {
     roomUtils.togglePlaceholderDomHandle(true);
     roomUtils.toggleThumbBtnDomHandle(false);
     flipToPageUtils.updateThumbListDomHandle([]);
+    $('#user-list').html('');
+    $('#memberNum').html('1');
 }
 
 $('#login-btn').click(async function () {
@@ -187,6 +189,7 @@ $('#login-btn').click(async function () {
 
         // Mount the activated SuperboardSubView. (method in the room)
         attachActiveView();
+        $('#user-list').html('<li class="user-item">' + loginInfo.userName + ' (' + loginInfo.userID + '_自己)' + '</li>');
     } catch (error) {
         console.error(error);
     }

@@ -16,6 +16,8 @@ var flipToPageUtils = {
      * @param {Number} currPage Current page
      */
     updateCurrPageDomHandle: function(currPage) {
+        var pageCount = $('#pageCount').text();
+        currPage = currPage > pageCount ? pageCount : currPage;
         // Update the current page-bar page.
         $('#currPage').html(currPage);
         // Update the current thumbnail page.

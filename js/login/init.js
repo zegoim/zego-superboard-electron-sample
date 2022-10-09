@@ -129,6 +129,12 @@ function initExpressSDKConfig() {
     // Disable debug.
     zegoEngine.setDebugVerbose(false);
 }
+layui.use(['layer', 'jquery', 'form'], function () {
+    var form = layui.form,
+    $ = layui.$;
+	$("#logLevel").val(sessionStorage.getItem('logLevel'));
+	form.render('select');
+})
 
 /**
  * @description: Initialize the SuperBoard SDK based on the configuration initialization.

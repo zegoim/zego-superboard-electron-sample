@@ -35,6 +35,7 @@ var zegoFeatureConfig = {
     dynamicPPT_HD: 'false', // false: 正常 true: 高清
     dynamicPPT_AutomaticPage: 'true', // true: 自动翻页 false: 禁止
     unloadVideoSrc: 'false', // false: 正常 true: 禁止
+    disableH5Mouse: 'false', // false: 正常 true: 禁止
     ventor_img_type: '1' // 1: 关闭（png） 2: 开启（svg）
 };
 
@@ -159,6 +160,8 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
 
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
+    console.log('demo set config:',zegoConfig.disableH5Mouse)
+    zegoSuperBoard.setCustomizedConfig('disableH5Mouse', zegoConfig.disableH5Mouse);
 
     zegoSuperBoard.enableCustomCursor(true);
 }

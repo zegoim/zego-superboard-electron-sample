@@ -168,6 +168,7 @@ $('#login-btn').click(async function () {
         dynamicPPT_HD: settingData.dynamicPPT_HD,
         dynamicPPT_AutomaticPage: settingData.dynamicPPT_AutomaticPage,
         unloadVideoSrc: settingData.unloadVideoSrc,
+        disableH5Mouse: settingData.disableH5Mouse,
         ventor_img_type: settingData.ventor_img_type,
     };
 

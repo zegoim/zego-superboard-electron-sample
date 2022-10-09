@@ -112,6 +112,12 @@ async function initZegoSDK(time) {
     document.title = `Superboard demo:${zegoSuperBoard.getSDKVersion()}`;
     initExpressSDKConfig();
     initSuperBoardSDKConfig();
+    layui.use(['layer', 'jquery', 'form'], function () {
+        var form = layui.form,
+        $ = layui.$;
+        $("#logLevel").val(sessionStorage.getItem('logLevel'));
+        form.render('select');
+    })
     return token;
 }
 
@@ -129,12 +135,6 @@ function initExpressSDKConfig() {
     // Disable debug.
     zegoEngine.setDebugVerbose(false);
 }
-layui.use(['layer', 'jquery', 'form'], function () {
-    var form = layui.form,
-    $ = layui.$;
-	$("#logLevel").val(sessionStorage.getItem('logLevel'));
-	form.render('select');
-})
 
 /**
  * @description: Initialize the SuperBoard SDK based on the configuration initialization.

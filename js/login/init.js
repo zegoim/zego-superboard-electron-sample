@@ -117,7 +117,7 @@ async function initZegoSDK(time) {
         var form = layui.form,
         $ = layui.$;
         $("#logLevel").val(sessionStorage.getItem('logLevel'));
-        form.render('select');
+        form.render('select','logLevel');
     })
     return token;
 }

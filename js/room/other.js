@@ -129,33 +129,6 @@ layui.form.on('select(logLevel)', async function () {
     }
 });
 
-// 添加扬声器设备
-layui.use(['layer', 'jquery', 'form'], async function () {
-    var form = layui.form,
-    $ = layui.$;
-    var speakerList = await getSpeakerLabels();
-    for (let index = 0; index < speakerList.length; index++) {
-        var label = speakerList[index].label.toString();
-        $("#speaker").append("<option value='"+  label  +"'>"+ label +"</option>");
-    }
-    $("#speaker").val(speakerList.find(device => device.deviceId === 'default').label)
-    form.render('select');
-    // ,'speaker'
-}) 
-
-async function getSpeakerLabels(){
-    await navigator.mediaDevices.getUserMedia({audio:true}); // 获取设备权限
-    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-        console.log("atag 不支持 enumerateDevices() .");
-        return;
-      }
-    var devices = await navigator.mediaDevices.enumerateDevices(); // 枚举设备id
-    var speakerList = devices.filter(function (device) {
-        return device.kind === 'audiooutput' && device.deviceId
-    })
-    return Promise.resolve(speakerList);
-}
-
 layui.form.on('select(speaker)', function(ele) {
     if (!zegoSuperBoard) return;
     zegoSuperBoard.switchSpeaker(ele.value);

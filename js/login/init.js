@@ -113,11 +113,24 @@ async function initZegoSDK(time) {
     document.title = `Superboard demo:${zegoSuperBoard.getSDKVersion()}`;
     initExpressSDKConfig();
     initSuperBoardSDKConfig();
-    layui.use(['layer', 'jquery', 'form'], function () {
+    layui.use(['layer', 'jquery', 'form'], async function () {
         var form = layui.form,
         $ = layui.$;
-        $("#logLevel").val(sessionStorage.getItem('logLevel'));
-        form.render('select','logLevel');
+        $("#logLevel").val('disable');
+
+        // 添加扬声器
+        var speakers = await zegoSuperBoard.getSpeakers();
+        if(!speakers.length) return;
+        $("#speaker").empty();
+        for (let index = 0; index < speakers.length; index++) {
+            var label = speakers[index].label.toString();
+            $("#speaker").append("<option value='"+  label  +"'>"+ label +"</option>");
+        }
+        $("#speaker").val(speakers.find(device => device.deviceId === 'default').label)
+
+        form.render('select');
+        // form.render('select','logLevel');
+
     })
     return token;
 }

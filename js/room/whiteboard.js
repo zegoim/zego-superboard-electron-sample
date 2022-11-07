@@ -588,7 +588,6 @@ async function switchSpeaker() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
     let res = await (value && zegoSuperBoardSubView && zegoSuperBoardSubView.switchSpeaker(value)).catch((err)=>{
         console.log('atag switchSpeaker-catch', err)
-        roomUtils.toast(err);
     });
     console.log('atag switchSpeaker', res)
 }

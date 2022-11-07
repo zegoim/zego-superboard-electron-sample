@@ -128,8 +128,3 @@ layui.form.on('select(logLevel)', async function () {
         roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
-
-layui.form.on('select(speaker)', function(ele) {
-    if (!zegoSuperBoard) return;
-    zegoSuperBoard.switchSpeaker(ele.value);
-});

@@ -235,6 +235,7 @@ async function createWhiteboardView() {
  * @param {String} fileID File ID
  */
 async function createFileView(fileID, PPTReady) {
+    stopPlayPPTVideo();
     try {
         roomUtils.loading('Create document in whiteboard');
 
@@ -242,6 +243,7 @@ async function createFileView(fileID, PPTReady) {
             fileID,
             loadOptions: { PPTReady }
         });
+        switchSpeaker();
         console.log('mytag 文件加载完成');
         roomUtils.closeLoading();
         roomUtils.toast('Created successfully');
@@ -418,6 +420,8 @@ function initToolType() {
  * @param {String} uniqueID uniqueID
  */
 async function switchWhitebopardHandle(uniqueID) {
+    stopPlayPPTVideo();
+
     var model = await getSuperBoardSubViewModelByUniqueID(uniqueID);
     var fileType = model.fileType;
 
@@ -428,9 +432,12 @@ async function switchWhitebopardHandle(uniqueID) {
         // The Excel file whiteboard is switched to the first sheet by default. The last subscript is not recorded in the SDK.
         // Check whether the following strings exist in cacheSheetMap.
         var sheetIndex = cacheSheetMap[uniqueID];
-        await zegoSuperBoard
+        let status = await zegoSuperBoard
             .getSuperBoardView()
             .switchSuperBoardSubView(uniqueID, fileType === 4 ? sheetIndex || 0 : undefined);
+        if(status) {
+            switchSpeaker();
+        }
         // Hide the sheet drop-down list when the whiteboard is not an Excel file whiteboard.
         roomUtils.toggleSheetSelectDomHandle(fileType === 4);
         // Excel file whiteboard. Update the sheet list on the page.
@@ -574,3 +581,25 @@ $('#getFileBtn').click(function() {
     // Create a file whiteboard.
     createFileView(fileID);
 });
+
+async function switchSpeaker() {
+    if (!zegoSuperBoard) return;
+    let value = document.getElementById('speaker').value;
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    let res = await (value && zegoSuperBoardSubView && zegoSuperBoardSubView.switchSpeaker(value)).catch((err)=>{
+        console.log('atag switchSpeaker-catch', err)
+        roomUtils.toast(err);
+    });
+    console.log('atag switchSpeaker', res)
+}
+
+layui.form.on('select(speaker)', function(ele) {
+    if (!zegoSuperBoard) return;
+    switchSpeaker();
+});
+
+function stopPlayPPTVideo(){
+    if (!zegoSuperBoard) return;
+    var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    zegoSuperBoardSubView && zegoSuperBoardSubView.stopPlayPPTVideo()
+}

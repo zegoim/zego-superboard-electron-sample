@@ -119,7 +119,7 @@ async function initZegoSDK(time) {
         $("#logLevel").val('disable');
 
         // 添加扬声器
-        var speakers = await zegoSuperBoard.getSpeakers();
+        var speakers = await getSpeakers();
         if(!speakers.length) return;
         $("#speaker").empty();
         for (let index = 0; index < speakers.length; index++) {
@@ -211,6 +211,18 @@ async function init() {
     } catch (error) {
         console.error(error);
     }
+}
+
+async function getSpeakers() {
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !navigator.mediaDevices.enumerateDevices){
+        return Promise.resolve([]);
+    };
+    await navigator.mediaDevices.getUserMedia({audio:true});
+    let devices = await navigator.mediaDevices.enumerateDevices();
+    let speakers = devices.filter(function (device) {
+        return device.kind === 'audiooutput' && device.deviceId
+    })
+    return Promise.resolve(speakers);
 }
 
 init();

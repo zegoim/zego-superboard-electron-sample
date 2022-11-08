@@ -203,6 +203,8 @@ function onSuperBoardEventHandle() {
  * @description: Create a common whiteboard.
  */
 async function createWhiteboardView() {
+    $('#thumbModal').removeClass('active');
+    stopPlayPPTVideo();
     try {
         roomUtils.loading('Create a normal whiteboard');
 
@@ -235,6 +237,7 @@ async function createWhiteboardView() {
  * @param {String} fileID File ID
  */
 async function createFileView(fileID, PPTReady) {
+    $('#thumbModal').removeClass('active');
     stopPlayPPTVideo();
     try {
         roomUtils.loading('Create document in whiteboard');
@@ -420,6 +423,7 @@ function initToolType() {
  * @param {String} uniqueID uniqueID
  */
 async function switchWhitebopardHandle(uniqueID) {
+    $('#thumbModal').removeClass('active');
     stopPlayPPTVideo();
 
     var model = await getSuperBoardSubViewModelByUniqueID(uniqueID);

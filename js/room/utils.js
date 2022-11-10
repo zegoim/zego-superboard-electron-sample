@@ -107,7 +107,7 @@ var roomUtils = {
                 '" data-file-type="' +
                 element.fileType +
                 '">' +
-                index + '-' + element.name +
+                element.name +
                 '</option>';
         });
         $('#whiteboardList').html($str);

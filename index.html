@@ -53,8 +53,8 @@
               <label class="layui-form-label">SuperBoard 环境</label>
               <div class="layui-input-block">
                 <select name="superBoardEnv">
-                  <option value="prod">正式环境</option>
                   <option value="alpha">开发环境（alpha环境）</option>
+                  <option value="prod">正式环境</option>
                   <option value="beta">测试环境（Beta环境）</option>
                 </select>
               </div>
@@ -1547,6 +1547,10 @@
               data-locale="Upload-file">
 
             </button>
+            <button class="layui-btn layui-btn-sm" id="openPopover2" type="button" style="float: left;"
+              data-locale="Upload-file">
+
+            </button>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -1712,6 +1716,59 @@
         </div>
       </div>
     </div>
+     <!-- Upload File Content test -->
+     <div id="uploadPopoverContent2" style="display:none">
+      <div class="upload-setting">
+        <div class="upload-box">
+          <div class="static">
+            <input id="uploadStaticFile" onchange="uploadFile(3, event.target.files[0],2)" type="file"
+              accept=".ppt,.pptx,.doc,.docx,.xls,.xlsx,.pdf,.txt,.jpg,.jpeg,.png, .bmp, .heic"
+              class="static-upload-input" />
+            <p>
+              <span data-locale="Upload-static-files"></span>
+              <span style="width: 16px; height: 16px;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+                  <defs>
+                    <style>
+                      .cls-1 {
+                        fill: #fff;
+                        opacity: 0;
+                      }
+
+                      .cls-2,
+                      .cls-3 {
+                        fill: none;
+                        stroke: #999;
+                        stroke-miterlimit: 10;
+                        stroke-width: 1.2px;
+                      }
+
+                      .cls-3 {
+                        stroke-linecap: round;
+                      }
+                    </style>
+                  </defs>
+                  <title>static_file</title>
+                  <g id="Layer_2" data-name="Layer 2">
+                    <g id="Layer_1-2" data-name="Layer 1">
+                      <rect class="cls-1" width="16" height="16" transform="translate(16) rotate(90)"></rect>
+                      <path class="cls-2"
+                        d="M10.12,2.29A1,1,0,0,0,9.42,2H3.11a.6.6,0,0,0-.61.6V13.4a.6.6,0,0,0,.6.6h9.79a.6.6,0,0,0,.61-.6V6a1,1,0,0,0-.3-.71Z">
+                      </path>
+                      <path class="cls-2" d="M9.42,2V5a1,1,0,0,0,1,1H13.5"></path>
+                      <line class="cls-3" x1="5.36" y1="8.76" x2="9.86" y2="8.76"></line>
+                      <line class="cls-3" x1="5.36" y1="6.39" x2="7.06" y2="6.39"></line>
+                      <line class="cls-3" x1="5.36" y1="11.14" x2="9.86" y2="11.14"></line>
+                    </g>
+                  </g>
+                </svg>
+              </span>
+            </p>
+            <span data-locale="static-file-support"></span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
 <!-- <script src="https://unpkg.com/vconsole@3.14.6/dist/vconsole.min.js"></script> -->
@@ -1722,7 +1779,8 @@
 <!-- Express SDK -->
 <script src="./sdk/ZegoExpressWebRTC-2.15.1.js"></script>
 <!-- Superboard SDK -->
-<script src="./sdk/ZegoSuperBoardWeb.js"></script>
+<!-- <script src="./sdk/ZegoSuperBoardWeb.js"></script> -->
+<script src="/ZegoSuperBoardWeb.js"></script>
 <script src="./js/room/utils.js"></script>
 <!-- whiteboard -->
 <script src="./js/room/whiteboard.js"></script>

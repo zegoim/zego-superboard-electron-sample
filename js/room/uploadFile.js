@@ -96,19 +96,23 @@ var uploadFileUtils = {
  * @param {Number} renderType Rendering mode
  * @param {File} file File object
  */
-function uploadFile(renderType, file) {
+function uploadFile(renderType, file, enableSizeReducedImages) {
     if (!file) return roomUtils.toast('Please select a file first');
     //Type of rendering mode after the file is uploaded and transcoded. If the business of iOS, Web, Windows, Mac, or mini program is involved, you are advised to use the VectorAndIMG mode.
+    const option = {
+        renderImgType:1,
+        enableSizeReducedImages
+    }
     zegoSuperBoard
         .uploadFile(file, renderType, function (res) {
             roomUtils.toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
-        },{renderImgType:1})
+        },option)
         .then(function (fileID) {
             uploadFileUtils.closeFileDomHandle();
 
             // A file whiteboard is created immediately after the upload. You can handle it as required.
             // The method of creating a file whiteboard is shown in js/room/whiteboard.js.
-            createFileView(fileID);
+            createFileView(fileID,enableSizeReducedImages);
         })
         .catch(roomUtils.toast);
 }
@@ -122,6 +126,14 @@ layui.dropdown.render({
     content: $('#uploadPopoverContent').html()
 });
 
+/**
+ * @description: Click Upload File in the File List dialog to show the drop-down list.
+ * @description: Only the dialog is displayed here. You can handle it as required.
+ */
+ layui.dropdown.render({
+    elem: '#openPopover2',
+    content: $('#uploadPopoverContent2').html()
+});
 /**
  * @description: Click File at the bottom of the page to query the current file list and update the page.
  */

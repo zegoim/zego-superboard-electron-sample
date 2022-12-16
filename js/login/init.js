@@ -176,7 +176,7 @@ function initSuperBoardSDKConfig() {
     console.log('demo set config:',zegoConfig.disableH5Mouse)
     zegoSuperBoard.setCustomizedConfig('disableH5Mouse', zegoConfig.disableH5Mouse);
 
-    // zegoSuperBoard.enableCustomCursor(true);
+    zegoSuperBoard.enableCustomCursor(true);
 }
 
 /**

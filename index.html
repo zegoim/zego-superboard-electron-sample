@@ -1250,6 +1250,24 @@
               </div>
             </div>
             <div class="layui-form-item">
+              <label class="layui-form-label" data-locale="add-text"></label>
+              <div class="layui-input-inline" style="width: 100px;margin-left: 10px;">
+                <input id="addtext_val" name="addtext_val" type="text" placeholder="添加文本" value="测试文本" class="layui-input"
+                  oninput="value=value.replace('-','')" />
+              </div>
+              <div class="layui-input-inline" style="width: 50px;margin-left: 10px;">
+                <input id="addtext_x" name="addtext_x" type="text" placeholder="X" value="0" class="layui-input"
+                  oninput="value=value.replace('-','')" />
+              </div>
+              <div class="layui-input-inline" style="width: 50px; margin-left: 0">
+                <input id="addtext_y" name="addtext_y" type="text" placeholder="Y" value="0" class="layui-input"
+                  oninput="value=value.replace('-','')" />
+              </div>
+              <button id="addtext" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
+                data-locale="submit">
+              </button>
+            </div>
+            <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Network-Image"></label>
               <div class="layui-input-block">
                 <select id="cursorList" name="cursorUrl" lay-filter="cursorUrl"></select>
@@ -1517,7 +1535,7 @@
 
               </button>
             </div>
-            <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px" >
+            <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
               扬声器设置
             </div>
             <div class="layui-form-item">
@@ -1716,8 +1734,8 @@
         </div>
       </div>
     </div>
-     <!-- Upload File Content test -->
-     <div id="uploadPopoverContent2" style="display:none">
+    <!-- Upload File Content test -->
+    <div id="uploadPopoverContent2" style="display:none">
       <div class="upload-setting">
         <div class="upload-box">
           <div class="static">
@@ -1804,6 +1822,8 @@
 <script src="./js/room/setCustomCursor.js"></script>
 <!-- addImage -->
 <script src="./js/room/addImage.js"></script>
+<!-- addText -->
+<script src="./js/room/addText.js"></script>
 <!-- uploadFile -->
 <script src="./js/room/uploadFile.js"></script>
 <!-- uploadH5File -->

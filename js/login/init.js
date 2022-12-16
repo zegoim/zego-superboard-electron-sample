@@ -141,10 +141,10 @@ async function initZegoSDK(time) {
 function initExpressSDKConfig() {
     // Set the log level.
     zegoEngine.setLogConfig({
-        logLevel: 'disable'
+        logLevel: 'error'
     });
     zegoSuperBoard.setLogConfig({
-        logLevel: 'disable'
+        logLevel: 'error'
     });
     // Disable debug.
     zegoEngine.setDebugVerbose(false);
@@ -176,7 +176,7 @@ function initSuperBoardSDKConfig() {
     console.log('demo set config:',zegoConfig.disableH5Mouse)
     zegoSuperBoard.setCustomizedConfig('disableH5Mouse', zegoConfig.disableH5Mouse);
 
-    zegoSuperBoard.enableCustomCursor(true);
+    // zegoSuperBoard.enableCustomCursor(true);
 }
 
 /**

@@ -712,13 +712,17 @@ li {
 
 .share-item,
 .inivate-btn,
-.member-btn {
+.member-btn,
+.debug-btn {
   width: 54px;
   height: 58px;
   text-align: center;
   cursor: pointer;
   margin: 0 15px;
   border-radius: 4px;
+}
+.debug-btn {
+  display: none;
 }
 
 .member-btn {
@@ -734,7 +738,8 @@ li {
 
 .si-icon,
 .inivate-icon,
-.member-icon {
+.member-icon,
+.debug-icon {
   width: 30px;
   height: 30px;
   margin: 6px auto 4px;
@@ -742,7 +747,8 @@ li {
 
 .si-name,
 .inivate-name,
-.member-name {
+.member-name,
+.debug-name {
   font-size: 12px;
 }
 
@@ -824,6 +830,28 @@ li {
   display: flex;
   height: 100%;
   overflow: hidden auto;
+}
+.first-inline{
+  margin-left: 10px;
+}
+#right-main .cursor-offset, .layui-form-item .add-text-val {
+  width: 100px;
+}
+#right-main .add-text {
+  width: 40px;
+}
+#right-main .h5-file-size {
+  width: 75px;
+}
+#right-main .h5-page-count {
+  width: 90px;
+  margin-bottom: 10px;
+}
+#right-main .file-seq {
+  width: 186px;
+}
+#right-main .file-id-2 {
+  width: 154px;
 }
 
 #filelistModal #file-list {
@@ -1087,6 +1115,132 @@ li {
   }
   #login-btn {
     width: 70%;
+  }
+  #left-header {
+    display: flex;
+    flex-direction: column;
+    min-height: 40px;
+    align-items: center;
+    margin: 10px 0;
+    justify-content: center;
+  }
+  .room-id {
+    position: relative;
+    margin-bottom: 8px;
+  }
+  #customForm .whiteboard-list {
+    width: 130px!important;
+  }
+
+  .page-bar {
+    width: 100px;
+    margin-left: 0;
+  }
+  .scale-bar {
+    width: 100px;
+    margin-left: 10px;
+  }
+  #customForm .layui-form-select {
+    margin-left: 0;
+  }
+  #main-whiteboard-tool {
+    /* padding: 10px 0 2px; */
+  }
+  .tool-item {
+  }
+  .tools-list .tool-item:first-of-type {
+    /* padding-top: 0; */
+  }
+  #room-page-left {
+    padding: 0 10px;
+  }
+  #room-page-right-mask{
+    display: none;
+    z-index: 11;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  /* h5端隐藏右侧调试面板 */
+  #room-page-right {
+    display: none;
+    z-index: 12;
+    position: absolute;
+    right: -260px;
+    width: 260px;
+    height: 100%;
+    overflow-y: scroll;
+  }
+  #left-footer {
+    margin: 5px 0;
+  }
+  .debug-btn {
+    display: block;
+  }
+  .share-item,
+  .inivate-btn,
+  .member-btn,
+  .debug-btn {
+    width: 48px;
+    margin: 0;
+  }
+  #logout-btn {
+    width: 60px;
+  }
+  #right-header .nav-item {
+    font-size: 12px;
+  }
+  #right-main {
+    padding-top: 10px;
+  }
+  #right-main .layui-form-item {
+    margin-bottom: 8px;
+  }
+  #right-main .layui-form-label{
+    width: 90px;
+    font-size: 12px;
+    text-align: left;
+  }
+  #right-main .layui-input-block{
+    margin-left: 90px;
+  }
+  #right-main .layui-btn+.layui-btn{
+    margin-left: 2px;
+  }
+  #right-main .image-url, 
+  #right-main .render-time, 
+  #right-main .target-page,
+  #right-main .h5-page-count,
+  #right-main .speaker {
+    width: 108px!important;
+  }
+  #right-main .file-id,
+  #right-main .log-level {
+    width: 95px!important;
+  }
+  #right-main .cursor-offset,
+  #right-main .add-text-val,
+  #right-main .h5-file-size,
+  #right-main .file-seq {
+    width: 65px!important;
+  }
+  
+  #right-main .parent-size {
+    width: 52px!important;
+  }
+  #right-main .add-text {
+    width: 40px!important;
+  }
+
+  /* 重置layui样式 */
+  .layui-form-item .layui-input-inline {
+    display: inline-block;
+    margin: 0;
+    left: 0;
+  }
+  .layui-input {
+    font-size: 12px;
   }
 }
 /* 小屏幕（平板，大于等于 768px） */

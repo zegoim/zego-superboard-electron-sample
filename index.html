@@ -188,11 +188,13 @@
     <div id="room-page-left">
       <div id="left-header">
         <!-- Room ID -->
-        <span class="room-id"><span data-locale="RoomID"> </span> :<span id="showRoomID"></span></span>
+        <div class="room-id">
+          <span data-locale="RoomID"> </span> :<span id="showRoomID"></span>
+        </div>
         <form id="customForm" class="layui-form" name="customForm" action="" lay-filter="customForm">
           <!-- Whiteboard List -->
           <div class="layui-form-item">
-            <div class="layui-input-inline">
+            <div class="layui-input-inline whiteboard-list">
               <select name="whiteboard" id="whiteboardList" lay-filter="whiteboardList"> </select>
             </div>
           </div>
@@ -1070,6 +1072,28 @@
           <div class="member-name" data-locale="member"></div>
           <div id="memberNum">1</div>
         </div>
+        <!-- Debug panel-->
+        <div class="debug-btn">
+          <div class="debug-icon">
+            <svg
+              width="26px"
+              height="30px"
+              viewBox="0 0 26 19"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <g id="Layer_1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Layer_2" fill="#585C62">
+                  <rect id="rect-1" x="0" y="0" width="26" height="2.5" rx="1.25"></rect>
+                  <rect id="rect-2" x="0" y="8" width="26" height="2.5" rx="1.25"></rect>
+                  <rect id="rect-3" x="0" y="16" width="26" height="2.5" rx="1.25"></rect>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="debug-name">调试页面</div>
+        </div>
         <!-- Leave Room -->
         <button id="logout-btn">
           <span class="button-icon">
@@ -1086,6 +1110,7 @@
         </button>
       </div>
     </div>
+    <div id="room-page-right-mask"></div>
     <div id="room-page-right">
       <!-- Draw Whiteboard File -->
       <div id="right-header">
@@ -1124,12 +1149,12 @@
             <!-- Custom Graph -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Custom-Graph"></label>
-              <div class="layui-input-inline" style="margin-left: 10px;">
-                <input name="customGraphUrl" type="text" placeholder="image URL" class="layui-input" />
+              <div class="layui-input-inline first-inline image-url">
+                <input name="customGraphUrl" type="text" placeholder="image URL" class="layui-input"/>
               </div>
               <button id="addImageByURLBtn1" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
                 data-locale="submit">
-
+                
               </button>
             </div>
             <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
@@ -1159,7 +1184,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label"></label>
-              <div class="layui-input-inline" style="margin-left: 10px;">
+              <div class="layui-input-inline first-inline image-url">
                 <input name="customBgUrl" type="text" placeholder="Image URL" class="layui-input" />
               </div>
               <button id="setBackgroundImageByURLBtn" type="button" class="layui-btn layui-btn-sm"
@@ -1187,7 +1212,6 @@
               <div class="layui-input-block">
                 <button id="clearBackgroundImageBtn" type="button" class="layui-btn layui-btn-sm"
                   data-locale="clearBackgroundImage">
-
                 </button>
               </div>
             </div>
@@ -1199,7 +1223,7 @@
             <!-- Network Image -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Network-Image"></label>
-              <div class="layui-input-inline" style="margin-left: 10px;">
+              <div class="layui-input-inline first-inline image-url">
                 <input name="customImageUrl" type="text" placeholder="image URL" class="layui-input" />
               </div>
               <button id="addImageByURLBtn2" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1240,26 +1264,26 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="set-offset"></label>
-              <div class="layui-input-inline" style="width: 100px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline cursor-offset">
                 <input id="cursorOffsetX" name="cursorOffsetX" type="text" placeholder="X" value="0" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
-              <div class="layui-input-inline" style="width: 100px; margin-left: 0">
+              <div class="layui-input-inline cursor-offset">
                 <input id="cursorOffsetY" name="cursorOffsetY" type="text" placeholder="Y" value="0" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="add-text"></label>
-              <div class="layui-input-inline" style="width: 100px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline add-text-val">
                 <input id="addtext_val" name="addtext_val" type="text" placeholder="添加文本" value="测试文本" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
-              <div class="layui-input-inline" style="width: 50px;margin-left: 10px;">
+              <div class="layui-input-inline add-text">
                 <input id="addtext_x" name="addtext_x" type="text" placeholder="X" value="0" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
-              <div class="layui-input-inline" style="width: 50px; margin-left: 0">
+              <div class="layui-input-inline add-text">
                 <input id="addtext_y" name="addtext_y" type="text" placeholder="Y" value="0" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
@@ -1275,7 +1299,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label"></label>
-              <div class="layui-input-inline" style="margin-left: 10px;">
+              <div class="layui-input-inline first-inline image-url">
                 <input id="inputCustomCursorUrl" name="inputCustomCursorUrl" type="text" placeholder="image URL"
                   class="layui-input" />
               </div>
@@ -1308,7 +1332,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Set-render-delay"></label>
-              <div class="layui-input-inline" style="width: 146px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline render-time">
                 <input name="deferredRenderingTime" type="text" placeholder="ms" class="layui-input" />
               </div>
               <button id="setDeferredRenderingTimeBtn" type="button" class="layui-btn layui-btn-sm"
@@ -1331,7 +1355,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Jump-specified-page"></label>
-              <div class="layui-input-inline" style="width: 146px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline target-page">
                 <input name="targetPage" type="text" class="layui-input" />
               </div>
               <button id="flipToPageBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1411,10 +1435,10 @@
             <!-- Width and Height Setting -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="set-container-size"></label>
-              <div class="layui-input-inline" style="width: 100px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline parent-size">
                 <input name="parentWidth" type="text" placeholder="width" class="layui-input" />
               </div>
-              <div class="layui-input-inline" style="width: 100px; margin-left: 0">
+              <div class="layui-input-inline parent-size">
                 <input name="parentHeight" type="text" placeholder="height" class="layui-input" />
               </div>
               <button id="setParentSizeBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1430,14 +1454,14 @@
                   data-locale="Full-Screen"></button>
               </div>
             </div>
-            <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
+            <!-- <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div> -->
             <!-- token -->
             <!-- <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
               token 更新
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">有效期</label>
-              <div class="layui-input-inline" style="width: 146px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline" style="width: 146px;">
                 <input name="token" type="text" placeholder="token有效期（s）" class="layui-input" id="newToken" />
               </div>
               <button id="getNewTokenBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
@@ -1459,16 +1483,16 @@
             <!-- H5 File -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="H5-File"></label>
-              <div class="layui-input-inline" style="width: 86px;margin-left: 10px;z-index:1">
+              <div class="layui-input-inline first-inline h5-file-size">
                 <input name="h5Width" type="text" placeholder="Width" class="layui-input" />
               </div>
-              <div class="layui-input-inline" style="width: 86px;z-index:1">
+              <div class="layui-input-inline h5-file-size">
                 <input name="h5Height" type="text" placeholder="Height" class="layui-input" />
               </div>
-              <div class="layui-input-inline" style="width: 86px;margin: 0 0 10px 0;z-index:1">
+              <div class="layui-input-inline h5-page-count">
                 <input name="h5PageCount" type="text" placeholder="PageCount" class="layui-input" />
               </div>
-              <div class="layui-input-block" style="margin-bottom: 6px ">
+              <div class="layui-input-block" style="margin-bottom: 6px">
                 <input name="h5ThumbnailListStr" type="text" placeholder="Thumbnail list string, separated by ','"
                   class="layui-input" class="layui-input" />
               </div>
@@ -1484,7 +1508,7 @@
             <!-- File ID -->
             <div class="layui-form-item">
               <label class="layui-form-label">File ID</label>
-              <div class="layui-input-inline" style="margin-left: 10px">
+              <div class="layui-input-inline first-inline file-id">
                 <input name="fileID" type="text" placeholder="File ID" class="layui-input" />
               </div>
               <button id="cacheFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1494,7 +1518,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">Seq</label>
-              <div class="layui-input-inline" style="margin-left: 10px">
+              <div class="layui-input-inline first-inline file-seq">
                 <input name="cacheFileSeq" type="text" placeholder="Seq" class="layui-input" />
               </div>
               <button id="cancelCacheFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1503,7 +1527,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">File ID</label>
-              <div class="layui-input-inline" style="margin-left: 10px">
+              <div class="layui-input-inline first-inline file-id-2">
                 <input name="createFileID" type="text" placeholder="File ID" class="layui-input" />
               </div>
               <button id="createFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1520,7 +1544,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Log-Level"></label>
-              <div class="layui-input-inline">
+              <div class="layui-input-inline log-level">
                 <select id="logLevel" name="logLevel" lay-filter="logLevel">
                   <option value="debug">debug</option>
                   <option value="info">info</option>
@@ -1540,7 +1564,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="speaker"></label>
-              <div class="layui-input-inline">
+              <div class="layui-input-inline speaker">
                 <select id="speaker" name="speaker" lay-filter="speaker">
                 </select>
               </div>

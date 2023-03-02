@@ -308,3 +308,26 @@ $('#copyLintBtn').click(function () {
     document.execCommand('copy');
     roomUtils.toast('复制成功');
 });
+
+
+/**
+ * @description: debug panel 
+ */
+$('.debug-btn').click(function () {
+    if ($('#room-page-right').css('display') === 'none') {
+        $('#room-page-right').css('display','flex');
+        $('#room-page-right').animate({'right':'0px'}, 'fast');
+        $('#room-page-right-mask').css('display','block');
+    } else {
+        $('#room-page-right').css({'display':'none', 'right':'-260px'});
+        $('#room-page-right-mask').css('display','none');
+    }
+})
+
+/**
+ * @description: 调试面板遮罩
+ */
+$('#room-page-right-mask').click(function () {
+    $('#room-page-right').css({'display':'none', 'right':'-260px'});
+    $('#room-page-right-mask').css('display','none');
+})

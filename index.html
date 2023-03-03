@@ -296,7 +296,7 @@
           <ul class="tools-list">
             <li class="tool-item disabled clickType" data-toggle="tooltip" data-placement="right" title="Click"
               onclick="setToolType(256,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <defs>
                     <style>
@@ -320,31 +320,34 @@
                   <rect class="hover-fill" fill="#b0b3ba" x="11.65" y="2.32" width="1.6" height="3" rx="0.8"
                     transform="translate(6.35 -7.68) rotate(45)"></rect>
                 </svg>
+                <div class="tool-tip" data-locale="click"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Select"
               onclick="setToolType(32,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb"
                     d="M3,3.55,7,16.4a.86.86,0,0,0,1.62.05l1.81-4.82a2,2,0,0,1,1.17-1.17l4.82-1.81a.85.85,0,0,0,0-1.61L3.55,3A.42.42,0,0,0,3,3.55Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="select"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Drag"
               onclick="setToolType(null,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb" fill-rule="evenodd"
                     d="M11.2,9.6V3.13a1.12,1.12,0,0,0-1-1.12A1.09,1.09,0,0,0,9,3.1V9.6a.4.4,0,0,1-.4.4h0a.4.4,0,0,1-.4-.4v-5a1.12,1.12,0,0,0-1-1.12A1.09,1.09,0,0,0,6,4.6v5.73a.26.26,0,0,1-.48.12l-.46-.86a1.1,1.1,0,0,0-1.58-.4,1.13,1.13,0,0,0-.35,1.46l.75,1.41.06.1.26.49h0c.31.58.73,1.4,1.21,2.22A6.65,6.65,0,0,0,11,18c7,0,6.2-7.1,6.2-7.1V6.13a1.12,1.12,0,0,0-1-1.12A1.09,1.09,0,0,0,15,6.1V9.6a.4.4,0,0,1-.4.4h0a.4.4,0,0,1-.4-.4V4.13a1.12,1.12,0,0,0-1-1.12A1.09,1.09,0,0,0,12,4.1V9.6a.4.4,0,0,1-.4.4h0A.4.4,0,0,1,11.2,9.6Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="drag"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Laser"
               onclick="setToolType(128,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <g id="Layer_2" data-name="Layer 2">
                     <g id="Layer_1-2" data-name="Layer 1">
@@ -366,11 +369,12 @@
                     </g>
                   </g>
                 </svg>
+                <div class="tool-tip" data-locale="laser"></div>
               </div>
             </li>
             <li class="tool-item active pen" data-toggle="tooltip" data-placement="right" title="Pen"
               onclick="setToolType(1,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb"
                     d="M14.71,3.29h0a3,3,0,0,1,3,3v1a0,0,0,0,1,0,0h-6a0,0,0,0,1,0,0v-1a3,3,0,0,1,3-3Z"
@@ -379,6 +383,7 @@
                     d="M7.13,16.5,3.7,17A.61.61,0,0,1,3,16.31l.49-3.43a2.29,2.29,0,0,1,.62-1.25l6.56-6.55,4.24,4.24L8.36,15.88A2.23,2.23,0,0,1,7.13,16.5Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="pen"></div>
               </div>
               <div class="pencil-text-setting pen">
                 <div class="common-box pencil-box">
@@ -535,13 +540,14 @@
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Text"
               onclick="setToolType(2,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="17 5 3 5 4 3 17 3 17 5">
                   </polygon>
                   <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="9 5 6 17 10 17 12 5 9 5">
                   </polygon>
                 </svg>
+                <div class="tool-tip" data-locale="text"></div>
               </div>
               <div class="pencil-text-setting text">
                 <div class="common-box text-box">
@@ -715,7 +721,7 @@
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Graphics"
               onclick="setToolType(undefined,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <defs>
                     <style>
@@ -731,6 +737,7 @@
                   </path>
                   <circle class="hover-fill" fill="#b1b4bb" cx="13.5" cy="12.5" r="4.5"></circle>
                 </svg>
+                <div class="tool-tip" data-locale="graphics"></div>
               </div>
               <div class="pencil-text-setting graph">
                 <div class="common-box pencil-box">
@@ -914,42 +921,48 @@
                 </div>
               </div>
             </li>
-            <li class="tool-item " data-toggle="tooltip" data-placement="right" title="Custom graphics"
+            <li class="tool-item tip-wrap" data-toggle="tooltip" data-placement="right" title="Custom graphics"
               onclick="setToolType(512,event)">
-              <div class="custom-graph-icon"></div>
+              <div class="tool-content">
+                <div class="custom-graph-icon"></div>
+                <div class="tool-tip" data-locale="custom-graphics"></div>
+              </div>
               <ul class="custom-graph-setting"></ul>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Eraser"
               onclick="setToolType(64,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb" fill-rule="evenodd"
                     d="M2.35,12.25l5.4,5.4a1.18,1.18,0,0,0,1.67,0l8.23-8.23a1.18,1.18,0,0,0,0-1.67l-5.4-5.4a1.18,1.18,0,0,0-1.67,0L2.35,10.58A1.18,1.18,0,0,0,2.35,12.25Zm4.26-3.1a.8.8,0,0,1,1.13,0l3.11,3.11a.8.8,0,0,1,0,1.13l-1.7,1.7a.8.8,0,0,1-1.13,0L4.91,12a.8.8,0,0,1,0-1.13Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="eraser"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Clear" onclick="clearAllPage()">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb" fill-rule="evenodd"
                     d="M17,9V7a1,1,0,0,0-1-1H12V4a1,1,0,0,0-1-1H9A1,1,0,0,0,8,4V6H4A1,1,0,0,0,3,7V9a1,1,0,0,0,1,1l-.84,5.86a1,1,0,0,0,1,1.14h11.7a1,1,0,0,0,1-1.14L16,10A1,1,0,0,0,17,9ZM7.8,14.7a.8.8,0,0,1-1.6,0V12.8a.8.8,0,1,1,1.6,0Zm3,0a.8.8,0,0,1-1.6,0V11.3a.8.8,0,0,1,1.6,0Zm3,0a.8.8,0,0,1-1.6,0V12.8a.8.8,0,0,1,1.6,0Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="clear"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Undo" onclick="undo()">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="8 3 8 11 2 7 8 3"></polygon>
                   <path class="hover-stroke" fill-rule="evenodd" fill="none" stroke="#b1b4bb" stroke-miterlimit="10"
                     stroke-width="2.8px" d="M7.5,7h4.75a4.25,4.25,0,0,1,4.25,4.25h0a4.25,4.25,0,0,1-4.25,4.25H11">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="undo"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Redo" onclick="redo()">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="11.9 3 11.9 11 17.9 7 11.9 3">
                   </polygon>
@@ -957,10 +970,11 @@
                     stroke-width="2.8px" d="M12.4,7H7.65A4.25,4.25,0,0,0,3.4,11.25h0A4.25,4.25,0,0,0,7.65,15.5H8.9">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="redo"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Snapshot" onclick="snapshot()">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <defs>
                     <style>
@@ -981,6 +995,7 @@
                   <path class="hover-fill" fill="#b1b4bb" fill-rule="evenodd"
                     d="M6,3H9A0,0,0,0,1,9,3V5.4a.6.6,0,0,1-.6.6H6.6A.6.6,0,0,1,6,5.4V3A0,0,0,0,1,6,3Z"></path>
                 </svg>
+                <div class="tool-tip" data-locale="snapshot"></div>
               </div>
             </li>
           </ul>
@@ -1092,7 +1107,7 @@
               </g>
             </svg>
           </div>
-          <div class="debug-name">调试页面</div>
+          <div class="debug-name" data-locale="debug-panel"></div>
         </div>
         <!-- Leave Room -->
         <button id="logout-btn">

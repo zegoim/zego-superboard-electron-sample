@@ -204,6 +204,7 @@ function onSuperBoardEventHandle() {
  */
 async function createWhiteboardView() {
     $('#thumbModal').removeClass('active');
+    $('#main-whiteboard-tool').css({'display': 'block'});
     try {
         roomUtils.loading('Create a normal whiteboard');
 
@@ -237,6 +238,8 @@ async function createWhiteboardView() {
  */
 async function createFileView(fileID,enableSizeReducedImages) {
     $('#thumbModal').removeClass('active');
+    // Show whiteboard tool.
+    $('#main-whiteboard-tool').css({'display': 'block'});
     try {
         roomUtils.loading('Create document in whiteboard');
         const loadOption = {
@@ -518,6 +521,7 @@ function createFileViewByFileID(event) {
 
     // Close the File dialog.
     $('#filelistModal').modal('hide');
+    
 }
 
 /**

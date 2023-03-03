@@ -252,6 +252,7 @@ li {
 }
 
 #main-whiteboard-tool {
+  display: none;
   top: 50%;
   right: 10px;
   bottom: auto;
@@ -263,6 +264,12 @@ li {
   background: #fff;
   z-index: 9;
   border-radius: 4px;
+}
+.tool-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .tool-item {
@@ -298,6 +305,9 @@ li {
 }
 .tools-list .tool-item:last-of-type {
   padding-bottom: 12px;
+}
+.tool-tip {
+  display: none;
 }
 
 .pencil-text-setting {
@@ -1102,8 +1112,8 @@ li {
 }
 
 /* 媒体查询 */
-/* 超小屏幕（手机，小于 768px） */
-@media (max-width: 768px) {
+/* （手机横竖屏，小于 992px） */
+@media (max-width: 992px) {
   #login-form {
     width: 80%;
     height: 80%;
@@ -1143,14 +1153,28 @@ li {
   #customForm .layui-form-select {
     margin-left: 0;
   }
-  #main-whiteboard-tool {
-    /* padding: 10px 0 2px; */
+  #main-whiteboard-tool .tooltip.right {
+    display: none!important;
   }
-  .tool-item {
+  #main-whiteboard-tool .tool-item {
+    padding: 4px 0;
+    width: 50px;
+    height: 42px;
   }
-  .tools-list .tool-item:first-of-type {
-    /* padding-top: 0; */
+  #main-whiteboard-tool .tip-wrap {
+    height: 60px;
   }
+  #main-whiteboard-tool .tool-content svg {
+    margin-bottom: 2px;
+    width: 20px;
+    height: 20px;
+  }
+  #main-whiteboard-tool .tool-tip {
+    display: flex;
+    font-size: 12px;
+    text-align: center;
+  }
+
   #room-page-left {
     padding: 0 10px;
   }
@@ -1243,10 +1267,16 @@ li {
     font-size: 12px;
   }
 }
-/* 小屏幕（平板，大于等于 768px） */
-@media (min-width: 768px) {
-  .login-form-right {
+/* （手机横屏最小px，大于等于 660px） */
+@media (min-width: 660px) and (max-width: 900px) {
+  /* .login-form-right {
     width: 500px;
+  } */
+  #main-whiteboard-tool {
+    top: -50px;
+    max-height: 300px;
+    transform: none;
+    overflow-y: scroll;
   }
 }
 /* 中等屏幕（桌面显示器，大于等于 992px） */

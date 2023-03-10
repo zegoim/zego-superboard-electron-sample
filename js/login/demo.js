@@ -26,49 +26,57 @@ if (location.port == 4003) {
           </div>
           <div class="modal-body">
             <form id="versionForm" class="layui-form" action="" name="form" lay-filter="versionForm">
-              <div class="layui-form-item" id="superBoardVer">
+              <div class="layui-form-item" id="superBoardVersion">
                 <label class="layui-form-label">version</label>
                 <div class="layui-input-block">
-                  <select name="superBoardver" id="superBoardver" lay-filter="superBoardver">
-                    
+                  <select name="superBoardVersion" id="superBoard-list" lay-filter="superBoardVersion">
                   </select>
                 </div>
               </div>
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit lay-filter="versionForm" data-dismiss="modal">立即提交</button>
+                </div>
+              </div>
             </form>
-            <div onclick="commmit">submit</div>
           </div>
         </div>
       </div>
     </div>
   `);
     $('#login-page').append(`
-    <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本</span>`)
+    <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本（修改版本，demo的SDK版本为2.11.0）</span>`)
 
     $.ajaxSettings.async = false;
     $.get(
-      'https://storage.zego.im/goclass/sdk/sdkVer.json', {},
+      'http://zego-public.oss-cn-shanghai.aliyuncs.com/goclass/sdk/sdkVer.json', {},
       function (res) {
-        $('#superBoardver').html(getSDKVersionOptions(res.superboard));
+        console.log(res);
+        $('#superBoard-list').html(getSDKVersionOptions(res.superboard));
       },
       'json'
     );
     $.ajaxSettings.async = true;
   }
 
-  var base_sdk_url = `https://storage.zego.im/goclass/sdk/superboard/`
+  var base_sdk_url = `http://zego-public.oss-cn-shanghai.aliyuncs.com/goclass/sdk/superboard/`
 
   layui.use(['layer', 'jquery', 'form'], function () {
     var layer = layui.layer,
       $ = layui.jquery,
       form = layui.form;
 
-    form.on('select(superBoardver)', function (data) {
+    form.on('select(superBoardVersion)', function (data) {
       console.log(data.value);
-      sessionStorage.setItem('superBoardver', JSON.stringify(data.value));
-      // Replace the SDK path.
-      loadScript(base_sdk_url + data.value);
       // Perform rendering one more time.
       form.render('select');
+    });
+    form.on('submit(versionForm)', function(data){
+      console.log('===data', data.field)
+      sessionStorage.setItem('superBoardVersion', JSON.stringify(data.field.superBoardVersion));
+      // Replace the SDK path.
+      loadScript(base_sdk_url + data.field.superBoardVersion);
+      return false;
     });
   });
 
@@ -95,9 +103,9 @@ if (location.port == 4003) {
       head.appendChild(script);
     });
   }
-  var sdkver = JSON.parse(sessionStorage.getItem('superBoardver'))
+  var sdkver = JSON.parse(sessionStorage.getItem('superBoardVersion'))
   console.warn('===sdkver', sdkver)
   // Replace the SDK path.
-  sdkver ? loadScript(base_sdk_url + sdkver) : loadScript(base_sdk_url + $('#superBoardver').val());
+  sdkver ? loadScript(base_sdk_url + sdkver) : loadScript(base_sdk_url + $('#superBoardVersion').val());
 
 }

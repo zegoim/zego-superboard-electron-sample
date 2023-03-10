@@ -930,6 +930,8 @@ li {
 }
 
 .thumb-header {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 0;
   padding: 10px 26px;
   text-align: left;
@@ -1138,20 +1140,32 @@ li {
     position: relative;
     margin-bottom: 8px;
   }
+  #customForm {
+    padding: 0 20px;
+    justify-content: center;
+  }
+  #customForm .layui-form-item {
+    margin: 2px 0;
+  }
+  #customForm .page-bar {
+    width: 100px;
+    margin: 2px 0;
+  }
+  #customForm .scale-bar {
+    width: 100px;
+    margin: 2px 0 2px 10px;
+  }
   #customForm .whiteboard-list {
     width: 130px!important;
   }
-
-  .page-bar {
-    width: 100px;
-    margin-left: 0;
-  }
-  .scale-bar {
-    width: 100px;
-    margin-left: 10px;
+  #customForm .sheet-list {
+    width: 100px!important;
   }
   #customForm .layui-form-select {
     margin-left: 0;
+  }
+  #thumb-button {
+    top: 0;
   }
   #main-whiteboard-tool .tooltip.right {
     display: none!important;
@@ -1211,6 +1225,10 @@ li {
   }
   #logout-btn {
     width: 60px;
+    left: 0;
+  }
+  #logout-btn .button-icon {
+    transform: rotate(180deg);
   }
   #right-header .nav-item {
     font-size: 12px;

@@ -200,7 +200,7 @@
           </div>
           <!-- Excel multiple whiteboards -->
           <div class="layui-form-item" id="sheetListItem" style="display:none">
-            <div class="layui-input-inline">
+            <div class="layui-input-inline sheet-list">
               <select name="sheet" id="sheetList" lay-filter="sheetList"> </select>
             </div>
           </div>
@@ -1590,8 +1590,12 @@
     </div>
     <!-- Thumbnail Dialog -->
     <div id="thumbModal">
-      <div class="thumb-header" data-locale="preview"> <span style="float: right;cursor: pointer;"
-          data-locale="close"></span></div>
+      <div class="thumb-header">
+        <div data-locale="preview"></div>   
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
       <ul class="thumb-main"></ul>
     </div>
     <!-- Select File Dialog -->
@@ -1872,6 +1876,7 @@
 <!-- login-Related -->
 <script src="./js/login/login.js"></script>
 <script src="./js/login/init.js"></script>
+<script src="./js/login/demo.js"></script>
 <!-- <script src="./js/login/login_liveroom.js"></script>
 <script src="./js/login/init_liveroom.js"></script> -->
 

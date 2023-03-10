@@ -536,6 +536,8 @@ async function attachActiveView() {
     console.warn('SuperBoard Demo attachActiveView', result);
     // When you enter a room, the latest whiteboard is automatically mounted.
     if (result.uniqueID) {
+        // When there is a whiteboard，show whiteboard tool.
+        $('#main-whiteboard-tool').css({'display': 'block'});
         var superBoardView = zegoSuperBoard.getSuperBoardView();
         if (superBoardView) {
             try {

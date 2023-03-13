@@ -1285,18 +1285,7 @@ li {
     font-size: 12px;
   }
 }
-/* （手机横屏最小px，大于等于 660px） */
-@media (min-width: 660px) and (max-width: 900px) {
-  /* .login-form-right {
-    width: 500px;
-  } */
-  #main-whiteboard-tool {
-    top: -50px;
-    max-height: 300px;
-    transform: none;
-    overflow-y: scroll;
-  }
-}
+
 /* 中等屏幕（桌面显示器，大于等于 992px） */
 @media (min-width: 992px) {
   #login-form {
@@ -1314,4 +1303,12 @@ li {
 }
 /* 大屏幕（大桌面显示器，大于等于 1200px） */
 @media (min-width: 1200px) {
+}
+@media only screen and (max-height: 600px) {
+   #main-whiteboard-tool {
+    top: 10px;
+    max-height: 300px;
+    transform: none;
+    overflow-y: scroll;
+  }
 }

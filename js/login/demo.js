@@ -2,20 +2,18 @@
  *This code block is needed when the ZEGOCLOUD web demo runs. It does not need to be concerned when the demo is opened.
  */
 
-if (location.port == 4003) {
-  if (!getSDKVersionOptions) {
-    // Obtain the SDK version.
-    function getSDKVersionOptions(list) {
-      return list
-        .map(function (v) {
-          return `<option value="${v}">${v}</option>`;
-        })
-        .join('');
-    }
-
-    // SDK version settings
-    $('body').append(`
-      <div class="modal fade" id="versionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+if (location.port !== 4003) {
+  // Obtain the SDK version.
+  function getSDKVersionOptions(list) {
+    return list
+      .map(function (v) {
+        return `<option value="${v}">${v}</option>`;
+      })
+      .join('');
+  }
+  // SDK version settings
+  $('body').append(`
+    <div class="modal fade" id="versionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -44,20 +42,25 @@ if (location.port == 4003) {
       </div>
     </div>
   `);
-    $('#login-page').append(`
-    <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本（修改版本，demo的SDK版本为2.11.0）</span>`)
 
-    $.ajaxSettings.async = false;
-    $.get(
-      'http://zego-public.oss-cn-shanghai.aliyuncs.com/goclass/sdk/sdkVer.json', {},
-      function (res) {
-        console.log(res);
-        $('#superBoard-list').html(getSDKVersionOptions(res.superboard));
-      },
-      'json'
-    );
-    $.ajaxSettings.async = true;
-  }
+  $('#login-page').append(`
+  <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本（修改版本，demo的SDK版本为2.11.0）</span>`)
+
+  $('#reload-btn').click(()=>{
+    console.log('===reload', window.name)
+    alert('===reload')
+  })
+
+  $.ajaxSettings.async = false;
+  $.get(
+    'http://zego-public.oss-cn-shanghai.aliyuncs.com/goclass/sdk/sdkVer.json', {},
+    function (res) {
+      console.log(res);
+      $('#superBoard-list').html(getSDKVersionOptions(res.superboard));
+    },
+    'json'
+  );
+  $.ajaxSettings.async = true;
 
   var base_sdk_url = `http://zego-public.oss-cn-shanghai.aliyuncs.com/goclass/sdk/superboard/`
 
@@ -103,6 +106,7 @@ if (location.port == 4003) {
       head.appendChild(script);
     });
   }
+
   var sdkver = JSON.parse(sessionStorage.getItem('superBoardVersion'))
   console.warn('===sdkver', sdkver)
   // Replace the SDK path.

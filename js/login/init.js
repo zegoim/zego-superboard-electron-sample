@@ -144,7 +144,7 @@ function initExpressSDKConfig() {
         logLevel: 'error'
     });
     zegoSuperBoard.setLogConfig({
-        logLevel: 'error'
+        logLevel: 'debug'
     });
     // Disable debug.
     zegoEngine.setDebugVerbose(false);

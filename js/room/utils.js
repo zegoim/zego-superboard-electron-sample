@@ -270,7 +270,7 @@ $('#right-header').click(function (event) {
 $('.inivate-btn').click(function (event) {
     var inivateLink = location.origin + '?roomID=' + zegoConfig.roomID + '&env=' + zegoConfig.env;
     $('#showInviteLink').val(inivateLink);
-    $('#showRoomEnv').html(zegoConfig.env == 1 ? '中国内地' : '海外');
+    $('#showRoomEnv').html(zegoConfig.env == 1 ? jQuery.i18n.prop('config-env-1') : jQuery.i18n.prop('config-env-2'));
 });
 
 /**
@@ -306,5 +306,5 @@ $(document).click(function (event) {
 $('#copyLintBtn').click(function () {
     $('#showInviteLink').select();
     document.execCommand('copy');
-    roomUtils.toast('复制成功');
+    roomUtils.toast(jQuery.i18n.prop('Copied-successfully'));
 });

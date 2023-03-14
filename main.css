@@ -847,6 +847,9 @@ li {
 #right-main .cursor-offset, .layui-form-item .add-text-val {
   width: 100px;
 }
+#right-main .parent-size {
+  width: 90px;
+}
 #right-main .add-text {
   width: 40px;
 }

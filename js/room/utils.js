@@ -98,7 +98,11 @@ var roomUtils = {
         $('#whiteboardList').html('');
         if (zegoSuperBoardSubViewModelList.length == 0) {
             $str = '<option>Please Select</option>';
+            // 隐藏白板工具
+            $('#main-whiteboard-tool').css({ display: 'none' });
         }
+        // 隐藏白板工具
+        $('#main-whiteboard-tool').css({ display: 'block' });
         zegoSuperBoardSubViewModelList.forEach(function(element, index) {
             $str +=
                 '<option value="' +

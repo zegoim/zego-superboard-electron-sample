@@ -145,7 +145,6 @@ function logoutRoom() {
     flipToPageUtils.updateThumbListDomHandle([]);
     $('#user-list').html('');
     $('#memberNum').html('1');
-    $('#main-whiteboard-tool').css({'display': 'none'});
 }
 
 $('#login-btn').click(async function () {

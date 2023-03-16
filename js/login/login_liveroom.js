@@ -135,8 +135,6 @@ function logoutRoom() {
     roomUtils.toggleThumbBtnDomHandle(false);
     // 清空缩略图列表（room 内方法）
     flipToPageUtils.updateThumbListDomHandle([]);
-    // 隐藏白板工具
-    $('#main-whiteboard-tool').css({'display': 'none'});
 }
 
 // 绑定登录房间事件

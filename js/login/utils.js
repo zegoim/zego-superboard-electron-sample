@@ -232,5 +232,12 @@ var loginUtils = {
             // Added parameters
             return url + separator + key + '=' + value;
         }
+    },
+
+    /**
+    * @description: vConsole
+    */
+    openVConsole: function() {
+        const vConsole = new VConsole();
     }
 };

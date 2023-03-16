@@ -226,4 +226,3 @@ async function getSpeakers() {
 }
 
 init();
-loginUtils.openVConsole();

@@ -100,19 +100,20 @@ var roomUtils = {
             $str = '<option>Please Select</option>';
             // 隐藏白板工具
             $('#main-whiteboard-tool').css({ display: 'none' });
+        } else {
+            // 显示白板工具
+            $('#main-whiteboard-tool').css({ display: 'block' });
+            zegoSuperBoardSubViewModelList.forEach(function(element, index) {
+                $str +=
+                    '<option value="' +
+                    element.uniqueID +
+                    '" data-file-type="' +
+                    element.fileType +
+                    '">' +
+                    element.name +
+                    '</option>';
+            });
         }
-        // 隐藏白板工具
-        $('#main-whiteboard-tool').css({ display: 'block' });
-        zegoSuperBoardSubViewModelList.forEach(function(element, index) {
-            $str +=
-                '<option value="' +
-                element.uniqueID +
-                '" data-file-type="' +
-                element.fileType +
-                '">' +
-                element.name +
-                '</option>';
-        });
         $('#whiteboardList').html($str);
         // Re-render after the DOM of the whiteboard list drop-down list is updated.
         layui.form.render('select', 'customForm');

@@ -49,7 +49,7 @@ if (location.port === '4003') {
   <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本（修改版本，demo的SDK版本为2.11.0）</span>`);
 
     $('#login-page').append(
-        `<button type="button" class="btn btn-primary btn-xs" style="position: absolute;top: 10px;right:10px">刷新</button>`
+        `<button type="button" id="reload-btn" class="btn btn-primary btn-xs" style="position: absolute;top: 10px;right:10px">刷新</button>`
     );
     $('#reload-btn').click(() => {
         window.location.reload();

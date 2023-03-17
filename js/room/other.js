@@ -57,8 +57,10 @@ function redo() {
  */
 function snapshot() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    roomUtils.toast(`点击了 snapshot,${!!zegoSuperBoardSubView}`)
     zegoSuperBoardSubView &&
         zegoSuperBoardSubView.snapshot().then(function (data) {
+            roomUtils.toast(data)
             var link = document.createElement('a');
             link.href = data.image;
             link.download = zegoSuperBoardSubView.getModel().name + saveImg++ + '.png';

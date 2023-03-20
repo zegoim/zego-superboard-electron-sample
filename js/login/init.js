@@ -184,6 +184,8 @@ function initSuperBoardSDKConfig() {
  */
 async function init() {
     try {
+        // disabled safari scaling 
+        loginUtils.disableScaling();
         if (!checkConfig()) return;
 
         var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'));

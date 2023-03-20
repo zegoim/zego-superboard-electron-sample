@@ -98,14 +98,14 @@ const debounce = function(fn, delay = 500) {
     };
 };
 
-function reloadViewCurrnetPage(){
+function reloadViewCurrnetPage() {
     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
     zegoSuperBoardSubView.reloadView({ forceReload: true, reloadType: 1 });
 }
 
 // let debounceAlert = debounce((error) => alert('debounce' + JSON.stringify(error)), 1000);
 let debounceReloadView = debounce((type) => {
-    roomUtils.toast(type === 1 ? "reload current" : "reload all");
+    roomUtils.toast(type === 1 ? 'reload current' : 'reload all');
     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
     zegoSuperBoardSubView.reloadView({ forceReload: true, reloadType: type });
 }, 1000);
@@ -137,7 +137,7 @@ function onSuperBoardEventHandle() {
                 // console.error('canvas drawImage 失败')
                 debounceReloadView(1);
             }
-        }else{
+        } else {
             roomUtils.toast(errorData);
         }
     });
@@ -149,6 +149,13 @@ function onSuperBoardEventHandle() {
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
             // Update the page content.
             roomUtils.updateCurrPageDomHandle(page);
+            // 本端切换白板时，远端同时删除白板，layui select 的value会被清空，为空的情况下需要手动重新赋值
+            if (!layui.form.val("customForm").whiteboard) {
+                layui.form.val('customForm', {
+                    whiteboard: uniqueID
+                });
+                console.log('value4', layui.form.val("customForm").whiteboard);
+            }
         }
     });
 
@@ -204,7 +211,6 @@ function onSuperBoardEventHandle() {
  */
 async function createWhiteboardView() {
     $('#thumbModal').removeClass('active');
-    $('#main-whiteboard-tool').css({'display': 'block'});
     try {
         roomUtils.loading('Create a normal whiteboard');
 
@@ -222,6 +228,8 @@ async function createWhiteboardView() {
         // Query and update the whiteboard list on the page. After a whiteboard is created, the whiteboard SDK automatically renders it.
         querySuperBoardSubViewListHandle();
 
+        // Display the whiteboard tool.
+        roomUtils.toggleToolDomHandle(true);
         // Hide the whiteboard placeholder.
         roomUtils.togglePlaceholderDomHandle(false);
         // Hide the button for displaying the thumbnail dialog.
@@ -236,15 +244,13 @@ async function createWhiteboardView() {
  * @description: Create a file whiteboard.
  * @param {String} fileID File ID
  */
-async function createFileView(fileID,enableSizeReducedImages) {
+async function createFileView(fileID, enableSizeReducedImages) {
     $('#thumbModal').removeClass('active');
-    // Show whiteboard tool.
-    $('#main-whiteboard-tool').css({'display': 'block'});
     try {
         roomUtils.loading('Create document in whiteboard');
         const loadOption = {
             enableSizeReducedImages
-        }
+        };
         await zegoSuperBoard.createFileView({
             fileID,
             loadOption
@@ -257,6 +263,8 @@ async function createFileView(fileID,enableSizeReducedImages) {
         // Query and update the whiteboard list on the page. After a whiteboard is created, the whiteboard SDK automatically renders it.
         querySuperBoardSubViewListHandle();
 
+        // Display the whiteboard tool.
+        roomUtils.toggleToolDomHandle(true);
         // Hide the whiteboard placeholder.
         roomUtils.togglePlaceholderDomHandle(false);
         // Display or hide the button for displaying the thumbnail dialog.
@@ -366,6 +374,8 @@ async function querySuperBoardSubViewListHandle() {
         var fileType = model.fileType;
         result.uniqueID = uniqueID;
 
+        // Display the whiteboard tool.
+        roomUtils.toggleToolDomHandle(true); 
         // Hide the whiteboard placeholder.
         roomUtils.togglePlaceholderDomHandle(false);
         // Update the current whiteboard in the drop-down list.
@@ -392,6 +402,8 @@ async function querySuperBoardSubViewListHandle() {
             roomUtils.toggleSheetSelectDomHandle(false);
         }
     } else {
+        // Hide the whiteboard tool.
+        roomUtils.toggleToolDomHandle(false);
         // No mounted whiteboards. Display the whiteboard placeholder.
         roomUtils.togglePlaceholderDomHandle(true);
     }
@@ -441,7 +453,7 @@ async function switchWhitebopardHandle(uniqueID) {
         let status = await zegoSuperBoard
             .getSuperBoardView()
             .switchSuperBoardSubView(uniqueID, fileType === 4 ? sheetIndex || 0 : undefined);
-        if(status) {
+        if (status) {
             switchSpeaker();
         }
         // Hide the sheet drop-down list when the whiteboard is not an Excel file whiteboard.
@@ -521,7 +533,6 @@ function createFileViewByFileID(event) {
 
     // Close the File dialog.
     $('#filelistModal').modal('hide');
-    
 }
 
 /**
@@ -536,8 +547,6 @@ async function attachActiveView() {
     console.warn('SuperBoard Demo attachActiveView', result);
     // When you enter a room, the latest whiteboard is automatically mounted.
     if (result.uniqueID) {
-        // When there is a whiteboard，show whiteboard tool.
-        $('#main-whiteboard-tool').css({'display': 'block'});
         var superBoardView = zegoSuperBoard.getSuperBoardView();
         if (superBoardView) {
             try {
@@ -595,11 +604,11 @@ async function switchSpeaker() {
     if (!zegoSuperBoard) return;
     let value = document.getElementById('speaker').value;
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    if(value && zegoSuperBoardSubView){
-        let res = await zegoSuperBoardSubView.switchSpeaker(value).catch((err)=>{
-            console.log('atag switchSpeaker-catch', err)
+    if (value && zegoSuperBoardSubView) {
+        let res = await zegoSuperBoardSubView.switchSpeaker(value).catch((err) => {
+            console.log('atag switchSpeaker-catch', err);
         });
-        console.log('atag switchSpeaker', res)
+        console.log('atag switchSpeaker', res);
     }
 }
 

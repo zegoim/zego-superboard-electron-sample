@@ -88,6 +88,21 @@ var roomUtils = {
     },
 
     /**
+     * @description: Display or hide the whiteboard tool on the page.
+     * @description: If a whiteboard exists in the room, the whiteboard tool is displayed; otherwise, a placeholder is displayed.
+     * @param {Boolean} type true: display; false: hide.
+     */
+    toggleToolDomHandle: function(type){
+        if (type) {
+            // 显示白板工具
+            $('#main-whiteboard-tool').css({ display: 'block' });
+        } else {
+            // 隐藏白板工具
+            $('#main-whiteboard-tool').css({ display: 'none' });
+        }
+    },
+
+    /**
      * @description: Update the whiteboard list drop-down list at the top of the page.
      * @description: A drop-down list of the third-party UI plug-in layui is used here. You need to call layui to re-render after the page DOM is updated.
      * @description: You can handle it as required.
@@ -98,22 +113,17 @@ var roomUtils = {
         $('#whiteboardList').html('');
         if (zegoSuperBoardSubViewModelList.length == 0) {
             $str = '<option>Please Select</option>';
-            // 隐藏白板工具
-            $('#main-whiteboard-tool').css({ display: 'none' });
-        } else {
-            // 显示白板工具
-            $('#main-whiteboard-tool').css({ display: 'block' });
-            zegoSuperBoardSubViewModelList.forEach(function(element, index) {
-                $str +=
-                    '<option value="' +
-                    element.uniqueID +
-                    '" data-file-type="' +
-                    element.fileType +
-                    '">' +
-                    element.name +
-                    '</option>';
-            });
         }
+        zegoSuperBoardSubViewModelList.forEach(function(element, index) {
+            $str +=
+                '<option value="' +
+                element.uniqueID +
+                '" data-file-type="' +
+                element.fileType +
+                '">' +
+                element.name +
+                '</option>';
+        });
         $('#whiteboardList').html($str);
         // Re-render after the DOM of the whiteboard list drop-down list is updated.
         layui.form.render('select', 'customForm');

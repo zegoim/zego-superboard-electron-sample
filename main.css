@@ -1242,7 +1242,8 @@ li {
     font-size: 12px;
   }
   #right-main {
-    padding-top: 10px;
+    padding-top: 0;
+    overflow-y: scroll;
   }
   #right-main .layui-form-item {
     margin-bottom: 8px;

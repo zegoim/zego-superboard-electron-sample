@@ -154,7 +154,6 @@ function onSuperBoardEventHandle() {
                 layui.form.val('customForm', {
                     whiteboard: uniqueID
                 });
-                console.log('value4', layui.form.val("customForm").whiteboard);
             }
         }
     });

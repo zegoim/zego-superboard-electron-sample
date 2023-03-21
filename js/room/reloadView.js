@@ -12,6 +12,8 @@
 // parentDomID Container ID
 
 var resizeTicking = false; // Adaptive execution switch, here is a delay of 1000 ms execution
+// 储存当前窗口宽度
+let windowWidth = window.innerWidth;
 // Adaptive whiteboard size: Listen for the page resize event.
 window.addEventListener('resize', onResizeHandle);
 
@@ -19,7 +21,9 @@ window.addEventListener('resize', onResizeHandle);
  * @description: resize callback
  */
 function onResizeHandle() {
-    if (!resizeTicking) {
+    // H5 手势下拉/窗口滚动也会触发 resize 方法，加上实际浏览器宽度变化对比来执行 reloadView，应该不影响web端，影响的话可以加上 isH5() 的判断
+    if (!resizeTicking && window.innerWidth !== windowWidth) {
+        windowWidth = window.innerWidth;
         resizeTicking = true;
         setTimeout(function () {
             // After the container size is automatically changed, the whiteboard view is automatically re-loaded.

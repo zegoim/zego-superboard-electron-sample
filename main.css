@@ -855,9 +855,11 @@ li {
   width: 40px;
 }
 #right-main .h5-file-size {
+  z-index: 1;
   width: 75px;
 }
 #right-main .h5-page-count {
+  z-index: 1;
   width: 90px;
   margin-bottom: 10px;
 }

@@ -75,7 +75,7 @@ function supportRequestFullscreen(dom) {
     } else if (dom.mozRequestFullScreen) {
         return dom.mozRequestFullScreen();
     } else {
-        return dom.msRequestFullscreen();
+        return false;
     }
 }
 
@@ -130,13 +130,17 @@ function customReloadViewHandle() {
  * @return {*}
  */
 function fullScreenHandle() {
-    supportRequestFullscreen(document.getElementById(parentDomID))
+    if (supportRequestFullscreen(document.getElementById(parentDomID))) {
+        supportRequestFullscreen(document.getElementById(parentDomID))
         .then(function () {
             roomUtils.toast('full screen');
         })
         .catch(function () {
             roomUtils.toast('The current browser does not support full screen');
         });
+    } else {
+        roomUtils.toast('The current browser does not support full screen');
+    }
 }
 
 /**

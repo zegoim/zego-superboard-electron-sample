@@ -1317,9 +1317,9 @@ li {
 }
 @media only screen and (max-height: 600px) {
   #main-whiteboard-tool {
-    top: 10px;
-    max-height: 300px;
+    top: 5px;
+    /* max-height: 270px; */
     transform: none;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
   }
 }

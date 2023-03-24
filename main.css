@@ -1212,13 +1212,19 @@ li {
   }
   /* h5端隐藏右侧调试面板 */
   #room-page-right {
-    display: none;
     z-index: 12;
     position: fixed;
     right: -260px;
     width: 260px;
     height: 100%;
     overflow-y: scroll;
+    transition: right 0.5s;
+    -moz-transition: right 0.5s; /* Firefox 4 */
+    -webkit-transition: right 0.5s; /* Safari 和 Chrome */
+    -o-transition: right 0.5s; /* Opera */
+  }
+  #room-page-right.active {
+    right: 0;
   }
   #left-footer {
     margin: 5px 0;

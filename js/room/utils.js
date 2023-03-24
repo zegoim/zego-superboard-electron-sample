@@ -327,12 +327,11 @@ $('#copyLintBtn').click(function() {
  * @description: debug panel
  */
 $('.debug-btn').click(function() {
-    if ($('#room-page-right').css('display') === 'none') {
-        $('#room-page-right').css('display', 'flex');
-        $('#room-page-right').animate({ right: '0px' }, 'fast');
+    if ($('#room-page-right-mask').css('display') === 'none') {
+        $('#room-page-right').addClass('active');
         $('#room-page-right-mask').css('display', 'block');
     } else {
-        $('#room-page-right').css({ display: 'none', right: '-260px' });
+        $('#room-page-right').removeClass('active');
         $('#room-page-right-mask').css('display', 'none');
     }
 });
@@ -341,7 +340,7 @@ $('.debug-btn').click(function() {
  * @description: 调试面板遮罩
  */
 $('#room-page-right-mask').click(function() {
-    $('#room-page-right').css({ display: 'none', right: '-260px' });
+    $('#room-page-right').removeClass('active');
     $('#room-page-right-mask').css('display', 'none');
 });
 

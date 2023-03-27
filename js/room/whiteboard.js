@@ -142,9 +142,41 @@ function onSuperBoardEventHandle() {
         }
     });
 
+    var mediaIdx = {};
+    var confirmIndex;
+    var videoCT;
+    zegoSuperBoard.on('onMediaPermission', async function(ele) {
+        console.log('atag onMediaPermission', ele)
+        videoCT = ele.ct;
+        var zegoSuperBoardSubView = zegoSuperBoard && zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+        if(zegoSuperBoard && zegoSuperBoardSubView && ele.id){
+            mediaIdx[`${ele.id}-${ele.type}`]? mediaIdx[`${ele.id}-${ele.type}`]++:mediaIdx[`${ele.id}-${ele.type}`] = 1;
+            if(mediaIdx[`${ele.id}-${ele.type}`] > 1) return;
+            console.log('atag onMediaPermission-demo', ele)
+            confirmIndex = layui.layer.confirm(`由于该浏览器限制播放${ele.type === 'video'?'视频':'音频'}，请点击播放`, {icon: 3, title:'提示',btn: ['播放'],
+                }, function(index){
+                        layui.layer.close(index);
+                        console.log('atag onMediaPermission-1', videoCT)
+                        var params = {id:ele.id};
+                        if(ele.ct){
+                            params.ct = videoCT || ele.ct;
+                        }
+                        zegoSuperBoardSubView.playMedia(params).then(function(res){
+                            console.log('atag onMediaPermission-res', res)
+                            videoCT = 0;
+                        }).catch(function(err){
+                            console.log('atag onMediaPermission-err', err)
+                            videoCT = 0;
+                        })
+                });
+        }
+    })
+
     // Listen for whiteboard page turning and scrolling.
     zegoSuperBoard.on('superBoardSubViewScrollChanged', function(uniqueID, page, step) {
         console.warn('SuperBoard Demo superBoardSubViewScrollChanged', ...arguments);
+        if(confirmIndex) layui.layer.close(confirmIndex);
+        var mediaIdx = {};
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
             // Update the page content.
@@ -167,6 +199,7 @@ function onSuperBoardEventHandle() {
 
     // Listen for remote whiteboard destroying.
     zegoSuperBoard.on('remoteSuperBoardSubViewRemoved', function() {
+        if(confirmIndex) layui.layer.close(confirmIndex);
         console.warn('SuperBoard Demo remoteSuperBoardSubViewRemoved', ...arguments);
         // Query and update the whiteboard list on the page. The destroyed whiteboard is also destroyed in the SDK.
         querySuperBoardSubViewListHandle();
@@ -174,6 +207,7 @@ function onSuperBoardEventHandle() {
 
     // Listen for remote whiteboard switching.
     zegoSuperBoard.on('remoteSuperBoardSubViewSwitched', function() {
+        if(confirmIndex) layui.layer.close(confirmIndex);
         console.warn('SuperBoard Demo remoteSuperBoardSubViewSwitched', ...arguments);
         // Query and update the whiteboard list on the page. After a whiteboard switching, the SDK automatically switches to the new whiteboard.
         querySuperBoardSubViewListHandle();

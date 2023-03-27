@@ -57,17 +57,13 @@ function redo() {
  */
 function snapshot() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
-    roomUtils.toast(`点击了 snapshot,${!!zegoSuperBoardSubView}`)
     zegoSuperBoardSubView &&
         zegoSuperBoardSubView.snapshot().then(function (data) {
             roomUtils.toast(data)
             var link = document.createElement('a');
             link.href = data.image;
-            roomUtils.toast(1)
             link.download = zegoSuperBoardSubView.getModel().name + saveImg++ + '.png';
-            roomUtils.toast(link.download)
             link.click();
-            roomUtils.toast(2)
         });
 }
 

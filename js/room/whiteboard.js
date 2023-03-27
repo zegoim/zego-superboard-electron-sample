@@ -146,11 +146,13 @@ function onSuperBoardEventHandle() {
     zegoSuperBoard.on('superBoardSubViewScrollChanged', function(uniqueID, page, step) {
         console.warn('SuperBoard Demo superBoardSubViewScrollChanged', ...arguments);
         var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
+        console.log('===zegoSuperBoardSubView', zegoSuperBoardSubView.getModel().uniqueID, zegoSuperBoardSubView);
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
             // Update the page content.
             roomUtils.updateCurrPageDomHandle(page);
             // 本端切换白板时，远端同时删除白板，layui select 的value会被清空，为空的情况下需要手动重新赋值
-            if (!layui.form.val("customForm").whiteboard) {
+            // 本端切换白板时，远端同时切换其他白板，收到 Switched 回调赋值白板ID，与当前切换白板不一致，需要重新赋值
+            if (layui.form.val("customForm").whiteboard !== uniqueID) {
                 layui.form.val('customForm', {
                     whiteboard: uniqueID
                 });
@@ -364,6 +366,7 @@ async function querySuperBoardSubViewListHandle() {
     await updateWhiteboardList();
     // Obtain the currently mounted whiteboard.
     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
+    console.log('===querySuperBoardSubViewListHandle', zegoSuperBoardSubView)
     if (zegoSuperBoardSubView) {
         // Currently, a mounted whiteboard exists.
         var model = zegoSuperBoardSubView.getModel();
@@ -539,6 +542,12 @@ function createFileViewByFileID(event) {
  * @description: SuperBoardSubView needs to be mounted by the business layer and the internal SDK does not actively mount it.
  */
 async function attachActiveView() {
+    // 设置白板容器为16:9
+    var dom = document.getElementById(parentDomID);
+    const width = dom.clientWidth + 2;
+    const height = width / (16 / 9);
+    dom.style.cssText += `width:100%; height: ${height}px`;
+
     console.warn('SuperBoard Demo parent', $('#' + parentDomID)[0].clientWidth, $('#' + parentDomID)[0].clientHeight);
 
     // Query the current whiteboard list.

@@ -85,11 +85,14 @@ function supportRequestFullscreen(dom) {
 function updateSizeDomHandle() {
     // Obtain the width and height of the current container.
     var dom = document.getElementById(parentDomID);
+    const width = dom.clientWidth + 2;
+    const height = width / (16 / 9);
+    
+    dom.style.cssText += `width:100%; height: ${height}px`;
 
-    dom.style.cssText += 'width:100%;height:100%;';
-
-    var width = dom.clientWidth + 2; // + board
-    var height = dom.clientHeight + 2; // + board
+    // dom.style.cssText += 'width:100%;height:100%;';
+    // var width = dom.clientWidth + 2; // + board
+    // var height = dom.clientHeight + 2; // + board
 
     // Update the width and height displayed on the current page.
     $('#parentWidthHeight').html(width + ' * ' + height);

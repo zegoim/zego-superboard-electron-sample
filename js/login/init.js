@@ -148,6 +148,8 @@ function initExpressSDKConfig() {
     });
     // Disable debug.
     zegoEngine.setDebugVerbose(false);
+    zegoSuperBoard.enableSyncScale(true);
+    zegoSuperBoard.enableResponseScale(true);
 }
 
 /**

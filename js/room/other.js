@@ -57,6 +57,7 @@ function redo() {
  */
 function snapshot() {
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
+    roomUtils.toast('snapshot!!',!!zegoSuperBoardSubView)
     zegoSuperBoardSubView &&
         zegoSuperBoardSubView.snapshot().then(function (data) {
             roomUtils.toast(data)

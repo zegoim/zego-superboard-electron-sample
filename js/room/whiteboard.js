@@ -150,14 +150,16 @@ function onSuperBoardEventHandle() {
         if (zegoSuperBoardSubView && zegoSuperBoardSubView.getModel().uniqueID == uniqueID) {
             // Update the page content.
             roomUtils.updateCurrPageDomHandle(page);
-            // 本端切换白板时，远端同时删除白板，layui select 的value会被清空，为空的情况下需要手动重新赋值
-            // 本端切换白板时，远端同时切换其他白板，收到 Switched 回调赋值白板ID，与当前切换白板不一致，需要重新赋值
-            if (layui.form.val("customForm").whiteboard !== uniqueID) {
-                layui.form.val('customForm', {
-                    whiteboard: uniqueID
-                });
-            }
         }
+        // 本端切换白板时，远端同时删除白板，layui select 的value会被清空，为空的情况下需要手动重新赋值
+        // 本端切换白板时，远端同时切换其他白板，收到 Switched 回调赋值白板ID，与当前切换白板不一致，需要重新赋值
+        console.log('===选项框数据1',layui.form.val("customForm").whiteboard, uniqueID)
+        if (layui.form.val("customForm").whiteboard !== uniqueID) {
+            layui.form.val('customForm', {
+                whiteboard: uniqueID
+            });
+        }
+        console.log('===选项框数据2',layui.form.val("customForm").whiteboard)
     });
 
     // Listen for remote whiteboard zooming.

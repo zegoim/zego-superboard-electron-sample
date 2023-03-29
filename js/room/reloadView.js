@@ -87,8 +87,12 @@ function updateSizeDomHandle() {
     var dom = document.getElementById(parentDomID);
     const width = dom.clientWidth + 2;
     const height = width / (16 / 9);
-    
-    dom.style.cssText += `width:100%; height: ${height}px`;
+   
+    // Obtain the custom size. Only the obtaining method is displayed here. You can obtain it as required.
+    const width_set = +layui.form.val('form2').parentWidth;
+    const height_set = +layui.form.val('form2').parentHeight;
+
+    dom.style.cssText += `width: ${width_set ? width+ 'px' : '100%'};height: ${height_set? height_set : height}px`;
 
     // dom.style.cssText += 'width:100%;height:100%;';
     // var width = dom.clientWidth + 2; // + board

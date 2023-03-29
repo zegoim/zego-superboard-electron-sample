@@ -235,6 +235,7 @@ li {
 }
 
 #left-header {
+  z-index: 1;
   display: flex;
   min-height: 40px;
   align-items: center;
@@ -712,6 +713,7 @@ li {
 }
 
 #left-footer {
+  z-index: 1;
   height: 70px;
   margin: 25px 0;
   display: flex;

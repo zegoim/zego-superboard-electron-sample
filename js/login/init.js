@@ -204,6 +204,8 @@ async function init() {
             loginUtils.togglePageDomHandle(true);
 
             attachActiveView();
+            zegoSuperBoard.enableSyncScale(true);
+            zegoSuperBoard.enableResponseScale(true);
 
         } else {
             loginUtils.togglePageDomHandle(false);

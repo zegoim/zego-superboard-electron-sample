@@ -29,21 +29,20 @@ var uploadFileUtils = {
      * @param {Object} fileListData File list data
      * @param {String} superBoardEnv Current environment of the ZegoSuperBoard SDK
      */
-    updateFileListDomHandle: function (fileListData, superBoardEnv) {
+    updateFileListDomHandle: function(fileListData, superBoardEnv) {
         var fileListEnv;
         switch (superBoardEnv) {
             case 'beta':
-                fileListEnv = 'docs_test'
+                fileListEnv = 'docs_test';
                 break;
             case 'alpha':
-                fileListEnv = 'docs_alpha'
+                fileListEnv = 'docs_alpha';
                 break;
             default:
-                fileListEnv = 'docs_prod'
+                fileListEnv = 'docs_prod';
                 break;
         }
-        var fileList =
-            fileListData[fileListEnv];
+        var fileList = fileListData[fileListEnv];
         console.log('mytag  fileListData[fileListEnv]', fileListEnv);
         var $fileListCon = $('#file-list');
         // Clear the original file list.
@@ -59,12 +58,13 @@ var uploadFileUtils = {
                 '">' +
                 (element.isDynamic ? 'dynamic' : element.isH5 ? 'H5' : 'static') +
                 '</div>' +
-                element.name +'（'+ element.id +'）'+
+                element.name +
+                (isH5() ? '' : `(${element.id})`) +
                 '</li>';
         });
         $fileListCon.html($str);
     },
-    closeFileDomHandle: function () {
+    closeFileDomHandle: function() {
         // Close the File List dialog.
         $('#filelistModal').modal('hide');
         // Close the drop-down list for static or animated file uploading.
@@ -75,12 +75,12 @@ var uploadFileUtils = {
      * @description: Only the sample code for obtaining fileList is displayed here. You can handle it as required.
      * @param {String} filelistUrl File list URL
      */
-    getFilelist: function (filelistUrl = './fileList.json') {
-        return new Promise(function (resolve) {
+    getFilelist: function(filelistUrl = './fileList.json') {
+        return new Promise(function(resolve) {
             $.get(
                 filelistUrl,
                 null,
-                function (fileList) {
+                function(fileList) {
                     if (fileList) {
                         resolve(fileList);
                     }
@@ -100,19 +100,24 @@ function uploadFile(renderType, file, enableSizeReducedImages) {
     if (!file) return roomUtils.toast('Please select a file first');
     //Type of rendering mode after the file is uploaded and transcoded. If the business of iOS, Web, Windows, Mac, or mini program is involved, you are advised to use the VectorAndIMG mode.
     const option = {
-        renderImgType:1,
+        renderImgType: 1,
         enableSizeReducedImages
-    }
+    };
     zegoSuperBoard
-        .uploadFile(file, renderType, function (res) {
-            roomUtils.toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
-        },option)
-        .then(function (fileID) {
+        .uploadFile(
+            file,
+            renderType,
+            function(res) {
+                roomUtils.toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
+            },
+            option
+        )
+        .then(function(fileID) {
             uploadFileUtils.closeFileDomHandle();
 
             // A file whiteboard is created immediately after the upload. You can handle it as required.
             // The method of creating a file whiteboard is shown in js/room/whiteboard.js.
-            createFileView(fileID,enableSizeReducedImages);
+            createFileView(fileID, enableSizeReducedImages);
         })
         .catch(roomUtils.toast);
 }
@@ -130,14 +135,14 @@ layui.dropdown.render({
  * @description: Click Upload File in the File List dialog to show the drop-down list.
  * @description: Only the dialog is displayed here. You can handle it as required.
  */
- layui.dropdown.render({
+layui.dropdown.render({
     elem: '#openPopover2',
     content: $('#uploadPopoverContent2').html()
 });
 /**
  * @description: Click File at the bottom of the page to query the current file list and update the page.
  */
-$('.share-item.file').click(async function () {
+$('.share-item.file').click(async function() {
     // Obtain the file list.
     var fileListData = await uploadFileUtils.getFilelist();
 
@@ -148,9 +153,9 @@ $('.share-item.file').click(async function () {
 /**
  * @description: Click the file sharing icon in the middle of the page to query the current file list and update the page.
  */
-$('#shareFile').click(async function () {
+$('#shareFile').click(async function() {
     // Obtain the file list.
-    var fileListData = await uploadFileUtils.getFilelist(); 
+    var fileListData = await uploadFileUtils.getFilelist();
 
     // Update the files in the File List dialog on the page.
     uploadFileUtils.updateFileListDomHandle(fileListData, zegoConfig.superBoardEnv);

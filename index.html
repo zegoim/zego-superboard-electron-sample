@@ -153,7 +153,6 @@
   <div id="login-page">
     <!-- SDK Settings Icon -->
     <span id="sdk-setting" data-toggle="modal" data-target="#settingModal" data-locale="setting"> </span>
-
     <!-- Login List -->
     <div id="login-form">
       <div class="login-form-left hidden-xs hidden-sm">
@@ -188,17 +187,19 @@
     <div id="room-page-left">
       <div id="left-header">
         <!-- Room ID -->
-        <span class="room-id"><span data-locale="RoomID"> </span> :<span id="showRoomID"></span></span>
+        <div class="room-id">
+          <span data-locale="RoomID"> </span> :<span id="showRoomID"></span>
+        </div>
         <form id="customForm" class="layui-form" name="customForm" action="" lay-filter="customForm">
           <!-- Whiteboard List -->
           <div class="layui-form-item">
-            <div class="layui-input-inline">
+            <div class="layui-input-inline whiteboard-list">
               <select name="whiteboard" id="whiteboardList" lay-filter="whiteboardList"> </select>
             </div>
           </div>
           <!-- Excel multiple whiteboards -->
           <div class="layui-form-item" id="sheetListItem" style="display:none">
-            <div class="layui-input-inline">
+            <div class="layui-input-inline sheet-list">
               <select name="sheet" id="sheetList" lay-filter="sheetList"> </select>
             </div>
           </div>
@@ -294,7 +295,7 @@
           <ul class="tools-list">
             <li class="tool-item disabled clickType" data-toggle="tooltip" data-placement="right" title="Click"
               onclick="setToolType(256,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <defs>
                     <style>
@@ -318,31 +319,34 @@
                   <rect class="hover-fill" fill="#b0b3ba" x="11.65" y="2.32" width="1.6" height="3" rx="0.8"
                     transform="translate(6.35 -7.68) rotate(45)"></rect>
                 </svg>
+                <div class="tool-tip" data-locale="click"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Select"
               onclick="setToolType(32,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb"
                     d="M3,3.55,7,16.4a.86.86,0,0,0,1.62.05l1.81-4.82a2,2,0,0,1,1.17-1.17l4.82-1.81a.85.85,0,0,0,0-1.61L3.55,3A.42.42,0,0,0,3,3.55Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="select"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Drag"
               onclick="setToolType(null,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb" fill-rule="evenodd"
                     d="M11.2,9.6V3.13a1.12,1.12,0,0,0-1-1.12A1.09,1.09,0,0,0,9,3.1V9.6a.4.4,0,0,1-.4.4h0a.4.4,0,0,1-.4-.4v-5a1.12,1.12,0,0,0-1-1.12A1.09,1.09,0,0,0,6,4.6v5.73a.26.26,0,0,1-.48.12l-.46-.86a1.1,1.1,0,0,0-1.58-.4,1.13,1.13,0,0,0-.35,1.46l.75,1.41.06.1.26.49h0c.31.58.73,1.4,1.21,2.22A6.65,6.65,0,0,0,11,18c7,0,6.2-7.1,6.2-7.1V6.13a1.12,1.12,0,0,0-1-1.12A1.09,1.09,0,0,0,15,6.1V9.6a.4.4,0,0,1-.4.4h0a.4.4,0,0,1-.4-.4V4.13a1.12,1.12,0,0,0-1-1.12A1.09,1.09,0,0,0,12,4.1V9.6a.4.4,0,0,1-.4.4h0A.4.4,0,0,1,11.2,9.6Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="drag"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Laser"
               onclick="setToolType(128,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <g id="Layer_2" data-name="Layer 2">
                     <g id="Layer_1-2" data-name="Layer 1">
@@ -364,11 +368,12 @@
                     </g>
                   </g>
                 </svg>
+                <div class="tool-tip" data-locale="laser"></div>
               </div>
             </li>
             <li class="tool-item active pen" data-toggle="tooltip" data-placement="right" title="Pen"
               onclick="setToolType(1,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb"
                     d="M14.71,3.29h0a3,3,0,0,1,3,3v1a0,0,0,0,1,0,0h-6a0,0,0,0,1,0,0v-1a3,3,0,0,1,3-3Z"
@@ -377,6 +382,7 @@
                     d="M7.13,16.5,3.7,17A.61.61,0,0,1,3,16.31l.49-3.43a2.29,2.29,0,0,1,.62-1.25l6.56-6.55,4.24,4.24L8.36,15.88A2.23,2.23,0,0,1,7.13,16.5Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="pen"></div>
               </div>
               <div class="pencil-text-setting pen">
                 <div class="common-box pencil-box">
@@ -533,13 +539,14 @@
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Text"
               onclick="setToolType(2,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="17 5 3 5 4 3 17 3 17 5">
                   </polygon>
                   <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="9 5 6 17 10 17 12 5 9 5">
                   </polygon>
                 </svg>
+                <div class="tool-tip" data-locale="text"></div>
               </div>
               <div class="pencil-text-setting text">
                 <div class="common-box text-box">
@@ -713,7 +720,7 @@
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Graphics"
               onclick="setToolType(undefined,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <defs>
                     <style>
@@ -729,6 +736,7 @@
                   </path>
                   <circle class="hover-fill" fill="#b1b4bb" cx="13.5" cy="12.5" r="4.5"></circle>
                 </svg>
+                <div class="tool-tip" data-locale="graphics"></div>
               </div>
               <div class="pencil-text-setting graph">
                 <div class="common-box pencil-box">
@@ -912,42 +920,48 @@
                 </div>
               </div>
             </li>
-            <li class="tool-item " data-toggle="tooltip" data-placement="right" title="Custom graphics"
+            <li class="tool-item tip-wrap" data-toggle="tooltip" data-placement="right" title="Custom graphics"
               onclick="setToolType(512,event)">
-              <div class="custom-graph-icon"></div>
+              <div class="tool-content">
+                <div class="custom-graph-icon"></div>
+                <div class="tool-tip" data-locale="custom-graphics"></div>
+              </div>
               <ul class="custom-graph-setting"></ul>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Eraser"
               onclick="setToolType(64,event)">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb" fill-rule="evenodd"
                     d="M2.35,12.25l5.4,5.4a1.18,1.18,0,0,0,1.67,0l8.23-8.23a1.18,1.18,0,0,0,0-1.67l-5.4-5.4a1.18,1.18,0,0,0-1.67,0L2.35,10.58A1.18,1.18,0,0,0,2.35,12.25Zm4.26-3.1a.8.8,0,0,1,1.13,0l3.11,3.11a.8.8,0,0,1,0,1.13l-1.7,1.7a.8.8,0,0,1-1.13,0L4.91,12a.8.8,0,0,1,0-1.13Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="eraser"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Clear" onclick="clearAllPage()">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <path class="hover-fill" fill="#b1b4bb" fill-rule="evenodd"
                     d="M17,9V7a1,1,0,0,0-1-1H12V4a1,1,0,0,0-1-1H9A1,1,0,0,0,8,4V6H4A1,1,0,0,0,3,7V9a1,1,0,0,0,1,1l-.84,5.86a1,1,0,0,0,1,1.14h11.7a1,1,0,0,0,1-1.14L16,10A1,1,0,0,0,17,9ZM7.8,14.7a.8.8,0,0,1-1.6,0V12.8a.8.8,0,1,1,1.6,0Zm3,0a.8.8,0,0,1-1.6,0V11.3a.8.8,0,0,1,1.6,0Zm3,0a.8.8,0,0,1-1.6,0V12.8a.8.8,0,0,1,1.6,0Z">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="clear"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Undo" onclick="undo()">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="8 3 8 11 2 7 8 3"></polygon>
                   <path class="hover-stroke" fill-rule="evenodd" fill="none" stroke="#b1b4bb" stroke-miterlimit="10"
                     stroke-width="2.8px" d="M7.5,7h4.75a4.25,4.25,0,0,1,4.25,4.25h0a4.25,4.25,0,0,1-4.25,4.25H11">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="undo"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Redo" onclick="redo()">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <polygon class="hover-fill" fill="#b1b4bb" fill-rule="evenodd" points="11.9 3 11.9 11 17.9 7 11.9 3">
                   </polygon>
@@ -955,10 +969,11 @@
                     stroke-width="2.8px" d="M12.4,7H7.65A4.25,4.25,0,0,0,3.4,11.25h0A4.25,4.25,0,0,0,7.65,15.5H8.9">
                   </path>
                 </svg>
+                <div class="tool-tip" data-locale="redo"></div>
               </div>
             </li>
             <li class="tool-item" data-toggle="tooltip" data-placement="right" title="Snapshot" onclick="snapshot()">
-              <div>
+              <div class="tool-content">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                   <defs>
                     <style>
@@ -979,6 +994,7 @@
                   <path class="hover-fill" fill="#b1b4bb" fill-rule="evenodd"
                     d="M6,3H9A0,0,0,0,1,9,3V5.4a.6.6,0,0,1-.6.6H6.6A.6.6,0,0,1,6,5.4V3A0,0,0,0,1,6,3Z"></path>
                 </svg>
+                <div class="tool-tip" data-locale="snapshot"></div>
               </div>
             </li>
           </ul>
@@ -1070,6 +1086,28 @@
           <div class="member-name" data-locale="member"></div>
           <div id="memberNum">1</div>
         </div>
+        <!-- Debug panel-->
+        <div class="debug-btn">
+          <div class="debug-icon">
+            <svg
+              width="26px"
+              height="30px"
+              viewBox="0 0 26 19"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <g id="Layer_1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                <g id="Layer_2" fill="#585C62">
+                  <rect id="rect-1" x="0" y="0" width="26" height="2.5" rx="1.25"></rect>
+                  <rect id="rect-2" x="0" y="8" width="26" height="2.5" rx="1.25"></rect>
+                  <rect id="rect-3" x="0" y="16" width="26" height="2.5" rx="1.25"></rect>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="debug-name" data-locale="debug-panel"></div>
+        </div>
         <!-- Leave Room -->
         <button id="logout-btn">
           <span class="button-icon">
@@ -1086,6 +1124,7 @@
         </button>
       </div>
     </div>
+    <div id="room-page-right-mask"></div>
     <div id="room-page-right">
       <!-- Draw Whiteboard File -->
       <div id="right-header">
@@ -1124,12 +1163,12 @@
             <!-- Custom Graph -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Custom-Graph"></label>
-              <div class="layui-input-inline" style="margin-left: 10px;">
-                <input name="customGraphUrl" type="text" placeholder="image URL" class="layui-input" />
+              <div class="layui-input-inline first-inline image-url">
+                <input name="customGraphUrl" type="text" placeholder="image URL" class="layui-input"/>
               </div>
               <button id="addImageByURLBtn1" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
                 data-locale="submit">
-
+                
               </button>
             </div>
             <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
@@ -1159,7 +1198,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label"></label>
-              <div class="layui-input-inline" style="margin-left: 10px;">
+              <div class="layui-input-inline first-inline image-url">
                 <input name="customBgUrl" type="text" placeholder="Image URL" class="layui-input" />
               </div>
               <button id="setBackgroundImageByURLBtn" type="button" class="layui-btn layui-btn-sm"
@@ -1187,7 +1226,6 @@
               <div class="layui-input-block">
                 <button id="clearBackgroundImageBtn" type="button" class="layui-btn layui-btn-sm"
                   data-locale="clearBackgroundImage">
-
                 </button>
               </div>
             </div>
@@ -1199,7 +1237,7 @@
             <!-- Network Image -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Network-Image"></label>
-              <div class="layui-input-inline" style="margin-left: 10px;">
+              <div class="layui-input-inline first-inline image-url">
                 <input name="customImageUrl" type="text" placeholder="image URL" class="layui-input" />
               </div>
               <button id="addImageByURLBtn2" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1240,11 +1278,11 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="set-offset"></label>
-              <div class="layui-input-inline" style="width: 100px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline cursor-offset">
                 <input id="cursorOffsetX" name="cursorOffsetX" type="text" placeholder="X" value="0" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
-              <div class="layui-input-inline" style="width: 100px; margin-left: 0">
+              <div class="layui-input-inline cursor-offset">
                 <input id="cursorOffsetY" name="cursorOffsetY" type="text" placeholder="Y" value="0" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
@@ -1255,11 +1293,11 @@
                 <input id="addtext_val" name="addtext_val" type="text" placeholder="Add Text" value="Test text" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
-              <div class="layui-input-inline" style="width: 50px;margin-left: 10px;">
+              <div class="layui-input-inline add-text">
                 <input id="addtext_x" name="addtext_x" type="text" placeholder="X" value="0" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
-              <div class="layui-input-inline" style="width: 50px; margin-left: 0">
+              <div class="layui-input-inline add-text">
                 <input id="addtext_y" name="addtext_y" type="text" placeholder="Y" value="0" class="layui-input"
                   oninput="value=value.replace('-','')" />
               </div>
@@ -1275,7 +1313,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label"></label>
-              <div class="layui-input-inline" style="margin-left: 10px;">
+              <div class="layui-input-inline first-inline image-url">
                 <input id="inputCustomCursorUrl" name="inputCustomCursorUrl" type="text" placeholder="image URL"
                   class="layui-input" />
               </div>
@@ -1308,7 +1346,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Set-render-delay"></label>
-              <div class="layui-input-inline" style="width: 146px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline render-time">
                 <input name="deferredRenderingTime" type="text" placeholder="ms" class="layui-input" />
               </div>
               <button id="setDeferredRenderingTimeBtn" type="button" class="layui-btn layui-btn-sm"
@@ -1331,7 +1369,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Jump-specified-page"></label>
-              <div class="layui-input-inline" style="width: 146px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline target-page">
                 <input name="targetPage" type="text" class="layui-input" />
               </div>
               <button id="flipToPageBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1411,10 +1449,10 @@
             <!-- Width and Height Setting -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="set-container-size"></label>
-              <div class="layui-input-inline" style="width: 100px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline parent-size">
                 <input name="parentWidth" type="text" placeholder="width" class="layui-input" />
               </div>
-              <div class="layui-input-inline" style="width: 100px; margin-left: 0">
+              <div class="layui-input-inline parent-size">
                 <input name="parentHeight" type="text" placeholder="height" class="layui-input" />
               </div>
               <button id="setParentSizeBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1430,14 +1468,14 @@
                   data-locale="Full-Screen"></button>
               </div>
             </div>
-            <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
+            <!-- <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div> -->
             <!-- token -->
             <!-- <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px">
               token 更新
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">有效期</label>
-              <div class="layui-input-inline" style="width: 146px;margin-left: 10px;">
+              <div class="layui-input-inline first-inline" style="width: 146px;">
                 <input name="token" type="text" placeholder="token有效期（s）" class="layui-input" id="newToken" />
               </div>
               <button id="getNewTokenBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px">
@@ -1459,16 +1497,16 @@
             <!-- H5 File -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="H5-File"></label>
-              <div class="layui-input-inline" style="width: 86px;margin-left: 10px;z-index:1">
+              <div class="layui-input-inline first-inline h5-file-size">
                 <input name="h5Width" type="text" placeholder="Width" class="layui-input" />
               </div>
-              <div class="layui-input-inline" style="width: 86px;z-index:1">
+              <div class="layui-input-inline h5-file-size">
                 <input name="h5Height" type="text" placeholder="Height" class="layui-input" />
               </div>
-              <div class="layui-input-inline" style="width: 86px;margin: 0 0 10px 0;z-index:1">
+              <div class="layui-input-inline h5-page-count">
                 <input name="h5PageCount" type="text" placeholder="PageCount" class="layui-input" />
               </div>
-              <div class="layui-input-block" style="margin-bottom: 6px ">
+              <div class="layui-input-block" style="margin-bottom: 6px">
                 <input name="h5ThumbnailListStr" type="text" placeholder="Thumbnail list string, separated by ','"
                   class="layui-input" class="layui-input" />
               </div>
@@ -1484,7 +1522,7 @@
             <!-- File ID -->
             <div class="layui-form-item">
               <label class="layui-form-label">File ID</label>
-              <div class="layui-input-inline" style="margin-left: 10px">
+              <div class="layui-input-inline first-inline file-id">
                 <input name="fileID" type="text" placeholder="File ID" class="layui-input" />
               </div>
               <button id="cacheFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1494,7 +1532,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">Seq</label>
-              <div class="layui-input-inline" style="margin-left: 10px">
+              <div class="layui-input-inline first-inline file-seq">
                 <input name="cacheFileSeq" type="text" placeholder="Seq" class="layui-input" />
               </div>
               <button id="cancelCacheFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1503,7 +1541,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label">File ID</label>
-              <div class="layui-input-inline" style="margin-left: 10px">
+              <div class="layui-input-inline first-inline file-id-2">
                 <input name="createFileID" type="text" placeholder="File ID" class="layui-input" />
               </div>
               <button id="createFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
@@ -1520,7 +1558,7 @@
             </div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Log-Level"></label>
-              <div class="layui-input-inline">
+              <div class="layui-input-inline log-level">
                 <select id="logLevel" name="logLevel" lay-filter="logLevel">
                   <option value="debug">debug</option>
                   <option value="info">info</option>
@@ -1538,7 +1576,7 @@
             <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px" data-locale="speaker-setting"></div>
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="speaker"></label>
-              <div class="layui-input-inline">
+              <div class="layui-input-inline speaker">
                 <select id="speaker" name="speaker" lay-filter="speaker">
                 </select>
               </div>
@@ -1549,8 +1587,12 @@
     </div>
     <!-- Thumbnail Dialog -->
     <div id="thumbModal">
-      <div class="thumb-header" data-locale="preview"> <span style="float: right;cursor: pointer;"
-          data-locale="close"></span></div>
+      <div class="thumb-header">
+        <div data-locale="preview"></div>   
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
       <ul class="thumb-main"></ul>
     </div>
     <!-- Select File Dialog -->
@@ -1831,7 +1873,9 @@
 <!-- login-Related -->
 <script src="./js/login/login.js"></script>
 <script src="./js/login/init.js"></script>
+<script src="./js/login/demo.js"></script>
 <!-- <script src="./js/login/login_liveroom.js"></script>
 <script src="./js/login/init_liveroom.js"></script> -->
-
+<!-- vConsole -->
+<script type="text/javascript" src="https://static2.qcplay.com/vconsole/vconsole.min.js"></script>
 </html>

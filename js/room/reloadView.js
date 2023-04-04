@@ -12,6 +12,8 @@
 // parentDomID Container ID
 
 var resizeTicking = false; // Adaptive execution switch, here is a delay of 1000 ms execution
+// 储存当前窗口宽度
+let windowWidth = window.innerWidth;
 // Adaptive whiteboard size: Listen for the page resize event.
 window.addEventListener('resize', onResizeHandle);
 
@@ -19,7 +21,9 @@ window.addEventListener('resize', onResizeHandle);
  * @description: resize callback
  */
 function onResizeHandle() {
-    if (!resizeTicking) {
+    // H5 手势下拉/窗口滚动也会触发 resize 方法，加上实际浏览器宽度变化对比来执行 reloadView，应该不影响web端，影响的话可以加上 isH5() 的判断
+    if (!resizeTicking && window.innerWidth !== windowWidth) {
+        windowWidth = window.innerWidth;
         resizeTicking = true;
         setTimeout(function () {
             // After the container size is automatically changed, the whiteboard view is automatically re-loaded.
@@ -71,7 +75,7 @@ function supportRequestFullscreen(dom) {
     } else if (dom.mozRequestFullScreen) {
         return dom.mozRequestFullScreen();
     } else {
-        return dom.msRequestFullscreen();
+        return false;
     }
 }
 
@@ -81,11 +85,18 @@ function supportRequestFullscreen(dom) {
 function updateSizeDomHandle() {
     // Obtain the width and height of the current container.
     var dom = document.getElementById(parentDomID);
+    const width = dom.clientWidth + 2;
+    const height = width / (16 / 9);
+   
+    // Obtain the custom size. Only the obtaining method is displayed here. You can obtain it as required.
+    const width_set = +layui.form.val('form2').parentWidth;
+    const height_set = +layui.form.val('form2').parentHeight;
 
-    dom.style.cssText += 'width:100%;height:100%;';
+    dom.style.cssText += `width: ${width_set ? width+ 'px' : '100%'};height: ${height_set? height_set : height}px`;
 
-    var width = dom.clientWidth + 2; // + board
-    var height = dom.clientHeight + 2; // + board
+    // dom.style.cssText += 'width:100%;height:100%;';
+    // var width = dom.clientWidth + 2; // + board
+    // var height = dom.clientHeight + 2; // + board
 
     // Update the width and height displayed on the current page.
     $('#parentWidthHeight').html(width + ' * ' + height);
@@ -126,13 +137,17 @@ function customReloadViewHandle() {
  * @return {*}
  */
 function fullScreenHandle() {
-    supportRequestFullscreen(document.getElementById(parentDomID))
+    if (supportRequestFullscreen(document.getElementById(parentDomID))) {
+        supportRequestFullscreen(document.getElementById(parentDomID))
         .then(function () {
             roomUtils.toast('full screen');
         })
         .catch(function () {
             roomUtils.toast('The current browser does not support full screen');
         });
+    } else {
+        roomUtils.toast('The current browser does not support full screen');
+    }
 }
 
 /**

@@ -2,20 +2,20 @@
  *This code block is needed when the ZEGOCLOUD web demo runs. It does not need to be concerned when the demo is opened.
  */
 
-if (location.port == 4003) {
-  if (!getSDKVersionOptions) {
+if (location.port === '4003') {
+    // 测试环境才显示
+    loginUtils.openVConsole();
     // Obtain the SDK version.
     function getSDKVersionOptions(list) {
-      return list
-        .map(function (v) {
-          return `<option value="${v}">${v}</option>`;
-        })
-        .join('');
+        return list
+            .map(function(v) {
+                return `<option value="${v}">${v}</option>`;
+            })
+            .join('');
     }
-
     // SDK version settings
     $('body').append(`
-      <div class="modal fade" id="versionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    <div class="modal fade" id="versionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -26,78 +26,94 @@ if (location.port == 4003) {
           </div>
           <div class="modal-body">
             <form id="versionForm" class="layui-form" action="" name="form" lay-filter="versionForm">
-              <div class="layui-form-item" id="superBoardVer">
+              <div class="layui-form-item" id="superBoardVersion">
                 <label class="layui-form-label">version</label>
                 <div class="layui-input-block">
-                  <select name="superBoardver" id="superBoardver" lay-filter="superBoardver">
-                    
+                  <select name="superBoardVersion" id="superBoard-list" lay-filter="superBoardVersion">
                   </select>
                 </div>
               </div>
+              <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit lay-filter="versionForm" data-dismiss="modal">立即提交</button>
+                </div>
+              </div>
             </form>
-            <div onclick="commmit">submit</div>
           </div>
         </div>
       </div>
     </div>
   `);
+
     $('#login-page').append(`
-    <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本</span>`)
+  <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本（修改版本，demo的SDK版本为2.11.0）</span>`);
+
+    $('#login-page').append(
+        `<button type="button" id="reload-btn" class="btn btn-primary btn-xs" style="position: absolute;top: 10px;right:10px">刷新</button>`
+    );
+    $('#reload-btn').click(() => {
+        window.location.reload();
+    });
 
     $.ajaxSettings.async = false;
     $.get(
-      'https://storage.zego.im/goclass/sdk/sdkVer.json', {},
-      function (res) {
-        $('#superBoardver').html(getSDKVersionOptions(res.superboard));
-      },
-      'json'
+        'http://zego-public.oss-cn-shanghai.aliyuncs.com/goclass/sdk/sdkVer.json',
+        {},
+        function(res) {
+            console.log(res);
+            $('#superBoard-list').html(getSDKVersionOptions(res.superboard));
+        },
+        'json'
     );
     $.ajaxSettings.async = true;
-  }
 
-  var base_sdk_url = `https://storage.zego.im/goclass/sdk/superboard/`
+    var base_sdk_url = `http://zego-public.oss-cn-shanghai.aliyuncs.com/goclass/sdk/superboard/`;
 
-  layui.use(['layer', 'jquery', 'form'], function () {
-    var layer = layui.layer,
-      $ = layui.jquery,
-      form = layui.form;
+    layui.use(['layer', 'jquery', 'form'], function() {
+        var layer = layui.layer,
+            $ = layui.jquery,
+            form = layui.form;
 
-    form.on('select(superBoardver)', function (data) {
-      console.log(data.value);
-      sessionStorage.setItem('superBoardver', JSON.stringify(data.value));
-      // Replace the SDK path.
-      loadScript(base_sdk_url + data.value);
-      // Perform rendering one more time.
-      form.render('select');
+        form.on('select(superBoardVersion)', function(data) {
+            console.log(data.value);
+            // Perform rendering one more time.
+            form.render('select');
+        });
+        form.on('submit(versionForm)', function(data) {
+            console.log('===data', data.field);
+            sessionStorage.setItem('superBoardVersion', JSON.stringify(data.field.superBoardVersion));
+            // Replace the SDK path.
+            loadScript(base_sdk_url + data.field.superBoardVersion);
+            return false;
+        });
     });
-  });
 
-  function loadScript(url) {
-    return new Promise(function (resolve) {
-      var head = document.getElementsByTagName('head')[0];
-      var script = document.createElement('script');
+    function loadScript(url) {
+        return new Promise(function(resolve) {
+            var head = document.getElementsByTagName('head')[0];
+            var script = document.createElement('script');
 
-      script.type = 'text/javascript';
-      script.src = url;
-      if (script.readyState) {
-        // IE
-        script.onreadystatechange = function () {
-          if (script.readyState == 'loaded' || script.readyState == 'complete') {
-            script.onreadystatechange = null;
-          }
-        };
-      } else {
-        // Others
-        script.onload = function () {
-          resolve();
-        };
-      }
-      head.appendChild(script);
-    });
-  }
-  var sdkver = JSON.parse(sessionStorage.getItem('superBoardver'))
-  console.warn('===sdkver', sdkver)
-  // Replace the SDK path.
-  sdkver ? loadScript(base_sdk_url + sdkver) : loadScript(base_sdk_url + $('#superBoardver').val());
+            script.type = 'text/javascript';
+            script.src = url;
+            if (script.readyState) {
+                // IE
+                script.onreadystatechange = function() {
+                    if (script.readyState == 'loaded' || script.readyState == 'complete') {
+                        script.onreadystatechange = null;
+                    }
+                };
+            } else {
+                // Others
+                script.onload = function() {
+                    resolve();
+                };
+            }
+            head.appendChild(script);
+        });
+    }
 
+    var sdkver = JSON.parse(sessionStorage.getItem('superBoardVersion'));
+    console.warn('===sdkver', sdkver);
+    // Replace the SDK path.
+    sdkver ? loadScript(base_sdk_url + sdkver) : loadScript(base_sdk_url + $('#superBoardVersion').val());
 }

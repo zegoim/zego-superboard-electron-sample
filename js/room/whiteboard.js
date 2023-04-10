@@ -145,7 +145,7 @@ function onSuperBoardEventHandle() {
     var mediaIdx = {};
     var confirmIndex;
     var videoCT;
-    zegoSuperBoard.on('onMediaPermission', async function(ele) {
+    zegoSuperBoard.on('superBoardSubViewMediaPermission', async function(ele) {
         console.log('atag onMediaPermission', ele)
         videoCT = ele.ct;
         var zegoSuperBoardSubView = zegoSuperBoard && zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();

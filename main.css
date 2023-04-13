@@ -831,6 +831,7 @@ li {
 #right-main {
   flex: 1;
   padding-top: 15px;
+  overflow-y: scroll;
 }
 
 .main-feature {

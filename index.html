@@ -1335,6 +1335,66 @@
                 </button>
               </div>
             </div>
+
+            <!-- Custom Cursor Text -->
+            <div style="border-top: 1px solid #d2d2d2; margin-bottom: 15px"></div>
+            <div style="margin-bottom: 15px; padding-left: 5px; font-size: 16px" data-locale="Cursor-Custom-Text"></div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" data-locale="text"></label>
+              <div class="layui-input-inline first-inline">
+                <input id="customCursorTitle" name="customCursorTitle" type="text" placeholder="text"
+                  class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" data-locale="bold"></label>
+              <div class="layui-input-block">
+                <input type="checkbox" name="enableCustomCursorTitleBold" lay-skin="switch"
+                  lay-filter="enableCustomCursorTitleBold" lay-text="on|off" />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" data-locale="italic"></label>
+              <div class="layui-input-block">
+                <input type="checkbox" name="enableCustomTitleItalic" lay-skin="switch"
+                  lay-filter="enableCustomTitleItalic" lay-text="on|off" />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" data-locale="font-size"></label>
+              <div class="layui-input-inline first-inline">
+                <input id="customCursorTitleSize" name="customCursorTitleSize" type="text" placeholder="font size"
+                  class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" data-locale="font-color"></label>
+              <div class="layui-input-inline first-inline">
+                <input id="customCursorTitleColor" name="customCursorTitleColor" type="text" placeholder="font color"
+                  class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" data-locale="background-color"></label>
+              <div class="layui-input-inline first-inline">
+                <input id="customCursorTitleBgColor" name="customCursorTitleBgColor" type="text" placeholder="background color"
+                  class="layui-input" />
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" data-locale="position"></label>
+              <div class="layui-input-inline first-inline">
+                <select name="customCursorTitlePosition" lay-filter="customCursorTitlePosition">
+                  <option value="0" data-locale="left-top"></option>
+                  <option value="1" data-locale="right-top"></option>
+                  <option value="2" selected data-locale="right-bottom"></option>
+                  <option value="3" data-locale="left-bottom"></option>
+                </select>
+              </div>
+            </div>
+            <button id="setCustomCursorTitle" type="button" class="layui-btn layui-btn-sm" style="margin: 3px 0 3px 110px;"
+              data-locale="submit">
+            </button>
           </form>
         </div>
         <!-- Whiteboard -->

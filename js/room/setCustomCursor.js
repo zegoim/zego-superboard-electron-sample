@@ -114,16 +114,16 @@ $('#setCustomCursorTitle').click(async function () {
 
     var formData = layui.form.val('form1');
     const style = {
-        text: formData.customCursorTitle,
+        title: formData.customCursorTitle,
         bold: formData.enableCustomCursorTitleBold ? true: false,
         italic: formData.enableCustomTitleItalic? true: false,
         size: formData.customCursorTitleSize ? parseInt(formData.customCursorTitleSize) : false,
         color: formData.customCursorTitleColor ? formData.customCursorTitleColor : '',
-        bk_color: formData.customCursorTitleBgColor ? formData.customCursorTitleBgColor : '',
-        pos: formData.customCursorTitlePosition ? parseInt(formData.customCursorTitlePosition) : false,
+        backgroundColor: formData.customCursorTitleBgColor ? formData.customCursorTitleBgColor : '',
+        position: formData.customCursorTitlePosition ? parseInt(formData.customCursorTitlePosition) : false,
     }
     // await zegoSuperBoard.setCustomCursorTitle(formData.customCursorTitle, style);
     await zegoSuperBoard.setCustomCursorAttribute(1, {
-        textStyle: style,
+        titleStyle: style,
     });
 });

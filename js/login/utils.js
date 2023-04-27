@@ -80,19 +80,37 @@ var loginUtils = {
         }
 
         return new Promise(function (resolve) {
-            $.get(
-                'https://wsliveroom-alpha.zego.im:8282/token',
-                {
-                    app_id: appId,
-                    id_name: zegoConfig.userID
-                },
-                function(token) {
-                    if (token) {
-                        resolve(token);
+            // $.get(
+            //     'https://wsliveroom-alpha.zego.im:8282/token',
+            //     {
+            //         app_id: appId,
+            //         id_name: zegoConfig.userID
+            //     },
+            //     function(token) {
+            //         if (token) {
+            //             resolve(token);
+            //         }
+            //     },
+            //     'text'
+            // );
+            $.post(
+                'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
+                JSON.stringify({
+                    version: '04', 
+                    appId,
+                    idName: zegoConfig.userID,
+                    privilege: {
+                        "1": 1,
+                        "2": 1
+                    },
+                    expire_time: 100000000
+                }),
+                function(res) {
+                    if (res.data.token) {
+                        resolve(res.data.token);
                     }
-                },
-                'text'
-            );
+                }
+            )
         });
     },
 

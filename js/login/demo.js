@@ -4,7 +4,7 @@
 
 if (location.port === '4003') {
     // 测试环境才显示
-    loginUtils.openVConsole();
+    // loginUtils.openVConsole();
     // Obtain the SDK version.
     function getSDKVersionOptions(list) {
         return list

@@ -93,6 +93,24 @@ var loginUtils = {
                 },
                 'text'
             );
+            // $.post(
+            //     'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
+            //     JSON.stringify({
+            //         version: '04', 
+            //         appId,
+            //         idName: zegoConfig.userID,
+            //         privilege: {
+            //             "1": 1,
+            //             "2": 1
+            //         },
+            //         expire_time: 100000000
+            //     }),
+            //     function(res) {
+            //         if (res.data.token) {
+            //             resolve(res.data.token);
+            //         }
+            //     }
+            // )
         });
     },
 

@@ -105,3 +105,25 @@ $('#setCustomCursorByURLBtn').click(async function () {
         roomUtils.toast(errorData.code + '：' + errorData.message);
     }
 });
+
+/**
+ * @description： Set custom cursor title
+ */
+$('#setCustomCursorTitle').click(async function () {
+    if (!zegoSuperBoard) return;
+
+    var formData = layui.form.val('form1');
+    const style = {
+        title: formData.customCursorTitle,
+        bold: formData.enableCustomCursorTitleBold ? true: false,
+        italic: formData.enableCustomTitleItalic? true: false,
+        size: formData.customCursorTitleSize ? parseInt(formData.customCursorTitleSize) : false,
+        color: formData.customCursorTitleColor ? formData.customCursorTitleColor : '',
+        backgroundColor: formData.customCursorTitleBgColor ? formData.customCursorTitleBgColor : '',
+        position: formData.customCursorTitlePosition ? parseInt(formData.customCursorTitlePosition) : false,
+    }
+    // await zegoSuperBoard.setCustomCursorTitle(formData.customCursorTitle, style);
+    await zegoSuperBoard.setCustomCursorAttribute(1, {
+        titleStyle: style,
+    });
+});

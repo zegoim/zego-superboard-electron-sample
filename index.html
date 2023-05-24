@@ -53,8 +53,8 @@
               <label class="layui-form-label">SuperBoard 环境</label>
               <div class="layui-input-block">
                 <select name="superBoardEnv">
-                  <option value="alpha">开发环境（alpha环境）</option>
                   <option value="prod">正式环境</option>
+                  <option value="alpha">开发环境（alpha环境）</option>
                   <option value="beta">测试环境（Beta环境）</option>
                 </select>
               </div>
@@ -1135,6 +1135,13 @@
         <!-- Draw -->
         <div class="main-feature active" data-index="1">
           <form id="form1" class="layui-form" action="" name="form1" lay-filter="form1">
+            <div class="layui-form-item">
+              <label class="layui-form-label" >初始化/反初始化</label>
+              <div class="layui-input-block">
+                <input type="checkbox" name="enableWB" lay-filter="enableWB" lay-skin="switch"
+                  lay-text="on|off" checked />
+              </div>
+            </div>
             <!-- Handwriting Effect -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Handwriting-Effect"></label>
@@ -1893,7 +1900,9 @@
 <script src="./i18n/jquery.i18n.properties-min-1.0.9.js"></script>
 <script src="./i18n/index.js"></script>
 <!-- Express SDK -->
-<script src="./sdk/ZegoExpressWebRTC-2.24.5.js"></script>
+<!-- <script src="./sdk/ZegoExpressWebRTC-2.24.5.js"></script> -->
+<!-- <script src="./sdk/ZegoExpressWebRTC-2.25.0.js"></script> -->
+<script src="./sdk/ZegoExpressWebRTC-2.26.0.js"></script>
 <!-- Superboard SDK -->
 <!-- <script src="./sdk/ZegoSuperBoardWeb-2.13.0.js"></script> -->
 <script src="/ZegoSuperBoardWeb.js"></script>

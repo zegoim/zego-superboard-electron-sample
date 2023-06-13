@@ -113,6 +113,7 @@ function checkInput() {
     var userID = $('#userID').val()
     var token = $('#token').val()
     var time = !!$('#time').val() ? Number($('#time').val()) : 60
+    var initState = $('#initState:checked').val()
     if (!userName || !roomID || !userID) {
         alert('Please enter username, room ID and userID');
         return false;
@@ -122,7 +123,8 @@ function checkInput() {
         userName,
         userID,
         token,
-        time
+        time,
+        initState
     };
 }
 
@@ -160,6 +162,7 @@ $('#login-btn').click(async function () {
         userName: result.userName,
         userID: result.userID,
         time: result.time,
+        initState: result.initState,
         superBoardEnv: settingData.superBoardEnv,
         fontFamily: settingData.fontFamily,
         disableH5ImageDrag: settingData.disableH5ImageDrag,
@@ -189,7 +192,7 @@ $('#login-btn').click(async function () {
         loginUtils.updateRoomIDDomHandle(zegoConfig.roomID);
 
         // Mount the activated SuperboardSubView. (method in the room)
-        attachActiveView();
+        zegoConfig.initState === 'on' && attachActiveView();
         $('#user-list').html('<li class="user-item">' + loginInfo.userName + ' (' + loginInfo.userID + '_自己)' + '</li>');
     } catch (error) {
         console.error(error);

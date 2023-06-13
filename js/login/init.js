@@ -11,8 +11,12 @@
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 mainland 2 overseas
     superBoardEnv: 'prod',
-    appID: 3606078772,
-    serverProd: 'wss://webliveroom3606078772-api.zego.im/ws',
+    // 信令精简
+    // appID: 2846859242,
+    // serverProd: 'wss://webliveroom2846859242-api.zego.im/ws',
+    // 白板计费
+    appID: 1100697004,
+    serverProd: 'wss://webliveroom1100697004-api.zego.im/ws',
     overseaAppID: 1068511430,
     betaAppID: 1100697004,
     betaServer: 'wss://webliveroom1100697004-api.zego.im/ws',
@@ -29,7 +33,7 @@ var zegoEnvConfig = {
 // SDK feature configurations
 var zegoFeatureConfig = {
     fontFamily: 'system', // Superboard SDK fontFamily
-    disableH5ImageDrag: 'false', /// Whether to disable drag and drop for images 
+    disableH5ImageDrag: 'false', /// Whether to disable drag and drop for images
     thumbnailMode: '1', // Thumbnail sharpness 1: normal 2: SD 3: HD
     pptStepMode: '1', // PPT page mode 1: normal 2: do not jump
     dynamicPPT_HD: 'false', // false: 正常 true: 高清
@@ -45,7 +49,7 @@ var zegoOtherConfig = {
     // tokenUrl: 'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
     roomID: loginUtils.getRoomID(),
     userID: loginUtils.getUserID(),
-    userName: '',
+    userName: ''
 };
 
 // 配置集合
@@ -74,10 +78,10 @@ function checkConfig() {
  * @description: Initialize the SDK based on the configuration
  */
 async function initZegoSDK(time) {
-    var appID = zegoConfig.appID;
-    var userID = zegoConfig.userID;
-    var isTestEnv = zegoConfig.superBoardEnv === 'beta';
-    var server = isTestEnv ? zegoConfig.server : zegoConfig.serverProd;
+    appID = zegoConfig.appID;
+    userID = zegoConfig.userID;
+    isTestEnv = zegoConfig.superBoardEnv === 'beta';
+    server = isTestEnv ? zegoConfig.server : zegoConfig.serverProd;
 
     if (zegoConfig.env === '2') {
         appID = zegoConfig.overseaAppID;
@@ -93,47 +97,74 @@ async function initZegoSDK(time) {
         appID = zegoConfig.alphaAppID;
         server = zegoConfig.alphaServer;
     }
-    console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID)
+    console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID);
 
-    zegoEngine = new ZegoExpressEngine(appID, server);
+    zegoEngine = new ZegoExpressEngine(appID, server,{
+        accessURL:'wss://accesshub-wss-alpha.zego.im/accesshub'
+    });
 
-    var inputToken = $('#token').val()
+    var inputToken = $('#token').val();
 
-    var token = inputToken ? inputToken : await loginUtils.getToken(time);
+    token = inputToken ? inputToken : await loginUtils.getToken(time);
 
     // Initialize Superboard SDK
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
-    zegoSuperBoard.init(zegoEngine, {
-        parentDomID,
-        userID,
-        appID,
-        token,
-        isTestEnv
-    });
+    if(zegoConfig.initState === 'on'){
+        zegoSuperBoard.init(zegoEngine, {
+            parentDomID,
+            userID,
+            appID,
+            token,
+            isTestEnv
+        });
+        initSuperBoardSDKConfig();
+    }
     document.title = `Superboard demo:${zegoSuperBoard.getSDKVersion()}`;
     initExpressSDKConfig();
-    initSuperBoardSDKConfig();
-    layui.use(['layer', 'jquery', 'form'], async function () {
+   
+    layui.use(['layer', 'jquery', 'form'], async function() {
         var form = layui.form,
-        $ = layui.$;
-        $("#logLevel").val('disable');
+            $ = layui.$;
+        $('#logLevel').val('disable');
+        console.log('mytag 1111',zegoConfig.initState === 'on')
+        zegoConfig.initState === 'on' ? $("#enableWB").attr("checked", "checked") : $("#enableWB").removeAttr("checked");
+        form.render('checkbox')
 
         // 添加扬声器
         var speakers = await getSpeakers();
-        if(!speakers.length) return;
-        $("#speaker").empty();
+        if (!speakers.length) return;
+        $('#speaker').empty();
         for (let index = 0; index < speakers.length; index++) {
             var label = speakers[index].label.toString();
-            $("#speaker").append("<option value='"+  label  +"'>"+ label +"</option>");
+            $('#speaker').append("<option value='" + label + "'>" + label + '</option>');
         }
-        $("#speaker").val(speakers.find(device => device.deviceId === 'default').label)
-
+        $('#speaker').val(speakers.find((device) => device.deviceId === 'default').label);
         form.render('select');
         // form.render('select','logLevel');
-
-    })
+    });
     return token;
 }
+
+layui.form.on('switch(enableWB)', async function() {
+    // true: enable; false: disable.
+    var bool = this.checked;
+    if(bool){
+        const initRes = await zegoSuperBoard.init(zegoEngine, {
+            parentDomID,
+            userID,
+            appID,
+            token,
+            isTestEnv
+        });
+        console.log('mytag initRes',initRes)
+        initSuperBoardSDKConfig();
+        attachActiveView();
+        zegoSuperBoard.enableSyncScale(true);
+        zegoSuperBoard.enableResponseScale(true);
+    }else{
+        zegoSuperBoard.unInit();
+    }
+});
 
 /**
  * @description: Initialize the Express SDK based on the configuration.
@@ -141,25 +172,24 @@ async function initZegoSDK(time) {
 function initExpressSDKConfig() {
     // Set the log level.
     zegoEngine.setLogConfig({
-        logLevel: 'error'
-    });
-    zegoSuperBoard.setLogConfig({
-        logLevel: 'debug'
+        logLevel: 'disable'
     });
     // Disable debug.
     zegoEngine.setDebugVerbose(false);
-    zegoSuperBoard.enableSyncScale(true);
-    zegoSuperBoard.enableResponseScale(true);
+
 }
 
 /**
  * @description: Initialize the SuperBoard SDK based on the configuration initialization.
  */
 function initSuperBoardSDKConfig() {
-    console.log('mytag  zegoConfig.superBoardEnv',  zegoConfig.superBoardEnv !== 'prod');
+    console.log('mytag  zegoConfig.superBoardEnv', zegoConfig.superBoardEnv !== 'prod');
     zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
-
-
+    zegoSuperBoard.setLogConfig({
+        logLevel: 'warn'
+    });
+    zegoSuperBoard.enableSyncScale(true);
+    zegoSuperBoard.enableResponseScale(true);
     if (zegoConfig.fontFamily === 'ZgFont') {
         document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;
     }
@@ -175,7 +205,7 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
 
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
-    console.log('demo set config:',zegoConfig.disableH5Mouse)
+    console.log('demo set config:', zegoConfig.disableH5Mouse);
     zegoSuperBoard.setCustomizedConfig('disableH5Mouse', zegoConfig.disableH5Mouse);
 
     zegoSuperBoard.enableCustomCursor(true);
@@ -186,7 +216,7 @@ function initSuperBoardSDKConfig() {
  */
 async function init() {
     try {
-        // disabled safari scaling 
+        // disabled safari scaling
         loginUtils.disableScaling();
         if (!checkConfig()) return;
 
@@ -200,15 +230,16 @@ async function init() {
 
             const login_res = await loginRoom(token);
 
-            console.warn('=====demo login', login_res)
+            console.warn('=====demo login', login_res);
 
             // Display the room page.
             loginUtils.togglePageDomHandle(true);
-
-            attachActiveView();
-            zegoSuperBoard.enableSyncScale(true);
-            zegoSuperBoard.enableResponseScale(true);
-
+            if(zegoConfig.initState === 'on'){
+                attachActiveView();
+                zegoSuperBoard.enableSyncScale(true);
+                zegoSuperBoard.enableResponseScale(true);
+            }
+            
         } else {
             loginUtils.togglePageDomHandle(false);
         }
@@ -220,14 +251,14 @@ async function init() {
 }
 
 async function getSpeakers() {
-    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !navigator.mediaDevices.enumerateDevices){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !navigator.mediaDevices.enumerateDevices) {
         return Promise.resolve([]);
-    };
-    await navigator.mediaDevices.getUserMedia({audio:true});
+    }
+    await navigator.mediaDevices.getUserMedia({ audio: true });
     let devices = await navigator.mediaDevices.enumerateDevices();
-    let speakers = devices.filter(function (device) {
-        return device.kind === 'audiooutput' && device.deviceId
-    })
+    let speakers = devices.filter(function(device) {
+        return device.kind === 'audiooutput' && device.deviceId;
+    });
     return Promise.resolve(speakers);
 }
 

@@ -11,12 +11,9 @@
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 mainland 2 overseas
     superBoardEnv: 'prod',
-    // 信令精简
-    // appID: 2846859242,
-    // serverProd: 'wss://webliveroom2846859242-api.zego.im/ws',
     // 白板计费
-    appID: 1100697004,
-    serverProd: 'wss://webliveroom1100697004-api.zego.im/ws',
+    appID: 3606078772,
+    serverProd: 'wss://webliveroom3606078772-api.zego.im/ws',
     overseaAppID: 1068511430,
     betaAppID: 1100697004,
     betaServer: 'wss://webliveroom1100697004-api.zego.im/ws',
@@ -183,10 +180,9 @@ function initExpressSDKConfig() {
  * @description: Initialize the SuperBoard SDK based on the configuration initialization.
  */
 function initSuperBoardSDKConfig() {
-    console.log('mytag  zegoConfig.superBoardEnv', zegoConfig.superBoardEnv !== 'prod');
-    zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+    zegoConfig.superBoardEnv !== 'prod' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
     zegoSuperBoard.setLogConfig({
-        logLevel: 'warn'
+        logLevel: 'info'
     });
     zegoSuperBoard.enableSyncScale(true);
     zegoSuperBoard.enableResponseScale(true);

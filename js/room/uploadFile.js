@@ -33,8 +33,6 @@ var uploadFileUtils = {
         var fileListEnv;
         switch (superBoardEnv) {
             case 'beta':
-                fileListEnv = 'docs_test';
-                break;
             case 'alpha':
                 fileListEnv = 'docs_alpha';
                 break;

@@ -21,10 +21,6 @@ var zegoEnvConfig = {
     overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws',
     alphaAppID: 1484763131,
     alphaServer: 'wss://webliveroom1484763131-api.zego.im/ws'
-    // 统一接入
-    // alphaAppID: 3104114736,
-    // alphaServer: 'wss://webliveroom-alpha.zego.im/ws'
-    // token:''
 };
 
 // SDK feature configurations
@@ -96,8 +92,8 @@ async function initZegoSDK(time) {
     }
     console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID);
 
-    zegoEngine = new ZegoExpressEngine(appID, server,{
-        accessURL:'wss://accesshub-wss-alpha.zego.im/accesshub'
+    zegoEngine = new ZegoExpressEngine(appID, server, {
+        accessURL: 'wss://accesshub-wss-alpha.zego.im/accesshub'
     });
 
     var inputToken = $('#token').val();
@@ -106,7 +102,8 @@ async function initZegoSDK(time) {
 
     // Initialize Superboard SDK
     zegoSuperBoard = ZegoSuperBoardManager.getInstance();
-    if(zegoConfig.initState === 'on'){
+    if (zegoConfig.initState === 'on') {
+        console.log('mytag init superboard');
         zegoSuperBoard.init(zegoEngine, {
             parentDomID,
             userID,
@@ -115,18 +112,19 @@ async function initZegoSDK(time) {
             isTestEnv
         });
         initSuperBoardSDKConfig();
+        $('#enableWB').attr('checked', 'checked');
+        layui.form.render();
+    } else {
+        $('#enableWB').removeAttr('checked');
+        layui.form.render();
     }
-    document.title = `Superboard demo:${zegoSuperBoard.getSDKVersion()}`;
+    document.title = `Superboard:${zegoSuperBoard.getSDKVersion()},RTC:${zegoEngine.getVersion()}`;
     initExpressSDKConfig();
-   
+
     layui.use(['layer', 'jquery', 'form'], async function() {
         var form = layui.form,
             $ = layui.$;
         $('#logLevel').val('disable');
-        console.log('mytag 1111',zegoConfig.initState === 'on')
-        zegoConfig.initState === 'on' ? $("#enableWB").attr("checked", "checked") : $("#enableWB").removeAttr("checked");
-        form.render('checkbox')
-
         // 添加扬声器
         var speakers = await getSpeakers();
         if (!speakers.length) return;
@@ -145,7 +143,7 @@ async function initZegoSDK(time) {
 layui.form.on('switch(enableWB)', async function() {
     // true: enable; false: disable.
     var bool = this.checked;
-    if(bool){
+    if (bool) {
         const initRes = await zegoSuperBoard.init(zegoEngine, {
             parentDomID,
             userID,
@@ -153,12 +151,12 @@ layui.form.on('switch(enableWB)', async function() {
             token,
             isTestEnv
         });
-        console.log('mytag initRes',initRes)
+        console.log('mytag initRes', initRes);
         initSuperBoardSDKConfig();
         attachActiveView();
         zegoSuperBoard.enableSyncScale(true);
         zegoSuperBoard.enableResponseScale(true);
-    }else{
+    } else {
         zegoSuperBoard.unInit();
     }
 });
@@ -173,7 +171,6 @@ function initExpressSDKConfig() {
     });
     // Disable debug.
     zegoEngine.setDebugVerbose(false);
-
 }
 
 /**
@@ -230,12 +227,11 @@ async function init() {
 
             // Display the room page.
             loginUtils.togglePageDomHandle(true);
-            if(zegoConfig.initState === 'on'){
+            if (zegoConfig.initState === 'on') {
                 attachActiveView();
                 zegoSuperBoard.enableSyncScale(true);
                 zegoSuperBoard.enableResponseScale(true);
             }
-            
         } else {
             loginUtils.togglePageDomHandle(false);
         }

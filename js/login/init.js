@@ -112,10 +112,10 @@ async function initZegoSDK(time) {
             isTestEnv
         });
         initSuperBoardSDKConfig();
-        $('#enableWB').attr('checked', 'checked');
+        $('#enableWB').prop('checked', true);
         layui.form.render();
     } else {
-        $('#enableWB').removeAttr('checked');
+        $('#enableWB').prop('checked',false);
         layui.form.render();
     }
     document.title = `Superboard:${zegoSuperBoard.getSDKVersion()},RTC:${zegoEngine.getVersion()}`;

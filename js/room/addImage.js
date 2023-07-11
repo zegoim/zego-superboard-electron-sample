@@ -12,10 +12,10 @@
 
 var selectedInsetImgFile = null; // The currently selected local file
 var customGraphList = [
-    'https://storage.zego.im/goclass/wbpic/diamond.svg',
-    'https://storage.zego.im/goclass/wbpic/star.svg',
-    'https://storage.zego.im/goclass/wbpic/axis.svg',
-    'https://storage.zego.im/goclass/wbpic/chemical_instrument.svg'
+    'https://storage.zego.im/goclass/wbpic/diamond.png',
+    'https://storage.zego.im/goclass/wbpic/star.png',
+    'https://storage.zego.im/goclass/wbpic/axis.png',
+    'https://storage.zego.im/goclass/wbpic/chemical_instrument.png'
 ]; // Zego built-in custom graphics list
 
 /**

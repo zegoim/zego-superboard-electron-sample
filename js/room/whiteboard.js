@@ -427,6 +427,7 @@ async function querySuperBoardSubViewListHandle() {
         roomUtils.toggleThumbBtnDomHandle(hasThumb());
         // Determine whether to disable the Click tool.
         roomUtils.toggleDisabledDomHandle(fileType !== 512 && fileType !== 4096);
+        resetToolTypeAfterSwitch(fileType)
         if (fileType === 4) {
             // Display the sheet drop-down list for Excel file whiteboards.
             roomUtils.toggleSheetSelectDomHandle(true);

@@ -179,7 +179,7 @@ function initExpressSDKConfig() {
 function initSuperBoardSDKConfig() {
     zegoConfig.superBoardEnv !== 'prod' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
     zegoSuperBoard.setLogConfig({
-        logLevel: 'info'
+        logLevel: 'warn'
     });
     zegoSuperBoard.enableSyncScale(true);
     zegoSuperBoard.enableResponseScale(true);

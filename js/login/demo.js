@@ -2,7 +2,7 @@
  *This code block is needed when the ZEGOCLOUD web demo runs. It does not need to be concerned when the demo is opened.
  */
 
-if (location.port !== '4003') {
+if (location.port === '4003') {
     // 测试环境才显示
     // loginUtils.openVConsole();
     // Obtain the SDK version.

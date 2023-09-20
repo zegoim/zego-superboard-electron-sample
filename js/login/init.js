@@ -8,16 +8,11 @@
  */
 
 // Environment-related configurations
-var sdkPathPre = '../../sdk/v290';
+var sdkPathPre = './node_modules/';
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 mainland 2 overseas
-    superBoardEnv: 'prod',
-    appID: 3606078772,
-    appSignStr: '7fa02dba76aef58cb3cd6b01fdc64a7d52b0a4608db4f079ad1ce6ac6d15ac9d',
-    appIDBeta: 1100697004,
-    appSignStrBeta: '25fea61fd253b252f48a48ea84f909d7d6849f82d9089ced0cb5c054e6cafa06',
-    appIDAlpha: 1803117167,
-    appSignStrAlpha: '22128c7680537c7d2e94fa4562f268a14b629634f23f585f4e4845361116d439',
+    appID: appID,
+    appSignStr: appSignStr,
     sdkPath: {
         express: sdkPathPre + '/zego-superboard-electron/zego-express-engine-electron/ZegoExpressEngine.js',
         superboard: sdkPathPre + '/zego-superboard-electron/index.js',
@@ -80,24 +75,7 @@ function checkConfig() {
 async function initZegoSDK() {
     var appID = zegoConfig.appID;
     var userID = zegoConfig.userID;
-    var isTestEnv = zegoConfig.superBoardEnv === 'beta';
-    var appSign = isTestEnv ? zegoConfig.appSignStrBeta : zegoConfig.appSignStr;
-
-    // if (zegoConfig.env === '2') {
-    //     appID = zegoConfig.overseaAppID;
-    //     appSign = isTestEnv ? zegoConfig.overseaServer : zegoConfig.overseaServerProd;
-    // }
-
-    if (zegoConfig.superBoardEnv === 'beta') {
-        appID = zegoConfig.appIDBeta;
-        appSign = zegoConfig.appSignStrBeta;
-    }
-
-    if (zegoConfig.superBoardEnv === 'alpha') {
-        appID = zegoConfig.appIDAlpha;
-        appSign = zegoConfig.appSignStrAlpha;
-    }
-    console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID)
+    var appSign = zegoConfig.appSignStr;
 
     ZegoExpressEngine.setLogConfig &&
     ZegoExpressEngine.setLogConfig({
@@ -123,7 +101,6 @@ async function initZegoSDK() {
         userID,
         appID,
         appSign:loginUtils.getAppSignArray(appSign),
-        isTestEnv: false,
         dataFolder: logDir,
         cacheFolder: logDir,
         logFolder: logDir,
@@ -164,10 +141,6 @@ function initExpressSDKConfig() {
  * @description: Initialize the SuperBoard SDK based on the configuration initialization.
  */
 function initSuperBoardSDKConfig() {
-    console.log('mytag  zegoConfig.superBoardEnv',  zegoConfig.superBoardEnv !== 'prod');
-    zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
-
-
     if (zegoConfig.fontFamily === 'ZgFont') {
         document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;
     }

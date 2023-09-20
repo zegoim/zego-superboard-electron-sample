@@ -170,14 +170,10 @@ $('#login-btn').click(async function () {
         roomID: result.roomID,
         userName: result.userName,
         userID: result.userID,
-        time: result.time,
-        superBoardEnv: settingData.superBoardEnv,
         fontFamily: settingData.fontFamily,
         disableH5ImageDrag: settingData.disableH5ImageDrag,
         thumbnailMode: settingData.thumbnailMode,
         pptStepMode: settingData.pptStepMode,
-        unloadVideoSrc: settingData.unloadVideoSrc,
-        disableH5Mouse: settingData.disableH5Mouse,
         ventor_img_type: settingData.ventor_img_type,
     };
 

@@ -2,7 +2,7 @@
 const { app, crashReporter,BrowserWindow, ipcMain } = require('electron');
 const storage = require('electron-localstorage');
 
-app.setPath('crashDumps', process.cwd() + './crash_temp') 
+app.setPath('crashDumps', process.cwd() + '/crash_temp') 
 app.commandLine.appendSwitch('ignore-certificate-errors');
 // electron 小于等于 13 版本需要配置
 app.allowRendererProcessReuse = false
@@ -31,7 +31,7 @@ function createWindow() {
         }
     });
     // and load the index.html of the app.
-    mainWindow.loadURL(`file://${app.getAppPath()}/sample/superboard/index.html`);
+    mainWindow.loadURL(`file://${app.getAppPath()}/index.html`);
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools();

@@ -31,7 +31,7 @@ function createWindow() {
         }
     });
     // and load the index.html of the app.
-    mainWindow.loadURL(`file://${app.getAppPath()}/superboard/index.html`);
+    mainWindow.loadURL(`file://${app.getAppPath()}/sample/superboard/index.html`);
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools();

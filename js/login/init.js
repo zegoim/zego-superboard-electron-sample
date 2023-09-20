@@ -8,7 +8,7 @@
  */
 
 // Environment-related configurations
-var sdkPathPre = '../sdk/v290';
+var sdkPathPre = '../../sdk/v290';
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 mainland 2 overseas
     superBoardEnv: 'prod',
@@ -26,7 +26,6 @@ var zegoEnvConfig = {
 
 var ZegoExpressEngine = require(zegoEnvConfig.sdkPath.express);
 var ZegoSuperBoard = require(zegoEnvConfig.sdkPath.superboard);
-// console.log('demo ZegoSuperBoard',ZegoSuperBoard)
 
 var zegoSuperBoardManager;
 var zegoSuperBoard;
@@ -39,16 +38,11 @@ var zegoFeatureConfig = {
     disableH5ImageDrag: 'false', /// Whether to disable drag and drop for images 
     thumbnailMode: '1', // Thumbnail sharpness 1: normal 2: SD 3: HD
     pptStepMode: '1', // PPT page mode 1: normal 2: do not jump
-    dynamicPPT_HD: 'false', // false: 正常 true: 高清
-    dynamicPPT_AutomaticPage: 'true', // true: 自动翻页 false: 禁止
-    unloadVideoSrc: 'false', // false: 正常 true: 禁止
-    disableH5Mouse: 'false', // false: 正常 true: 禁止
-    ventor_img_type: '1' // 1: 关闭（png） 2: 开启（svg）
+    ventor_img_type: '1' // 1: png 2: svg
 };
 
 // Other SDK configurations
 var zegoOtherConfig = {
-    tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
     roomID: loginUtils.getRoomID(),
     userID: loginUtils.getUserID(),
     userName: '',
@@ -70,11 +64,11 @@ var zegoConfig = {
 var parentDomID = 'main-whiteboard'; // SupboardView Mounted parent container
 
 /**
- * @description: Verify the configured appID and tokenUrl
+ * @description: Verify the configured appID
  */
 function checkConfig() {
-    if (!zegoConfig.appID || !zegoConfig.tokenUrl) {
-        alert('请填写 appID 和 tokenUrl');
+    if (!zegoConfig.appID) {
+        alert('please enter your appID');
         return false;
     }
     return true;
@@ -83,7 +77,7 @@ function checkConfig() {
 /**
  * @description: Initialize the SDK based on the configuration
  */
-async function initZegoSDK(time) {
+async function initZegoSDK() {
     var appID = zegoConfig.appID;
     var userID = zegoConfig.userID;
     var isTestEnv = zegoConfig.superBoardEnv === 'beta';
@@ -121,8 +115,6 @@ async function initZegoSDK(time) {
         scenario: 0
     });
 
-    // ZegoExpressEngine.enableDebugAssistant(true);
-
     // Initialize Superboard SDK
     zegoSuperBoardManager = new ZegoSuperBoard()
     zegoSuperBoard = zegoSuperBoardManager.getInstance()
@@ -136,11 +128,11 @@ async function initZegoSDK(time) {
         cacheFolder: logDir,
         logFolder: logDir,
     })
-    console.log('super ver:',zegoSuperBoard.getSDKVersion())
 
     document.title = `Superboard version:${zegoSuperBoard.getSDKVersion()},RTC version:${ZegoExpressEngine.getVersion()}`;
     initExpressSDKConfig();
     initSuperBoardSDKConfig();
+
     layui.use(['layer', 'jquery', 'form'], async function () {
         var form = layui.form,
         $ = layui.$;
@@ -157,8 +149,6 @@ async function initZegoSDK(time) {
         $("#speaker").val(speakers.find(device => device.deviceId === 'default').label)
 
         form.render('select');
-        // form.render('select','logLevel');
-
     })
 }
 
@@ -188,14 +178,6 @@ function initSuperBoardSDKConfig() {
 
     zegoSuperBoard.setCustomizedConfig('thumbnailMode', zegoConfig.thumbnailMode);
 
-    zegoSuperBoard.setCustomizedConfig('dynamicPPT_HD', zegoConfig.dynamicPPT_HD);
-
-    zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
-
-    zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
-    console.log('demo set config:',zegoConfig.disableH5Mouse)
-    zegoSuperBoard.setCustomizedConfig('disableH5Mouse', zegoConfig.disableH5Mouse);
-
     zegoSuperBoard.enableCustomCursor(true);
 }
 
@@ -215,8 +197,6 @@ async function init() {
             Object.assign(zegoConfig, loginInfo);
             await initZegoSDK(Number(zegoConfig.time));
             loginRoom();
-
-            // console.warn('=====demo login', login_res)
 
             // Display the room page.
             loginUtils.togglePageDomHandle(true);

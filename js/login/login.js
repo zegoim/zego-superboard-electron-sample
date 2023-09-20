@@ -27,7 +27,7 @@ function onZegoExpressEngineEvent() {
            // Register the Superboard callback. (method in the room)
            onSuperBoardEventHandle();
            // Mount the activated SuperboardSubView. (method in the room)
-        //    attachActiveView();
+           attachActiveView();
        
         }
     });
@@ -155,6 +155,7 @@ function logoutRoom() {
     flipToPageUtils.updateThumbListDomHandle([]);
     $('#user-list').html('');
     $('#memberNum').html('1');
+    zegoSuperBoard = null;
 }
 
 $('#login-btn').click(async function () {
@@ -175,8 +176,6 @@ $('#login-btn').click(async function () {
         disableH5ImageDrag: settingData.disableH5ImageDrag,
         thumbnailMode: settingData.thumbnailMode,
         pptStepMode: settingData.pptStepMode,
-        dynamicPPT_HD: settingData.dynamicPPT_HD,
-        dynamicPPT_AutomaticPage: settingData.dynamicPPT_AutomaticPage,
         unloadVideoSrc: settingData.unloadVideoSrc,
         disableH5Mouse: settingData.disableH5Mouse,
         ventor_img_type: settingData.ventor_img_type,

@@ -27,9 +27,13 @@ var roomUtils = {
      * @param {String|Object} content Pop-up box content
      */
     toast: function(content) {
-        // A pop-up box is displayed after an object is converted to a string.
-        content = typeof content === 'string' ? content : JSON.stringify(content);
-        layui.layer.msg(content);
+        var toast = document.getElementById("toast");
+        toast.textContent = typeof content === 'string' ? content : JSON.stringify(content);
+        toast.classList.add("show");
+
+        setTimeout(function() {
+            toast.classList.remove("show");
+        }, 2000);
     },
 
     /**
@@ -282,7 +286,7 @@ $('#right-header').click(function(event) {
  * @description: Update the information in the dialog each time when the Invite button is clicked.
  */
 $('.inivate-btn').click(function(event) {
-    var inivateLink = location.origin + '?roomID=' + zegoConfig.roomID + '&env=' + zegoConfig.env;
+    var inivateLink = 'https://superboard-demo.zego.im/?roomID=' + zegoConfig.roomID + '&env=' + zegoConfig.env;
     $('#showInviteLink').val(inivateLink);
     $('#showRoomEnv').html(zegoConfig.env == 1 ? jQuery.i18n.prop('config-env-1') : jQuery.i18n.prop('config-env-2'));
 });

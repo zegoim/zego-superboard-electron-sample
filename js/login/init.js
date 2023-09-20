@@ -8,25 +8,35 @@
  */
 
 // Environment-related configurations
+var sdkPathPre = '../sdk/v290';
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 mainland 2 overseas
     superBoardEnv: 'prod',
-    // 白板计费
     appID: 3606078772,
-    serverProd: 'wss://webliveroom3606078772-api.zego.im/ws',
-    overseaAppID: 1068511430,
-    betaAppID: 1100697004,
-    betaServer: 'wss://webliveroom1100697004-api.zego.im/ws',
-    overseaServer: 'wss://webliveroom-hk-test.zegocloud.com/ws',
-    overseaServerProd: 'wss://webliveroom1068511430-api.zegocloud.com/ws',
-    alphaAppID: 1484763131,
-    alphaServer: 'wss://webliveroom1484763131-api.zego.im/ws'
+    appSignStr: '7fa02dba76aef58cb3cd6b01fdc64a7d52b0a4608db4f079ad1ce6ac6d15ac9d',
+    appIDBeta: 1100697004,
+    appSignStrBeta: '25fea61fd253b252f48a48ea84f909d7d6849f82d9089ced0cb5c054e6cafa06',
+    appIDAlpha: 1803117167,
+    appSignStrAlpha: '22128c7680537c7d2e94fa4562f268a14b629634f23f585f4e4845361116d439',
+    sdkPath: {
+        express: sdkPathPre + '/zego-superboard-electron/zego-express-engine-electron/ZegoExpressEngine.js',
+        superboard: sdkPathPre + '/zego-superboard-electron/index.js',
+    }
 };
+
+var ZegoExpressEngine = require(zegoEnvConfig.sdkPath.express);
+var ZegoSuperBoard = require(zegoEnvConfig.sdkPath.superboard);
+// console.log('demo ZegoSuperBoard',ZegoSuperBoard)
+
+var zegoSuperBoardManager;
+var zegoSuperBoard;
+
+
 
 // SDK feature configurations
 var zegoFeatureConfig = {
     fontFamily: 'system', // Superboard SDK fontFamily
-    disableH5ImageDrag: 'false', /// Whether to disable drag and drop for images
+    disableH5ImageDrag: 'false', /// Whether to disable drag and drop for images 
     thumbnailMode: '1', // Thumbnail sharpness 1: normal 2: SD 3: HD
     pptStepMode: '1', // PPT page mode 1: normal 2: do not jump
     dynamicPPT_HD: 'false', // false: 正常 true: 高清
@@ -39,11 +49,16 @@ var zegoFeatureConfig = {
 // Other SDK configurations
 var zegoOtherConfig = {
     tokenUrl: 'https://wsliveroom-alpha.zego.im:8282/token',
-    // tokenUrl: 'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
     roomID: loginUtils.getRoomID(),
     userID: loginUtils.getUserID(),
-    userName: ''
+    userName: '',
+    logDirs: {
+        win32: 'c:/zegowblog/',
+        darwin: process.env.HOME + '/zegowblog/'
+    }
 };
+
+var logDir = zegoOtherConfig.logDirs[require('os').platform()];
 
 // 配置集合
 var zegoConfig = {
@@ -53,8 +68,6 @@ var zegoConfig = {
 };
 
 var parentDomID = 'main-whiteboard'; // SupboardView Mounted parent container
-var zegoEngine;
-var zegoSuperBoard;
 
 /**
  * @description: Verify the configured appID and tokenUrl
@@ -71,118 +84,100 @@ function checkConfig() {
  * @description: Initialize the SDK based on the configuration
  */
 async function initZegoSDK(time) {
-    appID = zegoConfig.appID;
-    userID = zegoConfig.userID;
-    isTestEnv = zegoConfig.superBoardEnv === 'beta';
-    server = isTestEnv ? zegoConfig.server : zegoConfig.serverProd;
+    var appID = zegoConfig.appID;
+    var userID = zegoConfig.userID;
+    var isTestEnv = zegoConfig.superBoardEnv === 'beta';
+    var appSign = isTestEnv ? zegoConfig.appSignStrBeta : zegoConfig.appSignStr;
 
-    if (zegoConfig.env === '2') {
-        appID = zegoConfig.overseaAppID;
-        server = isTestEnv ? zegoConfig.overseaServer : zegoConfig.overseaServerProd;
-    }
+    // if (zegoConfig.env === '2') {
+    //     appID = zegoConfig.overseaAppID;
+    //     appSign = isTestEnv ? zegoConfig.overseaServer : zegoConfig.overseaServerProd;
+    // }
 
     if (zegoConfig.superBoardEnv === 'beta') {
-        appID = zegoConfig.betaAppID;
-        server = zegoConfig.betaServer;
+        appID = zegoConfig.appIDBeta;
+        appSign = zegoConfig.appSignStrBeta;
     }
 
     if (zegoConfig.superBoardEnv === 'alpha') {
-        appID = zegoConfig.alphaAppID;
-        server = zegoConfig.alphaServer;
+        appID = zegoConfig.appIDAlpha;
+        appSign = zegoConfig.appSignStrAlpha;
     }
-    console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID);
+    console.warn('====superboard demo appid:', zegoConfig.superBoardEnv, appID, userID)
 
-    zegoEngine = new ZegoExpressEngine(appID, server, {
-        accessURL: 'wss://accesshub-wss-alpha.zego.im/accesshub'
+    ZegoExpressEngine.setLogConfig &&
+    ZegoExpressEngine.setLogConfig({
+                logPath: logDir,
+                logSize: 5 * 1024 * 1024
+            });
+    console.log('mytag config',{
+        appID,
+        appSign,
+        scenario: 0
+    })
+    await ZegoExpressEngine.createEngine({
+        appID,
+        appSign,
+        scenario: 0
     });
 
-    var inputToken = $('#token').val();
-
-    token = inputToken ? inputToken : await loginUtils.getToken(time);
+    // ZegoExpressEngine.enableDebugAssistant(true);
 
     // Initialize Superboard SDK
-    zegoSuperBoard = ZegoSuperBoardManager.getInstance();
-    if (zegoConfig.initState === 'on') {
-        console.log('mytag init superboard');
-        zegoSuperBoard.init(zegoEngine, {
-            parentDomID,
-            userID,
-            appID,
-            token,
-            isTestEnv
-        });
-        initSuperBoardSDKConfig();
-        $('#enableWB').prop('checked', true);
-        layui.form.render();
-    } else {
-        $('#enableWB').prop('checked',false);
-        layui.form.render();
-    }
-    document.title = `Superboard:${zegoSuperBoard.getSDKVersion()},RTC:${zegoEngine.getVersion()}`;
-    initExpressSDKConfig();
+    zegoSuperBoardManager = new ZegoSuperBoard()
+    zegoSuperBoard = zegoSuperBoardManager.getInstance()
+    zegoSuperBoard.init({
+        parentDomID,
+        userID,
+        appID,
+        appSign:loginUtils.getAppSignArray(appSign),
+        isTestEnv: false,
+        dataFolder: logDir,
+        cacheFolder: logDir,
+        logFolder: logDir,
+    })
+    console.log('super ver:',zegoSuperBoard.getSDKVersion())
 
-    layui.use(['layer', 'jquery', 'form'], async function() {
+    document.title = `Superboard version:${zegoSuperBoard.getSDKVersion()},RTC version:${ZegoExpressEngine.getVersion()}`;
+    initExpressSDKConfig();
+    initSuperBoardSDKConfig();
+    layui.use(['layer', 'jquery', 'form'], async function () {
         var form = layui.form,
-            $ = layui.$;
-        $('#logLevel').val('disable');
+        $ = layui.$;
+        $("#logLevel").val('disable');
+
         // 添加扬声器
         var speakers = await getSpeakers();
-        if (!speakers.length) return;
-        $('#speaker').empty();
+        if(!speakers.length) return;
+        $("#speaker").empty();
         for (let index = 0; index < speakers.length; index++) {
             var label = speakers[index].label.toString();
-            $('#speaker').append("<option value='" + label + "'>" + label + '</option>');
+            $("#speaker").append("<option value='"+  label  +"'>"+ label +"</option>");
         }
-        $('#speaker').val(speakers.find((device) => device.deviceId === 'default').label);
+        $("#speaker").val(speakers.find(device => device.deviceId === 'default').label)
+
         form.render('select');
         // form.render('select','logLevel');
-    });
-    return token;
-}
 
-layui.form.on('switch(enableWB)', async function() {
-    // true: enable; false: disable.
-    var bool = this.checked;
-    if (bool) {
-        const initRes = await zegoSuperBoard.init(zegoEngine, {
-            parentDomID,
-            userID,
-            appID,
-            token,
-            isTestEnv
-        });
-        console.log('mytag initRes', initRes);
-        initSuperBoardSDKConfig();
-        attachActiveView();
-        zegoSuperBoard.enableSyncScale(true);
-        zegoSuperBoard.enableResponseScale(true);
-    } else {
-        zegoSuperBoard.unInit();
-    }
-});
+    })
+}
 
 /**
  * @description: Initialize the Express SDK based on the configuration.
  */
 function initExpressSDKConfig() {
-    // Set the log level.
-    zegoEngine.setLogConfig({
-        logLevel: 'disable'
-    });
-    // Disable debug.
-    zegoEngine.setDebugVerbose(false);
+    zegoSuperBoard.enableSyncScale(true);
+    zegoSuperBoard.enableResponseScale(true);
 }
 
 /**
  * @description: Initialize the SuperBoard SDK based on the configuration initialization.
  */
 function initSuperBoardSDKConfig() {
-    zegoConfig.superBoardEnv !== 'prod' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
-    zegoSuperBoard.setLogConfig({
-        logLevel: 'warn'
-    });
-    zegoSuperBoard.enableSyncScale(true);
-    zegoSuperBoard.enableResponseScale(true);
+    console.log('mytag  zegoConfig.superBoardEnv',  zegoConfig.superBoardEnv !== 'prod');
+    zegoConfig.superBoardEnv === 'alpha' && zegoSuperBoard.setCustomizedConfig('set_alpha_env', true);
+
+
     if (zegoConfig.fontFamily === 'ZgFont') {
         document.getElementById(parentDomID).style.fontFamily = zegoConfig.fontFamily;
     }
@@ -198,7 +193,7 @@ function initSuperBoardSDKConfig() {
     zegoSuperBoard.setCustomizedConfig('dynamicPPT_AutomaticPage', zegoConfig.dynamicPPT_AutomaticPage);
 
     zegoSuperBoard.setCustomizedConfig('unloadVideoSrc', zegoConfig.unloadVideoSrc);
-    console.log('demo set config:', zegoConfig.disableH5Mouse);
+    console.log('demo set config:',zegoConfig.disableH5Mouse)
     zegoSuperBoard.setCustomizedConfig('disableH5Mouse', zegoConfig.disableH5Mouse);
 
     zegoSuperBoard.enableCustomCursor(true);
@@ -209,7 +204,7 @@ function initSuperBoardSDKConfig() {
  */
 async function init() {
     try {
-        // disabled safari scaling
+        // disabled safari scaling 
         loginUtils.disableScaling();
         if (!checkConfig()) return;
 
@@ -218,20 +213,18 @@ async function init() {
         if (loginInfo && loginInfo.roomID) {
             // Update local zegoConfig.
             Object.assign(zegoConfig, loginInfo);
+            await initZegoSDK(Number(zegoConfig.time));
+            loginRoom();
 
-            var token = await initZegoSDK(Number(zegoConfig.time));
-
-            const login_res = await loginRoom(token);
-
-            console.warn('=====demo login', login_res);
+            // console.warn('=====demo login', login_res)
 
             // Display the room page.
             loginUtils.togglePageDomHandle(true);
-            if (zegoConfig.initState === 'on') {
-                attachActiveView();
-                zegoSuperBoard.enableSyncScale(true);
-                zegoSuperBoard.enableResponseScale(true);
-            }
+
+           
+            zegoSuperBoard.enableSyncScale(true);
+            zegoSuperBoard.enableResponseScale(true);
+
         } else {
             loginUtils.togglePageDomHandle(false);
         }
@@ -243,14 +236,14 @@ async function init() {
 }
 
 async function getSpeakers() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !navigator.mediaDevices.enumerateDevices) {
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !navigator.mediaDevices.enumerateDevices){
         return Promise.resolve([]);
-    }
-    await navigator.mediaDevices.getUserMedia({ audio: true });
+    };
+    await navigator.mediaDevices.getUserMedia({audio:true});
     let devices = await navigator.mediaDevices.enumerateDevices();
-    let speakers = devices.filter(function(device) {
-        return device.kind === 'audiooutput' && device.deviceId;
-    });
+    let speakers = devices.filter(function (device) {
+        return device.kind === 'audiooutput' && device.deviceId
+    })
     return Promise.resolve(speakers);
 }
 

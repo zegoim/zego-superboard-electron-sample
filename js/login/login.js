@@ -7,45 +7,65 @@
  * @FilePath: /superboard/js/login/login.js
  */
 
-var userList = []; // List of members in the room
+var list = []; // List of members in the room
+var ZegoRoomState = {
+    0:'Disconnected',
+    1:'Connecting',
+    2:'Connected'
+}
 
 /**
- * @description: Listen for zegoEngine.
+ * @description: Listen for ZegoExpressEngine.
  */
-function onZegoEngineEvent() {
-    zegoEngine.on('roomUserUpdate', function (roomID, type, list) {
+function onZegoExpressEngineEvent() {
+    ZegoExpressEngine.on('onRoomStateUpdate', async (res) => {
+        roomUtils.toast(`${ZegoRoomState[res.state]}...`);
+        console.warn('mytag demo onRoomStateUpdate',res)
+        if (res.state === 2 && res.errorCode == 0) {
+           // After successful login, add yourself to the member list.
+           pushOwn();
+           // Register the Superboard callback. (method in the room)
+           onSuperBoardEventHandle();
+           // Mount the activated SuperboardSubView. (method in the room)
+        //    attachActiveView();
+       
+        }
+    });
+    ZegoExpressEngine.on('onRoomUserUpdate', function (rs) {
+        console.log('mytag onRoomUserUpdate',rs)
+        const {updateType,userList }= rs
         try {
-            if (type == 'ADD') {
-                list.forEach(function (v) {
-                    userList.push({
+            if (updateType == 0) {
+                userList.forEach(function (v) {
+                    list.push({
                         userID: v.userID,
                         userName: v.userName
                     });
                 });
-            } else if (type == 'DELETE') {
-                list.forEach(function (v) {
-                    var index = userList.findIndex(function (item) {
+            } else if (updateType == 1) {
+                userList.forEach(function (v) {
+                    var index = list.findIndex(function (item) {
                         return v.userID == item.userID;
                     });
                     if (index != -1) {
-                        userList.splice(index, 1);
+                        list.splice(index, 1);
                     }
                 });
             }
             // Update the room member list dialog on the room page.
-            loginUtils.updateUserListDomHandle(userList);
+            loginUtils.updateUserListDomHandle(list);
         } catch (error) {
             console.error('roomUserUpdate', error)
         }
     });
 
-    zegoEngine.on('tokenWillExpire', async function (roomID) {
+    ZegoExpressEngine.on('tokenWillExpire', async function (roomID) {
         var tokenFlag = $('#tokenFlag:checked').val()
         var time = Number(zegoConfig.time)
         console.warn('superboard tokenWillExpire', roomID, tokenFlag)
         if (tokenFlag === 'on') {
             var newtoken = await loginUtils.getToken(time)
-            zegoEngine.renewToken(newtoken)
+            ZegoExpressEngine.renewToken(newtoken)
             zegoSuperBoard.renewToken(newtoken)
             var loginInfo = JSON.parse(sessionStorage.getItem('loginInfo'))
             loginInfo.token = newtoken
@@ -56,17 +76,14 @@ function onZegoEngineEvent() {
 
 
     })
-
-    zegoEngine.on('roomStateUpdate', function (roomID, state, errorCode, extendedData) {
-        console.warn('roomID,state,errorCode,extendedData', roomID, state, errorCode, extendedData)
-    })
 }
 
 /**
  * @description: After successful login, add yourself to the member list.
  */
 function pushOwn() {
-    userList.unshift({
+    if(list.some(item => item.userID === zegoConfig.userID)) return
+    list.unshift({
         userID: zegoConfig.userID,
         userName: zegoConfig.userName
     });
@@ -77,27 +94,18 @@ function pushOwn() {
  * @description: Login to the room.
  * @param {String} token
  */
-async function loginRoom(token) {
+async function loginRoom() {
     try {
-        onZegoEngineEvent();
-        const res = await zegoEngine.loginRoom(
-            zegoConfig.roomID,
-            token, {
+        onZegoExpressEngineEvent();
+        ZegoExpressEngine.loginRoom(
+            zegoConfig.roomID, {
                 userID: zegoConfig.userID,
                 userName: zegoConfig.userName
             }, {
                 maxMemberCount: 10,
-                userUpdate: true
+                isUserStatusNotify: true
             }
         );
-        if (res) {
-            // After successful login, add yourself to the member list.
-            pushOwn();
-            // Register the Superboard callback. (method in the room)
-            onSuperBoardEventHandle();
-        } else {
-            console.error('登录失败', res)
-        }
     } catch (error) {
         console.error('登录失败', error)
     }
@@ -113,7 +121,6 @@ function checkInput() {
     var userID = $('#userID').val()
     var token = $('#token').val()
     var time = !!$('#time').val() ? Number($('#time').val()) : 60
-    var initState = $('#initState:checked').val()
     if (!userName || !roomID || !userID) {
         alert('Please enter username, room ID and userID');
         return false;
@@ -123,8 +130,7 @@ function checkInput() {
         userName,
         userID,
         token,
-        time,
-        initState
+        time
     };
 }
 
@@ -132,11 +138,13 @@ function checkInput() {
  * @description: Leave the room.
  */
 function logoutRoom() {
-    zegoEngine.logoutRoom(zegoConfig.roomID);
+    zegoSuperBoardManager.unInit()
+    ZegoExpressEngine.logoutRoom(zegoConfig.roomID);
+    ZegoExpressEngine.destroyEngine();
     // Clear sessionStorage.
     sessionStorage.removeItem('loginInfo');
     // Clear the member list.
-    userList = [];
+    list = [];
     // Display the login page.
     loginUtils.togglePageDomHandle(false);
     $('#main-whiteboard').html('');
@@ -162,7 +170,6 @@ $('#login-btn').click(async function () {
         userName: result.userName,
         userID: result.userID,
         time: result.time,
-        initState: result.initState,
         superBoardEnv: settingData.superBoardEnv,
         fontFamily: settingData.fontFamily,
         disableH5ImageDrag: settingData.disableH5ImageDrag,
@@ -179,9 +186,10 @@ $('#login-btn').click(async function () {
     console.warn('result', result)
     try {
         // Initialize the SDK.
-        var token = await initZegoSDK(zegoConfig.time);
+        console.log('mytag Initialize the SDK = login.js')
+        await initZegoSDK(zegoConfig.time);
 
-        await loginRoom(token);
+        await loginRoom();
 
         sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo));
 
@@ -191,8 +199,6 @@ $('#login-btn').click(async function () {
 
         loginUtils.updateRoomIDDomHandle(zegoConfig.roomID);
 
-        // Mount the activated SuperboardSubView. (method in the room)
-        zegoConfig.initState === 'on' && attachActiveView();
         $('#user-list').html('<li class="user-item">' + loginInfo.userName + ' (' + loginInfo.userID + '_自己)' + '</li>');
     } catch (error) {
         console.error(error);
@@ -201,3 +207,8 @@ $('#login-btn').click(async function () {
 
 
 $('#logout-btn').click(logoutRoom);
+
+window.addEventListener('beforeunload',()=>{
+    ZegoExpressEngine.logoutRoom(zegoConfig.roomID);
+    ZegoExpressEngine.destroyEngine();
+})

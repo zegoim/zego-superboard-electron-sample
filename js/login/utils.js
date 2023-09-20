@@ -7,7 +7,6 @@
  * @FilePath: /superboard/js/login/utils.js
  */
 
-// new VConsole()
 
 var loginUtils = {
     /**
@@ -93,24 +92,6 @@ var loginUtils = {
                 },
                 'text'
             );
-            // $.post(
-            //     'https://sig-liveroom-admin.zego.cloud/thirdToken/get',
-            //     JSON.stringify({
-            //         version: '04', 
-            //         appId,
-            //         idName: zegoConfig.userID,
-            //         privilege: {
-            //             "1": 1,
-            //             "2": 1
-            //         },
-            //         expire_time: 100000000
-            //     }),
-            //     function(res) {
-            //         if (res.data.token) {
-            //             resolve(res.data.token);
-            //         }
-            //     }
-            // )
         });
     },
 
@@ -253,37 +234,22 @@ var loginUtils = {
     },
 
     /**
-    * @description: vConsole
-    */
-    openVConsole: function() {
-        const vConsole = new VConsole();
-    },
-
-    /**
      * @description: Disable safari scaling
      */
     disableScaling: function() {
-        //阻止safari浏览器双击放大功能
-        // let lastTouchEnd = 0  //更新手指弹起的时间
-        // document.documentElement.addEventListener("touchstart", function (event) {
-        //     //多根手指同时按下屏幕，禁止默认行为
-        //     if (event.touches.length > 1) {
-        //     event.preventDefault();
-        //     }
-        // });
-        // document.documentElement.addEventListener("touchend", function (event) {
-        //     let now = (new Date()).getTime();
-        //     if (now - lastTouchEnd <= 300) {
-        //         //当两次手指弹起的时间小于300毫秒，认为双击屏幕行为
-        //         event.preventDefault();
-        //     }else{ // 否则重新手指弹起的时间
-        //         lastTouchEnd = now;
-        //     }
-        // }, false);
         //阻止双指放大页面
         document.documentElement.addEventListener("gesturestart", function (event) {
             event.preventDefault();
         });
+    },
+
+    getAppSignArray: function (str) {
+        var arr = [];
+        for (var i = 0; i < str.length;) {
+            arr.push(`0x${str[i]}${str[i + 1]}`);
+            i += 2;
+        }
+        return arr;
     }
      
 };

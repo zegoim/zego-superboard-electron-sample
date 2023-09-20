@@ -3,8 +3,6 @@
  */
 
 if (location.port === '4003') {
-    // 测试环境才显示
-    // loginUtils.openVConsole();
     // Obtain the SDK version.
     function getSDKVersionOptions(list) {
         return list
@@ -46,13 +44,8 @@ if (location.port === '4003') {
   `);
 
     $('#login-page').append(`
-      <span id="sdk-setting" data-toggle="modal" data-target="#settingModal">SDK 设置 </span>
-    `)
+  <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本（修改版本，demo的SDK版本为2.11.0）</span>`);
 
-    $('#login-page').append(`
-      <span id="sdk-version" data-toggle="modal" data-target="#versionModal">SDK 版本（修改版本，demo的SDK版本为2.11.0）</span>
-    `);
-  
     $('#login-page').append(
         `<button type="button" id="reload-btn" class="btn btn-primary btn-xs" style="position: absolute;top: 10px;right:10px">刷新</button>`
     );

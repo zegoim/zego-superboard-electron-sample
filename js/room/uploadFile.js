@@ -33,6 +33,8 @@ var uploadFileUtils = {
         var fileListEnv;
         switch (superBoardEnv) {
             case 'beta':
+                fileListEnv = 'docs_test';
+                break;
             case 'alpha':
                 fileListEnv = 'docs_alpha';
                 break;
@@ -57,7 +59,6 @@ var uploadFileUtils = {
                 (element.isDynamic ? 'dynamic' : element.isH5 ? 'H5' : 'static') +
                 '</div>' +
                 element.name +
-                // (isH5() ? '' : `(${element.id})`) +
                 '</li>';
         });
         $fileListCon.html($str);
@@ -89,6 +90,7 @@ var uploadFileUtils = {
     }
 };
 
+var uploadSeq = 0;
 /**
  * @description: Select a static or animated file and upload it.
  * @param {Number} renderType Rendering mode
@@ -96,29 +98,32 @@ var uploadFileUtils = {
  */
 function uploadFile(renderType, file, enableSizeReducedImages) {
     if (!file) return roomUtils.toast('Please select a file first');
-    //Type of rendering mode after the file is uploaded and transcoded. If the business of iOS, Web, Windows, Mac, or mini program is involved, you are advised to use the VectorAndIMG mode.
-    const option = {
-        renderImgType: 1,
-        enableSizeReducedImages
-    };
+    uploadFileUtils.closeFileDomHandle(); 
     zegoSuperBoard
         .uploadFile(
-            file,
+            file.path,
             renderType,
             function(res) {
+                uploadSeq = res.seq;
                 roomUtils.toast(uploadFileTipsMap[res.status] + (res.uploadPercent ? res.uploadPercent + '%' : ''));
-            },
-            option
+            }
         )
-        .then(function(fileID) {
-            uploadFileUtils.closeFileDomHandle();
-
+        .then(function(fileID) { 
             // A file whiteboard is created immediately after the upload. You can handle it as required.
             // The method of creating a file whiteboard is shown in js/room/whiteboard.js.
-            createFileView(fileID, enableSizeReducedImages);
+            createFileView(fileID);
         })
         .catch(roomUtils.toast);
 }
+
+$('#cancelUploadFileBtn').click(async function() {
+     // if (!fileHash) return roomUtils.toast('Please enter fileHash');
+     zegoSuperBoard
+     .cancelUploadFile(uploadSeq).then((rs)=>{
+        rs ? roomUtils.toast('cancle upload succeeded.') : roomUtils.toast('cancle upload failed.')
+     })
+     .catch(roomUtils.toast);
+});
 
 /**
  * @description: Click Upload File in the File List dialog to show the drop-down list.

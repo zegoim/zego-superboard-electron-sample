@@ -59,7 +59,7 @@ $('#uploadH5FileBtn').click(async function () {
         thumbnailList: h5ThumbnailList // Custom file thumbnail relative path array
     };
     try {
-        var fileID = await zegoSuperBoard.uploadH5File(selectedH5File, config, function (res) {
+        var fileID = await zegoSuperBoard.uploadH5File(selectedH5File.path, config, function (res) {
             roomUtils.toast(res.uploadPercent + '%');
         });
 

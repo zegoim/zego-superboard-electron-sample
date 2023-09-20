@@ -59,10 +59,11 @@ function canJumpStep() {
  * @description: When no whiteboards are created, initialize the total number of pages and the current page number to 1.
  */
 async function updateWhiteboardList() {
+    console.warn('SuperBoard Demo querySuperBoardSubViewList start');
     // Obtain the model list.
     var modelList = await zegoSuperBoard.querySuperBoardSubViewList();
     console.warn('SuperBoard Demo querySuperBoardSubViewList', modelList);
-    roomUtils.updateWhiteboardListDomHandle(modelList);
+    roomUtils.updateWhiteboardListDomHandle(modelList.reverse());
     if (!modelList || !modelList.length) {
         roomUtils.toggleSheetSelectDomHandle(false);
         roomUtils.updateCurrPageDomHandle(1);
@@ -120,26 +121,11 @@ let debounceReloadView = debounce((type) => {
  * @description: Listen for the whiteboard callback.
  */
 function onSuperBoardEventHandle() {
+    console.log('mytag onSuperBoardEventHandle')
     // Callback of the listening-for error. All internal SDK errors are thrown using this callback, except the errors directly returned in the API.
     zegoSuperBoard.on('error', async function(errorData) {
-        // 3130021: get context 失败的错误码，一般是 safari 内存不足
-        // 3130022: canvas drawImage 失败错误码
-        if (errorData.code === 3130021 || errorData.code === 3130022) {
-            console.error('errorData', errorData);
-            // debounceAlert(errorData);
-            // 如果是绘制错误，则尝试重绘
-            if (errorData.code === 3130021) {
-                // console.error('canvas 内存不足')
-                debounceReloadView(2);
-            }
-            // 如果是绘制错误，则尝试重绘
-            if (errorData.code === 3130022) {
-                // console.error('canvas drawImage 失败')
-                debounceReloadView(1);
-            }
-        } else {
-            roomUtils.toast(errorData);
-        }
+        console.error('mytag demo error',errorData)
+        roomUtils.toast(errorData);
     });
 
     var mediaIdx = {};
@@ -185,13 +171,13 @@ function onSuperBoardEventHandle() {
         }
         // 本端切换白板时，远端同时删除白板，layui select 的value会被清空，为空的情况下需要手动重新赋值
         // 本端切换白板时，远端同时切换其他白板，收到 Switched 回调赋值白板ID，与当前切换白板不一致，需要重新赋值
-        console.log('===选项框数据1',layui.form.val("customForm").whiteboard, uniqueID)
+        // console.log('===选项框数据1',layui.form.val("customForm").whiteboard, uniqueID)
         if (layui.form.val("customForm").whiteboard !== uniqueID) {
             layui.form.val('customForm', {
                 whiteboard: uniqueID
             });
         }
-        console.log('===选项框数据2',layui.form.val("customForm").whiteboard)
+        // console.log('===选项框数据2',layui.form.val("customForm").whiteboard)
     });
 
     // Listen for remote whiteboard zooming.
@@ -281,18 +267,12 @@ async function createWhiteboardView() {
  * @description: Create a file whiteboard.
  * @param {String} fileID File ID
  */
-async function createFileView(fileID, enableSizeReducedImages) {
+async function createFileView(fileID) {
     $('#thumbModal').removeClass('active');
     try {
         roomUtils.loading('Create document in whiteboard');
-        const loadOption = {
-            enableSizeReducedImages
-        };
-        await zegoSuperBoard.createFileView({
-            fileID,
-            loadOption
-        });
-        switchSpeaker();
+        const res =  await zegoSuperBoard.createFileView({fileID});
+        res.fileType === 512 && switchSpeaker();
         console.log('mytag 文件加载完成');
         roomUtils.closeLoading();
         roomUtils.toast('Created successfully');
@@ -325,7 +305,11 @@ async function destroySuperBoardSubView(type) {
         try {
             roomUtils.loading('destroy whiteboard');
 
-            await zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubView.getModel().uniqueID);
+            try {
+                await zegoSuperBoard.destroySuperBoardSubView(zegoSuperBoardSubView.getModel().uniqueID);
+            } catch (error) {
+                console.error('destroySuperBoardSubView',error)
+            }
             console.warn('===demo destroySuperBoardSubView');
             roomUtils.closeLoading();
             roomUtils.toast('Destroyed successfully');
@@ -402,7 +386,7 @@ async function querySuperBoardSubViewListHandle() {
     await updateWhiteboardList();
     // Obtain the currently mounted whiteboard.
     var zegoSuperBoardSubView = getCurrentSuperBoardSubView();
-    console.log('===querySuperBoardSubViewListHandle', zegoSuperBoardSubView)
+    // console.log('===querySuperBoardSubViewListHandle', zegoSuperBoardSubView)
     if (zegoSuperBoardSubView) {
         // Currently, a mounted whiteboard exists.
         var model = zegoSuperBoardSubView.getModel();
@@ -480,7 +464,7 @@ async function switchWhitebopardHandle(uniqueID) {
     $('#thumbModal').removeClass('active');
 
     var model = await getSuperBoardSubViewModelByUniqueID(uniqueID);
-    var fileType = model.fileType;
+    var fileType = model?.fileType;
 
     try {
         roomUtils.loading('switch whiteboard');
@@ -589,7 +573,7 @@ async function attachActiveView() {
 
     // Query the current whiteboard list.
     var result = await querySuperBoardSubViewListHandle();
-    console.warn('SuperBoard Demo attachActiveView', result);
+    console.warn('mytag SuperBoard Demo attachActiveView', result);
     // When you enter a room, the latest whiteboard is automatically mounted.
     if (result.uniqueID) {
         var superBoardView = zegoSuperBoard.getSuperBoardView();

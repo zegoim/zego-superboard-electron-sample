@@ -21,14 +21,22 @@
   <link rel="apple-touch-icon-precomposed" sizes="57x57" href="./apple-touch-icon-57-precomposed.png" />
   <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./apple-touch-icon-144-precomposed.png" />
   <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./apple-touch-icon-114-precomposed.png" />
+
+  <!-- jquery -->
+  <script src="./lib/jquery-3.3.1.min.js"></script>
+  <script>
+    // electron 平台兼容需要
+    if (typeof module === 'object') {
+      window.jQuery = window.$ = module.exports;
+    }
+  </script>
   <!-- bootstrap css  -->
   <link rel="stylesheet" href="./lib/bootstrap.min.css" />
   <!-- lay ui css -->
   <link rel="stylesheet" href="./lib/css/layui.css" />
   <!-- Demo style -->
   <link href="./main.css" type="text/css" rel="stylesheet" />
-  <!-- jquery -->
-  <script src="./lib/jquery-3.3.1.min.js"></script>
+  
   <!-- bootstrap js  -->
   <script src="./lib/bootstrap.min.js"></script>
   <!-- layui js  -->
@@ -54,9 +62,8 @@
               <div class="layui-input-block">
                 <select name="superBoardEnv">
                   <option value="prod">正式环境</option>
-                  <option value="beta">测试环境（Beta环境）</option>
                   <option value="alpha">开发环境（alpha环境）</option>
-                  
+                  <option value="beta">测试环境（Beta环境）</option>
                 </select>
               </div>
             </div>
@@ -152,6 +159,8 @@
   </div>
   <!-- Login Page -->
   <div id="login-page">
+    <!-- SDK Settings Icon -->
+    <span id="sdk-setting" data-toggle="modal" data-target="#settingModal" data-locale="setting"> </span>
     <!-- Login List -->
     <div id="login-form">
       <div class="login-form-left hidden-xs hidden-sm">
@@ -165,15 +174,9 @@
         <input id="roomID" class="form-control" type="text" placeholder="room  ID" />
         <input id="userName" class="form-control" type="text" placeholder="userName" />
         <input id="userID" class="form-control" type="text" placeholder=" userID" />
-        <!-- test -->
-        <div>
-          <label class="radio-inline">
-            <input type="checkbox" name="init_board" id="initState" />
-            <span>白板初始化</span>
-          </label>
-        </div>  
-        <!-- test end -->
-        <button type="button" id="login-btn" class="btn btn-primary" data-locale="join_room"></button>
+        <button type="button" id="login-btn" class="btn btn-primary" data-locale="join_room">
+
+        </button>
         <div class="login-env"><span data-locale="login_env">接入环境</span></div>
         <label class="radio-inline" style="margin-right: 30px">
           <input type="radio" name="inlineRadioOptions" class="inlineRadio" value="1" checked />
@@ -1142,13 +1145,6 @@
         <!-- Draw -->
         <div class="main-feature active" data-index="1">
           <form id="form1" class="layui-form" action="" name="form1" lay-filter="form1">
-            <div class="layui-form-item">
-              <label class="layui-form-label" >初始化/反初始化</label>
-              <div class="layui-input-block">
-                <input type="checkbox" name="enableWB" lay-filter="enableWB" lay-skin="switch"
-                  lay-text="on|off" id="enableWB"/>
-              </div>
-            </div>
             <!-- Handwriting Effect -->
             <div class="layui-form-item">
               <label class="layui-form-label" data-locale="Handwriting-Effect"></label>
@@ -1603,12 +1599,12 @@
               </button>
             </div>
             <div class="layui-form-item">
-              <label class="layui-form-label">Seq</label>
-              <div class="layui-input-inline first-inline file-seq">
-                <input name="cacheFileSeq" type="text" placeholder="Seq" class="layui-input" />
-              </div>
+              <label class="layui-form-label"> </label>
               <button id="cancelCacheFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
                 data-locale="cancelPreload">
+              </button>
+              <button id="cancelUploadFileBtn" type="button" class="layui-btn layui-btn-sm" style="margin-top: 3px"
+                data-locale="cancelUpload">
               </button>
             </div>
             <div class="layui-form-item">
@@ -1900,17 +1896,12 @@
       </div>
     </div>
   </div>
+
+  <div id="toast" class="toast"></div>
 </body>
-<!-- <script src="https://unpkg.com/vconsole@3.14.6/dist/vconsole.min.js"></script> -->
-<!-- <script src="./lib/vconsole.min-3.14.6.js"></script> -->
 <script src="./js/login/utils.js"></script>
 <script src="./i18n/jquery.i18n.properties-min-1.0.9.js"></script>
 <script src="./i18n/index.js"></script>
-<!-- Express SDK -->
-<script src="./sdk/ZegoExpressWebRTC-2.24.5.js"></script>
-<!-- Superboard SDK -->
-<!-- <script src="./sdk/ZegoSuperBoardWeb.js"></script> -->
-<script src="/ZegoSuperBoardWeb.js"></script>
 <script src="./js/room/utils.js"></script>
 <!-- whiteboard -->
 <script src="./js/room/whiteboard.js"></script>
@@ -1946,8 +1937,4 @@
 <script src="./js/login/login.js"></script>
 <script src="./js/login/init.js"></script>
 <script src="./js/login/demo.js"></script>
-<!-- <script src="./js/login/login_liveroom.js"></script>
-<script src="./js/login/init_liveroom.js"></script> -->
-<!-- vConsole -->
-<!-- <script type="text/javascript" src="https://static2.qcplay.com/vconsole/vconsole.min.js"></script> -->
 </html>

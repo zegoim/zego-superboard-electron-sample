@@ -67,6 +67,7 @@ $('#setScaleFactorCut').click(function () {
     var currScale = +layui.form.val('customForm').scale;
     if (currScale === 1) return; // The minimum is 1, less than 1 does not allow shrinking
 
+    if(!setOperationModeUtils.getTargetOperatedMode('scaleMode')) return;
     var targetScale = currScale - 0.25;
 
     var zegoSuperBoardSubView = zegoSuperBoard.getSuperBoardView().getCurrentSuperBoardSubView();
@@ -84,6 +85,7 @@ $('#setScaleFactorAdd').click(function () {
     // Obtain the current scale selected from the drop-down list on the page. layui is used here. You can obtain it as required.
     var currScale = +layui.form.val('customForm').scale;
     if (currScale === 3) return; // Maximum is 3, larger than 3 does not allow zooming
+    if(!setOperationModeUtils.getTargetOperatedMode('scaleMode')) return;
 
     var targetScale = currScale + 0.25;
 

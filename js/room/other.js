@@ -13,22 +13,6 @@
 var saveImg = 1; // Whiteboard Snapshot Index
 
 /**
- * @description: Listen for keys to clear selected diagram elements.
- */
-window.addEventListener('keydown', async function (event) {
-    var e = event || window.event || arguments.callee.caller.arguments[0];
-    if (!e) return;
-    switch (e.keyCode) {
-        case 8:
-        case 46:
-            clearSelected();
-            break;
-        default:
-            break;
-    }
-});
-
-/**
  * @description: Clear all pages.
  */
 async function clearAllPage() {

@@ -4,7 +4,7 @@
 
 ### 填入所需参数
 
-在 js/login/init.js 文件中填写登录房间所需的 AppID、Server。
+在 superboard/key_center.js 文件中填写登录房间所需的 AppID、AppSign。
 ### 启动项目
 
 在项目所在目录下，双击打开 “index.html” 页面，输入房间号和用户名进入房间。
@@ -41,6 +41,7 @@ superboard
 │     └─ whiteboard.js # 创建、销毁、切换、查询白板列表相关功能
 ├─ lib # 第三方 UI 库所需的 CSS、JavaScript 文件、内置的第三方字体文件
 ├─ main.css # 项目用到的非第三方 UI 的所有 CSS 样式
+├─ key_center.js # 项目用到的账号信息
 └─ sdk # 项目引用的 ZEGO SDK
    ├─ ZegoSuperBoardWeb-2.0.0.js # ZEGO  超级白板 SDK
    └─ ZegoExpressWebRTC-2.9.1.js # ZEGO 音视频 SDK

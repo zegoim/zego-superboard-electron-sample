@@ -12,7 +12,7 @@ var sdkPathPre = './node_modules/';
 var zegoEnvConfig = {
     env: loginUtils.getEnv(), // 1 mainland 2 overseas
     appID: appID,
-    appSignStr: appSignStr,
+    appSignStr: appSign,
     sdkPath: {
         express: sdkPathPre + '/zego-superboard-electron/zego-express-engine-electron/ZegoExpressEngine.js',
         superboard: sdkPathPre + '/zego-superboard-electron/index.js',
